@@ -1340,7 +1340,7 @@ const PRZEDMIOTY = [
     naTrafienie(i, w, k) { if (k.glowny && Math.random() < 0.25) podpal(w, (5 + 0.15 * D.ad + 0.1 * D.ap) * M(i), 3, 'mag', 'Pochodnia'); } },
   { id: 'magnes', t: 0, ik: '🧲', n: 'Magnes', cd: 12,
     opis: i => 'Co <b>' + fmt(12 / M(i)) + ' s</b> przyciąga do Ciebie wszystkie kulki doświadczenia i monety z całej areny.',
-    tik(i) { if (!cdGotowe(i) || !fala.aktywna || (kulki.length + monety.length) < 4) return; cdUstaw(i, 12 / M(i)); kulki.forEach(k => k.ssij = true); monety.forEach(m => m.ssij = true); fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 160, kolor: '#7ee87a', odwrot: true }); } },
+    tik(i) { if (!cdGotowe(i) || !fala.aktywna || (kulki.length + monety.length) < 4) return; cdUstaw(i, 12 / M(i)); przyciagnijLupy(); fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 160, kolor: '#7ee87a', odwrot: true }); } },
   { id: 'kamienOdnowy', t: 0, ik: '💠', n: 'Kamień Odnowy',
     opis: i => 'Co 25 zabójstw i za każdą zabitą elitę leczysz się o <b>' + Math.round(10 * M(i)) + '%</b> maks. zdrowia.',
     naZabicie(i, w) { i.zab = (i.zab || 0) + 1; if (w.elita || w.boss || i.zab % 25 === 0) leczGracza(D.hpMax * 0.1 * M(i), 'Kamień Odnowy'); } },
@@ -2435,13 +2435,20 @@ function strzalWroga(w, k, predkosc, obr, opcje) {
   pociskiWrogow.push(Object.assign({ x: w.x, y: w.y, vx: Math.cos(k) * predkosc, vy: Math.sin(k) * predkosc, obr: obr, typ: w.typObr || 'fiz', zycie: 2.4, kolor: '#c46ce8', wrog: w, r: 5, kto: w.n }, opcje));
 }
 
+function odlegloscDoCiosu(w, d) {
+  if (!gracz.zdalny || gracz.netX === undefined) return d;
+  return Math.max(d, Math.hypot(gracz.netX - w.x, gracz.netY - w.y));
+}
 function aiWroga(w, dt, msMn) {
   const dx = gracz.x - w.x, dy = gracz.y - w.y, d = Math.hypot(dx, dy) || 1, kg = Math.atan2(dy, dx);
+  // gracz online: cios liczy się dopiero, gdy wróg sięga go i w ostatniej zgłoszonej pozycji, i w przewidywanej
+  // (gdy gracz nagle zawróci, przewidywanie nie dorzuci mu ciosu "z powietrza"); do tego odrobina luzu
+  const luz = gracz.zdalny ? 5 : 0, dAtak = odlegloscDoCiosu(w, d);
   const T = TYPY_WROGOW[w.typ] || {};
   w.kier = kg;
   // Upiorny rycerz: namierza (stoi 0,7 s) i szarżuje
   if (T.szarzuje) {
-    if (w.dashT > 0) { w.dashT -= dt; w.x += w.dVX * dt; w.y += w.dVY * dt; if (!w.trafilDash && d < w.r + gracz.r * rozmiarGracza() + 6) { w.trafilDash = true; zranGracza(w.atak * 1.6, 'fiz', { wrog: w, wrecz: true }); } return; }
+    if (w.dashT > 0) { w.dashT -= dt; w.x += w.dVX * dt; w.y += w.dVY * dt; if (!w.trafilDash && dAtak < w.r + gracz.r * rozmiarGracza() + 6 - luz) { w.trafilDash = true; zranGracza(w.atak * 1.6, 'fiz', { wrog: w, wrecz: true }); } return; }
     if (w.dashZa > 0) { w.dashZa -= dt; if (w.dashZa <= 0) { const v = 470; w.dVX = Math.cos(kg) * v; w.dVY = Math.sin(kg) * v; w.dashT = Math.min(0.9, (d + 80) / v); w.trafilDash = false; } return; }
     w.cdDash = (w.cdDash === undefined ? 3 : w.cdDash) - dt;
     if (w.cdDash <= 0 && d < 330 && d > 80) { w.cdDash = 5.5; w.dashZa = 0.7; tekstSwiat(w.x, w.y - w.r - 12, '❗', '#ff6a5a', 0.7, 16); return; }
@@ -2453,7 +2460,7 @@ function aiWroga(w, dt, msMn) {
     wrogowie.forEach(o => { if (o === w || o.martwy || o.boss || o.zauroczony > 0 || Math.hypot(o.x - w.x, o.y - w.y) > 180) return; if (!(o.wzm > 0)) o.atak *= 1.3; o.wzm = 3.6; n++; });
     if (n) fale.push({ x: w.x, y: w.y, czas: 0.5, max: 0.5, r: 180, kolor: '#c06ae0' }); } }
   let rx = 0, ry = 0;
-  const zasieg = w.dyst || (w.r + gracz.r * rozmiarGracza() + 6);
+  const zasieg = w.dyst || (w.r + gracz.r * rozmiarGracza() + 6 - luz);
   if (w.zach === 'okrazajacy') {
     const DOBRY = w.leczy ? 180 : 150;
     if (d > DOBRY + 40) { rx = Math.cos(kg); ry = Math.sin(kg); }
@@ -2499,7 +2506,7 @@ function aiWroga(w, dt, msMn) {
   const mnAt = (w.mnCd || 1) * (1 + (w.zamarzniecieAtaku || 0));
   w.cd -= dt / mnAt;
   if (w.zach === 'uciekajacy' || w.cd > 0) return;
-  if (d > zasieg) return;
+  if ((w.dyst ? d : dAtak) > zasieg) return;
   w.cd = 1.25;
   if (w.dyst) {
     if (TYPY_WROGOW[w.typ].czary) {
@@ -2567,12 +2574,12 @@ function wybuchBomby(b) {
 // ---------- BOSSOWIE ----------
 function aiBossa(w, dt, msMn) {
   const dx = gracz.x - w.x, dy = gracz.y - w.y, d = Math.hypot(dx, dy) || 1, kg = Math.atan2(dy, dx);
-  const mc = w.mnCdBossa || 1, proc = w.hp / w.hpMax;
+  const mc = w.mnCdBossa || 1, proc = w.hp / w.hpMax, luz = gracz.zdalny ? 5 : 0, dAtak = odlegloscDoCiosu(w, d);
   w.t1 -= dt; w.t2 -= dt; w.t3 -= dt; w.t4 -= dt;
   // szarża w toku
   if (w.szarza > 0) {
     w.szarza -= dt; w.x += w.szVX * dt; w.y += w.szVY * dt;
-    w.cd -= dt; if (d < w.r + gracz.r + 8 && w.cd <= 0) { w.cd = 0.6; zranGracza(w.atak * 1.4, 'fiz', { wrog: w, wrecz: true }); }
+    w.cd -= dt; if (dAtak < w.r + gracz.r + 8 - luz && w.cd <= 0) { w.cd = 0.6; zranGracza(w.atak * 1.4, 'fiz', { wrog: w, wrecz: true }); }
     return;
   }
   if (w.przygotowanie > 0) { w.przygotowanie -= dt; if (w.przygotowanie <= 0) { w.szarza = w.dlSzarzy || 0.85; const k = Math.atan2(gracz.y - w.y, gracz.x - w.x); w.szVX = Math.cos(k) * (w.vSzarzy || 520); w.szVY = Math.sin(k) * (w.vSzarzy || 520); DZ.boss(); } return; }
@@ -2624,7 +2631,7 @@ function aiBossa(w, dt, msMn) {
   const dl = Math.hypot(rx, ry);
   if (dl > 0.001) { w.x += rx / dl * w.ms * msMn * dt; w.y += ry / dl * w.ms * msMn * dt; }
   w.cd -= dt;
-  if (d < w.r + gracz.r * rozmiarGracza() + 8 && w.cd <= 0) { w.cd = 1.05; zranGracza(w.atak, 'fiz', { wrog: w, wrecz: true }); }
+  if (dAtak < w.r + gracz.r * rozmiarGracza() + 8 - luz && w.cd <= 0) { w.cd = 1.05; zranGracza(w.atak, 'fiz', { wrog: w, wrecz: true }); }
 }
 
 function wskrzesSojusznika(w, czas) {
@@ -3383,9 +3390,10 @@ function aktualizujPodnoszenie(dt) {
 // ---------------------------------------------------------------------
 //  ŁUPY: doświadczenie, złoto, skrzynie, mikstury
 // ---------------------------------------------------------------------
+let NR_LUPU = 0;     // każda kulka i moneta ma swój numer (gra online: klient zgłasza, co zebrał)
 function rozsypKulki(x, y, xp) {
   const n = ogr(Math.round(xp / 1.5), 1, 8), na = xp / n;
-  for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), v = losowo(40, 140); kulki.push({ x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, xp: na, faza: losowo(0, 6), opozn: 0.25 }); }
+  for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), v = losowo(40, 140); kulki.push({ id: ++NR_LUPU, x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, xp: na, faza: losowo(0, 6), opozn: 0.25 }); }
   while (kulki.length > 160) { const a = kulki.shift(), b = kulki[0]; b.xp += a.xp; }
 }
 // ---- ZŁOTO I SKRZYNIE NA FALĘ ----
@@ -3407,7 +3415,7 @@ function rozsypMonety(x, y, v, pozaPula) {
   if (!(v > 0.05)) return;
   let n = ogr(Math.round(v), 1, 6);
   const na = v / n;
-  for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), s = losowo(30, 120); monety.push({ x: x, y: y, vx: Math.cos(k) * s, vy: Math.sin(k) * s, v: na, faza: losowo(0, 6), opozn: 0.3 }); }
+  for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), s = losowo(30, 120); monety.push({ id: ++NR_LUPU, x: x, y: y, vx: Math.cos(k) * s, vy: Math.sin(k) * s, v: na, faza: losowo(0, 6), opozn: 0.3 }); }
   while (monety.length > 140) { const a = monety.shift(), b = monety[0]; b.v += a.v; }
 }
 function dodajXp(v) {
@@ -3427,6 +3435,22 @@ function dodajZloto(v, bezMn, opis) {
   if (!bezMn) v *= (1 + D.chciwosc / 100) * (fala.mnZlota || 1);
   gracz.zloto += v; run.zloto += v; run.zlotoFali = (run.zlotoFali || 0) + v;
   if (opis) dziennik('💰 ' + opis + ': +' + Math.floor(v));
+}
+// zebranie łupu (wspólne dla drużyny). Klient online zgłasza zebrane kulki/monety po numerze.
+function zbierzKulke(i) { const k = kulki[i]; if (!k) return; kulki.splice(i, 1); const xp = k.xp; dlaKazdego(() => dodajXp(xp)); DZ.kulka(); }
+function zbierzMonete(i) {
+  const m = monety[i]; if (!m) return; monety.splice(i, 1);
+  // złoto jest wspólne: każdy dostaje pełną wartość monety razy SWOJE premie (zysk złota, Midas…)
+  const v = m.v; dlaKazdego(q => { const mn = mnoznikHakow('mnozMonety'); if (mn > 1) tekstSwiat(q.x, q.y - 28, '🪙 ×' + mn, '#ffd24a', 0.8); dodajZloto(v * mn); });
+  DZ.moneta();
+}
+function zbierzLupPoId(id) {
+  let i = kulki.findIndex(k => k.id === id); if (i >= 0) { zbierzKulke(i); return; }
+  i = monety.findIndex(m => m.id === id); if (i >= 0) zbierzMonete(i);
+}
+function przyciagnijLupy() {
+  kulki.forEach(k => k.ssij = true); monety.forEach(m => m.ssij = true);
+  if (typeof SIEC !== 'undefined' && SIEC.rola === 'host') siecZdarzenie(['ssij']);
 }
 function tierSkrzyni(w) {
   if (w && w.boss) return fala.nr < 10 ? 2 : 3;
@@ -3450,7 +3474,7 @@ function aktualizujLupy(dt) {
     const zb = p._D.zbieranie, dx = p.x - k.x, dy = p.y - k.y, dd = d || 1;
     if (k.opozn <= 0 && (d < zb || k.ssij)) { const s = 140 + Math.max(0, zb - d) * 6 + (k.ssij ? 600 : 0); k.vx += dx / dd * s * dt; k.vy += dy / dd * s * dt; }
     k.vx *= 0.92; k.vy *= 0.92; k.x += k.vx * dt; k.y += k.vy * dt;
-    if (d < 16) { const xp = k.xp; dlaKazdego(() => dodajXp(xp)); DZ.kulka(); kulki.splice(i, 1); }
+    if (d < 16) zbierzKulke(i);
   }
   for (let i = monety.length - 1; i >= 0; i--) {
     const m = monety[i]; m.faza += dt * 5; if (m.opozn > 0) m.opozn -= dt;
@@ -3458,11 +3482,7 @@ function aktualizujLupy(dt) {
     const zb = p._D.zbieranie, dx = p.x - m.x, dy = p.y - m.y, dd = d || 1;
     if (m.opozn <= 0 && (d < zb || m.ssij)) { const s = 140 + Math.max(0, zb - d) * 6 + (m.ssij ? 600 : 0); m.vx += dx / dd * s * dt; m.vy += dy / dd * s * dt; }
     m.vx *= 0.92; m.vy *= 0.92; m.x += m.vx * dt; m.y += m.vy * dt;
-    if (d < 16) {
-      // złoto jest wspólne: każdy dostaje pełną wartość monety razy SWOJE premie (zysk złota, Midas…)
-      const v = m.v; dlaKazdego(q => { const mn = mnoznikHakow('mnozMonety'); if (mn > 1) tekstSwiat(q.x, q.y - 28, '🪙 ×' + mn, '#ffd24a', 0.8); dodajZloto(v * mn); });
-      DZ.moneta(); monety.splice(i, 1);
-    }
+    if (d < 16) zbierzMonete(i);
   }
   for (let i = skrzynieNaZiemi.length - 1; i >= 0; i--) {
     const s = skrzynieNaZiemi[i]; s.faza += dt;
@@ -3565,8 +3585,12 @@ function aktualizujGracza(dt) {
   // ruch: lokalny gracz steruje sam, zdalnego ustawia sieć
   if (gracz.zdalny) {
     if (gracz.netX !== undefined) {
-      gracz.wRuchu = Math.hypot(gracz.netX - gracz.x, gracz.netY - gracz.y) > 0.3;
-      gracz.x = ogr(gracz.netX, POD_MIN, POD_MAX); gracz.y = ogr(gracz.netY, POD_MIN, POD_MAX);
+      const nx = ogr(gracz.netX, POD_MIN, POD_MAX), ny = ogr(gracz.netY, POD_MIN, POD_MAX);
+      const wiek = Math.min(0.12, Math.max(0, (performance.now() - (gracz.netT || 0)) / 1000) + (gracz.opoz || 0));
+      let tx = ogr(nx + (gracz.netVX || 0) * wiek, POD_MIN, POD_MAX), ty = ogr(ny + (gracz.netVY || 0) * wiek, POD_MIN, POD_MAX);
+      if ((tx !== nx || ty !== ny) && scianaBlokuje(nx, ny, tx, ty, gracz.r)) { tx = nx; ty = ny; }
+      gracz.wRuchu = Math.hypot(gracz.netVX || 0, gracz.netVY || 0) > 8;
+      gracz.x = tx; gracz.y = ty;
       if (gracz.netKX) gracz.kierX = gracz.netKX;
     }
   } else ruszGracza(dt, D.ms, rozmiarGracza());
@@ -3687,7 +3711,7 @@ function aktualizujPociski(dt) {
     for (const g of gracze) {
       if (g.powalony || g.martwy || !g._D) continue;
       kontekst(g);
-      if (Math.hypot(p.x - g.x, p.y - g.y) < g.r * rozmiarGracza() + (p.r || 5)) {
+      if (Math.hypot(p.x - g.x, p.y - g.y) < g.r * rozmiarGracza() * (g.zdalny ? 0.7 : 1) + (p.r || 5)) {
         if (HAKI.odbijPocisk.length && ktorysHak('odbijPocisk')) {
           // Lusterko: pocisk wraca do strzelca jako nasz
           pociskiWrogow.splice(i, 1); tekstSwiat(g.x, g.y - 24, '🪞', '#bfe8ff', 0.5);
@@ -3736,7 +3760,7 @@ function aktualizujPlansze(dt) {
       u.zadane = true; fale.push({ x: u.x, y: u.y, czas: 0.4, max: 0.4, r: u.r, kolor: u.mroz ? '#9fd8ff' : '#ff5a3a' }); DZ.wybuch(); rozbryzg(u.x, u.y, u.mroz ? '#bfe8ff' : '#8a4a2a', 20);
       for (const g of gracze) {
         if (g.powalony || g.martwy || !g._D) continue;
-        if (Math.hypot(g.x - u.x, g.y - u.y) <= u.r) { kontekst(g); zranGracza(u.obr, u.typ || 'fiz', { bezUniku: true, wybuch: true, kto: u.kto || 'Uderzenie bossa' }); if (u.mroz) spowolnijGracza(0.5, 2); }
+        if (Math.hypot(g.x - u.x, g.y - u.y) <= u.r - (g.zdalny ? 6 : 0)) { kontekst(g); zranGracza(u.obr, u.typ || 'fiz', { bezUniku: true, wybuch: true, kto: u.kto || 'Uderzenie bossa' }); if (u.mroz) spowolnijGracza(0.5, 2); }
       }
     }
     if (u.czas > u.zapowiedz + 0.3) uderzeniaBossa.splice(i, 1);
@@ -4178,7 +4202,7 @@ function kolejkaPrzerwy() {
   if (!p.sklep) { if (!p.sklepOtwarty) { p.sklepOtwarty = true; nowySklep(); hak('naSklep'); zapiszGre(); } pokazSklep(); return; }
   if (!p.proba && czyProbaPrzed(p.nr + 1) && !(typeof SIEC !== 'undefined' && SIEC.rola === 'klient')) { p.proba = true; pokazProby(); return; }
   run.przerwa = null;
-  if (druzyna()) { gotowyDoFali(p.nr + 1); return; }
+  if (druzyna()) { if (typeof SIEC !== 'undefined') SIEC.cofnijPrzerwe = p.sklepOtwarty ? p : null; gotowyDoFali(p.nr + 1); return; }
   zamknijEkran();
   startFali(p.nr + 1);
 }
@@ -5181,8 +5205,9 @@ AKCJE.skrzZamienOreze = () => wyborZamianyOreza(run.zawSkrzyni.o, () => nastepna
 
 function wyborZamianyOreza(nowa, potem) {
   run.oczekOre = { o: nowa, potem: potem };
-  let h = '<div class="tytul">Którą broń zamienić?</div><div class="podtytul">Wymieniona broń zostanie sprzedana.</div>';
-  gracz.oreze.forEach((o, i) => { h += kartaPad(kartaOreza(o, '<button class="btn-maly zl" data-a="zamienOreze" data-i="' + i + '" style="margin-left:auto">Zamień (+' + wartoscSprzedazyOreza(o) + ' 💰)</button>', { bezOpisu: true }), 'zamienOreze', 'zamień'); });
+  let h = '<div class="tytul">Którą broń zamienić?</div><div class="podtytul">Wymieniona broń zostanie sprzedana.</div>' +
+    '<div class="sekcja">✨ Nowa</div>' + kartaOreza(nowa) + '<div class="sekcja">🗡️ Twoje bronie — wybierz, którą oddać</div>';
+  gracz.oreze.forEach((o, i) => { h += kartaPad(kartaOreza(o, '<button class="btn-maly zl" data-a="zamienOreze" data-i="' + i + '" style="margin-left:auto">Zamień (+' + wartoscSprzedazyOreza(o) + ' 💰)</button>'), 'zamienOreze', 'zamień'); });
   h += '<button class="btn drugi" data-a="zamknijModal">Anuluj</button>';
   pokazModal(h);
 }
@@ -5193,8 +5218,9 @@ function dodajPrzedmiotZWyborem(inst, potem) {
   const pr = czyPryzmat(inst);
   if (wolneSlotyPrzedm(pr) > 0) { gracz.przedmioty = gracz.przedmioty.filter(p => p); gracz.przedmioty.push(inst); poZmianieBuildu(); potem(); return; }
   run.oczekPrz = { inst: inst, potem: potem };
-  let h = '<div class="tytul">Brak miejsca</div><div class="podtytul">Sprzedaj jeden ' + (pr ? 'przedmiot <b>pryzmatyczny</b>' : 'zwykły przedmiot') + ', żeby zrobić miejsce na <b>' + DEF_PRZ[inst.id].ik + ' ' + DEF_PRZ[inst.id].n + '</b>.</div>';
-  gracz.przedmioty.forEach((p, i) => { if (p && czyPryzmat(p) === pr) h += kartaPad(kartaPrzedmiotu(p, '<button class="btn-maly czerw" data-a="zamienPrz" data-i="' + i + '" style="margin-left:auto">Sprzedaj (+' + wartoscSprzedazy(p) + ' 💰)</button>', { bezOpisu: true }), 'zamienPrz', 'sprzedaj'); });
+  let h = '<div class="tytul">Brak miejsca</div><div class="podtytul">Sprzedaj jeden ' + (pr ? 'przedmiot <b>pryzmatyczny</b>' : 'zwykły przedmiot') + ', żeby zrobić miejsce na nowy.</div>' +
+    '<div class="sekcja">✨ Nowy</div>' + kartaPrzedmiotu(inst) + '<div class="sekcja">🎒 Twoje ' + (pr ? 'pryzmaty' : 'przedmioty') + ' — wybierz, który sprzedać</div>';
+  gracz.przedmioty.forEach((p, i) => { if (p && czyPryzmat(p) === pr) h += kartaPad(kartaPrzedmiotu(p, '<button class="btn-maly czerw" data-a="zamienPrz" data-i="' + i + '" style="margin-left:auto">Sprzedaj (+' + wartoscSprzedazy(p) + ' 💰)</button>'), 'zamienPrz', 'sprzedaj'); });
   h += '<button class="btn drugi" data-a="porzucPrz">Zrezygnuj z nowego (+' + wartoscSprzedazy(inst) + ' 💰)</button>';
   modalEl.dataset.wymuszony = '1';
   pokazModal(h);
@@ -6229,8 +6255,9 @@ Object.assign(SIEC, {
   lobby: [], trudnosc: 1, wGrze: false, gotowi: {}, dane: {}, nastepnaFala: 1,
   zdarzenia: [], zdarzeniaG: {}, dzwieki: [], tWysylki: 0, tPoz: 0, licznikStanu: 0,
   widokGraczy: [], mojWidok: null, znaneWrogi: {}, ostStan: null, ostatnio: {}, ostOdHosta: 0, tCzekania: 0,
+  nrWiad: 0, zal: {}, rtt: 0, rttG: {}, lupOst: new Set(), zebraneLok: {}, vx: 0, vy: 0, zbieranie: 60,
 });
-const PREFIKS_PEER = 'wiezien-labiryntu-v1-';
+const PREFIKS_PEER = 'wiezien-labiryntu-v2-';
 const MAKS_GRACZY = 4;
 const ZRODLA_PEERJS = ['https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js', 'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js'];
 
@@ -6256,10 +6283,41 @@ function mojaKlasa() { return lStorGet('wiezien_klasa_online', 'wiezniarka'); }
 // ---------------------------------------------------------------------
 //  WYSYŁANIE
 // ---------------------------------------------------------------------
+// Wiadomości idą jako tekst JSON (serialization 'raw'). Duże dzielimy na kawałki, bo kanał
+// WebRTC ma limit rozmiaru jednej wiadomości (PeerJS w trybie 'json' po cichu gubi większe niż 16 kB).
+const MAKS_KAWALKA = 12000;
 function wyslij(conn, msg) {
-  try { if (conn && conn.open) { conn.send(msg); return true; } } catch (e) { zglosBlad(e, 'wyslij'); }
+  try {
+    if (!conn || !conn.open) return false;
+    const txt = typeof msg === 'string' ? msg : JSON.stringify(msg);
+    const maks = conn.serialization === 'raw' ? MAKS_KAWALKA : MAKS_KAWALKA / 2;   // w trybie 'json' tekst jeszcze puchnie
+    if (txt.length <= maks) { conn.send(txt); return true; }
+    const id = (++SIEC.nrWiad).toString(36), cz = [];
+    for (let a = 0; a < txt.length;) {
+      let b = Math.min(txt.length, a + maks);
+      const c = txt.charCodeAt(b - 1); if (b < txt.length && c >= 0xD800 && c <= 0xDBFF) b--;   // nie rozcinamy emoji
+      cz.push(txt.slice(a, b)); a = b;
+    }
+    cz.forEach((t, i) => conn.send('~' + id + '|' + i + '|' + cz.length + '|' + t));
+    return true;
+  } catch (e) { zglosBlad(e, 'wyslij'); }
   return false;
 }
+// składanie kawałków po drugiej stronie
+function odbierzSurowe(conn, d, fn) {
+  if (typeof d !== 'string') { if (d) fn(d); return; }
+  if (d.charCodeAt(0) !== 126) { fn(JSON.parse(d)); return; }        // '~' = kawałek
+  const a = d.indexOf('|'), b = d.indexOf('|', a + 1), c = d.indexOf('|', b + 1);
+  const id = d.slice(1, a), i = +d.slice(a + 1, b), n = +d.slice(b + 1, c);
+  const buf = conn._kawalki || (conn._kawalki = {});
+  const e = buf[id] || (buf[id] = { n: n, cz: [], ile: 0, t: Date.now() });
+  if (e.cz[i] === undefined) { e.cz[i] = d.slice(c + 1); e.ile++; }
+  if (e.ile >= e.n) { delete buf[id]; fn(JSON.parse(e.cz.join(''))); }
+  for (const k in buf) if (Date.now() - buf[k].t > 20000) delete buf[k];
+}
+// ile bajtów czeka w kolejce kanału: nowy stan wysyłamy dopiero, gdy poprzedni prawie wyszedł.
+// Na szybkim łączu to nic nie zmienia (15 razy/s), na wolnym stanów jest mniej, ale są świeże (zamiast kolejki sprzed sekundy).
+function zatkane(conn) { try { return !!conn.dataChannel && conn.dataChannel.bufferedAmount > Math.max(3000, (conn._ostStan || 0) * 0.5); } catch (e) { return false; } }
 function siecWyslijHost(msg) { wyslij(SIEC.host, msg); }
 function rozeslij(msg) { for (const id in SIEC.polaczenia) wyslij(SIEC.polaczenia[id], msg); }
 function siecZdarzenie(ev) { if (SIEC.rola === 'host' && SIEC.wGrze) { SIEC.zdarzenia.push(ev); if (SIEC.zdarzenia.length > 300) SIEC.zdarzenia.splice(0, 100); } }
@@ -6343,7 +6401,7 @@ function obsluzKlienta(conn) {
     return true;
   };
   conn.on('open', przyjmij);
-  conn.on('data', d => { if (!przyjmij()) return; try { odbierzOdKlienta(conn, d); } catch (e) { zglosBlad(e, 'odbior ' + (d && d.t)); } });
+  conn.on('data', d => { if (!przyjmij()) return; try { odbierzSurowe(conn, d, m => odbierzOdKlienta(conn, m)); } catch (e) { zglosBlad(e, 'odbior'); } });
   conn.on('close', () => klientRozlaczony(conn.idGracza));
   conn.on('error', () => {});
 }
@@ -6355,13 +6413,16 @@ async function dolaczDoDruzyny(kod) {
   SIEC.peer = peer;
   const limit = setTimeout(() => { if (SIEC.rola !== 'klient') bladSieci('Nie udało się połączyć z drużyną <b>' + esc(kod) + '</b>. Sprawdź kod i czy gospodarz ma otwartą grę.'); }, 15000);
   peer.on('open', () => {
-    const conn = peer.connect(PREFIKS_PEER + kod, { reliable: true, serialization: 'json' });
+    // 'raw' = czysty tekst (sami robimy JSON i dzielimy duże wiadomości); gdyby biblioteka go nie znała - 'json'
+    let conn;
+    try { conn = peer.connect(PREFIKS_PEER + kod, { reliable: true, serialization: 'raw' }); } catch (e) { conn = null; }
+    if (!conn) conn = peer.connect(PREFIKS_PEER + kod, { reliable: true, serialization: 'json' });
     conn.on('open', () => {
       clearTimeout(limit);
       Object.assign(SIEC, { rola: 'klient', host: conn, kod: kod, wGrze: false });
       wyslij(conn, { t: 'witaj', nick: mojNick(), klasa: mojaKlasa() });
     });
-    conn.on('data', d => { SIEC.ostOdHosta = Date.now(); try { odbierzOdHosta(d); } catch (e) { zglosBlad(e, 'odbiorH ' + (d && d.t)); } });
+    conn.on('data', d => { SIEC.ostOdHosta = Date.now(); try { odbierzSurowe(conn, d, odbierzOdHosta); } catch (e) { zglosBlad(e, 'odbiorH'); } });
     conn.on('close', () => { if (SIEC.rola === 'klient') hostRozlaczony(); });
     conn.on('error', () => {});
   });
@@ -6474,11 +6535,24 @@ function odbierzOdKlienta(conn, d) {
     case 'gotowyL': { const l = SIEC.lobby.find(x => x.id === id); if (l) { l.gotowy = !!d.gotowy; rozeslijLobby(); if (!SIEC.wGrze) pokazLobby(); } break; }
     case 'poz': {
       const p = gracze.find(q => q.id === id);
-      if (p && stan === 'walka') { p.netX = +d.x || p.x; p.netY = +d.y || p.y; p.netKX = d.kx; p.celKat = (d.c === null || d.c === undefined) ? null : +d.c; }
+      if (p && stan === 'walka' && !(d.n < (p.netN || 0))) {
+        p.netN = d.n || 0; p.netX = +d.x || p.x; p.netY = +d.y || p.y; p.netVX = +d.vx || 0; p.netVY = +d.vy || 0; p.netT = performance.now(); p.netKX = d.kx;
+        p.celKat = (d.c === null || d.c === undefined) ? null : +d.c;
+      }
       break;
     }
+    case 'zb': if (stan === 'walka' && fala.aktywna && Array.isArray(d.k)) d.k.slice(0, 80).forEach(i => zbierzLupPoId(+i)); break;
+    case 'po': { const r = performance.now() - (+d.c || 0); if (r >= 0 && r < 5000) { const st = SIEC.rttG[id]; SIEC.rttG[id] = st ? st * 0.75 + r * 0.25 : r; const p = gracze.find(q => q.id === id); if (p) p.opoz = Math.min(0.15, SIEC.rttG[id] / 2000); } break; }
     case 'mik': { const p = gracze.find(q => q.id === id); if (p && stan === 'walka') { kontekst(p); wypijMiksture(); kontekst(z0); } break; }
     case 'umi': { const p = gracze.find(q => q.id === id); if (p && stan === 'walka') { kontekst(p); p.umiKier = Array.isArray(d.k) ? [+d.k[0] || 0, +d.k[1] || 0] : null; uzyjUmiejetnosci(); kontekst(z0); } break; }
+    case 'niegotowy':
+      // klient chce wrócić do sklepu - tylko dopóki fala nie ruszyła
+      if (SIEC.wGrze && stan === 'przerwa' && SIEC.gotowi[id]) {
+        delete SIEC.gotowi[id]; delete SIEC.dane[id];
+        wyslij(conn, { t: 'wrocDoSklepu' });
+        odswiezCzekanieHosta();
+      }
+      break;
     case 'gotowy':
       // spóźniony gracz (drużyna ruszyła bez niego) dołącza do trwającej fali
       if (SIEC.wGrze && stan === 'walka' && fala.aktywna) { if (!gracze.some(q => q.id === id)) dolaczWTrakcie(id, conn, d); break; }
@@ -6530,10 +6604,35 @@ function sprawdzStartFali(wymus) {
   ids.forEach(id => { if (id === SIEC.mojeId) return; const dane = SIEC.dane[id]; if (dane) nowi.push(zbudujZdalnego(id, dane)); });
   gracze = nowi;
   kontekst(z0);
-  SIEC.gotowi = {}; SIEC.dane = {};
+  SIEC.gotowi = {}; SIEC.dane = {}; SIEC.cofnijPrzerwe = null;
   zamknijEkran();
   startFali(SIEC.nastepnaFala);
 }
+function odswiezCzekanieHosta() {
+  const ids = SIEC.lobby.map(l => l.id);
+  rozeslij({ t: 'czekam', gotowi: ids.filter(id => SIEC.gotowi[id]) });
+  if (SIEC.czekamHost && stan === 'przerwa' && !$('modal').classList.contains('widoczny')) pokazCzekanie();
+}
+// Cofnięcie gotowości: wracasz do sklepu (ten sam sklep, te same oferty), dopóki fala nie ruszyła
+function wrocDoSklepu() {
+  const p = SIEC.cofnijPrzerwe; if (!p) return;
+  SIEC.cofnijPrzerwe = null; SIEC.czekam = false; SIEC.cofam = false;
+  p.sklep = false; run.przerwa = p;
+  zamknijModal(); kolejkaPrzerwy();
+}
+AKCJE.cofnijGotowosc = () => {
+  if (stan !== 'przerwa' || !SIEC.cofnijPrzerwe) return;
+  if (SIEC.rola === 'klient') {
+    if (!SIEC.czekam || SIEC.cofam) return;
+    SIEC.cofam = true; siecWyslijHost({ t: 'niegotowy' });
+    pokazEkran('<div class="tytul">🛒 Wracam do sklepu…</div><div class="podtytul">Jeśli fala zdążyła ruszyć, dołączysz do walki.</div>');
+    return;
+  }
+  if (SIEC.rola === 'host') {
+    delete SIEC.gotowi[SIEC.mojeId]; SIEC.czekamHost = false;
+    odswiezCzekanieHosta(); wrocDoSklepu();
+  }
+};
 // Gospodarz nie czeka na maruderów: fala rusza, a oni dołączą, gdy skończą zakupy
 AKCJE.startBezNich = () => pokazModal('<div class="tytul">Zacząć bez nich?</div><div class="podtytul">Fala ruszy od razu. Kto jeszcze robi zakupy, dołączy do walki, gdy skończy.</div>' +
   '<button class="btn ziel" data-a="startBezNichTak">⏩ Tak, startujemy</button><button class="btn drugi" data-a="zamknijModal">Czekamy dalej</button>');
@@ -6550,6 +6649,7 @@ function dolaczWTrakcie(id, conn, d) {
   kontekst(z0);
   gracze.push(p);
   wrogowie.forEach(w => w._w = false);           // nowy gracz musi poznać wszystkich wrogów
+  SIEC.zal[id] = { ln: kulki.map(k => lupDoWyslania(k, 0)).concat(monety.map(m => lupDoWyslania(m, 1))) };
   const poz = {}; poz[id] = [Math.round(p.x), Math.round(p.y)];
   wyslij(conn, { t: 'start', nr: fala.nr, dlugosc: fala.dlugosc, boss: fala.boss, specjalna: fala.specjalna, proba: fala.proba ? fala.proba.id : '', poz: poz, wTrakcie: 1 });
   baner('⚔️ ' + esc(p.nick) + ' dołącza do walki!', '');
@@ -6587,6 +6687,7 @@ function pokazCzekanie() {
   });
   if (SIEC.rola === 'host' && st.some(x => !x[1])) h += '<button class="btn ziel" data-a="startBezNich">⏩ Zacznij bez nich</button>';
   h += '<button class="btn drugi" data-a="modalBuild">🎒 Mój build</button>';
+  if (SIEC.cofnijPrzerwe) h += '<button class="btn drugi" data-a="cofnijGotowosc">◀ Wróć do sklepu</button>';
   pokazEkran(h);
 }
 
@@ -6605,7 +6706,7 @@ function siecStartFali() {
   // tylko do tych, którzy wchodzą do tej fali (maruderzy jeszcze robią zakupy)
   const msg = { t: 'start', nr: fala.nr, dlugosc: fala.dlugosc, boss: fala.boss, specjalna: fala.specjalna, proba: fala.proba ? fala.proba.id : '', poz: poz };
   gracze.forEach(p => { if (p.zdalny) wyslij(SIEC.polaczenia[p.id], msg); });
-  SIEC.zdarzenia = []; SIEC.dzwieki = [];
+  SIEC.zdarzenia = []; SIEC.dzwieki = []; SIEC.zal = {}; SIEC.lupOst = new Set();
   wrogowie.forEach(w => w._w = false);
 }
 function koniecDruzyny() {
@@ -6643,6 +6744,9 @@ function pokazKoniecDruzyny(d) {
 //  STAN GRY WYSYŁANY PRZEZ GOSPODARZA (ok. 15 razy na sekundę)
 // ---------------------------------------------------------------------
 function r1(v) { return Math.round(v); }
+// kulki doświadczenia (0) i monety (1): nowe wysyłamy raz, potem tylko informację, że zniknęły
+function lupDoWyslania(l, typ) { return [l.id, r1(l.x), r1(l.y), r1(l.vx || 0), r1(l.vy || 0), typ, Math.round((typ ? l.v : l.xp) * 10) / 10, Math.round(Math.max(0, l.opozn || 0) * 100)]; }
+const LIMITY_ZAL = { vf: 40, vt: 90, vb: 40, vc: 40, vs: 30, dz: 12, e: 200 };
 function siecWyslijStan(dt) {
   SIEC.tWysylki -= dt;
   if (SIEC.tWysylki > 0) return;
@@ -6667,10 +6771,27 @@ function siecWyslijStan(dt) {
     else if (w.boss && w._posw !== w.poswiata) { w._posw = w.poswiata; WN.push([w.id, r1(w.r), w.ik, w.kolor, '', '', w.n, w.poswiata || '']); }
   }
   const nowe = (lista, fn) => { const o = []; for (const e of lista) if (!e._w) { e._w = true; o.push(fn(e)); } return o; };
+  // to, co pojawiło się w tej klatce (efekty, zdarzenia, nowe kulki/monety, zebrane łupy)
+  const swieze = {
+    wn: WN,
+    vf: nowe(fale, f => [r1(f.x), r1(f.y), r1(f.r), f.kolor, f.czas, f.max, f.odwrot ? 1 : 0, f.slaba ? 1 : 0]),
+    vt: nowe(teksty, t => [r1(t.x), r1(t.y), t.t, t.kolor, t.czas, t.max, t.rozm, t.o || 0]),
+    vb: nowe(blyskawice, b => (b.a || [0, 0, 0, 0]).concat([b.kolor])),
+    vc: nowe(ciecia, c => [r1(c.x), r1(c.y), r1(c.kat * 100), r1(c.luk * 100), r1(c.r), c.max, c.kolor, c.linia ? 1 : 0]),
+    vs: nowe(stozki, s => [r1(s.x), r1(s.y), r1(s.kat * 100), r1(s.r), r1(s.pol * 100), s.max, s.kolor]),
+    e: SIEC.zdarzenia, dz: SIEC.dzwieki,
+    ln: [], lu: [],
+  };
+  const teraz = new Set();
+  kulki.forEach(k => { teraz.add(k.id); if (!k._w) { k._w = true; swieze.ln.push(lupDoWyslania(k, 0)); } });
+  monety.forEach(m => { teraz.add(m.id); if (!m._w) { m._w = true; swieze.ln.push(lupDoWyslania(m, 1)); } });
+  SIEC.lupOst.forEach(id => { if (!teraz.has(id)) swieze.lu.push(id); });
+  SIEC.lupOst = teraz;
+  SIEC.zdarzenia = []; SIEC.dzwieki = [];
   const stanW = {
-    t: 's', n: SIEC.licznikStanu,
+    t: 's', n: SIEC.licznikStanu, tc: Math.round(czasGry * 1000),
     f: [fala.nr, r1(fala.czas * 10), r1(fala.dlugosc), fala.boss ? 1 : 0, fala.specjalna || '', fala.proba ? fala.proba.id : '', fala.ciemnosc ? 1 : 0],
-    g: G, w: W, wn: WN,
+    g: G, w: W,
     p: pociski.map(p => [r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), p.kolor, p.ksztalt || 'kula', r1((p.obrot || 0) * 10)]),
     pw: pociskiWrogow.map(p => [r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), p.kolor, p.ksztalt || '', p.r || 5, p.siec ? 1 : 0]),
     sk: skrzynieNaZiemi.map(s => [r1(s.x), r1(s.y), s.tier]), mk: miksturyNaZiemi.map(m => [r1(m.x), r1(m.y)]),
@@ -6684,30 +6805,27 @@ function siecWyslijStan(dt) {
     pe: polaEfektow.map(p => [r1(p.x), r1(p.y), r1(p.r), r1(p.czas * 10), p.rodzaj || '']),
     st: stwory.map(s => [s.typ, r1(s.x), r1(s.y), s.max > 9000 ? -1 : r1(s.czas / s.max * 100), r1((s.kat || 0) * 100), r1(s.r || 0), s.ik, r1(s.aura || 0)]),
     ob: orbyRys.map(o => [r1(o.x), r1(o.y), o.kolor, r1(o.kat * 100)]),
-    vf: nowe(fale, f => [r1(f.x), r1(f.y), r1(f.r), f.kolor, f.czas, f.max, f.odwrot ? 1 : 0, f.slaba ? 1 : 0]),
-    vt: nowe(teksty, t => [r1(t.x), r1(t.y), t.t, t.kolor, t.czas, t.max, t.rozm, t.o || 0]),
-    vb: nowe(blyskawice, b => (b.a || [0, 0, 0, 0]).concat([b.kolor])),
-    vc: nowe(ciecia, c => [r1(c.x), r1(c.y), r1(c.kat * 100), r1(c.luk * 100), r1(c.r), c.max, c.kolor, c.linia ? 1 : 0]),
-    vs: nowe(stozki, s => [r1(s.x), r1(s.y), r1(s.kat * 100), r1(s.r), r1(s.pol * 100), s.max, s.kolor]),
-    e: SIEC.zdarzenia, dz: SIEC.dzwieki,
   };
-  if (SIEC.licznikStanu % 3 === 0) {
-    stanW.k = []; kulki.forEach(k => stanW.k.push(r1(k.x), r1(k.y)));
-    stanW.m = []; monety.forEach(m => stanW.m.push(r1(m.x), r1(m.y)));
-  }
-  SIEC.zdarzenia = []; SIEC.dzwieki = [];
+  // co 2 s pełna lista łupów - gdyby coś się rozjechało, klient sam to naprawi
+  if (SIEC.licznikStanu % 30 === 0) { stanW.la = []; kulki.forEach(k => stanW.la.push(lupDoWyslania(k, 0))); monety.forEach(m => stanW.la.push(lupDoWyslania(m, 1))); }
   for (const id of ids) {
     const conn = SIEC.polaczenia[id];
     const p = gracze.find(q => String(q.id) === String(id));
     if (!conn || !p) continue;
-    try { if (conn.dataChannel && conn.dataChannel.bufferedAmount > 400000) continue; } catch (e) {}
+    // zaległości dla tego klienta: jeśli jego kanał jest zapchany, nic nie ginie - pójdzie w następnej klatce
+    const q = SIEC.zal[id] || (SIEC.zal[id] = {});
+    for (const k in swieze) { const a = q[k] || (q[k] = []); for (const x of swieze[k]) a.push(x); if (LIMITY_ZAL[k] && a.length > LIMITY_ZAL[k]) a.splice(0, a.length - LIMITY_ZAL[k]); }
+    if (zatkane(conn)) continue;
     kontekst(p);
     stanW.ja = { hp: r1(p.hp), hpMax: D.hpMax, ts: r1(tarczaSuma()), xp: r1(p.xp), xpNast: p.xpNast, poziom: p.poziom, zloto: Math.floor(p.zloto), mik: p.mikstury, maksMik: p.maksMikstur,
       cdMik: Math.round(p.cdMikstury * 10) / 10, sk: p.skrzynie.length, dw: p.doWyboru, prz: p.przedmioty.map(q => q ? [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10] : [0, 0]),
-      ms: r1(D.ms), roz: rozmiarGracza(), spowG: p.spowG, zastoj: p.zastoj > 0 ? 1 : 0, pow: p.powalony ? 1 : 0, niewr: p.niewr > 0 ? 1 : 0,
+      ms: r1(D.ms), roz: rozmiarGracza(), spowG: p.spowG, zastoj: p.zastoj > 0 ? 1 : 0, pow: p.powalony ? 1 : 0, niewr: p.niewr > 0 ? 1 : 0, zb: r1(D.zbieranie),
+      rtt: r1(SIEC.rttG[id] || 0),
       umi: [Math.round((p.umi.cd || 0) * 10) / 10, Math.round((p.umi.cdMax || 0) * 10) / 10], ore: p.oreze.map(q => [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10]) };
-    stanW.eg = SIEC.zdarzeniaG[p.id] || []; SIEC.zdarzeniaG[p.id] = [];
-    wyslij(conn, stanW);
+    for (const k in q) stanW[k] = q[k];
+    stanW.eg = SIEC.zdarzeniaG[p.id] || [];
+    const txt = JSON.stringify(stanW);
+    if (wyslij(conn, txt)) { conn._ostStan = txt.length; SIEC.zal[id] = {}; SIEC.zdarzeniaG[p.id] = []; }
   }
   kontekst(z0);
 }
@@ -6728,8 +6846,10 @@ function odbierzOdHosta(d) {
       SIEC.wGrze = true; SIEC.trudnosc = d.trudnosc;
       rozpocznijRunDruzyny(d.trudnosc);
       break;
-    case 'czekam': SIEC.ostGotowi = d.gotowi || []; if (SIEC.czekam && stan === 'przerwa') pokazCzekanie(); break;
+    case 'czekam': SIEC.ostGotowi = d.gotowi || []; if (SIEC.czekam && !SIEC.cofam && stan === 'przerwa') pokazCzekanie(); break;
+    case 'wrocDoSklepu': if (stan === 'przerwa' && SIEC.czekam) wrocDoSklepu(); break;
     case 'ping': break;
+    case 'pp': siecWyslijHost({ t: 'po', c: d.c }); break;
     case 'start': klientStartFali(d); break;
     case 's': klientStan(d); break;
     case 'przerwa': klientPrzerwa(d); break;
@@ -6744,11 +6864,11 @@ function hostRozlaczony() {
   pokazEkran('<div class="tytul">📡 Utracono połączenie</div><div class="info-pole">Gospodarz zamknął grę albo stracił internet.' + (wGrze ? ' Ta rozgrywka niestety się skończyła.' : '') + '</div><button class="btn" data-a="menu">◀ Menu</button>');
 }
 function klientStartFali(d) {
-  SIEC.czekam = false;
+  SIEC.czekam = false; SIEC.cofam = false; SIEC.cofnijPrzerwe = null;
   fala = { nr: d.nr, aktywna: true, czas: 0, dlugosc: d.dlugosc, boss: !!d.boss, specjalna: d.specjalna || null, proba: d.proba ? DEF_PROB[d.proba] : null };
   [wrogowie, pociski, pociskiWrogow, kulki, monety, skrzynieNaZiemi, miksturyNaZiemi, kaluze, polaEfektow, wiry, scianyMagiczne, bomby, uderzeniaBossa, zapowiedzi,
     efektyCzasowe, czastki, teksty, fale, blyskawice, ciecia, stozki, orbyRys].forEach(l => l.length = 0);
-  SIEC.znaneWrogi = {}; SIEC.widokGraczy = []; SIEC.stwory = [];
+  SIEC.znaneWrogi = {}; SIEC.widokGraczy = []; SIEC.stwory = []; SIEC.ostN = 0; SIEC.zebraneLok = {};
   const p = d.poz && d.poz[SIEC.mojeId];
   if (p) { gracz.x = p[0]; gracz.y = p[1]; }
   gracz.zastoj = 0; gracz.spowG = 0; gracz.powalony = false;
@@ -6783,19 +6903,41 @@ function zastosujZdarzenie(e) {
     case 'toast': toast(e[1]); break;
     case 'dz': dziennik(e[1]); break;
     case 's': if (DZ[e[1]]) DZ[e[1]](); break;
+    case 'ssij': kulki.forEach(k => k.ssij = true); monety.forEach(m => m.ssij = true); break;
     case 'dash': if (gracz && stan === 'walka') gracz.dash = { vx: e[1] / 100 * e[3] / 0.2, vy: e[2] / 100 * e[3] / 0.2, t: 0.2 }; break;
   }
 }
+// Klient pokazuje wrogów i innych graczy "na teraz": z dwóch ostatnich stanów liczy prędkość
+// i przesuwa ich do przodu o czas, jaki minął (plus połowę pingu), zamiast pokazywać spóźniony obraz.
+function wyprzedzenie() { return Math.min(0.12, (SIEC.rtt || 0) / 2000); }
+function przyjmijPozycje(o, x, y, tH, teraz) {
+  if (o.sT !== undefined && tH > o.sT) {
+    const dtH = tH - o.sT, dx = x - o.sx, dy = y - o.sy;
+    if (Math.hypot(dx, dy) > 160) { o.x = x; o.y = y; o.vx = 0; o.vy = 0; }          // teleport (np. mignięcie bossa)
+    else { const vx = dx / dtH, vy = dy / dtH; o.vx = o.vx === undefined ? vx : o.vx * 0.35 + vx * 0.65; o.vy = o.vy === undefined ? vy : o.vy * 0.35 + vy * 0.65; }
+    const v = Math.hypot(o.vx, o.vy); if (v > 700) { o.vx *= 700 / v; o.vy *= 700 / v; }
+  } else if (o.sT === undefined) { o.vx = 0; o.vy = 0; }
+  o.sx = x; o.sy = y; o.sT = tH; o.tOdb = teraz;
+}
+function przesunDoTeraz(o, teraz, k) {
+  if (o.sT === undefined) return;
+  const wiek = Math.min(0.25, (teraz - o.tOdb) / 1000 + wyprzedzenie());
+  const tx = o.sx + (o.vx || 0) * wiek, ty = o.sy + (o.vy || 0) * wiek;
+  o.x += (tx - o.x) * k; o.y += (ty - o.y) * k;
+}
 function klientStan(d) {
   if (stan !== 'walka') return;
-  SIEC.ostStan = d;
+  if (d.n && SIEC.ostN && d.n <= SIEC.ostN) return;
+  SIEC.ostN = d.n; SIEC.ostStan = d;
+  const teraz = performance.now(), tH = (d.tc || 0) / 1000, wyp = wyprzedzenie();
   const f = d.f; fala.nr = f[0]; fala.czas = f[1] / 10; fala.dlugosc = f[2]; fala.boss = !!f[3]; fala.specjalna = f[4] || null; fala.ciemnosc = !!f[6];
   // gracze
   const stare = {}; SIEC.widokGraczy.forEach(p => stare[p.id] = p);
   SIEC.widokGraczy = d.g.map(a => {
     const id = a[0], ja = id === SIEC.mojeId;
     const p = stare[id] || { id: id, x: a[1], y: a[2], faza: 0 };
-    p.tx = a[1]; p.ty = a[2]; p.hp = a[3]; p.hpMaxR = a[4]; p.ts = a[5]; p.kierX = a[6]; p.wRuchu = !!a[7];
+    if (!ja) przyjmijPozycje(p, a[1], a[2], tH, teraz);
+    p.hp = a[3]; p.hpMaxR = a[4]; p.ts = a[5]; p.kierX = a[6]; p.wRuchu = !!a[7];
     p.zastoj = a[8] & 1 ? 1 : 0; p.niewr = a[8] & 2 ? 1 : 0; p.migotanie = a[8] & 4 ? 0.1 : 0; p.powalony = !!(a[8] & 8);
     p.reanim = a[9] / 10; p.roz = a[10] / 100; p.klasa = a[11]; p.nick = a[12]; p.r = 13;
     p.bronie = a[13].map(b => ({ rodzaj: b[0], tier: b[1], kat: b[2] / 100, anim: b[3] ? 0.1 : 0 }));
@@ -6809,7 +6951,7 @@ function klientStan(d) {
   wrogowie = d.w.map(a => {
     const st = SIEC.znaneWrogi[a[0]] || { r: 14, ik: '❔', kolor: '#888' };
     const w = mapa[a[0]] || { id: a[0], x: a[1], y: a[2], afiksy: [] };
-    w.tx = a[1]; w.ty = a[2]; w.hpMax = 1000; w.hp = a[3]; w.r = st.r; w.ik = st.ik; w.kolor = st.kolor; w.obraz = st.obraz; w.n = st.n || ''; w.poswiata = st.poswiata;
+    przyjmijPozycje(w, a[1], a[2], tH, teraz); w.hpMax = 1000; w.hp = a[3]; w.r = st.r; w.ik = st.ik; w.kolor = st.kolor; w.obraz = st.obraz; w.n = st.n || ''; w.poswiata = st.poswiata;
     const fl = a[4];
     w.elita = !!(fl & 1); w.boss = !!(fl & 2); w.zauroczony = fl & 4 ? 1 : 0; w.sojusznik = !!(fl & 8); w.trafiony = fl & 16 ? 0.1 : 0; w.duch = !!(fl & 32);
     w.przygotowanie = fl & 64 ? 1 : 0; w.spow = fl & 128 ? 0.3 : 0; w.spowCzas = fl & 128 ? 1 : 0; w.ogl = fl & 256 ? 1 : 0; w.ogien = !!(fl & 512); w.krew = !!(fl & 1024);
@@ -6818,10 +6960,10 @@ function klientStan(d) {
     w.afiksy = []; w.afIk = st.afIk || '';
     return w;
   });
-  pociski = d.p.map(a => ({ x: a[0], y: a[1], vx: a[2], vy: a[3], kolor: a[4], ksztalt: a[5], obrot: a[6] / 10 }));
-  pociskiWrogow = d.pw.map(a => ({ x: a[0], y: a[1], vx: a[2], vy: a[3], kolor: a[4], ksztalt: a[5] || null, r: a[6], siec: !!a[7] }));
-  if (d.k) { kulki = []; for (let i = 0; i < d.k.length; i += 2) kulki.push({ x: d.k[i], y: d.k[i + 1], xp: 2, faza: i }); }
-  if (d.m) { monety = []; for (let i = 0; i < d.m.length; i += 2) monety.push({ x: d.m[i], y: d.m[i + 1], v: 1, faza: i }); }
+  // pociski od razu "na teraz" (przesunięte o połowę pingu)
+  pociski = d.p.map(a => ({ x: a[0] + a[2] * wyp, y: a[1] + a[3] * wyp, vx: a[2], vy: a[3], kolor: a[4], ksztalt: a[5], obrot: a[6] / 10 }));
+  pociskiWrogow = d.pw.map(a => ({ x: a[0] + a[2] * wyp, y: a[1] + a[3] * wyp, vx: a[2], vy: a[3], kolor: a[4], ksztalt: a[5] || null, r: a[6], siec: !!a[7] }));
+  klientLupy(d);
   skrzynieNaZiemi = d.sk.map(a => ({ x: a[0], y: a[1], tier: a[2], faza: 0 }));
   miksturyNaZiemi = d.mk.map(a => ({ x: a[0], y: a[1], faza: 0 }));
   kaluze = d.kal.map(a => ({ x: a[0], y: a[1], r: a[2], czas: a[3], max: 100, rodzaj: a[4] }));
@@ -6841,7 +6983,7 @@ function klientStan(d) {
   d.vs.forEach(a => stozki.push({ x: a[0], y: a[1], kat: a[2] / 100, r: a[3], pol: a[4] / 100, czas: a[5], max: a[5], kolor: a[6] }));
   (d.e || []).forEach(zastosujZdarzenie);
   (d.eg || []).forEach(zastosujZdarzenie);
-  (d.dz || []).forEach(n => { if (DZ[n]) DZ[n](); });
+  (d.dz || []).forEach(n => { if (DZ[n] && n !== 'kulka' && n !== 'moneta') DZ[n](); });   // własne zbieranie słychać od razu u siebie
   // moja postać (HUD)
   const ja = d.ja;
   if (ja) {
@@ -6851,25 +6993,76 @@ function klientStan(d) {
     (ja.prz || []).forEach((c, i) => { const q = gracz.przedmioty[i]; if (q) { q.cd = c[0]; q.cdMax = c[1]; } });
     (ja.ore || []).forEach((c, i) => { const q = gracz.oreze[i]; if (q) { q.cd = c[0]; q.cdMax = c[1]; } });
     if (ja.umi) { gracz.umi.cd = ja.umi[0]; gracz.umi.cdMax = ja.umi[1]; }
+    if (ja.zb) SIEC.zbieranie = ja.zb; if (ja.rtt !== undefined) SIEC.rtt = ja.rtt;
     SIEC.ms = ja.ms; SIEC.roz = ja.roz; gracz.spowG = ja.spowG; gracz.zastoj = ja.zastoj ? 1 : 0; gracz.powalony = !!ja.pow; gracz.niewr = ja.niewr ? 0.1 : 0;
   }
 }
-// pętla klienta: tylko własny ruch, wygładzanie i efekty wizualne
+// ---- łupy u klienta: kulki i monety żyją u niego, zbiera je od razu i tylko zgłasza gospodarzowi ----
+function nowyLupKlienta(a) {
+  const o = { id: a[0], x: a[1], y: a[2], vx: a[3], vy: a[4], faza: (a[0] % 7), opozn: (a[7] || 0) / 100 };
+  if (a[5]) { o.v = a[6]; monety.push(o); } else { o.xp = a[6]; kulki.push(o); }
+}
+function klientLupy(d) {
+  const teraz = Date.now();
+  for (const id in SIEC.zebraneLok) if (teraz - SIEC.zebraneLok[id] > 3000) delete SIEC.zebraneLok[id];
+  if (d.lu && d.lu.length) {
+    const us = new Set(d.lu);
+    kulki = kulki.filter(k => !us.has(k.id)); monety = monety.filter(m => !us.has(m.id));
+  }
+  const znane = new Set(); kulki.forEach(k => znane.add(k.id)); monety.forEach(m => znane.add(m.id));
+  (d.ln || []).forEach(a => { if (!znane.has(a[0]) && !SIEC.zebraneLok[a[0]]) { nowyLupKlienta(a); znane.add(a[0]); } });
+  if (d.la) {
+    // pełna lista: usuń, czego już nie ma, dodaj brakujące (bez ruszania tych, które już lecą)
+    const jest = new Set(d.la.map(a => a[0]));
+    kulki = kulki.filter(k => jest.has(k.id)); monety = monety.filter(m => jest.has(m.id));
+    d.la.forEach(a => { if (!znane.has(a[0]) && !SIEC.zebraneLok[a[0]]) nowyLupKlienta(a); });
+  }
+}
+function aktualizujLupyKlienta(dt) {
+  const ja = gracz, zbJa = SIEC.zbieranie || 60, teraz = Date.now(), zebrane = [];
+  const inni = SIEC.widokGraczy.filter(p => p !== SIEC.mojWidok && !p.powalony);
+  const tlum = Math.pow(0.92, dt * 60);
+  const krokL = (lista, mon) => {
+    for (let i = lista.length - 1; i >= 0; i--) {
+      const k = lista[i]; k.faza += dt * (mon ? 5 : 6); if (k.opozn > 0) k.opozn -= dt;
+      let px = ja.x, py = ja.y, zb = zbJa, moj = true, d = ja.powalony ? Infinity : Math.hypot(ja.x - k.x, ja.y - k.y);
+      for (const p of inni) { const dd = Math.hypot(p.x - k.x, p.y - k.y); if (dd < d) { d = dd; px = p.x; py = p.y; zb = 60; moj = false; } }
+      if (d !== Infinity && k.opozn <= 0 && (d < zb || k.ssij)) {
+        const dd = d || 1, sila = 140 + Math.max(0, zb - d) * 6 + (k.ssij ? 600 : 0);
+        k.vx += (px - k.x) / dd * sila * dt; k.vy += (py - k.y) / dd * sila * dt;
+      }
+      k.vx *= tlum; k.vy *= tlum; k.x += k.vx * dt; k.y += k.vy * dt;
+      if (d < 16) {
+        lista.splice(i, 1); SIEC.zebraneLok[k.id] = teraz;
+        if (moj) { zebrane.push(k.id); if (mon) DZ.moneta(); else DZ.kulka(); }
+      }
+    }
+  };
+  krokL(kulki, false); krokL(monety, true);
+  if (zebrane.length) siecWyslijHost({ t: 'zb', k: zebrane });
+}
+// pętla klienta: własny ruch bez opóźnienia, reszta przesuwana płynnie "na teraz"
 function krokKlienta(dt) {
   if (stan !== 'walka') { aktualizujWizualne(dt); return; }
+  const x0 = gracz.x, y0 = gracz.y;
   if (!gracz.powalony) ruszGracza(dt, SIEC.ms || (D && D.ms) || 140, SIEC.roz || 1);
-  const k = Math.min(1, dt * 14);
-  wrogowie.forEach(w => { if (w.tx !== undefined) { w.x += (w.tx - w.x) * k; w.y += (w.ty - w.y) * k; } });
-  SIEC.widokGraczy.forEach(p => { if (p === SIEC.mojWidok) { p.x = gracz.x; p.y = gracz.y; p.kierX = gracz.kierX; p.wRuchu = gracz.wRuchu; p.faza = gracz.faza; } else { p.x += (p.tx - p.x) * k; p.y += (p.ty - p.y) * k; } });
+  if (dt > 0) { SIEC.vx = (gracz.x - x0) / dt; SIEC.vy = (gracz.y - y0) / dt; }
+  const teraz = performance.now(), k = Math.min(1, dt * 18);
+  wrogowie.forEach(w => przesunDoTeraz(w, teraz, k));
+  SIEC.widokGraczy.forEach(p => { if (p === SIEC.mojWidok) { p.x = gracz.x; p.y = gracz.y; p.kierX = gracz.kierX; p.wRuchu = gracz.wRuchu; p.faza = gracz.faza; } else przesunDoTeraz(p, teraz, k); });
   pociski.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; if (p.ksztalt === 'bumerang') p.obrot += dt * 18; });
   pociskiWrogow.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; });
-  kulki.forEach(q => q.faza += dt * 6); monety.forEach(q => q.faza += dt * 5);
+  aktualizujLupyKlienta(dt);
   wiry.forEach(w => { w.faza += dt * 5; if (w.rozruch > 0) w.rozruch -= dt; });
   aktualizujWizualne(dt);
   czasGry += dt;
-  // wysyłka pozycji ok. 20 razy na sekundę
+  // pozycja i prędkość do gospodarza ok. 30 razy na sekundę (gospodarz przesuwa nas "na teraz")
   SIEC.tPoz -= dt;
-  if (SIEC.tPoz <= 0) { SIEC.tPoz = 0.05; siecWyslijHost({ t: 'poz', x: Math.round(gracz.x), y: Math.round(gracz.y), kx: gracz.kierX < 0 ? -1 : 1, c: gracz.celKat === null || gracz.celKat === undefined ? null : Math.round(gracz.celKat * 100) / 100 }); }
+  if (SIEC.tPoz <= 0) {
+    SIEC.tPoz = 1 / 30; SIEC.nPoz = (SIEC.nPoz || 0) + 1;
+    siecWyslijHost({ t: 'poz', n: SIEC.nPoz, x: Math.round(gracz.x), y: Math.round(gracz.y), vx: Math.round(SIEC.vx), vy: Math.round(SIEC.vy), kx: gracz.kierX < 0 ? -1 : 1,
+      c: gracz.celKat === null || gracz.celKat === undefined ? null : Math.round(gracz.celKat * 100) / 100 });
+  }
   ustawKamere(dt);
 }
 
@@ -6884,7 +7077,8 @@ setInterval(() => {
   if (SIEC.rola === 'klient') {
     siecWyslijHost({ t: 'ping' });
     const cisza = SIEC.ostOdHosta ? teraz - SIEC.ostOdHosta : 0;
-    pokazInfoSieci(SIEC.wGrze && stan !== 'smierc' && cisza > 5000 ? '📡 Gospodarz nie odpowiada… (' + Math.round(cisza / 1000) + ' s)<br><small style="font-weight:700">Niech otworzy grę na ekranie</small>' : '');
+    pokazInfoSieci(SIEC.wGrze && stan !== 'smierc' && cisza > 5000 ? '📡 Gospodarz nie odpowiada… (' + Math.round(cisza / 1000) + ' s)<br><small style="font-weight:700">Niech otworzy grę na ekranie</small>' :
+      (SIEC.wGrze && stan === 'walka' && SIEC.rtt > 250 ? '📶 Słabe łącze: ' + Math.round(SIEC.rtt) + ' ms' : ''));
   } else if (SIEC.rola === 'host') {
     if (stan !== 'walka') rozeslij({ t: 'ping' });
     // ktoś milczy ponad półtorej minuty - połączenie uznajemy za zerwane
@@ -6897,6 +7091,9 @@ setInterval(() => {
     }
   }
 }, 2000);
+
+// pomiar opóźnienia (ping) do każdego klienta - co sekundę, także w walce
+setInterval(() => { if (SIEC.rola === 'host' && SIEC.wGrze) rozeslij({ t: 'pp', c: Math.round(performance.now() * 10) / 10 }); }, 1000);
 
 // Zaproszenie z linku (?pokoj=KOD) - od razu ekran dołączania
 function sprawdzZaproszenie() {
