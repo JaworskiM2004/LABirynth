@@ -272,6 +272,54 @@ GRA_HTML = r'''<!DOCTYPE html>
   #padPodp.widoczny { display:block; }
   #gra.tryb-pad #ekran { padding-bottom:60px; }
   #gra.tryb-pad #modalTresc { padding-bottom:52px; }
+  /* ---------- KOMPUTER (szeroki ekran) ---------- */
+  .ekran-tresc, .modal-tresc { zoom:var(--skalaUI, 1); }
+  .kb-kl { display:none; position:absolute; left:-7px; top:-7px; min-width:21px; height:19px; padding:0 5px; border-radius:6px;
+      background:#2a2238; border:1px solid #8a7a4e; color:#f0e8d0; font-size:10px; font-weight:900; line-height:17px; text-align:center;
+      box-shadow:0 1px 5px rgba(0,0,0,0.7); z-index:2; pointer-events:none; font-family:system-ui,-apple-system,sans-serif; }
+  #gra.pc:not(.tryb-pad) .kb-kl { display:block; }
+  #gra.pc { max-width:none; }
+  #gra.pc #hud { zoom:var(--skalaHud, 1); padding:10px 14px 0; }
+  #gra.pc .hud-rzad > div:first-child { flex:0 1 430px !important; }
+  #gra.pc #falaInfo { position:absolute; left:50%; top:10px; transform:translateX(-50%); min-width:118px; font-size:14px; padding:4px 12px; }
+  #gra.pc #falaInfo small { font-size:10.5px; }
+  #gra.pc #zlotoInfo { margin-left:auto; font-size:15px; padding:4px 12px; }
+  #gra.pc #pasekPrzedm { max-width:430px; }
+  #gra.pc .hud-slot { pointer-events:auto; cursor:help; }
+  #gra.pc #dziennik { zoom:var(--skalaHud, 1); top:104px; right:auto; width:430px; }
+  #gra.pc #baner { zoom:var(--skalaHud, 1); }
+  #gra.pc #toast { bottom:calc(96px * var(--skalaHud, 1)); zoom:var(--skalaHud, 1); }
+  #gra.pc #pasSterowania { left:50%; right:auto; bottom:12px; transform:translateX(-50%); height:auto; width:auto; zoom:var(--skalaHud, 1);
+      padding:9px 16px; gap:16px; justify-content:center; border:1px solid #4a3a2e; border-radius:18px;
+      background:rgba(16,13,22,0.84); box-shadow:0 6px 24px rgba(0,0,0,0.5); }
+  #gra.pc #strefaDrazka { display:none; }
+  #gra.pc .kolumna-btn { flex-direction:row; gap:12px; }
+  #gra.pc .btn-boczny.maly { width:48px; height:48px; font-size:21px; }
+  #gra.pc #btnUmi { width:56px; height:56px; font-size:27px; border-radius:16px; }
+  #gra.pc #btnUmi .cdm { border-radius:14px; }
+  #gra.pc #btnUmi .czas { font-size:17px; }
+  #gra.pc #padSrodek { flex:0 0 auto; padding:0 4px; }
+  #gra.pc #ekran { padding:22px 24px 44px; }
+  #gra.pc .ekran-tresc { max-width:720px; margin:0 auto; }
+  #gra.pc .ekran-tresc.szeroka { max-width:1200px; display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); column-gap:12px; align-items:start; }
+  #gra.pc .szeroka > *:not(.karta):not(.slot-pusty):not(.wiersz-stat) { grid-column:1 / -1; }
+  #gra.pc .szeroka > .btn, #gra.pc .szeroka > .rzad-btn { width:min(100%, 600px); justify-self:center; }
+  #gra.pc .szeroka > .zakladki { width:min(100%, 900px); justify-self:center; }
+  #gra.pc .szeroka > .info-pole { width:min(100%, 900px); justify-self:center; }
+  #gra.pc .siatka3 { grid-template-columns:repeat(6, 1fr); }
+  #gra.pc .siatka2 { grid-template-columns:repeat(4, 1fr); }
+  #gra.pc #modal { align-items:center; }
+  #gra.pc #modalTresc { max-width:calc(640px * var(--skalaUI, 1)); max-height:88%; border-radius:18px; border:2px solid rgba(230,193,92,0.5);
+      box-shadow:0 20px 60px rgba(0,0,0,0.6); padding:16px 16px 20px; }
+  #gra.pc #modal.szeroki #modalTresc { max-width:min(94%, calc(1120px * var(--skalaUI, 1))); }
+  #gra.pc .modal-tresc.szeroka { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); column-gap:12px; align-items:start; }
+  #gra.pc.tryb-pad #ekran { padding-bottom:64px; }
+  @media (hover:hover) and (pointer:fine) {
+    [data-a] { cursor:pointer; }
+    .btn:not(:disabled):hover, .btn-maly:not(:disabled):hover, .zakladki button:hover, .btn-boczny:hover { filter:brightness(1.12); }
+    .kafel[data-a]:hover, .karta[data-a]:hover, .wiersz-stat[data-a]:hover { border-color:rgba(255,224,138,0.75); filter:brightness(1.08); }
+    .btn:disabled, .btn-maly:disabled { cursor:not-allowed; }
+  }
   .wykres-pas { height:8px; border-radius:4px; background:linear-gradient(90deg,#e6c15c,#d4af37); }
 </style>
 </head>
@@ -294,12 +342,12 @@ GRA_HTML = r'''<!DOCTYPE html>
   <div id="baner"></div>
   <div id="pasSterowania">
     <div class="kolumna-btn">
-      <button class="btn-boczny maly" id="btnEkw">🎒<span class="pad-kl" data-k="Y">Y</span></button>
-      <button class="btn-boczny maly" id="btnMikstura">🧪<span class="cdm" id="miksturaCd"></span><span class="licznik" id="licznikMikstur">1</span><span class="pad-kl" data-k="X">X</span></button>
+      <button class="btn-boczny maly" id="btnEkw" title="Pauza i build (Esc)">🎒<span class="pad-kl" data-k="Y">Y</span><span class="kb-kl">Esc</span></button>
+      <button class="btn-boczny maly" id="btnMikstura" title="Mikstura (Q)">🧪<span class="cdm" id="miksturaCd"></span><span class="licznik" id="licznikMikstur">1</span><span class="pad-kl" data-k="X">X</span><span class="kb-kl">Q</span></button>
     </div>
     <div id="strefaDrazka"><div id="drazekBaza"><div id="drazekGalka"></div></div></div>
     <div id="padSrodek"></div>
-    <button class="btn-boczny" id="btnUmi"><span id="umiIk">✨</span><span class="cdm" id="umiCd"></span><span class="czas" id="umiCzas"></span><span class="pad-kl" data-k="A">A</span></button>
+    <button class="btn-boczny" id="btnUmi"><span id="umiIk">✨</span><span class="cdm" id="umiCd"></span><span class="czas" id="umiCzas"></span><span class="pad-kl" data-k="A">A</span><span class="kb-kl">E</span></button>
   </div>
   <div id="ekran"></div>
   <div id="modal"><div id="modalTresc"></div></div>
@@ -317,8 +365,8 @@ const $ = id => document.getElementById(id);
 // Stan gry online (uzupełniany w 15_siec.js). var - żeby był dostępny od początku.
 var SIEC = { rola: null, mojeId: 0 };
 const widok = $('widok'), ctx = widok.getContext('2d');
-const DPR = Math.min(2, window.devicePixelRatio || 1);
-const WID = 380;                 // logiczna szerokość planszy
+let DPR = Math.min(2, window.devicePixelRatio || 1);   // rozdzielczość płótna (liczona w dopasujRozmiar)
+let WID = 380;                   // logiczna szerokość planszy (na komputerze szersza)
 let WYS = 520;                   // logiczna wysokość - zależy od ekranu
 const ZOOM = 0.9;
 let WID_SW = WID / ZOOM, WYS_SW = WYS / ZOOM;
@@ -357,6 +405,17 @@ function czas(s) { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':
 function lStorGet(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
 function lStorSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function lStorDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+
+// ---------- USTAWIENIA (ekran ⚙️ Ustawienia) ----------
+const USTAW = Object.assign({
+  uklad: 'auto',          // auto / tel / pc — układ ekranu
+  liczby: 'wszystkie',    // wszystkie / wazne / brak — liczby obrażeń nad wrogami
+  efekty: 'pelne',        // pelne / oszczedne — iskry i odpryski
+  mysz: true,             // komputer: ruch przytrzymanym lewym przyciskiem myszy
+  interfejs: 1,           // 0.9 / 1 / 1.15 — wielkość napisów i przycisków
+}, lStorGet('wiezien_ustawienia', {}));
+function zapiszUstawienia() { lStorSet('wiezien_ustawienia', USTAW); }
+let SKALA_TEKSTU = 1;     // liczby nad wrogami (na komputerze nieco mniejsze, bo plansza jest większa)
 
 // ---------- ROZMIAR: gra zawsze zajmuje cały ekran ----------
 const KOLOR_TLA = '#0b0910';
@@ -405,17 +464,38 @@ function rozciagnijRamke() {
   }
 }
 
+// Układ komputerowy: szeroki ekran (poziomo) i myszka albo pad. Wtedy plansza zajmuje całe okno,
+// zamiast dotykowego drążka jest mały pasek akcji, a menu układają się w kolumny.
+function czyUkladPC() {
+  const w = window.innerWidth, h = window.innerHeight;
+  if (USTAW.uklad === 'tel' || w <= h) return false;
+  if (USTAW.uklad === 'pc') return w >= 560;
+  let mysz = false; try { mysz = matchMedia('(any-pointer: fine)').matches; } catch (e) {}
+  return w >= 820 && w >= h * 1.15 && (mysz || (typeof PAD !== 'undefined' && PAD.tryb));
+}
 function dopasujRozmiar() {
   rozciagnijRamke();
-  const g = $('gra');
+  const g = $('gra'), pc = czyUkladPC();
+  g.classList.toggle('pc', pc);
   const w = g.clientWidth || window.innerWidth, h = g.clientHeight || window.innerHeight;
-  const pas = (typeof PAD !== 'undefined' && PAD.tryb) ? 64 : Math.round(ogr(h * 0.21, 132, 178));   // z padem: wąski pasek bez drążka
+  const pas = pc ? 0 : (typeof PAD !== 'undefined' && PAD.tryb) ? 64 : Math.round(ogr(h * 0.21, 132, 178));   // z padem: wąski pasek bez drążka
   document.documentElement.style.setProperty('--wysPaska', pas + 'px');
   const hc = Math.max(240, h - pas);
   widok.style.height = hc + 'px';
-  WYS = Math.round(WID * hc / w);
+  if (pc) {
+    // na komputerze widać więcej planszy w poziomie; wysokość widoku zbliżona do telefonu
+    WYS = 500; WID = Math.round(WYS * w / hc);
+    if (WID > 1150) { WID = 1150; WYS = Math.round(WID * hc / w); }
+    SKALA_TEKSTU = 0.85;
+  } else { WID = 380; WYS = Math.round(WID * hc / w); SKALA_TEKSTU = 1; }
+  // płótno w rozdzielczości ekranu (ostre także na dużym monitorze), maks. 2× dla płynności
+  DPR = ogr(w * (window.devicePixelRatio || 1) / WID, 1, 2);
   WYS_SW = WYS / ZOOM; WID_SW = WID / ZOOM;
   widok.width = Math.round(WID * DPR); widok.height = Math.round(WYS * DPR);
+  // wielkość interfejsu: na komputerze rośnie z wysokością okna
+  const sk = (pc ? ogr(h / 800, 1, 1.45) : 1) * (USTAW.interfejs || 1);
+  document.documentElement.style.setProperty('--skalaUI', sk.toFixed(3));
+  document.documentElement.style.setProperty('--skalaHud', ((pc ? ogr(h / 760, 1, 1.5) : 1) * (USTAW.interfejs || 1)).toFixed(3));
 }
 window.addEventListener('resize', () => setTimeout(dopasujRozmiar, 50));
 window.addEventListener('orientationchange', () => setTimeout(dopasujRozmiar, 250));
@@ -2634,7 +2714,8 @@ function wypiszObrazenia(w) {
   if (!t || t.v < 0.5) return;
   if (teksty.length > 36 && !t.kryt) return;
   const kol = t.typ === 'mag' ? '#86b8ff' : (t.typ === 'praw' ? '#ffffff' : '#f5c58a');
-  tekstSwiat(w.x + losowo(-6, 6), w.y - w.r - 2, fmtK(t.v) + (t.kryt ? '!' : ''), t.kryt ? '#ffd24a' : kol, t.kryt ? 0.9 : 0.7, t.kryt ? 15 : 12);
+  // o: 1 = zwykła liczba obrażeń, 2 = ważna (kryt, elita, boss) — ustawienie „Liczby obrażeń” filtruje je przy rysowaniu
+  tekstSwiat(w.x + losowo(-6, 6), w.y - w.r - 2, fmtK(t.v) + (t.kryt ? '!' : ''), t.kryt ? '#ffd24a' : kol, t.kryt ? 0.9 : 0.7, t.kryt ? 15 : 12, (t.kryt || w.elita || w.boss) ? 2 : 1);
 }
 
 // ---------------------------------------------------------------------
@@ -3233,6 +3314,7 @@ function wejscieRuchu() {
   if (joy.aktywny) { const dl = Math.hypot(joy.x, joy.y); if (dl > 7) { const s = Math.min(1, dl / 52); mx = joy.x / dl * s; my = joy.y / dl * s; } }
   if (klawisze.l) mx -= 1; if (klawisze.p) mx += 1; if (klawisze.g) my -= 1; if (klawisze.d) my += 1;
   if (PAD.mx || PAD.my) { mx += PAD.mx; my += PAD.my; }   // pad (src/14_pad.js)
+  if (MYSZ.aktywna) { const k = kierunekMyszy(); if (k) { const s = Math.min(1, k[2] / 36); mx += k[0] * s; my += k[1] * s; } }   // komputer: lewy przycisk myszy
   if (gracz.botFn) { const b = gracz.botFn(); mx = b.x; my = b.y; }
   else if (window.__bot) { const b = window.__bot(); mx = b.x; my = b.y; }
   const dl = Math.hypot(mx, my); if (dl > 1) { mx /= dl; my /= dl; }
@@ -3470,8 +3552,8 @@ function aktualizujWizualne(dt) {
 // ---------------------------------------------------------------------
 //  EFEKTY WIZUALNE (dane)
 // ---------------------------------------------------------------------
-function tekstSwiat(x, y, t, kolor, czas, rozm) { if (teksty.length > 55) teksty.shift(); teksty.push({ x: x, y: y, t: t, kolor: kolor, czas: czas || 0.9, max: czas || 0.9, rozm: rozm || 13 }); }
-function rozbryzg(x, y, kolor, n) { if (SIEC.rola === 'host') siecZdarzenie(['r', x | 0, y | 0, kolor, n]); for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), v = losowo(40, 140); czastki.push({ x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, czas: 0.45, max: 0.45, kolor: kolor }); } if (czastki.length > 400) czastki.splice(0, czastki.length - 400); }
+function tekstSwiat(x, y, t, kolor, czas, rozm, o) { if (teksty.length > 55) teksty.shift(); teksty.push({ x: x, y: y, t: t, kolor: kolor, czas: czas || 0.9, max: czas || 0.9, rozm: rozm || 13, o: o || 0 }); }
+function rozbryzg(x, y, kolor, n) { if (SIEC.rola === 'host') siecZdarzenie(['r', x | 0, y | 0, kolor, n]); if (USTAW.efekty === 'oszczedne') n = Math.min(4, Math.ceil(n * 0.3)); for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), v = losowo(40, 140); czastki.push({ x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, czas: 0.45, max: 0.45, kolor: kolor }); } if (czastki.length > 400) czastki.splice(0, czastki.length - 400); }
 function czastkiLeczenia(x, y) { if (SIEC.rola === 'host') siecZdarzenie(['l', x | 0, y | 0]); for (let i = 0; i < 4; i++) czastki.push({ x: x + losowo(-8, 8), y: y, vx: 0, vy: -50, czas: 0.5, max: 0.5, kolor: '#5ae0a0' }); }
 function efektBlysk(x, y, kolor) { fale.push({ x: x, y: y, czas: 0.25, max: 0.25, r: 26, kolor: kolor }); }
 function dodajBlyskawice(x1, y1, x2, y2, kolor) {
@@ -4339,9 +4421,11 @@ function rysujEfekty() {
 
 function rysujTeksty() {
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  const L = USTAW.liczby;
   teksty.forEach(t => {
+    if (t.o && (L === 'brak' || (L === 'wazne' && t.o === 1))) return;
     ctx.globalAlpha = Math.max(0, Math.min(1, t.czas / t.max * 1.6));
-    ctx.font = '900 ' + t.rozm + 'px system-ui, sans-serif';
+    ctx.font = '900 ' + Math.round(t.rozm * SKALA_TEKSTU) + 'px system-ui, sans-serif';
     ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.lineWidth = 3; ctx.strokeText(t.t, t.x, t.y); ctx.fillStyle = t.kolor; ctx.fillText(t.t, t.x, t.y);
   });
   ctx.globalAlpha = 1;
@@ -4384,8 +4468,10 @@ function rysujInterfejsPlotna() {
   const bossy = wrogowie.filter(w => w.boss && !w.martwy);
   const nSlot = gracz ? (gracz.oreze ? gracz.oreze.length : 0) + (gracz.przedmioty ? gracz.przedmioty.filter(p => p).length : 0) : 0;
   let y0 = 74 + (nSlot ? 30 : 0) + (nSlot > 12 ? 31 : 0);
+  if (bossy.length) { try { const hb = $('hud').getBoundingClientRect(), wr = widok.getBoundingClientRect(); if (hb.height && wr.height) y0 = (hb.bottom - wr.top) * WYS / wr.height + 10; } catch (e) {} }
+  const sz = Math.min(WID - 60, 520), x = (WID - sz) / 2;
   bossy.forEach((b, i) => {
-    const y = y0 + i * 26, x = 30, sz = WID - 60;
+    const y = y0 + i * 26;
     ctx.fillStyle = 'rgba(10,8,16,0.8)'; ctx.fillRect(x - 2, y - 2, sz + 4, 14);
     ctx.fillStyle = '#3a1010'; ctx.fillRect(x, y, sz, 10);
     const g = ctx.createLinearGradient(x, 0, x + sz, 0); g.addColorStop(0, '#e6b53c'); g.addColorStop(1, '#c0392b');
@@ -4420,16 +4506,32 @@ function rysujInterfejsPlotna() {
 // =====================================================================
 const ekranEl = $('ekran'), modalEl = $('modal'), modalTresc = $('modalTresc');
 const AKCJE = {};
+// Treść ekranu/okna dostaje opakowanie: na komputerze dużo kart układa się w kolumny,
+// a reszta (np. menu, skrzynia) stoi w wąskiej, czytelnej kolumnie na środku.
+function ulozTresc(el) {
+  const karty = el.querySelectorAll(':scope > .karta, :scope > .slot-pusty').length;
+  const siatka = el.querySelector(':scope > .siatka3, :scope > .siatka2');
+  const wiersze = el.querySelectorAll(':scope > .wiersz-stat').length;
+  const szer = karty >= 3 || !!siatka || wiersze >= 8;
+  el.classList.toggle('szeroka', szer);
+  return szer;
+}
 function pokazEkran(html, op) {
   op = op || {};
   const sc = ekranEl.scrollTop;
-  ekranEl.innerHTML = html;
+  ekranEl.innerHTML = '<div class="ekran-tresc">' + html + '</div>';
+  ulozTresc(ekranEl.firstElementChild);
   ekranEl.classList.add('widoczny');
   ekranEl.classList.toggle('polprzezroczysty', !!op.polprzezroczysty);
   ekranEl.scrollTop = op.zachowaj ? sc : 0;
 }
 function zamknijEkran() { ekranEl.classList.remove('widoczny'); ekranEl.innerHTML = ''; }
-function pokazModal(html, zachowaj) { const sc = modalTresc.scrollTop; delete modalEl.dataset.build; modalTresc.innerHTML = html; modalEl.classList.add('widoczny'); modalTresc.scrollTop = zachowaj ? sc : 0; }
+function pokazModal(html, zachowaj) {
+  const sc = modalTresc.scrollTop; delete modalEl.dataset.build;
+  modalTresc.innerHTML = '<div class="modal-tresc">' + html + '</div>';
+  modalEl.classList.toggle('szeroki', ulozTresc(modalTresc.firstElementChild));
+  modalEl.classList.add('widoczny'); modalTresc.scrollTop = zachowaj ? sc : 0;
+}
 function zamknijModal() { modalEl.classList.remove('widoczny'); modalTresc.innerHTML = ''; delete modalEl.dataset.build; }
 modalEl.addEventListener('click', e => { if (e.target === modalEl && !modalEl.dataset.wymuszony) zamknijModal(); });
 document.addEventListener('click', e => {
@@ -4526,9 +4628,41 @@ function pokazMenu() {
     '<button class="btn ziel" data-a="online">👥 Gra z przyjaciółmi (online)</button>' +
     '<div class="rzad-btn"><button class="btn drugi" data-a="kodeks">📖 Kodeks</button><button class="btn drugi" data-a="rekordy">🏆 Rekordy</button></div>' +
     '<div class="rzad-btn"><button class="btn drugi" data-a="jakGrac">❓ Jak grać</button><button class="btn drugi" data-a="dzwiek">' + (dzwiekWlaczony ? '🔊 Dźwięk' : '🔇 Bez dźwięku') + '</button></div>' +
-    '<button class="btn drugi" data-a="sterowanie">🎮 Pad i klawiatura' + (PAD.podlaczony ? ' <span class="ziel">· podłączony</span>' : '') + '</button>' +
+    '<div class="rzad-btn"><button class="btn drugi" data-a="ustawienia">⚙️ Ustawienia</button><button class="btn drugi" data-a="sterowanie">🎮 Sterowanie' + (PAD.podlaczony ? ' <span class="ziel">· pad</span>' : '') + '</button></div>' +
     '<div class="podtytul" style="margin-top:18px;opacity:0.6">' + KLUCZE_KLAS.length + ' postaci · ' + KLUCZE_BRONI.length + ' broni głównych · ' + OREZE.length + ' broni dodatkowych · ' + PRZEDMIOTY.length + ' przedmiotów · ' + PRYZMATY.length + ' pryzmatycznych · ' + AUGMENTY.length + ' augmentów</div></div>');
 }
+// ---------------------------------------------------------------------
+//  USTAWIENIA
+// ---------------------------------------------------------------------
+const OPCJE_USTAWIEN = [
+  { k: 'uklad', n: '🖥️ Układ ekranu', o: [['auto', 'Automatyczny'], ['tel', 'Telefon'], ['pc', 'Komputer']],
+    op: 'Automatyczny: na szerokim ekranie z myszką albo padem gra rozkłada się na całe okno.' },
+  { k: 'interfejs', n: '🔠 Wielkość napisów', o: [[0.9, 'Mniejsze'], [1, 'Normalne'], [1.15, 'Większe']] },
+  { k: 'liczby', n: '💥 Liczby obrażeń', o: [['wszystkie', 'Wszystkie'], ['wazne', 'Tylko ważne'], ['brak', 'Wyłączone']],
+    op: '„Tylko ważne” — trafienia krytyczne oraz obrażenia zadane elitom i bossom.' },
+  { k: 'efekty', n: '✨ Efekty', o: [['pelne', 'Pełne'], ['oszczedne', 'Oszczędne']], op: 'Oszczędne: dużo mniej iskier i odprysków — czytelniej i lżej dla słabszego sprzętu.' },
+  { k: 'mysz', n: '🖱️ Ruch myszą (komputer)', o: [[true, 'Włączony'], [false, 'Wyłączony']], op: 'Przytrzymaj lewy przycisk myszy na planszy, a postać pójdzie w stronę kursora.' },
+];
+function pokazUstawienia(zachowaj) {
+  let h = '<div class="tytul">⚙️ Ustawienia</div>';
+  OPCJE_USTAWIEN.forEach(O => {
+    h += '<div class="sekcja">' + O.n + '</div><div class="zakladki opcje" style="margin:4px 0 2px">' +
+      O.o.map(([v, n]) => '<button class="' + (USTAW[O.k] === v ? 'akt' : '') + '" data-a="ustaw" data-k="' + O.k + '" data-v="' + v + '">' + n + '</button>').join('') + '</div>' +
+      (O.op ? '<div class="podtytul" style="text-align:left;margin:2px 2px 4px;font-size:11.5px">' + O.op + '</div>' : '');
+  });
+  h += '<div class="sekcja">🔊 Dźwięk</div><button class="btn drugi" data-a="dzwiekUst" style="margin-top:4px">' + (dzwiekWlaczony ? '🔊 Włączony' : '🔇 Wyłączony') + '</button>';
+  h += '<button class="btn" data-a="zamknijModal">Gotowe</button>';
+  pokazModal(h, zachowaj);
+}
+AKCJE.ustawienia = () => pokazUstawienia(false);
+AKCJE.ustaw = d => {
+  const O = OPCJE_USTAWIEN.find(x => x.k === d.k); if (!O) return;
+  const opc = O.o.find(([v]) => String(v) === d.v); if (!opc) return;
+  USTAW[d.k] = opc[0]; zapiszUstawienia();
+  dopasujRozmiar(); pokazUstawienia(true);
+  if (stan === 'menu' && ekranEl.classList.contains('widoczny')) pokazMenu();
+};
+AKCJE.dzwiekUst = () => { dzwiekWlaczony = !dzwiekWlaczony; lStorSet('wiezien_dzwiek', dzwiekWlaczony); pokazUstawienia(true); };
 AKCJE.dzwiek = () => { dzwiekWlaczony = !dzwiekWlaczony; lStorSet('wiezien_dzwiek', dzwiekWlaczony); pokazMenu(); };
 AKCJE.menu = () => { zamknijModal(); pokazMenu(); };
 AKCJE.nowaGra = () => {
@@ -4609,8 +4743,8 @@ function pokazWyborBroniStart() {
 AKCJE.bronStart = d => { gracz.bronie = [nowaBron(d.r, 1)]; run.ofertaBroni = null; poZmianieBuildu(); DZ.wybor(); kolejkaPrzerwy(); };
 
 AKCJE.jakGrac = () => pokazModal('<div class="tytul">❓ Jak grać</div><div class="info-pole">' +
-  '<b>Ruch:</b> przeciągnij palcem po dolnym pasku (drążek pojawi się pod palcem). Atakujesz <b>automatycznie</b>.<br>' +
-  '<b>✨ Umiejętność:</b> każda postać ma swoją — przycisk po prawej (na komputerze <b>E</b> albo spacja). Odnawia się szybciej z Przyspieszeniem.<br>' +
+  '<b>Ruch:</b> na telefonie przeciągnij palcem po dolnym pasku (drążek pojawi się pod palcem). Na komputerze <b>WASD</b> / strzałki albo przytrzymaj <b>lewy przycisk myszy</b> — postać idzie w stronę kursora. Atakujesz <b>automatycznie</b>.<br>' +
+  '<b>✨ Umiejętność:</b> każda postać ma swoją — przycisk po prawej, na komputerze <b>E</b>, spacja albo <b>prawy przycisk myszy</b> (w stronę kursora). Mikstura: <b>Q</b>, pauza: <b>Esc</b>. Odnawia się szybciej z Przyspieszeniem.<br>' +
   '<b>🎮 Pad:</b> podłącz kontroler (kabel albo Bluetooth) i naciśnij dowolny przycisk — gra przełączy się na sterowanie padem. Szczegóły w menu „Pad i klawiatura”.<br>' +
   '<b>⭐ Broń główna</b> to Twoja broń z klasy — to ona atakuje. Ulepszasz ją w sklepie (tiery I–V). Skaluje się od kilku statystyk naraz.<br>' +
   '<b>🗡️ Bronie dodatkowe</b> (jak przedmioty w LoL-u) dają <b>statystyki</b> broni głównej i co kilka sekund albo co N-ty atak same coś odpalają. Dwie takie same o tym samym tierze łączą się w wyższy. Ta sama rodzina co broń główna daje <b>premię zestawu</b>.<br>' +
@@ -5025,8 +5159,9 @@ function pokazEkwipunek(zak) {
   if (ekwZakladka === 'staty') h += htmlStatow();
   else if (ekwZakladka === 'build') h += sekcjeBuildu(false);
   else h += htmlObrazen();
-  if (!druzyna()) h += '<button class="btn czerw" data-a="poddaj" style="margin-top:16px">🏳️ Zakończ tę grę</button>';
-  else h += '<button class="btn czerw" data-a="opuscDruzyne" style="margin-top:16px">🚪 Opuść drużynę</button>';
+  h += '<div class="rzad-btn" style="margin-top:16px"><button class="btn drugi" data-a="ustawienia">⚙️ Ustawienia</button><button class="btn drugi" data-a="sterowanie">🎮 Sterowanie</button></div>';
+  if (!druzyna()) h += '<button class="btn czerw" data-a="poddaj" style="margin-top:6px">🏳️ Zakończ tę grę</button>';
+  else h += '<button class="btn czerw" data-a="opuscDruzyne" style="margin-top:6px">🚪 Opuść drużynę</button>';
   pokazEkran(h, { polprzezroczysty: true });
 }
 AKCJE.ekwZak = d => pokazEkwipunek(d.z);
@@ -5152,7 +5287,7 @@ function odswiezHud(wymus) {
   const sygn = elem.map(e => e.d.id + (e.i.tier || 0) + (e.i.gw || 0)).join(',');
   if (pasek._sygn !== sygn) {
     pasek._sygn = sygn;
-    pasek.innerHTML = elem.map(e => '<div class="hud-slot" style="border-color:' + e.kol + '">' + e.d.ik + '<div class="cd"></div><div class="cdn"></div>' + (e.st ? '<span class="st">' + e.st + '</span>' : '') + '</div>').join('');
+    pasek.innerHTML = elem.map(e => '<div class="hud-slot" title="' + esc(e.d.n) + (e.d.cd ? ' · ⏱️ ' + fmt(e.d.cd) + ' s' : '') + '" style="border-color:' + e.kol + '">' + e.d.ik + '<div class="cd"></div><div class="cdn"></div>' + (e.st ? '<span class="st">' + e.st + '</span>' : '') + '</div>').join('');
   }
   const sloty = pasek.children;
   elem.forEach((e, i) => {
@@ -5576,7 +5711,7 @@ function wstecz(w) {
   if (b) b.click();
 }
 function zakladka(w, d) {
-  const z = w.el.querySelector('.zakladki'); if (!z) return;
+  const z = w.el.querySelector('.zakladki:not(.opcje)'); if (!z) return;
   const bt = Array.from(z.querySelectorAll('button'));
   const i = bt.findIndex(b => b.classList.contains('akt'));
   const n = bt[((i < 0 ? 0 : i) + d + bt.length) % bt.length]; if (!n) return;
@@ -5590,7 +5725,7 @@ function odswiezPodpowiedz(w) {
   const pokaz = PAD.tryb && PAD.fokusWidoczny && !!w;
   el.classList.toggle('widoczny', pokaz);
   if (!pokaz) return;
-  const zak = !!w.el.querySelector('.zakladki');
+  const zak = !!w.el.querySelector('.zakladki:not(.opcje)');
   const syg = PAD.typ + w.k + zak + stan;
   if (syg === PAD.sygPodp) return;
   PAD.sygPodp = syg;
@@ -5653,7 +5788,7 @@ AKCJE.sterowanie = () => pokazModal(htmlSterowania());
 AKCJE.wibracje = () => { PAD.wibracje = !PAD.wibracje; lStorSet('wiezien_wibracje', PAD.wibracje); if (PAD.wibracje) { PAD.tWibr = 0; wibruj(0.7, 220); } pokazModal(htmlSterowania(), true); };
 function htmlSterowania() {
   const w = (a, b) => '<div class="wiersz-stat"><span class="n">' + a + '</span><span style="font-size:12px;font-weight:800">' + b + '</span></div>';
-  return '<div class="tytul">🎮 Pad i klawiatura</div>' +
+  return '<div class="tytul">🎮 Sterowanie</div>' +
     '<div class="info-pole" id="padStatus">' + statusPadaHtml() + '</div>' +
     '<div class="sekcja">Walka — pad</div>' +
     w('🕹️ Ruch', 'lewa gałka albo krzyżak') + w('✨ Umiejętność postaci', kl('A') + ' albo ' + kl('RT') + ' / ' + kl('RB')) +
@@ -5661,9 +5796,10 @@ function htmlSterowania() {
     '<div class="sekcja">Menu i sklep — pad</div>' +
     w('Przesuwanie', 'krzyżak albo lewa gałka') + w('Wybierz / kup', kl('A')) + w('Wstecz / zamknij', kl('B')) +
     w('Zakładki', kl('LB') + ' ' + kl('RB')) + w('Przewijanie', 'prawa gałka') +
-    '<div class="sekcja">Klawiatura (komputer)</div>' +
+    '<div class="sekcja">Klawiatura i myszka (komputer)</div>' +
     w('Ruch', 'WASD / strzałki') + w('Umiejętność · mikstura', 'E lub spacja · Q') + w('Pauza', 'Esc lub P') +
     w('Menu', 'strzałki, Enter, Esc, Q/E zakładki') +
+    w('🖱️ Ruch myszą', 'przytrzymaj lewy przycisk') + w('🖱️ Umiejętność w stronę kursora', 'prawy przycisk') +
     '<div class="info-pole" style="font-size:11.5px">Działa w Chrome, Edge, Safari (także na iPhonie) i Firefoksie. Na telefonie sparuj pada w ustawieniach Bluetooth — tak jak słuchawki. ' +
     'Gdy grasz padem, dotykowy drążek się chowa i plansza robi się większa; dotknij ekranu, a wróci. Pseudonim i kod drużyny w grze online wpisuje się klawiaturą.</div>' +
     '<button class="btn drugi" data-a="wibracje">' + (PAD.wibracje ? '📳 Wibracje pada: włączone' : '📴 Wibracje pada: wyłączone') + '</button>' +
@@ -6140,7 +6276,7 @@ function siecWyslijStan(dt) {
     st: stwory.map(s => [s.typ, r1(s.x), r1(s.y), s.max > 9000 ? -1 : r1(s.czas / s.max * 100), r1((s.kat || 0) * 100), r1(s.r || 0), s.ik, r1(s.aura || 0)]),
     ob: orbyRys.map(o => [r1(o.x), r1(o.y), o.kolor, r1(o.kat * 100)]),
     vf: nowe(fale, f => [r1(f.x), r1(f.y), r1(f.r), f.kolor, f.czas, f.max, f.odwrot ? 1 : 0, f.slaba ? 1 : 0]),
-    vt: nowe(teksty, t => [r1(t.x), r1(t.y), t.t, t.kolor, t.czas, t.max, t.rozm]),
+    vt: nowe(teksty, t => [r1(t.x), r1(t.y), t.t, t.kolor, t.czas, t.max, t.rozm, t.o || 0]),
     vb: nowe(blyskawice, b => (b.a || [0, 0, 0, 0]).concat([b.kolor])),
     vc: nowe(ciecia, c => [r1(c.x), r1(c.y), r1(c.kat * 100), r1(c.luk * 100), r1(c.r), c.max, c.kolor, c.linia ? 1 : 0]),
     vs: nowe(stozki, s => [r1(s.x), r1(s.y), r1(s.kat * 100), r1(s.r), r1(s.pol * 100), s.max, s.kolor]),
@@ -6290,7 +6426,7 @@ function klientStan(d) {
   SIEC.stwory = (d.st || []).map(a => ({ typ: a[0], x: a[1], y: a[2], czas: a[3] < 0 ? 1 : a[3], max: a[3] < 0 ? 99999 : 100, kat: a[4] / 100, r: a[5], ik: a[6], aura: a[7] }));
   orbyRys = d.ob.map(a => ({ x: a[0], y: a[1], kolor: a[2], kat: a[3] / 100 }));
   d.vf.forEach(a => fale.push({ x: a[0], y: a[1], r: a[2], kolor: a[3], czas: a[4], max: a[5], odwrot: !!a[6], slaba: !!a[7] }));
-  d.vt.forEach(a => { if (teksty.length > 55) teksty.shift(); teksty.push({ x: a[0], y: a[1], t: a[2], kolor: a[3], czas: a[4], max: a[5], rozm: a[6] }); });
+  d.vt.forEach(a => { if (teksty.length > 55) teksty.shift(); teksty.push({ x: a[0], y: a[1], t: a[2], kolor: a[3], czas: a[4], max: a[5], rozm: a[6], o: a[7] || 0 }); });
   d.vb.forEach(a => dodajBlyskawice(a[0], a[1], a[2], a[3], a[4]));
   d.vc.forEach(a => ciecia.push({ x: a[0], y: a[1], kat: a[2] / 100, luk: a[3] / 100, r: a[4], czas: a[5], max: a[5], kolor: a[6], linia: !!a[7] }));
   d.vs.forEach(a => stozki.push({ x: a[0], y: a[1], kat: a[2] / 100, r: a[3], pol: a[4] / 100, czas: a[5], max: a[5], kolor: a[6] }));
@@ -6377,6 +6513,7 @@ function ustawGalke(dx, dy) {
 function pozWStrefie(e) { const r = strefaDrazka.getBoundingClientRect(); return { x: e.clientX - r.left - r.width / 2, y: e.clientY - r.top - r.height / 2 }; }
 pasSter.addEventListener('pointerdown', e => {
   if (idPalca !== null || e.target.closest('button')) return;
+  if ($('gra').classList.contains('pc') || $('gra').classList.contains('tryb-pad')) return;   // bez drążka (komputer / pad)
   e.preventDefault(); inicjujDzwiek();
   if (!e.target.closest('#strefaDrazka')) {
     // drążek pojawia się pod palcem
@@ -6393,6 +6530,31 @@ pasSter.addEventListener('pointerdown', e => {
 pasSter.addEventListener('pointermove', e => { if (idPalca !== e.pointerId) return; const p = pozWStrefie(e); joy.x = p.x; joy.y = p.y; ustawGalke(p.x, p.y); });
 function puscDrazek(e) { if (e && idPalca !== e.pointerId) return; idPalca = null; joy.aktywny = false; joy.x = 0; joy.y = 0; ustawGalke(0, 0); strefaDrazka.style.transform = ''; }
 ['pointerup', 'pointercancel'].forEach(ev => pasSter.addEventListener(ev, puscDrazek));
+// ---------- myszka (komputer) ----------
+// lewy przycisk przytrzymany na planszy = idź w stronę kursora, prawy = umiejętność w stronę kursora
+const MYSZ = { aktywna: false, x: 0, y: 0 };
+function ustawMysz(e) { const r = widok.getBoundingClientRect(); MYSZ.x = (e.clientX - r.left) / r.width * WID; MYSZ.y = (e.clientY - r.top) / r.height * WYS; }
+function kierunekMyszy() {
+  if (!gracz) return null;
+  const dx = MYSZ.x - (gracz.x - kamX) * ZOOM, dy = MYSZ.y - (gracz.y - kamY) * ZOOM, d = Math.hypot(dx, dy);
+  return d < 6 ? null : [dx / d, dy / d, d];
+}
+widok.addEventListener('pointerdown', e => {
+  if (e.pointerType !== 'mouse' || stan !== 'walka') return;
+  ustawMysz(e);
+  if (e.button === 2) {
+    const k = kierunekMyszy();
+    if (k && gracz) { gracz.kierRX = k[0]; gracz.kierRY = k[1]; }
+    uzyjUmiejetnosci(); e.preventDefault(); return;
+  }
+  if (e.button !== 0 || !USTAW.mysz) return;
+  MYSZ.aktywna = true; inicjujDzwiek();
+  try { widok.setPointerCapture(e.pointerId); } catch (x) {}
+});
+widok.addEventListener('pointermove', e => { if (MYSZ.aktywna) ustawMysz(e); });
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => widok.addEventListener(ev, () => { MYSZ.aktywna = false; }));
+widok.addEventListener('contextmenu', e => e.preventDefault());
+
 // sterowanie z klawiatury (komputer)
 const MAPA_KL = { KeyA: 'l', ArrowLeft: 'l', KeyD: 'p', ArrowRight: 'p', KeyW: 'g', ArrowUp: 'g', KeyS: 'd', ArrowDown: 'd' };
 document.addEventListener('keydown', e => {
@@ -6405,7 +6567,7 @@ document.addEventListener('keydown', e => {
   if (e.code === 'Escape' || e.code === 'KeyP') $('btnEkw').click();
 });
 document.addEventListener('keyup', e => { if (MAPA_KL[e.code]) klawisze[MAPA_KL[e.code]] = false; });
-window.addEventListener('blur', () => { klawisze = {}; });
+window.addEventListener('blur', () => { klawisze = {}; MYSZ.aktywna = false; });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && stan === 'walka' && !druzyna()) { stan = 'pauza'; pokazEkwipunek('staty'); }
 });
