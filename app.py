@@ -920,7 +920,7 @@ const BRONIE = {
   },
   // ---- nowe bronie ----
   kosci: {
-    nazwa: 'Kości do gry', ikona: '🎲', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.6, zasieg: 230, obr: 7, skal: { ad: 0.45, szczescie: 0.25 }, dystans: true,
+    nazwa: 'Kości do gry', ikona: '🎲', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.6, zasieg: 230, obr: 11, skal: { ad: 0.45, szczescie: 0.25 }, dystans: true,
     predkosc: 520, ksztalt: 'kula', kolor: '#f0f0f0',
     opisEf: t => 'Słabe, ale losowe: każdy rzut to <b>1–6</b> oczek (obrażenia ×oczka/3,5). Szóstka trafia za <b>×' + fmt(2.4 + 0.2 * t) + '</b>.',
     mnTrafienia(b, w, o) { if (!o.glowny) return 1; const r = 1 + Math.floor(Math.random() * 6); if (r === 6) { tekstSwiat(w.x, w.y - w.r - 14, '🎲 6!', '#ffe08a', 0.6, 12); return 2.4 + 0.2 * b.tier; } return r / 3.5; },
@@ -2012,7 +2012,8 @@ function statyAugmentu(a) { const d = DEF_AUG[a.id]; if (!d.s) return null; cons
 // =====================================================================
 //  POSTACIE (klasy): broń startowa, rodziny broni, umiejętność aktywna
 // =====================================================================
-// rodziny: z jakich rodzin sklep częściej oferuje bronie dodatkowe (null = wszystkie po równo)
+// rodziny: tylko podpowiedź, z jakimi rodzinami broni postać dobrze się łączy (premia zestawu).
+// Szanse w sklepie, skrzyniach, augmentach i kowadłach są takie same dla każdej postaci.
 const KLASY = {
   wiezniarka: {
     wyglad: { czapka: 'kajdany', broda: true },
@@ -2041,13 +2042,12 @@ const KLASY = {
   szczesciara: {
     wyglad: { czapka: 'melonik' },
     n: 'Szczęściarz', ik: '🍀', slotyOreza: 4, slotyPrzedm: 4, start: 'sztylety', rodziny: null,
-    staty: { szczescie: 40 },
-    opis: '<b>Szczęście ×2</b>, a każde 8 szczęścia daje +1% szansy na kryt. Skrzynie wypadają 2× częściej, 30% z nich ma podwójną zawartość.',
-    statyMnoz(st, s) { s.szczescie *= 2; }, statyPost(st, s) { s.kryt += Math.max(0, s.szczescie) / 8; },
-    mnSkrzyn: 2, podwojneSkrzynie: 0.3,
-    umi: { n: 'Fart', ik: '🌈', cd: 15, opis: m => 'Przez ' + fmt(5 * m) + ' s <b>każdy atak jest krytyczny</b> i krytyki zadają +50% więcej; monety są warte 2×.',
-      uzyj(m) { dodajBuff('fart', { kryt: 300, krytObr: 50 }, 5 * m); gracz.stanKlasy.fart = czasGry + 5 * m; DZ.pryzmat(); return true; } },
-    mnozMonety(st) { return st.fart > czasGry ? 2 : 1; },
+    staty: { kryt: 15, krytObr: 30, unik: 8 },
+    opis: 'Fart w walce: +15% kryta, krytyki +30%, +8% uniku. <b>Po każdym uniku następny atak jest pewnym krytem.</b> Każde 5 🍀 szczęścia daje mu jeszcze +1% kryta.',
+    statyPost(st, s) { s.kryt += Math.max(0, s.szczescie) / 5; },
+    naUniku(st) { st.pewnyKryt = true; },
+    umi: { n: 'Fart', ik: '🌈', cd: 15, opis: m => 'Przez ' + fmt(5 * m) + ' s <b>każdy atak jest krytyczny</b>, krytyki zadają +50% więcej i masz +40% uniku.',
+      uzyj(m) { dodajBuff('fart', { kryt: 300, krytObr: 50, unik: 40 }, 5 * m); DZ.pryzmat(); return true; } },
     kolory: { plaszcz: ['#2e8a3a', '#14501e'], tunika: ['#e6c15c', '#a07a1e'], wlosy: '#c8742a' },
   },
   wieloreka: {
@@ -2076,7 +2076,7 @@ const KLASY = {
     wyglad: { czapka: 'kapeluszMaga', kol: '#4a2a9a', broda: '#e8e0ff' },
     n: 'Mag', ik: '🧙', slotyOreza: 4, slotyPrzedm: 4, start: 'rozdzka', rodziny: ['magiczna'],
     staty: { ap: 25, haste: 25 },
-    opis: 'Mag: <b>moc umiejętności ×1,4</b> (procentowo, od wszystkiego) i +25 przyspieszenia — najlepiej gra się pod ✨. W sklepie częściej różdżki i magiczne bronie.',
+    opis: 'Mag: <b>moc umiejętności ×1,4</b> (procentowo, od wszystkiego) i +25 przyspieszenia — najlepiej gra się pod ✨.',
     statyMnoz(st, s) { s.ap *= 1.4; },
     umi: { n: 'Meteor', ik: '☄️', cd: 10, opis: m => 'Wielki meteor spada na największe skupisko wrogów (r 130): <span class="mag">' + f0((150 + 1.6 * D.ap) * m) + '</span> (150 + 160% ✨), a za nim 3 mniejsze po ' + f0((50 + 0.5 * D.ap) * m) + '.',
       uzyj(m) { const c = skupisko(gracz.x, gracz.y, 360, 130) || najblizszyWrog(gracz.x, gracz.y, 360); if (!c) return false; meteoryt(c.x, c.y, 0.7, 130, (150 + 1.6 * D.ap) * m, 'Meteor');
@@ -2110,8 +2110,8 @@ const KLASY = {
     wyglad: { czapka: 'wampir' },
     n: 'Wampir', ik: '🧛', slotyOreza: 4, slotyPrzedm: 4, start: 'kosa', rodziny: ['biala', 'magiczna'],
     staty: { omni: 8, leczenie: 25 },
-    opis: 'Jedyny z <b>prawdziwym wampiryzmem</b>: limit wampiryzmu wyższy o 4% zdrowia/s, +8% wszechwampiryzmu, leczenie +25%. Każde zabójstwo leczy o 0,5% maks. zdrowia. <b>Nie ma regeneracji.</b>',
-    statyMnoz(st, s) { s.regen = Math.min(0, s.regen); },
+    opis: 'Jedyny z <b>prawdziwym wampiryzmem</b>: limit wampiryzmu wyższy o 4% zdrowia/s, +8% wszechwampiryzmu, leczenie +25%. Każde zabójstwo leczy o 0,5% maks. zdrowia. <b>Nie ma regeneracji</b> — każdy 1 regeneracji zamienia się w +5% mocy leczenia.',
+    statyMnoz(st, s) { s.leczenie += Math.max(0, s.regen) * 5; s.regen = Math.min(0, s.regen); },
     naZabicie() { leczWampirem(D.hpMax * 0.005, 'Wampirzyca'); }, limitWamp: 0.04,
     umi: { n: 'Uczta krwi', ik: '🩸', cd: 12, opis: m => 'Wysysa krew z wrogów w promieniu 190: <span class="mag">' + f0((60 + 0.08 * D.hpMax + 0.7 * D.ap) * m) + '</span> (60 + 8% maks. zdrowia + 70% ✨) każdemu. Leczysz się o 50% zadanych (maks. 30% zdrowia).',
       uzyj(m) { if (!policzWrogow(gracz.x, gracz.y, 190)) return false; let suma = 0; aura(190, '#c0392b', w => { suma += zadaj(w, (60 + 0.08 * D.hpMax + 0.7 * D.ap) * m, 'mag', { obszar: true, zr: 'Uczta krwi' }); dodajBlyskawice(w.x, w.y, gracz.x, gracz.y, '#e04050'); }, true); leczGracza(Math.min(suma * 0.5, D.hpMax * 0.3), 'Uczta krwi'); return true; } },
@@ -2133,7 +2133,7 @@ const KLASY = {
     wyglad: { czapka: 'kaptur', kol: '#2e5a22' },
     n: 'Łowca', ik: '🏹', slotyOreza: 4, slotyPrzedm: 4, start: 'luk', rodziny: ['strzelecka'],
     staty: { zasieg: 25, kryt: 15, krytObr: 50 },
-    opis: 'Snajper: <b>+50% obrażeń krytycznych</b>, +15% kryta, +25% zasięgu i <b>+30% obrażeń</b> wrogom dalej niż 150 px. W sklepie częściej broń strzelecka.',
+    opis: 'Snajper: <b>+50% obrażeń krytycznych</b>, +15% kryta, +25% zasięgu i <b>+30% obrażeń</b> wrogom dalej niż 150 px.',
     modZadanych(st, w) { return Math.hypot(w.x - gracz.x, w.y - gracz.y) > 150 ? 1.3 : 1; },
     umi: { n: 'Deszcz strzał', ik: '🌧️', cd: 10, opis: m => 'Na skupisko wrogów spada ' + f0(20 * m) + ' strzał (r 130): <span class="fiz">' + f0(30 + 0.7 * D.ad) + '</span> (30 + 70% ⚔️) każda, mogą trafić krytycznie.',
       uzyj(m) { const c = skupisko(gracz.x, gracz.y, 340, 130) || najblizszyWrog(gracz.x, gracz.y, 340); if (!c) return false; const n = Math.round(20 * m), v = 30 + 0.7 * D.ad, x = c.x, y = c.y;
@@ -2144,7 +2144,7 @@ const KLASY = {
     wyglad: { czapka: 'kowboj', broda: '#2a1a10' },
     n: 'Rewolwerowiec', ik: '🤠', slotyOreza: 4, slotyPrzedm: 4, start: 'pistolet', rodziny: ['strzelecka', 'alchemia'],
     staty: { as: 15, kryt: 10, krytObr: 25 },
-    opis: 'Co <b>3. strzał</b> broni głównej jest zawsze krytyczny, a krytyki +25%. W sklepie częściej broń strzelecka i alchemia.',
+    opis: 'Co <b>3. strzał</b> broni głównej jest zawsze krytyczny, a krytyki +25%.',
     naAtak(st) { st.licz = (st.licz || 0) + 1; st.pewnyKryt = st.licz % 3 === 0; },
     umi: { n: 'Wachlarz', ik: '💫', cd: 8, opis: m => 'Wystrzeliwuje ' + f0(20 * m) + ' kul dookoła: <span class="fiz">' + f0(30 + 0.9 * D.ad) + '</span> (30 + 90% ⚔️) każda, przebijają 2 wrogów i mogą trafić krytycznie.',
       uzyj(m) { const n = Math.round(20 * m); for (let s = 0; s < n; s++) { const kr = Math.random() * 100 < D.kryt; wystrzel({ x: gracz.x, y: gracz.y, kat: s / n * Math.PI * 2, predkosc: 720, obr: (30 + 0.9 * D.ad) * (kr ? kryt2() : 1), typ: 'fiz', kolor: '#ffe08a', ksztalt: 'kula', zr: 'Wachlarz', zycie: 0.5, przebija: 2 }); } DZ.strzal(); DZ.wybuch(); return true; } },
@@ -2154,7 +2154,7 @@ const KLASY = {
     wyglad: { czapka: 'gogle' },
     n: 'Bombardier', ik: '💣', slotyOreza: 4, slotyPrzedm: 4, start: 'granatnik', rodziny: ['alchemia'],
     staty: { obszar: 30, hpMax: 20 },
-    opis: 'Wybuchy i obszar zadają <b>+40%</b> obrażeń, +30% wielkości obszarów. W sklepie częściej alchemia.',
+    opis: 'Wybuchy i obszar zadają <b>+40%</b> obrażeń, +30% wielkości obszarów.',
     modZadanych(st, w, typ, o) { return o.obszar ? 1.4 : 1; },
     umi: { n: 'Wielka bomba', ik: '💥', cd: 12, opis: m => 'Rzuca wielką bombę na skupisko wrogów (r 200, po 1,1 s): <span class="fiz">' + f0((200 + 2 * D.ad + 1.5 * D.ap) * m) + '</span> (200 + 200% ⚔️ + 150% ✨) i ogłuszenie 1,5 s.',
       uzyj(m) { const c = skupisko(gracz.x, gracz.y, 320, 160) || najblizszyWrog(gracz.x, gracz.y, 320); if (!c) return false; granat(gracz.x, gracz.y, c.x, c.y, 200, (200 + 2 * D.ad + 1.5 * D.ap) * m, 'fiz', 'Wielka bomba', 1.1, 1.5); return true; } },
@@ -2194,7 +2194,7 @@ const KLASY = {
   hazardzistka: {
     wyglad: { czapka: 'fedora' },
     n: 'Hazardzista', ik: '🎲', slotyOreza: 4, slotyPrzedm: 4, start: 'kosci', rodziny: null,
-    staty: { szczescie: 25 },
+    staty: { kryt: 10, ms: 10 },
     opis: 'Rzuca <b>słabymi kośćmi</b> (losowe obrażenia), ale jego <b>Koło fortuny</b> potrafi wszystko — nawet użyć umiejętności innej postaci. Co falę losuje dużą premię. +3 przerzuty augmentów, darmowy przerzut sklepu.',
     dar() { gracz.przerzutyAug += 3; gracz.darmowePrzerzuty += 1; },
     naStartFali(st) {
@@ -2849,8 +2849,7 @@ function zabij(w, o) {
     const mL = w.boss ? 1 : mnLupuDruzyny();
     rozsypKulki(w.x, w.y, w.xp * mL);
     rozsypMonety(w.x, w.y, w.zl * mL, !!w.zloty);
-    const K = KLASY[gracz.klasa];
-    const mnS = (1 + D.szczescie / 100) * (K.mnSkrzyn || 1) * mnoznikHakow('mnSkrzyn') * (TRUDNOSCI[run.trudnosc].skrzynie || 1);
+    const mnS = (1 + D.szczescie / 100) * mnoznikHakow('mnSkrzyn') * (TRUDNOSCI[run.trudnosc].skrzynie || 1);
     let pSk = w.boss ? 1 : (w.elita ? 0.12 : 0.005) * mnS * mL;
     if (!w.boss && (fala.skrzynie || 0) >= zakresSkrzyn(fala.nr)[1]) pSk = 0;
     if (Math.random() < pSk) { skrzynieNaZiemi.push({ x: w.x, y: w.y, tier: tierSkrzyni(w), faza: Math.random() * 6, boss: !!w.boss }); if (!w.boss) fala.skrzynie = (fala.skrzynie || 0) + 1; }
@@ -3471,8 +3470,6 @@ function aktualizujLupy(dt) {
     if (p && d < 30 + p.r) {
       dlaKazdego(q => {
         q.skrzynie.push({ tier: s.tier, boss: s.boss }); run.skrzynieLacznie = (run.skrzynieLacznie || 0) + 1;
-        const K = KLASY[q.klasa];
-        if (K.podwojneSkrzynie && Math.random() < K.podwojneSkrzynie) { q.skrzynie.push({ tier: s.tier }); dziennik('🍀 Podwójna skrzynia!'); }
         dziennik('📦 Skrzynia (' + TIERY[s.tier].nazwaZ.toLowerCase() + ') — otworzysz ją po fali');
       });
       DZ.skrzynia(); skrzynieNaZiemi.splice(i, 1);
@@ -4977,7 +4974,7 @@ function opisKlasyHtml(K) {
   return '<div style="font-size:16px;font-weight:900;color:#ffe08a">' + K.ik + ' ' + K.n + '</div>' + K.opis +
     (Object.keys(K.staty).length ? '<div style="margin-top:6px">' + opisStatow(K.staty) + '</div>' : '') +
     '<div style="margin-top:6px">⭐ Broń główna: <b>' + opisBroniStartowej(K) + '</b> · 🗡️ broni dodatkowych: <b>' + K.slotyOreza + '</b> · 🎒 przedmiotów: <b>' + K.slotyPrzedm + '</b> + 🔨 pryzmatów: <b>' + (K.slotyPryzm || 2) + '</b></div>' +
-    '<div style="margin-top:4px">🏪 Sklep częściej daje: <b>' + opisRodzinKlasy(K) + '</b></div>' +
+    (K.rodziny ? '<div style="margin-top:4px">🧩 Dobrze łączy się z rodzinami: <b>' + opisRodzinKlasy(K) + '</b></div>' : '') +
     (U ? '<div style="margin-top:6px;padding:7px 9px;border-radius:9px;background:rgba(255,224,138,0.08)"><b>' + U.ik + ' ' + U.n + '</b> <span class="cd-tag">⏱️ ' + U.cd + ' s</span><br>' + wKontekscie(() => U.opis(1)) + '</div>' : '');
 }
 function pokazPostacie() {
@@ -5041,6 +5038,7 @@ AKCJE.jakGrac = () => pokazModal('<div class="tytul">❓ Jak grać</div><div cla
   '<b>🎯 Przy trafieniu (on-hit):</b> każde trafienie bronią główną nakłada Twoje efekty „przy trafieniu” (obrażenia przy trafieniu i przedmioty z tym znacznikiem). Znacznik 🔁 / ×2 oznacza, że coś nakłada je <b>dodatkowe razy</b>. 📈 pokazuje, od czego efekt rośnie.<br>' +
   '<b>Miejsca:</b> przedmioty zwykłe i pryzmatyczne mają osobne miejsca (np. 4 + 2).<br>' +
   '<b>⚒️ Kowadło statystyk</b> w sklepie: czyste statystyki za złoto (wybierasz 1 z 3). Każde kolejne w tym samym sklepie jest droższe.<br>' +
+  '<b>🎲 Szanse są równe:</b> sklep, skrzynie, augmenty, kowadła i statystyki losują się tak samo dla każdej postaci. Zmienia je tylko 🍀 szczęście, które każdy może zdobyć z przedmiotów i ulepszeń.<br>' +
   '<b>Drużyna:</b> złoto i doświadczenie są wspólne — każdy dostaje pełną wartość tego, co ktokolwiek podniesie, a potem działają <b>jego własne</b> premie (zysk złota, doświadczenie, Midas…).<br>' +
   '<b>🦇 Wampiryzm</b> (kradzież życia i wszechwampiryzm) leczy najwyżej 2–8% zdrowia na sekundę. Od 11. fali działa <b>🥀 zmęczenie</b>: leczenie słabnie o 2,5% z każdą falą (mikstury nie).<br>' +
   '<b>Fale:</b> przetrwaj do końca czasu. Co 5. fala to <b>boss</b>. Złoto i doświadczenie, których nie zbierzesz, same zbierają się po fali.<br>' +
@@ -5091,15 +5089,15 @@ AKCJE.ulepszAug = d => {
 // ---------------------------------------------------------------------
 //  WYBÓR STATYSTYK
 // ---------------------------------------------------------------------
+// Jakość statystyk zależy od numeru fali (nie od poziomu), więc jest taka sama dla każdej postaci.
 function losTierStatu(min) {
-  const L = 1 + D.szczescie / 100, lv = gracz.poziom;
-  const p3 = Math.min(0.1, 0.004 * lv) * L, p2 = Math.min(0.28, 0.012 * lv) * L, p1 = Math.min(0.5, 0.12 + 0.02 * lv) * L;
+  const L = 1 + D.szczescie / 100, nr = Math.max(1, (fala && fala.nr) || 1);
+  const p3 = Math.min(0.1, 0.007 * nr) * L, p2 = Math.min(0.28, 0.02 * nr) * L, p1 = Math.min(0.5, 0.12 + 0.033 * nr) * L;
   const r = Math.random(); let t = r < p3 ? 3 : r < p3 + p2 ? 2 : r < p3 + p2 + p1 ? 1 : 0;
   return Math.max(min || 0, t);
 }
 function losujOpcjeStatow(min) {
-  let pula = ULEPSZENIA_STATOW.filter(u => !(gracz.klasa === 'wampirzyca' && u.k === 'regen'));
-  return tasuj(pula.slice()).slice(0, 4).map(u => { const t = losTierStatu(min); return { k: u.k, t: t, v: u.w[t] }; });
+  return tasuj(ULEPSZENIA_STATOW.slice()).slice(0, 4).map(u => { const t = losTierStatu(min); return { k: u.k, t: t, v: u.w[t] }; });
 }
 function kosztPrzerzutuStatow() { return Math.round((1 + fala.nr * 0.5) * (1 + run.przerzutyStatow * 0.5)); }
 function pokazWyborStatow(darmowy) {
@@ -5127,12 +5125,8 @@ AKCJE.statPrzerzuc = () => { const k = kosztPrzerzutuStatow(); if (gracz.zloto <
 // ---------------------------------------------------------------------
 //  SKRZYNIE
 // ---------------------------------------------------------------------
-function losujIdOreza() {
-  const K = KLASY[gracz.klasa];
-  let pula = OREZE;
-  if (K.rodziny && Math.random() < 0.75) pula = OREZE.filter(o => K.rodziny.indexOf(o.rodz) >= 0);
-  return losZ(pula).id;
-}
+// Każda postać losuje bronie z tej samej puli, po równo.
+function losujIdOreza() { return losZ(OREZE).id; }
 function generujZawartosc(s) {
   const nr = Math.max(1, fala.nr), t = s.tier;
   if (s.boss) {
@@ -5234,7 +5228,7 @@ function losujTierSklepu() {
 function losujOferte(oferty) {
   const nr = Math.max(1, fala.nr);
   if (nr >= 4 && !oferty.some(o => o.rodzaj === 'kowadlo') && Math.random() < 0.06 * (1 + D.szczescie / 200)) return { rodzaj: 'kowadlo' };
-  const r = Math.random(), szansaOreza = gracz.slotyOreza <= 2 ? 0.25 : 0.42;
+  const r = Math.random(), szansaOreza = 0.4;
   if (r < szansaOreza) {
     let t = losujTierSklepu(); if (t > 0 && Math.random() < 0.35) t--;
     let id = losujIdOreza(), prob = 0;
