@@ -1265,13 +1265,13 @@ const PANCERZE = [
   { id: 'helmPlyt', slot: 'helm', n: 'Hełm płytowy', ik: '🪖', s: { pancerz: 14, hpMax: 25 } },
   { id: 'kapturUcz', slot: 'helm', n: 'Kaptur Uczonego', ik: '🎓', s: { xpBonus: 10, ap: 10 } },
   { id: 'helmWoj', slot: 'helm', n: 'Hełm Wojownika', ik: '⛑️', s: { pancerz: 7, ad: 5 } },
-  { id: 'opaska', slot: 'helm', n: 'Opaska Łowczyni', ik: '🎀', s: { kryt: 5, zasieg: 8 } },
+  { id: 'opaska', slot: 'helm', n: 'Opaska Łowcy', ik: '🎀', s: { kryt: 5, zasieg: 8 } },
   { id: 'koronaMaga', slot: 'helm', n: 'Diadem Maga', ik: '👑', s: { ap: 15, odpMag: 8 } },
   { id: 'helmBerserka', slot: 'helm', n: 'Rogaty Hełm', ik: '🐂', s: { hpMax: 35, as: 5 } },
   { id: 'zbrPlyt', slot: 'zbroja', n: 'Zbroja płytowa', ik: '🛡️', s: { pancerz: 22, hpMax: 30 } },
   { id: 'zbrBers', slot: 'zbroja', n: 'Napierśnik Berserkera', ik: '🥋', s: { ad: 7, as: 7, hpMax: 15 } },
   { id: 'zbrStraz', slot: 'zbroja', n: 'Zbroja Strażnika', ik: '🦺', s: { pancerz: 10, hpMax: 65 } },
-  { id: 'szata', slot: 'zbroja', n: 'Szata Czarodziejki', ik: '👘', s: { ap: 16, odpMag: 14, hpMax: 15 } },
+  { id: 'szata', slot: 'zbroja', n: 'Szata Maga', ik: '👘', s: { ap: 16, odpMag: 14, hpMax: 15 } },
   { id: 'zbrKata', slot: 'zbroja', n: 'Kolczuga Kata', ik: '☠️', s: { pancerz: 12, lethality: 4 } },
   { id: 'plaszczCienia', slot: 'zbroja', n: 'Płaszcz Cienia', ik: '🧥', s: { unik: 5, ms: 8, hpMax: 15 } },
   { id: 'zbrSmocza', slot: 'zbroja', n: 'Smocza Łuska', ik: '🐲', s: { pancerz: 12, odpMag: 12, hpMax: 25 } },
@@ -2015,7 +2015,8 @@ function statyAugmentu(a) { const d = DEF_AUG[a.id]; if (!d.s) return null; cons
 // rodziny: z jakich rodzin sklep częściej oferuje bronie dodatkowe (null = wszystkie po równo)
 const KLASY = {
   wiezniarka: {
-    n: 'Więźniarka', ik: '⛓️', slotyOreza: 4, slotyPrzedm: 4, start: 'lancuch', rodziny: null,
+    wyglad: { czapka: 'kajdany', broda: true },
+    n: 'Więzień', ik: '⛓️', slotyOreza: 4, slotyPrzedm: 4, start: 'lancuch', rodziny: null,
     staty: { xpBonus: 25 },
     opis: 'Rośnie z każdym poziomem: <b>+1,5% obrażeń za każdy poziom</b> (bez limitu), +25% doświadczenia, co 5 poziomów darmowy wybór statystyk. Na start +1 przerzut augmentów i +1 mikstura.',
     dar() { gracz.przerzutyAug += 1; gracz.mikstury += 1; },
@@ -2027,6 +2028,7 @@ const KLASY = {
     kolory: { plaszcz: ['#b3263a', '#6e1424'], tunika: ['#41b097', '#21645a'], wlosy: '#5a3420' },
   },
   rycerz: {
+    wyglad: { czapka: 'helm' },
     n: 'Rycerz', ik: '🛡️', slotyOreza: 4, slotyPrzedm: 4, start: 'mieczTarcza', rodziny: ['biala'],
     staty: { pancerz: 30, hpMax: 60 },
     opis: 'Pancerz to siła: <b>+1% obrażeń za każde 3 pancerza</b> (bez limitu) i <b>pancerz ×1,25</b>. Otrzymuje 15% mniej obrażeń, tarcze +30%.',
@@ -2037,9 +2039,10 @@ const KLASY = {
     kolory: { plaszcz: ['#3a4a8a', '#1a2450'], tunika: ['#c8ccd8', '#7a7e8c'], wlosy: '#c8a060' },
   },
   szczesciara: {
-    n: 'Szczęściara', ik: '🍀', slotyOreza: 4, slotyPrzedm: 4, start: 'sztylety', rodziny: null,
-    staty: { szczescie: 40, hpMax: -15 },
-    opis: '<b>Szczęście ×2</b>, a każde 8 szczęścia daje +1% szansy na kryt. Skrzynie wypadają 2× częściej, 30% z nich ma podwójną zawartość. Mniej zdrowia.',
+    wyglad: { czapka: 'melonik' },
+    n: 'Szczęściarz', ik: '🍀', slotyOreza: 4, slotyPrzedm: 4, start: 'sztylety', rodziny: null,
+    staty: { szczescie: 40 },
+    opis: '<b>Szczęście ×2</b>, a każde 8 szczęścia daje +1% szansy na kryt. Skrzynie wypadają 2× częściej, 30% z nich ma podwójną zawartość.',
     statyMnoz(st, s) { s.szczescie *= 2; }, statyPost(st, s) { s.kryt += Math.max(0, s.szczescie) / 8; },
     mnSkrzyn: 2, podwojneSkrzynie: 0.3,
     umi: { n: 'Fart', ik: '🌈', cd: 15, opis: m => 'Przez ' + fmt(5 * m) + ' s <b>każdy atak jest krytyczny</b> i krytyki zadają +50% więcej; monety są warte 2×.',
@@ -2048,19 +2051,21 @@ const KLASY = {
     kolory: { plaszcz: ['#2e8a3a', '#14501e'], tunika: ['#e6c15c', '#a07a1e'], wlosy: '#c8742a' },
   },
   wieloreka: {
-    n: 'Wieloręka', ik: '🦑', slotyOreza: 6, slotyPrzedm: 4, start: 'losowa', rodziny: null,
+    wyglad: { czapka: 'macki' },
+    n: 'Wieloręki', ik: '🦑', slotyOreza: 6, slotyPrzedm: 4, start: 'losowa', rodziny: null,
     staty: {},
-    opis: 'Nosi <b>6 broni dodatkowych</b>: ich efekty są o <b>30% mocniejsze</b> i odnawiają się o 15% szybciej, każda daje też +4% prędkości ataku. Broń główna zadaje 35% mniej. Losowa broń główna.',
-    mnBroni: () => 0.65, mnOreza: 0.3, cdOreza: 0.15,
+    opis: 'Nosi <b>6 broni dodatkowych</b>: ich efekty są o <b>30% mocniejsze</b> i odnawiają się o 15% szybciej, każda daje też +4% prędkości ataku. Broń główna zadaje 25% mniej. Losowa broń główna.',
+    mnBroni: () => 0.75, mnOreza: 0.3, cdOreza: 0.15,
     statyFlat(st, s) { s.as += 4 * gracz.oreze.length; },
     umi: { n: 'Burza broni', ik: '🌪️', cd: 14, opis: m => 'Wszystkie bronie dodatkowe <b>odpalają natychmiast, a po 0,6 s jeszcze raz</b>. Przez 5 s +' + f0(60 * m) + '% prędkości ataku.',
       uzyj(m) { gracz.oreze.forEach(o => { o.cd = 0; }); opoznione(0.6, () => gracz.oreze.forEach(o => { o.cd = 0; })); dodajBuff('burzaBroni', { as: 60 * m }, 5); fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 120, kolor: '#9a6ae0' }); return true; } },
     kolory: { plaszcz: ['#4a5ac4', '#24306e'], tunika: ['#9a6ae0', '#5a3a8a'], wlosy: '#2a2030' },
   },
   jedynaczka: {
-    n: 'Mistrzyni Jednej Broni', ik: '🗡️', slotyOreza: 1, slotyPrzedm: 5, start: 'wybor', rodziny: null,
+    wyglad: { czapka: 'opaska' },
+    n: 'Mistrz Jednej Broni', ik: '🗡️', slotyOreza: 2, slotyPrzedm: 5, start: 'wybor', rodziny: null,
     staty: { as: 20 },
-    opis: 'Broń główna zadaje <b>2× obrażeń</b>, zaczyna na II tierze (do wyboru), a jej ulepszanie jest o 50% tańsze. Tylko <b>1 miejsce</b> na broń dodatkową, za to +1 na przedmiot.',
+    opis: 'Broń główna zadaje <b>2× obrażeń</b>, zaczyna na II tierze (do wyboru), a jej ulepszanie jest o 50% tańsze. Tylko <b>2 miejsca</b> na bronie dodatkowe, za to +1 na przedmiot.',
     mnBroni: () => 2, rabatBroni: 0.5,
     umi: { n: 'Cięcie mistrza', ik: '⚔️', cd: 8, opis: m => 'Potężny cios bronią główną we <b>wszystkich</b> wrogów w zasięgu ×2: <b>' + f0(400 * m) + '%</b> obrażeń broni (z efektami przy trafieniu).',
       uzyj(m) { const b = gracz.bronie[0]; if (!b) return false; const zas = zasiegAtaku(b) * 2; ciecia.push({ x: gracz.x, y: gracz.y, kat: 0, luk: Math.PI * 2, r: zas, czas: 0.3, max: 0.3, kolor: '#ffe08a' });
@@ -2068,19 +2073,21 @@ const KLASY = {
     kolory: { plaszcz: ['#2a2a2a', '#0e0e0e'], tunika: ['#c0c0d0', '#6a6a7a'], wlosy: '#e8e0d0' },
   },
   czarodziejka: {
-    n: 'Czarodziejka', ik: '🧙‍♀️', slotyOreza: 4, slotyPrzedm: 4, start: 'rozdzka', rodziny: ['magiczna'],
+    wyglad: { czapka: 'kapeluszMaga', kol: '#4a2a9a', broda: '#e8e0ff' },
+    n: 'Mag', ik: '🧙', slotyOreza: 4, slotyPrzedm: 4, start: 'rozdzka', rodziny: ['magiczna'],
     staty: { ap: 25, haste: 25 },
-    opis: 'Mag: <b>moc umiejętności ×1,4</b> (procentowo, od wszystkiego), +25 przyspieszenia. Obrażenia od ataku ⚔️ tylko ×0,7 — gra się pod ✨. W sklepie częściej różdżki i magiczne bronie.',
-    statyMnoz(st, s) { s.ap *= 1.4; s.ad *= 0.7; },
+    opis: 'Mag: <b>moc umiejętności ×1,4</b> (procentowo, od wszystkiego) i +25 przyspieszenia — najlepiej gra się pod ✨. W sklepie częściej różdżki i magiczne bronie.',
+    statyMnoz(st, s) { s.ap *= 1.4; },
     umi: { n: 'Meteor', ik: '☄️', cd: 10, opis: m => 'Wielki meteor spada na największe skupisko wrogów (r 130): <span class="mag">' + f0((150 + 1.6 * D.ap) * m) + '</span> (150 + 160% ✨), a za nim 3 mniejsze po ' + f0((50 + 0.5 * D.ap) * m) + '.',
       uzyj(m) { const c = skupisko(gracz.x, gracz.y, 360, 130) || najblizszyWrog(gracz.x, gracz.y, 360); if (!c) return false; meteoryt(c.x, c.y, 0.7, 130, (150 + 1.6 * D.ap) * m, 'Meteor');
         for (let n = 0; n < 3; n++) meteoryt(c.x + losowo(-110, 110), c.y + losowo(-110, 110), 1 + n * 0.2, 70, (50 + 0.5 * D.ap) * m, 'Meteor'); return true; } },
     kolory: { plaszcz: ['#6a3ac4', '#341a6e'], tunika: ['#3a7ae0', '#1a3a8a'], wlosy: '#e8e0ff' },
   },
   berserkerka: {
-    n: 'Berserkerka', ik: '🪓', slotyOreza: 4, slotyPrzedm: 4, start: 'topor', rodziny: ['biala'],
+    wyglad: { czapka: 'rogi', broda: true },
+    n: 'Berserker', ik: '🪓', slotyOreza: 4, slotyPrzedm: 4, start: 'topor', rodziny: ['biala'],
     staty: { as: 15, kradziez: 4 },
-    opis: 'Im mniej zdrowia, tym groźniejsza: <b>+1% prędkości ataku i +0,6% obrażeń za każdy 1% brakującego zdrowia</b>. Regeneracja o połowę słabsza.',
+    opis: 'Im mniej zdrowia, tym groźniejszy: <b>+1% prędkości ataku i +0,6% obrażeń za każdy 1% brakującego zdrowia</b>. Regeneracja o połowę słabsza.',
     statyMnoz(st, s) { s.regen *= 0.5; },
     statyDyn(st, s) { const b = Math.max(0, 1 - gracz.hp / Math.max(1, s.hpMax)) * 100; s.as += b; s.obrBonus += b * 0.6; },
     umi: { n: 'Szał', ik: '😡', cd: 15, opis: m => 'Tracisz 10% aktualnego zdrowia. Przez 7 s: <b>+' + f0(80 * m) + '%</b> prędkości ataku, +' + f0(12 * m) + '% kradzieży życia, +30 prędkości ruchu i 25% redukcji obrażeń.',
@@ -2088,7 +2095,8 @@ const KLASY = {
     kolory: { plaszcz: ['#8a2a1a', '#4a1008'], tunika: ['#7a5a3a', '#4a3020'], wlosy: '#d04020' },
   },
   handlarka: {
-    n: 'Handlarka', ik: '💼', slotyOreza: 4, slotyPrzedm: 4, start: 'kusza', rodziny: ['strzelecka', 'alchemia'],
+    wyglad: { czapka: 'cylinder' },
+    n: 'Kupiec', ik: '💼', slotyOreza: 4, slotyPrzedm: 4, start: 'kusza', rodziny: ['strzelecka', 'alchemia'],
     staty: { chciwosc: 25 },
     opis: 'Złoto to siła: <b>+1% obrażeń za każde 20 złota</b> (bez limitu). Ceny w sklepie −25%. Na koniec fali odsetki: 10% złota (maks. 60). Zaczyna z 60 złota.',
     dar() { gracz.rabat += 25; gracz.zloto += 60; },
@@ -2099,9 +2107,10 @@ const KLASY = {
     kolory: { plaszcz: ['#a07a1e', '#5a4008'], tunika: ['#2a6a4a', '#14402a'], wlosy: '#3a2a1a' },
   },
   wampirzyca: {
-    n: 'Wampirzyca', ik: '🦇', slotyOreza: 4, slotyPrzedm: 4, start: 'kosa', rodziny: ['biala', 'magiczna'],
+    wyglad: { czapka: 'wampir' },
+    n: 'Wampir', ik: '🧛', slotyOreza: 4, slotyPrzedm: 4, start: 'kosa', rodziny: ['biala', 'magiczna'],
     staty: { omni: 8, leczenie: 25 },
-    opis: 'Jedyna z <b>prawdziwym wampiryzmem</b>: limit wampiryzmu wyższy o 4% zdrowia/s, +8% wszechwampiryzmu, leczenie +25%. Każde zabójstwo leczy o 0,5% maks. zdrowia. <b>Nie ma regeneracji.</b>',
+    opis: 'Jedyny z <b>prawdziwym wampiryzmem</b>: limit wampiryzmu wyższy o 4% zdrowia/s, +8% wszechwampiryzmu, leczenie +25%. Każde zabójstwo leczy o 0,5% maks. zdrowia. <b>Nie ma regeneracji.</b>',
     statyMnoz(st, s) { s.regen = Math.min(0, s.regen); },
     naZabicie() { leczWampirem(D.hpMax * 0.005, 'Wampirzyca'); }, limitWamp: 0.04,
     umi: { n: 'Uczta krwi', ik: '🩸', cd: 12, opis: m => 'Wysysa krew z wrogów w promieniu 190: <span class="mag">' + f0((60 + 0.08 * D.hpMax + 0.7 * D.ap) * m) + '</span> (60 + 8% maks. zdrowia + 70% ✨) każdemu. Leczysz się o 50% zadanych (maks. 30% zdrowia).',
@@ -2109,6 +2118,7 @@ const KLASY = {
     kolory: { plaszcz: ['#3a0a1a', '#1a0008'], tunika: ['#6a0a2a', '#3a0418'], wlosy: '#101010' },
   },
   kolos: {
+    wyglad: { lysy: true, broda: true },
     n: 'Kolos', ik: '🗿', slotyOreza: 4, slotyPrzedm: 5, start: 'kastety', rodziny: ['biala'],
     staty: { hpMax: 120, pancerz: 25, odpMag: 15, ms: -20, as: -15 },
     opis: 'Góra mięśni: <b>maks. zdrowie ×1,3</b>, ataki zadają <span class="fiz">3% maks. zdrowia</span> przy trafieniu. Wolniejszy, większy. +1 miejsce na przedmiot.',
@@ -2120,16 +2130,18 @@ const KLASY = {
     kolory: { plaszcz: ['#5a5a6a', '#2a2a34'], tunika: ['#8a7a6a', '#4a4034'], wlosy: '#3a3030' },
   },
   lowczyni: {
-    n: 'Łowczyni', ik: '🏹', slotyOreza: 4, slotyPrzedm: 4, start: 'luk', rodziny: ['strzelecka'],
+    wyglad: { czapka: 'kaptur', kol: '#2e5a22' },
+    n: 'Łowca', ik: '🏹', slotyOreza: 4, slotyPrzedm: 4, start: 'luk', rodziny: ['strzelecka'],
     staty: { zasieg: 25, kryt: 15, krytObr: 50 },
-    opis: 'Snajperka: <b>+50% obrażeń krytycznych</b>, +15% kryta, +25% zasięgu i <b>+30% obrażeń</b> wrogom dalej niż 150 px. W sklepie częściej broń strzelecka.',
+    opis: 'Snajper: <b>+50% obrażeń krytycznych</b>, +15% kryta, +25% zasięgu i <b>+30% obrażeń</b> wrogom dalej niż 150 px. W sklepie częściej broń strzelecka.',
     modZadanych(st, w) { return Math.hypot(w.x - gracz.x, w.y - gracz.y) > 150 ? 1.3 : 1; },
     umi: { n: 'Deszcz strzał', ik: '🌧️', cd: 10, opis: m => 'Na skupisko wrogów spada ' + f0(20 * m) + ' strzał (r 130): <span class="fiz">' + f0(30 + 0.7 * D.ad) + '</span> (30 + 70% ⚔️) każda, mogą trafić krytycznie.',
       uzyj(m) { const c = skupisko(gracz.x, gracz.y, 340, 130) || najblizszyWrog(gracz.x, gracz.y, 340); if (!c) return false; const n = Math.round(20 * m), v = 30 + 0.7 * D.ad, x = c.x, y = c.y;
         for (let s = 0; s < n; s++) opoznione(0.035 * s, () => { const px = x + losowo(-120, 120), py = y + losowo(-120, 120); const kr = Math.random() * 100 < D.kryt; dodajBlyskawice(px - 20, py - 120, px, py, '#e8d8b0'); obszarowe(px, py, 34, '#e8d8b0', w => zadaj(w, v * (kr ? kryt2() : 1), 'fiz', { zr: 'Deszcz strzał', obszar: true, kryt: kr }), true); }); DZ.strzal(); return true; } },
-    kolory: { plaszcz: ['#3a6a2a', '#1a3a10'], tunika: ['#8a6a3a', '#4a3a1a'], wlosy: '#e0a040' },
+    kolory: { plaszcz: ['#3a6a2a', '#1a3a10'], tunika: ['#8a6a3a', '#4a3a1a'], wlosy: '#e0a040', piorko: '#e6c15c' },
   },
   rewolwerowiec: {
+    wyglad: { czapka: 'kowboj', broda: '#2a1a10' },
     n: 'Rewolwerowiec', ik: '🤠', slotyOreza: 4, slotyPrzedm: 4, start: 'pistolet', rodziny: ['strzelecka', 'alchemia'],
     staty: { as: 15, kryt: 10, krytObr: 25 },
     opis: 'Co <b>3. strzał</b> broni głównej jest zawsze krytyczny, a krytyki +25%. W sklepie częściej broń strzelecka i alchemia.',
@@ -2139,7 +2151,8 @@ const KLASY = {
     kolory: { plaszcz: ['#7a4a2a', '#4a2a14'], tunika: ['#c0a070', '#7a6040'], wlosy: '#2a1a10' },
   },
   bombardierka: {
-    n: 'Bombardierka', ik: '💣', slotyOreza: 4, slotyPrzedm: 4, start: 'granatnik', rodziny: ['alchemia'],
+    wyglad: { czapka: 'gogle' },
+    n: 'Bombardier', ik: '💣', slotyOreza: 4, slotyPrzedm: 4, start: 'granatnik', rodziny: ['alchemia'],
     staty: { obszar: 30, hpMax: 20 },
     opis: 'Wybuchy i obszar zadają <b>+40%</b> obrażeń, +30% wielkości obszarów. W sklepie częściej alchemia.',
     modZadanych(st, w, typ, o) { return o.obszar ? 1.4 : 1; },
@@ -2148,7 +2161,8 @@ const KLASY = {
     kolory: { plaszcz: ['#e6743c', '#8a3a14'], tunika: ['#2a2a2a', '#101010'], wlosy: '#ffb050' },
   },
   inzynierka: {
-    n: 'Inżynierka', ik: '🔧', slotyOreza: 4, slotyPrzedm: 4, start: 'gwozdziarka', rodziny: ['strzelecka', 'alchemia'],
+    wyglad: { czapka: 'kask' },
+    n: 'Inżynier', ik: '🔧', slotyOreza: 4, slotyPrzedm: 4, start: 'gwozdziarka', rodziny: ['strzelecka', 'alchemia'],
     staty: { haste: 15, pancerz: 10 },
     opis: 'Działka, wieże i inne stworzenia zadają <b>2× obrażeń</b>. Zaczyna z <b>Małą Wieżyczką</b>.',
     mnStworow: 1, dar() { gracz.przedmioty.push(nowyPrzedmiot('wiezyczka')); },
@@ -2157,7 +2171,8 @@ const KLASY = {
     kolory: { plaszcz: ['#e6c15c', '#a07a1e'], tunika: ['#3a6ac4', '#1a3a7a'], wlosy: '#8a4a2a' },
   },
   nekromantka: {
-    n: 'Nekromantka', ik: '💀', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturKosci', rodziny: ['magiczna'],
+    wyglad: { czapka: 'czaszka' },
+    n: 'Nekromanta', ik: '💀', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturKosci', rodziny: ['magiczna'],
     staty: { ap: 20, hpMax: 10 },
     opis: 'Sojusznicy zadają <b>3× obrażeń</b> i żyją 3× dłużej. Każdy zabity wróg ma 8% szans, że wstanie po Twojej stronie.',
     mnSojusznikow: 2,
@@ -2167,18 +2182,20 @@ const KLASY = {
     kolory: { plaszcz: ['#1a3a2a', '#0a1a10'], tunika: ['#4a4a5a', '#24242e'], wlosy: '#d8e8d0' },
   },
   druidka: {
-    n: 'Druidka', ik: '🌿', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturNatury', rodziny: ['magiczna', 'alchemia'],
+    wyglad: { czapka: 'wieniec', broda: true },
+    n: 'Druid', ik: '🌿', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturNatury', rodziny: ['magiczna', 'alchemia'],
     staty: { regen: 3, leczenie: 30 },
-    opis: 'Natura: <b>regeneracja ×2</b>, leczenie +30%, owoce i stworzenia +50%. Zmęczenie osłabia jej leczenie tylko o połowę. Zaczyna z <b>Krzakiem Jagód</b>.',
+    opis: 'Natura: <b>regeneracja ×2</b>, leczenie +30%, owoce i stworzenia +50%. Zmęczenie osłabia jego leczenie tylko o połowę. Zaczyna z <b>Krzakiem Jagód</b>.',
     statyMnoz(st, s) { s.regen *= 2; }, mnStworow: 0.5, polZmeczenia: true, dar() { gracz.przedmioty.push(nowyPrzedmiot('krzakJagod')); },
     umi: { n: 'Zarośla', ik: '🌱', cd: 13, opis: m => 'Korzenie unieruchamiają wrogów w promieniu 180 na ' + fmt(1.6 * m) + ' s i zadają <span class="mag">' + f0((60 + 0.9 * D.ap) * m) + '</span> (60 + 90% ✨). Drużyna w promieniu 240 leczy się o ' + f0(20 * m) + '% maks. zdrowia.',
       uzyj(m) { aura(180, '#5ac46a', w => { zadaj(w, (60 + 0.9 * D.ap) * m, 'mag', { obszar: true, zr: 'Zarośla' }); oglusz(w, 1.6 * m, { zrodlo: 'Zarośla' }); }, true); leczDruzyne(gracz.x, gracz.y, 240, 0, true, 0.2 * m); return true; } },
     kolory: { plaszcz: ['#3a7a2a', '#1a4a10'], tunika: ['#8a6a3a', '#5a4020'], wlosy: '#c87a2a' },
   },
   hazardzistka: {
-    n: 'Hazardzistka', ik: '🎲', slotyOreza: 4, slotyPrzedm: 4, start: 'kosci', rodziny: null,
+    wyglad: { czapka: 'fedora' },
+    n: 'Hazardzista', ik: '🎲', slotyOreza: 4, slotyPrzedm: 4, start: 'kosci', rodziny: null,
     staty: { szczescie: 25 },
-    opis: 'Rzuca <b>słabymi kośćmi</b> (losowe obrażenia), ale jej <b>Koło fortuny</b> potrafi wszystko — nawet użyć umiejętności innej postaci. Co falę losuje dużą premię. +3 przerzuty augmentów, darmowy przerzut sklepu.',
+    opis: 'Rzuca <b>słabymi kośćmi</b> (losowe obrażenia), ale jego <b>Koło fortuny</b> potrafi wszystko — nawet użyć umiejętności innej postaci. Co falę losuje dużą premię. +3 przerzuty augmentów, darmowy przerzut sklepu.',
     dar() { gracz.przerzutyAug += 3; gracz.darmowePrzerzuty += 1; },
     naStartFali(st) {
       const opcje = [['as', 60, '⚡ +60% prędkości ataku'], ['ad', 50, '⚔️ +50 obrażeń od ataku'], ['ap', 90, '✨ +90 mocy umiejętności'], ['kryt', 40, '🎯 +40% szansy na kryt'],
@@ -2209,9 +2226,10 @@ const KLASY = {
     kolory: { plaszcz: ['#6a1a6a', '#3a0a3a'], tunika: ['#e0e0e0', '#9a9a9a'], wlosy: '#1a1a1a' },
   },
   kaplanka: {
-    n: 'Kapłanka Pryzmatu', ik: '🔮', slotyOreza: 4, slotyPrzedm: 3, slotyPryzm: 3, start: 'kosturPustki', rodziny: ['magiczna'],
+    wyglad: { czapka: 'aureola' },
+    n: 'Kapłan Pryzmatu', ik: '🔮', slotyOreza: 4, slotyPrzedm: 3, slotyPryzm: 3, start: 'kosturPustki', rodziny: ['magiczna'],
     staty: { hpMax: -10 },
-    opis: 'Mistrzyni pryzmatów: <b>3 miejsca na pryzmaty</b> i Pryzmatyczne Kowadło na start (za to 3 zwykłe przedmioty). Tarcze i leczenie dla drużyny +50%.',
+    opis: 'Mistrz pryzmatów: <b>3 miejsca na pryzmaty</b> i Pryzmatyczne Kowadło na start (za to 3 zwykłe przedmioty). Tarcze i leczenie dla drużyny +50%.',
     dar() { gracz.kowadla = (gracz.kowadla || 0) + 1; }, mnTarcz: 0.5,
     umi: { n: 'Pryzmatyczna tarcza', ik: '💠', cd: 13, opis: m => 'Ty i koledzy w promieniu 260 dostajecie tarczę <b>' + f0(35 * m) + '% maks. zdrowia</b> na 4 s, leczenie ' + f0(15 * m) + '% i +30% obrażeń na 5 s.',
       uzyj(m) { leczDruzyne(gracz.x, gracz.y, 260, 0, true, 0.15 * m, 0.35 * m); const z0 = gracz; gracze.forEach(p => { if (p.powalony || Math.hypot(p.x - z0.x, p.y - z0.y) > 260) return; kontekst(p); dodajBuff('pryzmat', { obrBonus: 30 }, 5); }); kontekst(z0);
@@ -2231,10 +2249,10 @@ const TYPY_WROGOW = {
   goblin:   { n: 'Goblin', ik: '👺', hp: 28, atak: 8, panc: 6, odp: 0, ms: 110, xp: 2, zl: 1, r: 15, kolor: '#5a9a4a' },
   szkielet: { n: 'Szkielet', ik: '💀', hp: 42, atak: 10, panc: 18, odp: 5, ms: 80, xp: 3, zl: 1, r: 16, kolor: '#d8d0c0' },
   pajak:    { n: 'Pająk', ik: '🕷️', hp: 14, atak: 5, panc: 0, odp: 0, ms: 150, xp: 1, zl: 1, r: 12, kolor: '#4a3a5a' },
-  okrazacz: { n: 'Ania', ik: '🦇', obraz: 'ania', hp: 26, atak: 7, panc: 4, odp: 6, ms: 125, xp: 3, zl: 2, r: 15, kolor: '#6a5a8a', dyst: 230, typObr: 'mag', zach: 'okrazajacy' },
+  okrazacz: { n: 'Nietoperz', ik: '🦇', hp: 26, atak: 7, panc: 4, odp: 6, ms: 125, xp: 3, zl: 2, r: 15, kolor: '#6a5a8a', dyst: 230, typObr: 'mag', zach: 'okrazajacy' },
   bombiarz: { n: 'Bombiarz', ik: '💣', hp: 34, atak: 16, panc: 3, odp: 0, ms: 160, xp: 3, zl: 2, r: 15, kolor: '#e6743c', wybuchowy: true },
   kusznik:  { n: 'Kusznik', ik: '🏹', hp: 30, atak: 12, panc: 6, odp: 0, ms: 68, xp: 3, zl: 2, r: 15, kolor: '#7a6a4a', dyst: 320, typObr: 'fiz' },
-  trujacy:  { n: 'Patryk', ik: '🦨', obraz: 'patryk', hp: 55, atak: 9, panc: 6, odp: 6, ms: 105, xp: 4, zl: 2, r: 16, kolor: '#6a9a4a', zach: 'uciekajacy', typObr: 'mag' },
+  trujacy:  { n: 'Skunks', ik: '🦨', hp: 55, atak: 9, panc: 6, odp: 6, ms: 105, xp: 4, zl: 2, r: 16, kolor: '#6a9a4a', zach: 'uciekajacy', typObr: 'mag' },
   mag:      { n: 'Mroczny mag', ik: '🧙', hp: 32, atak: 12, panc: 4, odp: 15, ms: 64, xp: 4, zl: 2, r: 16, kolor: '#8a5ac4', dyst: 260, typObr: 'mag', czary: true },
   jezdziec: { n: 'Jeździec', ik: '🐗', hp: 52, atak: 12, panc: 10, odp: 0, ms: 128, xp: 4, zl: 2, r: 17, kolor: '#8a5a3a', zach: 'szarzaBoki' },
   lucznik:  { n: 'Łucznik', ik: '🎯', hp: 28, atak: 11, panc: 5, odp: 0, ms: 78, xp: 3, zl: 2, r: 15, kolor: '#9a7a4a', dyst: 280, typObr: 'fiz', zach: 'okrazajacy' },
@@ -2907,6 +2925,18 @@ function zastosujOnHit(w, b, o) {
 }
 
 function celBroni(b, zas) {
+  // celowanie (prawa gałka pada): wróg najbliżej wskazanego kierunku; gdy nikogo w zasięgu — zwykłe namierzanie
+  const ck = gracz.celKat;
+  if (ck !== null && ck !== undefined) {
+    let naj = null, najW = Infinity;
+    for (let i = 0; i < wrogowie.length; i++) {
+      const w = wrogowie[i]; if (w.martwy || w.zauroczony > 0) continue;
+      const d = Math.hypot(w.x - gracz.x, w.y - gracz.y) - w.r; if (d >= zas) continue;
+      const wyn = roznicaKata(Math.atan2(w.y - gracz.y, w.x - gracz.x), ck) * 230 + d * 0.3;
+      if (wyn < najW) { najW = wyn; naj = w; }
+    }
+    if (naj) return naj;
+  }
   const daleki = BRONIE[b.rodzaj].celDaleki;
   let naj = null, najD = daleki ? -1 : Infinity;
   for (let i = 0; i < wrogowie.length; i++) {
@@ -3894,8 +3924,8 @@ const SPECJALNE = {
   elitarna: { n: 'Fala elit', ik: '👑', opis: 'Mniej wrogów, ale co kilka sekund elita', ustaw(f) { f.mnSpawn *= 0.6; f.elityCo = Math.max(4, 8 - f.nr * 0.1); f.tElity = 3; } },
   zacmienie:{ n: 'Zaćmienie', ik: '🌑', opis: 'Widzisz tylko blisko siebie · +50% doświadczenia', ustaw(f) { f.ciemnosc = true; f.mnXp = 1.5; } },
   zlota:    { n: 'Gorączka złota', ik: '💰', opis: 'Złote gobliny uciekają z łupem — złap je!', ustaw(f) { f.zloteGobliny = 5; f.tGoblina = 3; } },
-  ania:     { n: 'Nalot Ań', ik: '🦇', opis: 'Ania w dziesiątkach egzemplarzy', ustaw(f) { f.wymuszony = 'okrazacz'; f.mnSpawn *= 1.15; } },
-  patryk:   { n: 'Smród Patryka', ik: '🦨', opis: 'Wszędzie trujący gaz', ustaw(f) { f.wymuszony = 'trujacy'; } },
+  ania:     { n: 'Nalot nietoperzy', ik: '🦇', opis: 'Nietoperze w dziesiątkach egzemplarzy', ustaw(f) { f.wymuszony = 'okrazacz'; f.mnSpawn *= 1.15; } },
+  patryk:   { n: 'Smród skunksów', ik: '🦨', opis: 'Wszędzie trujący gaz', ustaw(f) { f.wymuszony = 'trujacy'; } },
   pajaki:   { n: 'Pajęczyna', ik: '🕷️', opis: 'Roje pająków', ustaw(f) { f.wymuszony = 'pajak'; f.mnSpawn *= 1.6; } },
 };
 
@@ -3967,7 +3997,7 @@ function startFali(nr) {
     run.zlotoFali = 0; run.trafFali = 0; run.falaMaks = Math.max(run.falaMaks || 0, nr);
     const k = n > 1 ? i / n * Math.PI * 2 : 0;
     p.x = SRODEK + (n > 1 ? Math.cos(k) * 55 : 0); p.y = SRODEK + (n > 1 ? Math.sin(k) * 55 : 0); p.netX = undefined;
-    p.tarcze = []; p.zastoj = 0; p.niewr = 1; p.spowG = 0; p.powalony = false; p.reanim = 0; p.cdMikstury = 0; p.dash = null;
+    p.tarcze = []; p.zastoj = 0; p.niewr = 1; p.celKat = null; p.spowG = 0; p.powalony = false; p.reanim = 0; p.cdMikstury = 0; p.dash = null;
     if (p.umi) p.umi.cd = 0; p.oreze.forEach(o => { o.cd = Math.random() * 0.8; });
     zastosujStaty();
     p.hp = D.hpMax;
@@ -4169,8 +4199,7 @@ const SPR_POCHODNIA = sprite(64, (c, r) => { const g = c.createRadialGradient(r,
 const SPR_GRACZ = sprite(64, (c, r) => { const g = c.createRadialGradient(r, r, 2, r, r, r); g.addColorStop(0, 'rgba(255,200,130,0.07)'); g.addColorStop(1, 'rgba(255,200,130,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2); });
 const SPR_KULKA = sprite(12, (c, r) => { c.globalAlpha = 0.4; c.fillStyle = '#7ee87a'; c.beginPath(); c.arc(r, r, r, 0, Math.PI * 2); c.fill(); c.globalAlpha = 1; c.fillStyle = '#b8ffb0'; c.beginPath(); c.arc(r, r, r * 0.42, 0, Math.PI * 2); c.fill(); });
 const SPR_MONETA = sprite(8, (c, r) => { c.fillStyle = '#b8860b'; c.beginPath(); c.arc(r, r + 0.6, r - 0.5, 0, Math.PI * 2); c.fill(); c.fillStyle = '#ffd24a'; c.beginPath(); c.arc(r, r, r * 0.78, 0, Math.PI * 2); c.fill(); c.fillStyle = '#fff3b0'; c.fillRect(r - 2, r - 3, 2, 2); });
-const OBRAZY_TWARZY = {};
-[['ania', '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'], ['patryk', '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']].forEach(p => { const im = new Image(); im.src = 'data:image/jpeg;base64,' + p[1]; OBRAZY_TWARZY[p[0]] = im; });
+const OBRAZY_TWARZY = {};   // (dawniej zdjęcia — gra nie jest już spersonalizowana)
 
 function ustawKamere(dt) {
   const cx = gracz.x - WID_SW / 2, cy = gracz.y - WYS_SW * KAM_PION;
@@ -4405,6 +4434,40 @@ function rysujWrogow() {
   }
 }
 
+// Nakrycia głowy postaci (głowa: środek (0,-13), promień ~7,6) — każda klasa wygląda inaczej
+function rysujNakrycieGlowy(typ, k, kol) {
+  const c = ctx, sciezka = (f) => { c.beginPath(); f(); c.fill(); };
+  const obrys = () => { c.strokeStyle = 'rgba(0,0,0,0.45)'; c.lineWidth = 0.8; c.stroke(); };
+  switch (typ) {
+    case 'kajdany': c.fillStyle = '#8a8a96'; sciezka(() => c.ellipse(0, -5.2, 7.2, 2.1, 0, 0, Math.PI * 2)); c.strokeStyle = '#5a5a66'; c.lineWidth = 1.2; c.beginPath(); c.arc(4, -2.5, 1.6, 0, Math.PI * 2); c.arc(6.5, -0.5, 1.6, 0, Math.PI * 2); c.stroke(); break;
+    case 'helm': c.fillStyle = '#c8ccd8'; sciezka(() => { c.arc(0, -13.5, 8.6, Math.PI, Math.PI * 2); c.lineTo(8.6, -9); c.lineTo(5.5, -9); c.lineTo(5.5, -12); c.lineTo(-5.5, -12); c.lineTo(-5.5, -9); c.lineTo(-8.6, -9); c.closePath(); }); obrys();
+      c.fillStyle = '#2a2a34'; c.fillRect(-5, -12.3, 10, 1.1); c.fillStyle = '#c0392b'; sciezka(() => { c.moveTo(-1, -22); c.quadraticCurveTo(-7, -27, -9, -21); c.quadraticCurveTo(-5, -22, -1, -20); }); break;
+    case 'melonik': c.fillStyle = '#1e5a2a'; sciezka(() => c.ellipse(0, -18.6, 10.5, 2.3, 0, 0, Math.PI * 2)); sciezka(() => { c.arc(0, -19, 6.4, Math.PI, Math.PI * 2); }); c.fillStyle = '#e6c15c'; c.fillRect(-6.3, -20.3, 12.6, 1.3);
+      c.fillStyle = '#6ae07a'; [[-2.4, -23], [-0.8, -24.6], [0.8, -23]].forEach(([x, y]) => sciezka(() => c.arc(x + 3, y, 1.2, 0, Math.PI * 2))); break;
+    case 'kaptur': c.fillStyle = k; sciezka(() => { c.arc(0, -14, 9.6, Math.PI * 0.92, Math.PI * 2.08); c.lineTo(9.4, -5); c.lineTo(7.2, -5); c.lineTo(7.4, -12); c.quadraticCurveTo(0, -19.5, -7.4, -12); c.lineTo(-7.2, -5); c.lineTo(-9.4, -5); c.closePath(); }); obrys();
+      if (kol.piorko) { c.fillStyle = kol.piorko; sciezka(() => c.ellipse(7.5, -22, 1.3, 4.2, 0.5, 0, Math.PI * 2)); } break;
+    case 'opaska': c.fillStyle = kol.wlosy; sciezka(() => c.arc(0, -22, 2.6, 0, Math.PI * 2)); c.fillStyle = '#c0392b'; c.fillRect(-8, -17.2, 16, 2.4); sciezka(() => { c.moveTo(-7.5, -16.5); c.lineTo(-12.5, -14); c.lineTo(-11.5, -12.5); c.lineTo(-7.5, -15); }); break;
+    case 'kapeluszMaga': c.fillStyle = k; sciezka(() => c.ellipse(0, -18.6, 11.5, 2.5, 0, 0, Math.PI * 2)); sciezka(() => { c.moveTo(-6.5, -19); c.quadraticCurveTo(-2, -27, 4.5, -34); c.quadraticCurveTo(2.5, -26, 6.5, -19); c.closePath(); }); obrys();
+      c.fillStyle = '#ffe08a'; c.font = '5px sans-serif'; c.textAlign = 'center'; c.fillText('★', 0.5, -22); break;
+    case 'rogi': c.fillStyle = '#9a9aa6'; sciezka(() => { c.arc(0, -14, 8.4, Math.PI, Math.PI * 2); c.closePath(); }); obrys(); c.fillStyle = '#e8dcc0';
+      sciezka(() => { c.moveTo(-7.5, -16); c.quadraticCurveTo(-13, -18, -12.5, -26); c.quadraticCurveTo(-10.5, -20, -6, -19.5); c.closePath(); }); sciezka(() => { c.moveTo(7.5, -16); c.quadraticCurveTo(13, -18, 12.5, -26); c.quadraticCurveTo(10.5, -20, 6, -19.5); c.closePath(); }); break;
+    case 'cylinder': c.fillStyle = '#1a1a22'; sciezka(() => c.ellipse(0, -18.6, 10, 2.2, 0, 0, Math.PI * 2)); c.fillRect(-5.6, -30, 11.2, 11.6); c.fillStyle = '#e6c15c'; c.fillRect(-5.6, -21.6, 11.2, 1.8); break;
+    case 'kowboj': c.fillStyle = '#7a4a2a'; sciezka(() => { c.ellipse(0, -18.4, 13, 2.8, 0, 0, Math.PI * 2); }); sciezka(() => { c.moveTo(-6, -18.5); c.lineTo(-5.5, -25); c.quadraticCurveTo(0, -23, 5.5, -25); c.lineTo(6, -18.5); c.closePath(); }); obrys(); c.fillStyle = '#2a1a10'; c.fillRect(-6, -20.6, 12, 1.4); break;
+    case 'gogle': c.fillStyle = '#6a4a2a'; sciezka(() => { c.arc(0, -14, 8.3, Math.PI, Math.PI * 2); c.closePath(); }); c.fillStyle = '#2a2a2a'; c.fillRect(-8.2, -17.6, 16.4, 1.8);
+      c.fillStyle = '#9fd8ff'; c.strokeStyle = '#3a3a3a'; c.lineWidth = 1; [-3.3, 3.3].forEach(x => { c.beginPath(); c.arc(x, -17.6, 2.5, 0, Math.PI * 2); c.fill(); c.stroke(); }); break;
+    case 'kask': c.fillStyle = '#f0c030'; sciezka(() => { c.arc(0, -14.5, 8.6, Math.PI, Math.PI * 2); c.closePath(); }); sciezka(() => c.ellipse(0, -14.5, 10.5, 1.8, 0, 0, Math.PI * 2)); obrys();
+      c.fillStyle = '#ffffff'; sciezka(() => c.arc(0, -20.5, 1.8, 0, Math.PI * 2)); c.fillStyle = '#c09020'; c.fillRect(-0.6, -23, 1.2, 8); break;
+    case 'wieniec': c.fillStyle = '#4aa04a'; for (let i = 0; i < 7; i++) { const a = Math.PI * (1.05 + i * 0.15); sciezka(() => c.ellipse(Math.cos(a) * 8, -14 + Math.sin(a) * 8, 1.6, 3, a + Math.PI / 2, 0, Math.PI * 2)); }
+      c.fillStyle = '#e04a4a'; sciezka(() => c.arc(0, -22, 1.2, 0, Math.PI * 2)); break;
+    case 'fedora': c.fillStyle = '#5a1a6a'; sciezka(() => c.ellipse(0, -18.6, 11.5, 2.4, -0.08, 0, Math.PI * 2)); sciezka(() => { c.moveTo(-6, -19); c.lineTo(-5, -25); c.quadraticCurveTo(0, -27, 5, -25); c.lineTo(6, -19); c.closePath(); }); obrys();
+      c.fillStyle = '#1a1a1a'; c.fillRect(-6, -21, 12, 1.5); c.fillStyle = '#fff'; c.fillRect(3.2, -26.5, 3.4, 4.6); c.fillStyle = '#c0392b'; c.fillRect(4.3, -25, 1.2, 1.2); break;
+    case 'aureola': c.strokeStyle = '#ffe08a'; c.lineWidth = 1.6; c.shadowColor = '#ffe08a'; c.shadowBlur = 6; c.beginPath(); c.ellipse(0, -25, 6.5, 1.8, 0, 0, Math.PI * 2); c.stroke(); c.shadowBlur = 0;
+      c.fillStyle = '#9fe8ff'; sciezka(() => { c.moveTo(0, -20.5); c.lineTo(1.8, -18); c.lineTo(0, -15.5); c.lineTo(-1.8, -18); c.closePath(); }); break;
+    case 'czaszka': c.fillStyle = '#16141c'; sciezka(() => { c.arc(0, -14, 9.6, Math.PI * 0.92, Math.PI * 2.08); c.lineTo(9.4, -5); c.lineTo(7.2, -5); c.lineTo(7.4, -12); c.quadraticCurveTo(0, -19.5, -7.4, -12); c.lineTo(-7.2, -5); c.lineTo(-9.4, -5); c.closePath(); });
+      c.fillStyle = '#e8e4d8'; sciezka(() => c.arc(0, -20, 2.4, 0, Math.PI * 2)); c.fillStyle = '#16141c'; c.fillRect(-1.3, -20.5, 0.9, 0.9); c.fillRect(0.4, -20.5, 0.9, 0.9); break;
+    case 'macki': c.fillStyle = '#6a4ac4'; for (let i = 0; i < 3; i++) sciezka(() => { const x = -6 + i * 6; c.moveTo(x - 1.5, -18); c.quadraticCurveTo(x - 3, -24, x + 1, -26); c.quadraticCurveTo(x - 0.5, -22, x + 1.5, -18); c.closePath(); }); break;
+  }
+}
 function rysujGracza(g) {
   const K = KLASY[g.klasa], kol = K.kolory, rozm = g.roz || 1, hpMaxR = g.hpMaxR || 100;
   const gx = g.x, gy = g.y;
@@ -4421,7 +4484,8 @@ function rysujGracza(g) {
   const gPl = ctx.createLinearGradient(0, -6, 0, 14); gPl.addColorStop(0, kol.plaszcz[0]); gPl.addColorStop(1, kol.plaszcz[1]);
   ctx.fillStyle = gPl; ctx.beginPath(); ctx.moveTo(-7, -5); ctx.lineTo(7, -5); ctx.lineTo(9 - fal, 13); ctx.quadraticCurveTo(0, 15.5, -10 - fal, 12); ctx.closePath(); ctx.fill();
   ctx.strokeStyle = 'rgba(0,0,0,0.4)'; ctx.lineWidth = 1; ctx.stroke();
-  ctx.fillStyle = kol.wlosy; ctx.beginPath(); ctx.moveTo(-8, -14); ctx.quadraticCurveTo(-11.5, -3, -8.6 - fal * 0.5, 3.5); ctx.lineTo(8.6 - fal * 0.5, 3.5); ctx.quadraticCurveTo(11.5, -3, 8, -14); ctx.closePath(); ctx.fill();
+  const WY = K.wyglad || {};
+  if (WY.czapka === 'wampir') { ctx.fillStyle = '#7a0a1a'; ctx.beginPath(); ctx.moveTo(-9.5, -5); ctx.lineTo(-11, -19); ctx.lineTo(-4, -8); ctx.closePath(); ctx.moveTo(9.5, -5); ctx.lineTo(11, -19); ctx.lineTo(4, -8); ctx.closePath(); ctx.fill(); }
   zao(-5, 5 + Math.max(0, krok) * 1.5, 4, 8 - Math.max(0, krok) * 1.5, 1.5, '#2f3a4f'); zao(1, 5 + Math.max(0, -krok) * 1.5, 4, 8 - Math.max(0, -krok) * 1.5, 1.5, '#2f3a4f');
   zao(-6 + krok * 1.3, 11, 5.6, 3.6, 1.6, '#4a2c1a'); zao(0.4 - krok * 1.3, 11, 5.6, 3.6, 1.6, '#4a2c1a');
   const gTu = ctx.createLinearGradient(-7, -6, 7, 8); gTu.addColorStop(0, kol.tunika[0]); gTu.addColorStop(1, kol.tunika[1]);
@@ -4432,14 +4496,18 @@ function rysujGracza(g) {
   ctx.fillStyle = '#efc39a'; ctx.beginPath(); ctx.arc(-7.9, 4.6 - krok * 1.2, 1.9, 0, Math.PI * 2); ctx.arc(7.9, 4.6 + krok * 1.2, 1.9, 0, Math.PI * 2); ctx.fill();
   const gGl = ctx.createRadialGradient(-2, -15, 1, 0, -13, 9); gGl.addColorStop(0, '#f6d2ae'); gGl.addColorStop(1, '#dca57c');
   ctx.fillStyle = gGl; ctx.beginPath(); ctx.arc(0, -13 + odd * 0.2, 7.6, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = 0.9; ctx.stroke();
-  ctx.fillStyle = kol.wlosy; ctx.beginPath(); ctx.arc(0, -14.5, 8, Math.PI * 1.02, Math.PI * 1.98); ctx.fill();
-  ctx.beginPath(); ctx.moveTo(-7.8, -14); ctx.quadraticCurveTo(-3, -9.6, 1.5, -13.6); ctx.quadraticCurveTo(4.6, -11, 7.8, -14); ctx.lineTo(7.5, -17.5); ctx.lineTo(-7.5, -17.5); ctx.closePath(); ctx.fill();
+  if (!WY.lysy) {   // krótkie włosy
+    ctx.fillStyle = kol.wlosy; ctx.beginPath(); ctx.arc(0, -14.5, 8, Math.PI * 1.02, Math.PI * 1.98); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-7.8, -14); ctx.lineTo(-6, -15.2); ctx.lineTo(-3.5, -14.2); ctx.lineTo(-1, -15.4); ctx.lineTo(1.8, -14.2); ctx.lineTo(4.5, -15.3); ctx.lineTo(7.8, -14); ctx.lineTo(7.5, -17.5); ctx.lineTo(-7.5, -17.5); ctx.closePath(); ctx.fill();
+  } else { ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(-5.5, -15.6, 11, 1.4); }
   const mrug = (Date.now() % 3800) < 120;
   ctx.fillStyle = '#1e1a16';
   if (mrug) { ctx.fillRect(-4, -11.6, 2.8, 0.9); ctx.fillRect(1.7, -11.6, 2.8, 0.9); }
   else { ctx.beginPath(); ctx.ellipse(-2.5, -11.3, 1.25, 1.65, 0, 0, Math.PI * 2); ctx.ellipse(3.1, -11.3, 1.25, 1.65, 0, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(-2.3, -12.3, 0.7, 0.7); ctx.fillRect(3.3, -12.3, 0.7, 0.7); }
-  ctx.fillStyle = 'rgba(240,120,110,0.35)'; ctx.beginPath(); ctx.arc(-4.6, -9, 1.3, 0, Math.PI * 2); ctx.arc(5.3, -9, 1.3, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = '#8a3a2a'; ctx.lineWidth = 0.9; ctx.beginPath(); ctx.arc(0.5, -8.7, 1.8, 0.25, Math.PI - 0.25); ctx.stroke();
+  ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(-4.2, -13.6, 3, 0.8); ctx.fillRect(1.6, -13.6, 3, 0.8);   // brwi
+  ctx.strokeStyle = '#7a3a2a'; ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(-1.2, -8.4); ctx.lineTo(2.2, -8.4); ctx.stroke();
+  if (WY.broda) { ctx.fillStyle = WY.broda === true ? kol.wlosy : WY.broda; ctx.beginPath(); ctx.moveTo(-7, -11); ctx.quadraticCurveTo(-6.5, -3.5, 0.3, -2.6); ctx.quadraticCurveTo(7, -3.5, 7.4, -11); ctx.quadraticCurveTo(4, -7.6, 0.3, -9.4); ctx.quadraticCurveTo(-3.5, -7.6, -7, -11); ctx.fill(); }
+  rysujNakrycieGlowy(WY.czapka, WY.kol || kol.plaszcz[0], kol);
   ctx.restore();
   if (g.powalony) { rysujPowalonego(g); return; }
   // zastój Zhonyi - złota bańka
@@ -4456,6 +4524,13 @@ function rysujGracza(g) {
   if (g.nick && (gracze.length > 1 || (typeof SIEC !== 'undefined' && SIEC.rola))) {
     ctx.font = '800 9px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.lineWidth = 3; ctx.strokeText(g.nick, gx, gy - 33 * rozm); ctx.fillStyle = g === lokalnyWidok() ? '#ffe08a' : '#bfe0ff'; ctx.fillText(g.nick, gx, gy - 33 * rozm);
+  }
+  // celowanie prawą gałką: strzałka kierunku
+  const ckat = g === lokalnyWidok() ? ((lokalny || gracz) || {}).celKat : null;
+  if (ckat !== null && ckat !== undefined) {
+    ctx.save(); ctx.translate(gx, gy - 2); ctx.rotate(ckat); ctx.globalAlpha = 0.75; ctx.strokeStyle = '#7ae0ff'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(24, 0); ctx.lineTo(62, 0); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = '#7ae0ff';
+    ctx.beginPath(); ctx.moveTo(70, 0); ctx.lineTo(61, -5); ctx.lineTo(61, 5); ctx.closePath(); ctx.fill(); ctx.restore();
   }
   // bronie wokół postaci
   const n = g.bronie.length;
@@ -4770,6 +4845,10 @@ function tagiDef(d, rodzaj, klucz) {
   return (_tagiCache[klucz] = t);
 }
 function htmlTagow(t) { return t.length ? '<div class="tagi">' + t.map(([k, s]) => '<span class="tag' + (k ? ' tag-' + k : '') + '">' + s + '</span>').join('') + '</div>' : ''; }
+// cała karta jako jeden cel dla pada/klawiatury: A klika główny przycisk karty, X — drugi
+function kartaPad(html, akcja, nazwa, akcja2, nazwa2) {
+  return html.replace(/^<div /, '<div data-pad="' + akcja + '" data-padn="' + nazwa + '"' + (akcja2 ? ' data-pad2="' + akcja2 + '" data-pad2n="' + nazwa2 + '"' : '') + ' ');
+}
 function nazwaTieruPrzedmiotu(d) { return d.t === 'p' ? '<span class="kol-p">Pryzmatyczny przedmiot</span>' : '<span class="kol-t' + d.t + '">' + TIERY[d.t].nazwa + ' przedmiot</span>'; }
 function kartaPrzedmiotu(inst, dol, op) {
   op = op || {};
@@ -4952,7 +5031,7 @@ AKCJE.bronStart = d => { gracz.bronie = [nowaBron(d.r, 1)]; run.ofertaBroni = nu
 AKCJE.jakGrac = () => pokazModal('<div class="tytul">❓ Jak grać</div><div class="info-pole">' +
   '<b>Ruch:</b> na telefonie przeciągnij palcem po dolnym pasku (drążek pojawi się pod palcem). Na komputerze <b>WASD</b> / strzałki albo przytrzymaj <b>lewy przycisk myszy</b> — postać idzie w stronę kursora. Atakujesz <b>automatycznie</b>.<br>' +
   '<b>✨ Umiejętność:</b> każda postać ma swoją — przycisk po prawej, na komputerze <b>E</b>, spacja albo <b>prawy przycisk myszy</b> (w stronę kursora). Mikstura: <b>Q</b>, pauza: <b>Esc</b>. Odnawia się szybciej z Przyspieszeniem.<br>' +
-  '<b>🎮 Pad:</b> podłącz kontroler (kabel albo Bluetooth) i naciśnij dowolny przycisk — gra przełączy się na sterowanie padem. Szczegóły w menu „Pad i klawiatura”.<br>' +
+  '<b>🎮 Pad:</b> podłącz kontroler (kabel albo Bluetooth) i naciśnij dowolny przycisk — gra przełączy się na sterowanie padem. Prawą gałką celujesz (puszczona = automatyczne namierzanie). Szczegóły w menu „Sterowanie”.<br>' +
   '<b>⭐ Broń główna</b> to Twoja broń z klasy — to ona atakuje. Ulepszasz ją w sklepie (tiery I–V). Skaluje się od kilku statystyk naraz.<br>' +
   '<b>🗡️ Bronie dodatkowe</b> (jak przedmioty w LoL-u) dają <b>statystyki</b> broni głównej i co kilka sekund albo co N-ty atak same coś odpalają. Dwie takie same o tym samym tierze łączą się w wyższy. Ta sama rodzina co broń główna daje <b>premię zestawu</b>.<br>' +
   '<b>🎒 Przedmioty</b> nie dają statystyk — mają pasywki: działka, krzaki z leczącymi owocami, pszczoły, miny... Ulepszasz je gwiazdkami ★.<br>' +
@@ -4987,7 +5066,7 @@ function pokazAugmenty(tier) {
   if (!run.augOferta) run.augOferta = { tier: tier, ids: losujAugmenty(tier, 3) };
   const o = run.augOferta, T = TIERY_AUG[o.tier];
   let h = pasekGorny() + '<div class="tytul">🧬 Wybierz augment</div><div class="podtytul" style="color:' + T.kolor + '">' + (o.tier === 'p' ? '<span class="kol-p" style="font-weight:900">' + T.nazwa + '</span>' : T.nazwa) + '</div>';
-  o.ids.forEach(id => { h += kartaAugmentu(DEF_AUG[id], '<button class="btn-maly zl" data-a="augWybierz" data-id="' + id + '" style="margin-left:auto">Wybieram</button>', { id: id, poz: 1 }); });
+  o.ids.forEach(id => { h += kartaPad(kartaAugmentu(DEF_AUG[id], '<button class="btn-maly zl" data-a="augWybierz" data-id="' + id + '" style="margin-left:auto">Wybieram</button>', { id: id, poz: 1 }), 'augWybierz', 'wybierz'); });
   if (!o.ids.length) h += '<div class="slot-pusty">Brak dostępnych augmentów tego rodzaju — dostajesz 50 złota.</div><button class="btn" data-a="augPomin">Dalej</button>';
   h += '<button class="btn drugi" data-a="augPrzerzuc"' + (gracz.przerzutyAug > 0 ? '' : ' disabled') + '>🎲 Przerzuć (zostało: ' + gracz.przerzutyAug + ')</button>';
   pokazEkran(h);
@@ -5109,7 +5188,7 @@ AKCJE.skrzZamienOreze = () => wyborZamianyOreza(run.zawSkrzyni.o, () => nastepna
 function wyborZamianyOreza(nowa, potem) {
   run.oczekOre = { o: nowa, potem: potem };
   let h = '<div class="tytul">Którą broń zamienić?</div><div class="podtytul">Wymieniona broń zostanie sprzedana.</div>';
-  gracz.oreze.forEach((o, i) => { h += kartaOreza(o, '<button class="btn-maly zl" data-a="zamienOreze" data-i="' + i + '" style="margin-left:auto">Zamień (+' + wartoscSprzedazyOreza(o) + ' 💰)</button>', { bezOpisu: true }); });
+  gracz.oreze.forEach((o, i) => { h += kartaPad(kartaOreza(o, '<button class="btn-maly zl" data-a="zamienOreze" data-i="' + i + '" style="margin-left:auto">Zamień (+' + wartoscSprzedazyOreza(o) + ' 💰)</button>', { bezOpisu: true }), 'zamienOreze', 'zamień'); });
   h += '<button class="btn drugi" data-a="zamknijModal">Anuluj</button>';
   pokazModal(h);
 }
@@ -5121,7 +5200,7 @@ function dodajPrzedmiotZWyborem(inst, potem) {
   if (wolneSlotyPrzedm(pr) > 0) { gracz.przedmioty = gracz.przedmioty.filter(p => p); gracz.przedmioty.push(inst); poZmianieBuildu(); potem(); return; }
   run.oczekPrz = { inst: inst, potem: potem };
   let h = '<div class="tytul">Brak miejsca</div><div class="podtytul">Sprzedaj jeden ' + (pr ? 'przedmiot <b>pryzmatyczny</b>' : 'zwykły przedmiot') + ', żeby zrobić miejsce na <b>' + DEF_PRZ[inst.id].ik + ' ' + DEF_PRZ[inst.id].n + '</b>.</div>';
-  gracz.przedmioty.forEach((p, i) => { if (p && czyPryzmat(p) === pr) h += kartaPrzedmiotu(p, '<button class="btn-maly czerw" data-a="zamienPrz" data-i="' + i + '" style="margin-left:auto">Sprzedaj (+' + wartoscSprzedazy(p) + ' 💰)</button>', { bezOpisu: true }); });
+  gracz.przedmioty.forEach((p, i) => { if (p && czyPryzmat(p) === pr) h += kartaPad(kartaPrzedmiotu(p, '<button class="btn-maly czerw" data-a="zamienPrz" data-i="' + i + '" style="margin-left:auto">Sprzedaj (+' + wartoscSprzedazy(p) + ' 💰)</button>', { bezOpisu: true }), 'zamienPrz', 'sprzedaj'); });
   h += '<button class="btn drugi" data-a="porzucPrz">Zrezygnuj z nowego (+' + wartoscSprzedazy(inst) + ' 💰)</button>';
   modalEl.dataset.wymuszony = '1';
   pokazModal(h);
@@ -5135,7 +5214,7 @@ AKCJE.porzucPrz = () => { const o = run.oczekPrz; gracz.zloto += wartoscSprzedaz
 function pokazKowadlo() {
   if (!run.ofertaKow) run.ofertaKow = tasuj(PRYZMATY.filter(p => !maPrzedmiot(p.id)).map(p => p.id)).slice(0, 3);
   let h = pasekGorny() + '<div class="tytul">🔨 <span class="kol-p">Pryzmatyczne Kowadło</span></div><div class="podtytul">Wybierz jeden przedmiot pryzmatyczny. Miejsca na pryzmaty: <b>' + liczPrzedm(true) + '/' + slotyTypu(true) + '</b></div>';
-  run.ofertaKow.forEach(id => { h += kartaPrzedmiotu(nowyPrzedmiot(id), '<button class="btn-maly zl" data-a="kowWybierz" data-id="' + id + '" style="margin-left:auto">Wybieram</button>'); });
+  run.ofertaKow.forEach(id => { h += kartaPad(kartaPrzedmiotu(nowyPrzedmiot(id), '<button class="btn-maly zl" data-a="kowWybierz" data-id="' + id + '" style="margin-left:auto">Wybieram</button>'), 'kowWybierz', 'wybierz'); });
   if (!run.przerzutKow) h += '<button class="btn drugi" data-a="kowPrzerzuc">🎲 Przerzuć (raz, za darmo)</button>';
   h += '<button class="btn drugi" data-a="kowPomin">Odrzuć kowadło (+60 💰)</button>';
   pokazEkran(h);
@@ -5196,10 +5275,12 @@ function pokazSklep(zachowaj) {
     if (o.kupiona) { h += '<div class="slot-pusty">Kupione ✔</div>'; return; }
     const cena = cenaOferty(o), stac = gracz.zloto >= cena;
     const dol = '<span class="cena"' + (stac ? '' : ' style="color:#a05a4a"') + '>' + cena + ' 💰</span><button class="btn-maly" data-a="zablokuj" data-i="' + i + '">' + (o.zabl ? '🔒' : '🔓') + '</button><button class="btn-maly zl" data-a="kup" data-i="' + i + '"' + (stac ? '' : ' disabled') + '>Kup</button>';
-    if (o.rodzaj === 'kowadlo') h += '<div class="karta tp"><div class="karta-gora"><div class="karta-ik">🔨</div><div><div class="karta-nazwa">Pryzmatyczne Kowadło</div><div class="karta-tier"><span class="kol-p">Wybór przedmiotu pryzmatycznego</span></div></div></div><div class="karta-opis">Po zakupie wybierasz jeden z 3 przedmiotów pryzmatycznych.</div><div class="karta-dol">' + dol + '</div></div>';
-    else if (o.rodzaj === 'oreze') h += kartaOreza(o.o, (paraOreza(o.o) ? '<span class="tag" style="background:rgba(126,201,138,0.2);color:#7ec98a">⬆️ połączy się</span>' : '') + dol);
-    else if (o.rodzaj === 'pancerz') { const ob = gracz.pancerz[DEF_PANC[o.p.id].slot]; h += kartaPancerza(o.p, (ob ? '<span class="tag">zamieni: ' + DEF_PANC[ob.id].ik + ' ' + TIERY[ob.tier].rz + '</span>' : '') + dol); }
-    else h += kartaPrzedmiotu(nowyPrzedmiot(o.id), dol);
+    let karta = '';
+    if (o.rodzaj === 'kowadlo') karta = '<div class="karta tp"><div class="karta-gora"><div class="karta-ik">🔨</div><div><div class="karta-nazwa">Pryzmatyczne Kowadło</div><div class="karta-tier"><span class="kol-p">Wybór przedmiotu pryzmatycznego</span></div></div></div><div class="karta-opis">Po zakupie wybierasz jeden z 3 przedmiotów pryzmatycznych.</div><div class="karta-dol">' + dol + '</div></div>';
+    else if (o.rodzaj === 'oreze') karta = kartaOreza(o.o, (paraOreza(o.o) ? '<span class="tag" style="background:rgba(126,201,138,0.2);color:#7ec98a">⬆️ połączy się</span>' : '') + dol);
+    else if (o.rodzaj === 'pancerz') { const ob = gracz.pancerz[DEF_PANC[o.p.id].slot]; karta = kartaPancerza(o.p, (ob ? '<span class="tag">zamieni: ' + DEF_PANC[ob.id].ik + ' ' + TIERY[ob.tier].rz + '</span>' : '') + dol); }
+    else karta = kartaPrzedmiotu(nowyPrzedmiot(o.id), dol);
+    h += kartaPad(karta, 'kup', 'kup', 'zablokuj', o.zabl ? 'odblokuj' : 'zablokuj');
   });
   h += sekcjeBuildu(true);
   h += '<button class="btn" data-a="dalejZeSklepu" style="margin-top:14px">▶ Fala ' + (nr + 1) + '</button>';
@@ -5411,7 +5492,7 @@ function pokazProby() {
     (druzyna() ? '<div class="info-pole">👥 Próbę wybierasz dla <b>całej drużyny</b>. Nagrodę dostaje każdy, kto skończy falę na nogach.</div>' : '');
   run.ofertaProb.forEach(id => {
     const p = DEF_PROB[id];
-    h += '<div class="karta az"><div class="karta-gora"><div class="karta-ik">' + p.ik + '</div><div><div class="karta-nazwa">' + p.n + '</div></div></div>' +
+    h += '<div class="karta az" data-pad="probaWybierz" data-padn="podejmij"><div class="karta-gora"><div class="karta-ik">' + p.ik + '</div><div><div class="karta-nazwa">' + p.n + '</div></div></div>' +
       '<div class="karta-opis"><span class="czer">Utrudnienie:</span> ' + p.opis + '<br><span class="ziel">Nagroda:</span> ' + p.nagroda + '</div>' +
       '<div class="karta-dol"><button class="btn-maly zl" data-a="probaWybierz" data-id="' + id + '" style="margin-left:auto">Podejmuję próbę</button></div></div>';
   });
@@ -5760,7 +5841,7 @@ function odswiezEtykietyPada() {
     const k = el.dataset.k; el.textContent = ETYKIETY_PADA[PAD.typ][k] || k;
     const kol = (KOLORY_PADA[PAD.typ] || {})[k]; el.style.background = kol || ''; el.style.color = kol ? '#fff' : '';
   });
-  $('padSrodek').innerHTML = '🎮 ' + esc(PAD.nazwa) + '<br>' + kl('LT') + ' 🧪 · ' + kl('RT') + ' ✨ · ' + kl('START') + ' ⏸️';
+  $('padSrodek').innerHTML = '🎮 prawa gałka: celowanie<br>' + kl('LT') + ' 🧪 · ' + kl('RT') + ' ✨ · ' + kl('START') + ' ⏸️';
   PAD.sygPodp = '';
 }
 function wlaczTrybPada(wl) {
@@ -5832,6 +5913,9 @@ function aktualizujPada(dt) {
     if (s.przyc[PB.GORA]) my -= 1; if (s.przyc[PB.DOL]) my += 1;
     const d = Math.hypot(mx, my); if (d > 1) { mx /= d; my /= d; }
     PAD.mx = mx; PAD.my = my;
+    // prawa gałka: celowanie (puszczona = postać sama namierza najbliższego wroga)
+    const ja = lokalny || gracz, dr = Math.hypot(s.rx, s.ry);
+    if (ja) { if (dr > 0.35) { ja.celKat = Math.atan2(s.ry, s.rx); PAD.celuje = true; } else if (PAD.celuje) { ja.celKat = null; PAD.celuje = false; } }
     if (nowe(PB.A) || nowe(PB.RT) || nowe(PB.RB)) { if (uzyjUmiejetnosci()) wibruj(0.3, 70); }
     if (nowe(PB.X) || nowe(PB.LT) || nowe(PB.LB)) wypijMiksture();
     if (nowe(PB.Y) || nowe(PB.START)) $('btnEkw').click();
@@ -5839,6 +5923,7 @@ function aktualizujPada(dt) {
     $('padPodp').classList.remove('widoczny');
   } else {
     PAD.mx = PAD.my = 0;
+    if (PAD.celuje) { const ja = lokalny || gracz; if (ja) ja.celKat = null; PAD.celuje = false; }
     if (cokolwiek) PAD.fokusWidoczny = true;
     menuPada(s, nowe, dt, bylWidoczny);
   }
@@ -5861,6 +5946,7 @@ function menuPada(s, nowe, dt, bylWidoczny) {
   } else PAD.kier = null;
   if (!bylWidoczny) return;   // pierwsze dotknięcie pada tylko pokazuje podświetlenie
   if (nowe(PB.A)) aktywuj(w);
+  else if (nowe(PB.X)) aktywujDrugie(w);
   else if (nowe(PB.B)) wstecz(w);
   else if (nowe(PB.LB) || nowe(PB.LT)) zakladka(w, -1);
   else if (nowe(PB.RB) || nowe(PB.RT)) zakladka(w, 1);
@@ -5874,9 +5960,11 @@ function menuPada(s, nowe, dt, bylWidoczny) {
 
 // ---------- podświetlenie (fokus) w menu ----------
 function kandydaci(root) {
-  const lista = root.querySelectorAll('[data-a], button, input, textarea');
+  const lista = root.querySelectorAll('[data-a], button, input, textarea, [data-pad]');
   const wyn = [];
   for (const el of lista) {
+    // przyciski wewnątrz karty-celu (data-pad) obsługuje sama karta: A = główna akcja, X = druga
+    if (!el.dataset.pad && el.parentElement && el.parentElement.closest('[data-pad]')) continue;
     const r = el.getBoundingClientRect();
     if (r.width < 2 || r.height < 2) continue;
     wyn.push(el);
@@ -5900,8 +5988,10 @@ function wWidoku(root, el) {
   return r.bottom > v.top + 4 && r.top < v.bottom - 4;
 }
 function fokusDomyslny(root, kand) {
-  for (const a of PREF_FOKUSU) { const el = kand.find(e => e.dataset.a === a && !e.disabled); if (el) return el; }
-  const kup = kand.find(e => e.dataset.a === 'kup'); if (kup) return kup;
+  const akcja = e => e.dataset.a || e.dataset.pad;
+  const mozna = e => !e.disabled && !(e.dataset.pad && (e.querySelector('[data-a="' + e.dataset.pad + '"]') || {}).disabled);
+  for (const a of PREF_FOKUSU) { const el = kand.find(e => akcja(e) === a && mozna(e)); if (el) return el; }
+  const kup = kand.find(e => akcja(e) === 'kup'); if (kup) return kup;
   const wyb = kand.find(e => e.classList.contains('wybrany')); if (wyb) return wyb;
   const glowny = e => e.classList.contains('btn') && !e.classList.contains('drugi') && !e.classList.contains('czerw') && !e.disabled;
   const wid = kand.filter(e => wWidoku(root, e));
@@ -6004,9 +6094,21 @@ function aktywuj(w) {
   const f = zapewnijFokus(w); if (!f) return;
   zapamietaj(w, f);
   if (f.tagName === 'INPUT' || f.tagName === 'TEXTAREA') { f.focus(); try { f.select(); } catch (e) {} return; }
+  if (f.dataset.pad) { kliknijWKarcie(f, f.dataset.pad); return; }
   if (f.disabled) { f.classList.remove('pad-nie'); void f.offsetWidth; f.classList.add('pad-nie'); return; }
   f.classList.add('pad-wcisniety'); setTimeout(() => f.classList.remove('pad-wcisniety'), 130);
   f.click();
+}
+// karta-cel: klika jej przycisk o danej akcji (z jego danymi), a gdy jest wyłączony — potrząsa kartą
+function kliknijWKarcie(f, akcja) {
+  const b = f.querySelector('[data-a="' + akcja + '"]');
+  if (!b || b.disabled) { f.classList.remove('pad-nie'); void f.offsetWidth; f.classList.add('pad-nie'); if (b && akcja === 'kup') toast('💰 Za mało złota'); return; }
+  f.classList.add('pad-wcisniety'); setTimeout(() => f.classList.remove('pad-wcisniety'), 130);
+  b.click();
+}
+function aktywujDrugie(w) {
+  const f = zapewnijFokus(w); if (!f || !f.dataset.pad2) return false;
+  zapamietaj(w, f); kliknijWKarcie(f, f.dataset.pad2); return true;
 }
 function wstecz(w) {
   if (w.k === 'modal') {
@@ -6036,10 +6138,11 @@ function odswiezPodpowiedz(w) {
   el.classList.toggle('widoczny', pokaz);
   if (!pokaz) return;
   const zak = !!w.el.querySelector('.zakladki:not(.opcje)');
-  const syg = PAD.typ + w.k + zak + stan;
+  const f = PAD.fokus[w.k], an = f && f.dataset.padn, a2 = f && f.dataset.pad2n;
+  const syg = PAD.typ + w.k + zak + stan + an + a2;
   if (syg === PAD.sygPodp) return;
   PAD.sygPodp = syg;
-  el.innerHTML = kl('A') + ' wybierz · ' + kl('B') + ' wstecz' + (zak ? ' · ' + kl('LB') + kl('RB') + ' zakładki' : '') + ' · 🕹️ przewijanie' +
+  el.innerHTML = kl('A') + ' ' + (an || 'wybierz') + (a2 ? ' · ' + kl('X') + ' ' + a2 : '') + ' · ' + kl('B') + ' wstecz' + (zak ? ' · ' + kl('LB') + kl('RB') + ' zakładki' : '') + ' · 🕹️ przewijanie' +
     (stan === 'pauza' ? ' · ' + kl('START') + ' wznów' : '');
 }
 
@@ -6061,6 +6164,7 @@ function klawiszMenu(e, wPolu) {
   if (k === 'Enter' || k === 'NumpadEnter' || k === 'Space') { e.preventDefault(); if (!PAD.fokusWidoczny) pokazPodswietlenie(); else aktywuj(w); return true; }
   if (k === 'Escape' || k === 'Backspace') { e.preventDefault(); wstecz(w); return true; }
   if (k === 'KeyQ' || k === 'PageUp') { e.preventDefault(); zakladka(w, -1); return true; }
+  if (k === 'KeyX') { if (PAD.fokusWidoczny && aktywujDrugie(w)) { e.preventDefault(); return true; } return false; }
   if (k === 'KeyE' || k === 'PageDown') { e.preventDefault(); zakladka(w, 1); return true; }
   return false;
 }
@@ -6101,10 +6205,10 @@ function htmlSterowania() {
   return '<div class="tytul">🎮 Sterowanie</div>' +
     '<div class="info-pole" id="padStatus">' + statusPadaHtml() + '</div>' +
     '<div class="sekcja">Walka — pad</div>' +
-    w('🕹️ Ruch', 'lewa gałka albo krzyżak') + w('✨ Umiejętność postaci', kl('A') + ' albo ' + kl('RT') + ' / ' + kl('RB')) +
+    w('🕹️ Ruch', 'lewa gałka albo krzyżak') + w('🎯 Celowanie', 'prawa gałka (puszczona = postać sama namierza)') + w('✨ Umiejętność postaci', kl('A') + ' albo ' + kl('RT') + ' / ' + kl('RB')) +
     w('🧪 Mikstura', kl('X') + ' albo ' + kl('LT') + ' / ' + kl('LB')) + w('⏸️ Pauza i build', kl('Y') + ' albo ' + kl('START')) +
     '<div class="sekcja">Menu i sklep — pad</div>' +
-    w('Przesuwanie', 'krzyżak albo lewa gałka') + w('Wybierz / kup', kl('A')) + w('Wstecz / zamknij', kl('B')) +
+    w('Przesuwanie', 'krzyżak albo lewa gałka') + w('Wybierz / kup', kl('A')) + w('Zablokuj ofertę w sklepie', kl('X')) + w('Wstecz / zamknij', kl('B')) +
     w('Zakładki', kl('LB') + ' ' + kl('RB')) + w('Przewijanie', 'prawa gałka') +
     '<div class="sekcja">Klawiatura i myszka (komputer)</div>' +
     w('Ruch', 'WASD / strzałki') + w('Umiejętność · mikstura', 'E lub spacja · Q') + w('Pauza', 'Esc lub P') +
@@ -6190,7 +6294,7 @@ function pokazOnline(kodStartowy) {
   const nick = lStorGet('wiezien_nick', '');
   pokazEkran('<div style="max-width:440px;margin:0 auto">' +
     '<div class="tytul">👥 Gra z przyjaciółmi</div><div class="podtytul">Do 4 osób w jednej drużynie. Każdy gra na swoim telefonie i ma własną postać, sklep i augmenty — łupy są wspólne.</div>' +
-    '<div class="sekcja">Twoje imię</div><input class="pole" id="poleNick" maxlength="14" placeholder="np. Ewka" value="' + esc(nick) + '">' +
+    '<div class="sekcja">Twoje imię</div><input class="pole" id="poleNick" maxlength="14" placeholder="np. Wędrowiec" value="' + esc(nick) + '">' +
     '<div class="sekcja">Załóż drużynę</div><button class="btn" data-a="zalozDruzyne">🏠 Załóż drużynę</button>' +
     '<div class="sekcja">…albo dołącz do kolegi</div><input class="pole" id="poleKod" maxlength="4" placeholder="KOD" autocapitalize="characters" value="' + esc(kodStartowy || '') + '" style="font-size:24px">' +
     '<button class="btn ziel" data-a="dolacz">🔗 Dołącz</button>' +
@@ -6376,7 +6480,7 @@ function odbierzOdKlienta(conn, d) {
     case 'gotowyL': { const l = SIEC.lobby.find(x => x.id === id); if (l) { l.gotowy = !!d.gotowy; rozeslijLobby(); if (!SIEC.wGrze) pokazLobby(); } break; }
     case 'poz': {
       const p = gracze.find(q => q.id === id);
-      if (p && stan === 'walka') { p.netX = +d.x || p.x; p.netY = +d.y || p.y; p.netKX = d.kx; }
+      if (p && stan === 'walka') { p.netX = +d.x || p.x; p.netY = +d.y || p.y; p.netKX = d.kx; p.celKat = (d.c === null || d.c === undefined) ? null : +d.c; }
       break;
     }
     case 'mik': { const p = gracze.find(q => q.id === id); if (p && stan === 'walka') { kontekst(p); wypijMiksture(); kontekst(z0); } break; }
@@ -6771,7 +6875,7 @@ function krokKlienta(dt) {
   czasGry += dt;
   // wysyłka pozycji ok. 20 razy na sekundę
   SIEC.tPoz -= dt;
-  if (SIEC.tPoz <= 0) { SIEC.tPoz = 0.05; siecWyslijHost({ t: 'poz', x: Math.round(gracz.x), y: Math.round(gracz.y), kx: gracz.kierX < 0 ? -1 : 1 }); }
+  if (SIEC.tPoz <= 0) { SIEC.tPoz = 0.05; siecWyslijHost({ t: 'poz', x: Math.round(gracz.x), y: Math.round(gracz.y), kx: gracz.kierX < 0 ? -1 : 1, c: gracz.celKat === null || gracz.celKat === undefined ? null : Math.round(gracz.celKat * 100) / 100 }); }
   ustawKamere(dt);
 }
 
