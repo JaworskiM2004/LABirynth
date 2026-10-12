@@ -126,6 +126,14 @@ GRA_HTML = r'''<!DOCTYPE html>
   #btnUmi .cdm { border-radius:20px; }
   #btnUmi .czas { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900; color:#fff; text-shadow:0 2px 4px #000; }
   #btnUmi.gotowa { border-color:#ffe08a; box-shadow:0 0 16px rgba(255,224,138,0.55), 0 3px 10px rgba(0,0,0,0.45); animation:umiPuls 1.6s ease-in-out infinite; }
+  #btnUmi2 { width:58px; height:58px; border-radius:17px; font-size:26px; border:2px solid #6a7a8e; background:linear-gradient(135deg,#3a4a6a,#20283e); }
+  #btnUmi2 .cdm { border-radius:15px; }
+  #btnUmi2 .czas { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; color:#fff; text-shadow:0 2px 4px #000; }
+  #btnUmi2.gotowa { border-color:#9fd8ff; box-shadow:0 0 12px rgba(159,216,255,0.5); }
+  .btn-boczny.wlaczona { border-color:#7ee87a !important; box-shadow:0 0 16px rgba(126,232,122,0.7) !important; background:linear-gradient(135deg,#2e5a3a,#163a22) !important; }
+  #gra.pc #btnUmi2 { width:48px; height:48px; font-size:22px; border-radius:14px; }
+  #gra.pc.dotyk #btnUmi2 { width:64px; height:64px; font-size:28px; border-radius:18px; }
+  #gra.tryb-pad #btnUmi2 { width:44px; height:44px; font-size:20px; }
   @keyframes umiPuls { 0%,100%{box-shadow:0 0 10px rgba(255,224,138,0.4)} 50%{box-shadow:0 0 22px rgba(255,224,138,0.8)} }
   .btn-boczny .licznik { position:absolute; right:-5px; bottom:-5px; background:#3f8a52; color:#fff; border-radius:9px;
       padding:1px 6px; font-size:11px; font-weight:800; }
@@ -354,6 +362,62 @@ GRA_HTML = r'''<!DOCTYPE html>
     .btn:disabled, .btn-maly:disabled { cursor:not-allowed; }
   }
   .wykres-pas { height:8px; border-radius:4px; background:linear-gradient(90deg,#e6c15c,#d4af37); }
+
+  /* ---------- MARGINESY BEZPIECZNE (wcięcie aparatu, pasek gestów - gra z ekranu początkowego) ---------- */
+  #hud { padding-top:calc(6px + env(safe-area-inset-top, 0px)); padding-left:calc(8px + env(safe-area-inset-left, 0px)); padding-right:calc(8px + env(safe-area-inset-right, 0px)); }
+  #gra.pc #hud { padding:calc(10px + env(safe-area-inset-top, 0px)) calc(14px + env(safe-area-inset-right, 0px)) 0 calc(14px + env(safe-area-inset-left, 0px)); }
+  #gra.pc #falaInfo { top:calc(10px + env(safe-area-inset-top, 0px)); }
+  #dziennik { top:calc(96px + env(safe-area-inset-top, 0px)); }
+  #pasSterowania { padding-bottom:env(safe-area-inset-bottom, 0px); }
+  #ekran { padding-top:calc(14px + env(safe-area-inset-top, 0px)); padding-left:calc(12px + env(safe-area-inset-left, 0px)); padding-right:calc(12px + env(safe-area-inset-right, 0px)); }
+  #gra.pc #ekran { padding-top:calc(22px + env(safe-area-inset-top, 0px)); padding-left:calc(24px + env(safe-area-inset-left, 0px)); padding-right:calc(24px + env(safe-area-inset-right, 0px)); }
+  #modalTresc { padding-bottom:calc(22px + env(safe-area-inset-bottom, 0px)); }
+
+  /* ---------- TABLET (pionowo) ---------- */
+  #gra.tablet { max-width:none; }
+  #gra.tablet .ekran-tresc { max-width:640px; margin:0 auto; }
+  #gra.tablet #modalTresc { max-width:720px; }
+  #gra.tablet #hud, #gra.tablet #dziennik { zoom:var(--skalaHud, 1); }
+
+  /* ---------- POZIOMO NA DOTYKU (telefon / tablet obrócony) ---------- */
+  #gra.pc.dotyk .kb-kl { display:none !important; }
+  #gra.pc .hud-rzad > div:first-child { max-width:calc(50% - 82px); }
+  #gra.pc #pasekPrzedm { max-width:min(430px, calc(50% - 82px)); }
+  #gra.pc.dotyk #pasSterowania { left:auto; right:calc(14px + env(safe-area-inset-right, 0px)); bottom:calc(12px + env(safe-area-inset-bottom, 0px)); transform:none;
+      background:none; border:0; box-shadow:none; padding:0; gap:12px; align-items:flex-end; }
+  #gra.pc.dotyk .kolumna-btn { flex-direction:column; gap:10px; }
+  #gra.pc.dotyk .btn-boczny.maly { width:52px; height:52px; font-size:23px; }
+  #gra.pc.dotyk #btnUmi { width:84px; height:84px; font-size:37px; border-radius:24px; }
+  #gra.pc.dotyk #btnUmi .cdm { border-radius:22px; }
+  #gra.pc.dotyk #btnUmi .czas { font-size:23px; }
+  #gra.pc.dotyk.tryb-pad #pasSterowania { left:50%; right:auto; transform:translateX(-50%); background:rgba(16,13,22,0.84); border:1px solid #4a3a2e; border-radius:18px; padding:9px 16px; }
+  #gra.pc.dotyk.tryb-pad .kolumna-btn { flex-direction:row; }
+  #gra.pc.dotyk #toast { bottom:calc(112px * var(--skalaHud, 1)); }
+  /* drążek pod kciukiem: pojawia się tam, gdzie dotkniesz planszy (blady podgląd w lewym dolnym rogu) */
+  #drazekPlyw { position:absolute; left:calc(100px + env(safe-area-inset-left, 0px)); top:calc(100% - 100px - env(safe-area-inset-bottom, 0px));
+      width:124px; height:124px; margin:-62px 0 0 -62px; z-index:6; pointer-events:none; display:none; opacity:0.28; }
+  #gra.pc.dotyk:not(.tryb-pad) #drazekPlyw { display:block; }
+  #drazekPlyw.aktywny { opacity:0.95; }
+  #drazekPlyw .baza { position:absolute; inset:0; border-radius:50%; background:radial-gradient(circle at 40% 35%, rgba(255,255,255,0.08), rgba(0,0,0,0.35));
+      border:2px solid rgba(230,193,92,0.45); }
+  #drazekPlyw .galka { position:absolute; left:50%; top:50%; width:52px; height:52px; margin:-26px 0 0 -26px; border-radius:50%;
+      background:radial-gradient(circle at 38% 32%, #f0dfa8, #d4af37 60%, #8a6a1e); box-shadow:0 3px 10px rgba(0,0,0,0.5); }
+
+  /* niski ekran (telefon poziomo): zwięźlejsze menu */
+  @media (max-height:500px) and (orientation:landscape) {
+    .menu-klucz { display:none; }
+    .tytul.duzy { font-size:27px; margin-top:4px; }
+  }
+  /* ---------- OBRÓĆ URZĄDZENIE (wybrana orientacja) ---------- */
+  #obrocInfo { position:absolute; inset:0; z-index:95; display:none; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+      background:rgba(9,7,13,0.97); text-align:center; padding:24px; }
+  #obrocInfo.widoczny { display:flex; }
+  #obrocInfo .ikona { font-size:64px; animation:obroc 1.8s ease-in-out infinite; }
+  #obrocInfo .t { font-size:22px; font-weight:900; color:var(--zloto); }
+  #obrocInfo .p { font-size:13px; color:#d8cdb0; max-width:340px; line-height:1.5; }
+  #obrocInfo .btn { max-width:320px; }
+  @keyframes obroc { 0%,20% { transform:rotate(0deg); } 50%,70% { transform:rotate(-90deg); } 100% { transform:rotate(0deg); } }
+  #obrocInfo.pion .ikona { animation-direction:reverse; }
 </style>
 </head>
 <body>
@@ -380,6 +444,7 @@ GRA_HTML = r'''<!DOCTYPE html>
     </div>
     <div id="strefaDrazka"><div id="drazekBaza"><div id="drazekGalka"></div></div></div>
     <div id="padSrodek"></div>
+    <button class="btn-boczny" id="btnUmi2" style="display:none"><span id="umi2Ik">✨</span><span class="cdm" id="umi2Cd"></span><span class="czas" id="umi2Czas"></span><span class="pad-kl" data-k="RB">RB</span><span class="kb-kl">R</span></button>
     <button class="btn-boczny" id="btnUmi"><span id="umiIk">✨</span><span class="cdm" id="umiCd"></span><span class="czas" id="umiCzas"></span><span class="pad-kl" data-k="A">A</span><span class="kb-kl">E</span></button>
   </div>
   <div id="ekran"></div>
@@ -387,6 +452,9 @@ GRA_HTML = r'''<!DOCTYPE html>
   <div id="padPodp"></div>
   <div id="toast"></div>
   <div id="siecInfo"></div>
+  <div id="drazekPlyw"><div class="baza"></div><div class="galka"></div></div>
+  <div id="obrocInfo"><div class="ikona">📱</div><div class="t" id="obrocTytul">Obróć urządzenie</div><div class="p" id="obrocTekst"></div>
+    <button class="btn drugi" data-a="obrocAuto">Graj w obu orientacjach</button></div>
 </div>
 <script>
 'use strict';
@@ -446,6 +514,7 @@ const USTAW = Object.assign({
   efekty: 'pelne',        // pelne / oszczedne — iskry i odpryski
   mysz: true,             // komputer: ruch przytrzymanym lewym przyciskiem myszy
   interfejs: 1,           // 0.9 / 1 / 1.15 — wielkość napisów i przycisków
+  orientacja: 'auto',     // auto / pion / poziom — telefon i tablet
 }, lStorGet('wiezien_ustawienia', {}));
 function zapiszUstawienia() { lStorSet('wiezien_ustawienia', USTAW); }
 let SKALA_TEKSTU = 1;     // liczby nad wrogami (na komputerze nieco mniejsze, bo plansza jest większa)
@@ -473,6 +542,10 @@ function przyciemnijDokument(d) {
     let ap = d.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
     if (!ap) { ap = d.createElement('meta'); ap.name = 'apple-mobile-web-app-status-bar-style'; (d.head || d.documentElement).appendChild(ap); }
     ap.content = 'black-translucent';
+    // "Dodaj do ekranu początkowego" ma otwierać grę jak aplikację (bez pasków przeglądarki)
+    [['apple-mobile-web-app-capable', 'yes'], ['mobile-web-app-capable', 'yes'], ['apple-mobile-web-app-title', 'Więzień']].forEach(([n, v]) => {
+      if (!d.querySelector('meta[name="' + n + '"]')) { const m = d.createElement('meta'); m.name = n; m.content = v; (d.head || d.documentElement).appendChild(m); }
+    });
   } catch (e) {}
 }
 function rozciagnijRamke() {
@@ -497,38 +570,62 @@ function rozciagnijRamke() {
   }
 }
 
-// Układ komputerowy: szeroki ekran (poziomo) i myszka albo pad. Wtedy plansza zajmuje całe okno,
-// zamiast dotykowego drążka jest mały pasek akcji, a menu układają się w kolumny.
+// UKŁADY EKRANU
+//  - pionowy (telefon, tablet): plansza u góry, na dole pasek z drążkiem i przyciskami;
+//  - poziomy (komputer, telefon/tablet obrócony): plansza na cały ekran; z myszką - mały pasek akcji,
+//    na dotyku - drążek pod kciukiem w dowolnym miejscu planszy i duże przyciski w prawym dolnym rogu.
+function czyDotykowy() {
+  try { if (matchMedia('(pointer: coarse)').matches) return true; } catch (e) {}
+  let fine = false; try { fine = matchMedia('(any-pointer: fine)').matches; } catch (e) {}
+  return (navigator.maxTouchPoints || 0) > 0 && !fine;
+}
 function czyUkladPC() {
   const w = window.innerWidth, h = window.innerHeight;
-  if (USTAW.uklad === 'tel' || w <= h) return false;
-  if (USTAW.uklad === 'pc') return w >= 560;
-  let mysz = false; try { mysz = matchMedia('(any-pointer: fine)').matches; } catch (e) {}
-  return w >= 820 && w >= h * 1.15 && (mysz || (typeof PAD !== 'undefined' && PAD.tryb));
+  return w > h * 1.05 && w >= 480;
+}
+function czyUkladDotyk() {
+  if (USTAW.uklad === 'pc') return false;
+  if (USTAW.uklad === 'tel') return true;
+  return czyDotykowy();
+}
+// marginesy bezpieczne (wcięcie aparatu, pasek gestów) - w aplikacji z ekranu początkowego
+let BEZP = { t: 0, b: 0, l: 0, r: 0 };
+function zmierzBezpieczne() {
+  try {
+    let s = document.getElementById('sondaBezp');
+    if (!s) { s = document.createElement('div'); s.id = 'sondaBezp'; s.style.cssText = 'position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;' +
+      'padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'; document.body.appendChild(s); }
+    const cs = getComputedStyle(s);
+    BEZP = { t: parseFloat(cs.paddingTop) || 0, r: parseFloat(cs.paddingRight) || 0, b: parseFloat(cs.paddingBottom) || 0, l: parseFloat(cs.paddingLeft) || 0 };
+  } catch (e) {}
+  return BEZP;
 }
 function dopasujRozmiar() {
   rozciagnijRamke();
-  const g = $('gra'), pc = czyUkladPC();
-  g.classList.toggle('pc', pc);
-  const w = g.clientWidth || window.innerWidth, h = g.clientHeight || window.innerHeight;
+  const g = $('gra'), pc = czyUkladPC(), dotyk = pc && czyUkladDotyk();
+  const W0 = window.innerWidth, H0 = window.innerHeight, tablet = !pc && Math.min(W0, H0) >= 600;
+  g.classList.toggle('pc', pc); g.classList.toggle('dotyk', dotyk); g.classList.toggle('tablet', tablet);
+  const B = zmierzBezpieczne();
+  const w = g.clientWidth || W0, h = g.clientHeight || H0;
   const pas = pc ? 0 : (typeof PAD !== 'undefined' && PAD.tryb) ? 64 : Math.round(ogr(h * 0.21, 132, 178));   // z padem: wąski pasek bez drążka
-  document.documentElement.style.setProperty('--wysPaska', pas + 'px');
-  const hc = Math.max(240, h - pas);
+  document.documentElement.style.setProperty('--wysPaska', (pas + (pc ? 0 : B.b)) + 'px');
+  const hc = Math.max(240, h - (pc ? 0 : pas + B.b));
   widok.style.height = hc + 'px';
   if (pc) {
-    // na komputerze widać więcej planszy w poziomie; wysokość widoku zbliżona do telefonu
-    WYS = 500; WID = Math.round(WYS * w / hc);
+    // poziomo widać więcej planszy w bok; wysokość widoku zbliżona do telefonu trzymanego pionowo
+    WYS = dotyk ? Math.round(ogr(hc * 1.1, 430, 580)) : 500; WID = Math.round(WYS * w / hc);
     if (WID > 1150) { WID = 1150; WYS = Math.round(WID * hc / w); }
-    SKALA_TEKSTU = 0.85;
-  } else { WID = 380; WYS = Math.round(WID * hc / w); SKALA_TEKSTU = 1; }
+    SKALA_TEKSTU = dotyk ? 0.95 : 0.85;
+  } else { WID = tablet ? Math.round(ogr(w / 1.3, 380, 680)) : 380; WYS = Math.round(WID * hc / w); SKALA_TEKSTU = tablet ? 1.08 : 1; }
   // płótno w rozdzielczości ekranu (ostre także na dużym monitorze), maks. 2× dla płynności
   DPR = ogr(w * (window.devicePixelRatio || 1) / WID, 1, 2);
   WYS_SW = WYS / ZOOM; WID_SW = WID / ZOOM;
   widok.width = Math.round(WID * DPR); widok.height = Math.round(WYS * DPR);
-  // wielkość interfejsu: na komputerze rośnie z wysokością okna
-  const sk = (pc ? ogr(h / 800, 1, 1.45) : 1) * (USTAW.interfejs || 1);
+  // wielkość interfejsu: na komputerze rośnie z wysokością okna, na tablecie z jego wielkością
+  const sk = (pc ? (dotyk ? ogr(h / 440, 0.88, 1.4) : ogr(h / 800, 1, 1.45)) : tablet ? ogr(w / 620, 1, 1.35) : 1) * (USTAW.interfejs || 1);
   document.documentElement.style.setProperty('--skalaUI', sk.toFixed(3));
-  document.documentElement.style.setProperty('--skalaHud', ((pc ? ogr(h / 760, 1, 1.5) : 1) * (USTAW.interfejs || 1)).toFixed(3));
+  document.documentElement.style.setProperty('--skalaHud', ((pc ? (dotyk ? ogr(h / 440, 0.9, 1.4) : ogr(h / 760, 1, 1.5)) : tablet ? ogr(w / 620, 1, 1.3) : 1) * (USTAW.interfejs || 1)).toFixed(3));
+  if (typeof sprawdzObrot === 'function') sprawdzObrot();
 }
 window.addEventListener('resize', () => setTimeout(dopasujRozmiar, 50));
 window.addEventListener('orientationchange', () => setTimeout(dopasujRozmiar, 250));
@@ -1313,18 +1410,18 @@ const PRZEDMIOTY = [
   { id: 'przepaska', t: 0, ik: '🌵', n: 'Kolczasta Przepaska',
     opis: i => 'Gdy wróg trafi Cię <b>wręcz</b>, otrzymuje <span class="mag">' + f0((10 + 0.35 * D.pancerz) * M(i)) + '</span> (10 + 35% pancerza) obrażeń magicznych.',
     naOtrzymanie(i, v, typ, o) { if (o.wrog && o.wrecz) zadaj(o.wrog, (10 + 0.35 * D.pancerz) * M(i), 'mag', { zr: 'Kolczasta Przepaska', odbicie: true }); } },
-  { id: 'wiezyczka', t: 0, ik: '🗼', n: 'Mała Wieżyczka', cd: 10,
+  { id: 'wiezyczka', t: 0, ik: '🗼', n: 'Mała Wieżyczka', cd: 10, wielokrotny: true,
     opis: i => 'Co <b>10 s</b> stawia wieżyczkę na 8 s. Strzela co 0,8 s: <span class="fiz">' + f0((8 + 0.2 * D.ad + 0.2 * D.ap) * M(i)) + '</span> (8 + 20% ⚔️ + 20% ✨).',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 10); postawDzialko('wiezyczka', 8, { obr: (8 + 0.2 * D.ad + 0.2 * D.ap) * M(i), co: 0.8, zr: 'Mała Wieżyczka' }); } },
-  { id: 'krzakJagod', t: 0, ik: '🫐', n: 'Krzak Jagód', cd: 16,
+  { id: 'krzakJagod', t: 0, ik: '🫐', n: 'Krzak Jagód', cd: 16, wielokrotny: true,
     opis: i => 'Co <b>16 s</b> sadzi krzak (12 s), który co 3 s zrzuca jagodę. Jagoda leczy tego, kto ją zbierze, o <b>' + fmt(4 * M(i)) + '%</b> maks. zdrowia (działa też na kolegów).',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 16); dodajStwora('krzak', gracz.x + losowo(-40, 40), gracz.y + losowo(-40, 40), 12, { co: 3, lecz: 0.04 * M(i), ikOwocu: '🫐' }); } },
   { id: 'swieca', t: 0, ik: '🕯️', n: 'Świeca Mędrca',
     opis: i => 'Każdy nowy poziom leczy Cię o <b>' + Math.round(15 * M(i)) + '%</b> maks. zdrowia i daje tarczę ' + Math.round(10 * M(i)) + '% maks. zdrowia na 3 s.',
     naAwans(i) { leczGracza(D.hpMax * 0.15 * M(i), 'Świeca Mędrca'); dajTarcze(D.hpMax * 0.1 * M(i), 3); } },
-  { id: 'sakiewka', t: 0, ik: '👛', n: 'Sakiewka Złodzieja',
-    opis: i => 'Zabici wrogowie mają <b>10%</b> szansy upuścić dodatkowe <b>' + f0(2 * M(i)) + '</b> złota.',
-    naZabicie(i, w) { if (!w.bezLupu && Math.random() < 0.1) rozsypMonety(w.x, w.y, 2 * M(i)); } },
+  { id: 'sakiewka', t: 0, ik: '👛', n: 'Sakiewka Złodzieja', wielokrotny: true,
+    opis: i => 'Zabici wrogowie mają <b>12%</b> szansy upuścić dodatkowe <b>' + f0(2.5 * M(i)) + '</b> złota (ponad zwykłe złoto z fali).',
+    naZabicie(i, w) { if (!w.bezLupu && !w.sojusznik && Math.random() < 0.12) rozsypMonety(w.x, w.y, 2.5 * M(i) / 1.3, true); } },
   { id: 'koniczyna', t: 0, ik: '🍀', n: 'Czterolistna Koniczyna',
     opis: i => 'Skrzynie wypadają z wrogów o <b>' + Math.round(30 * M(i)) + '%</b> częściej.',
     mnSkrzyn(i) { return 1 + 0.3 * M(i); } },
@@ -1351,7 +1448,7 @@ const PRZEDMIOTY = [
   { id: 'rog', t: 0, ik: '📯', n: 'Róg Bojowy',
     opis: i => 'Na początku każdej fali: <b>+' + Math.round(35 * M(i)) + '%</b> prędkości ataku i +20 prędkości ruchu na 8 s.',
     naStartFali(i) { dodajBuff('rog', { as: 35 * M(i), ms: 20 }, 8); } },
-  { id: 'pulapka', t: 0, ik: '🪤', n: 'Wnyki', cd: 7,
+  { id: 'pulapka', t: 0, ik: '🪤', n: 'Wnyki', cd: 7, wielokrotny: true,
     opis: i => 'Co <b>7 s</b> zostawia wnyki (20 s). Pierwszy wróg, który w nie wejdzie, jest unieruchomiony na 1,5 s i dostaje <span class="fiz">' + f0((20 + 0.3 * D.ad) * M(i)) + '</span> (20 + 30% ⚔️).',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 7); dodajStwora('wnyki', gracz.x, gracz.y, 20, { obr: (20 + 0.3 * D.ad) * M(i), zr: 'Wnyki' }); } },
   { id: 'ksiazkaKucharska', t: 0, ik: '🍳', n: 'Książka Kucharska',
@@ -1359,19 +1456,28 @@ const PRZEDMIOTY = [
     naMiksturze(i) { dajTarcze(D.hpMax * 0.15 * M(i), 4); }, mocMikstur(i) { return 0.4 * M(i); } },
 
   // ======================= RZADKIE (T2) =======================
-  { id: 'dzialko', t: 1, ik: '🔫', n: 'Działko Strażnicze', cd: 12,
+  { id: 'dzialko', t: 1, ik: '🔫', n: 'Działko Strażnicze', cd: 12, wielokrotny: true,
     opis: i => 'Co <b>12 s</b> stawia działko na 12 s. Strzela co 0,6 s: <span class="fiz">' + f0((12 + 0.3 * D.ad + 0.2 * D.ap) * M(i)) + '</span> (12 + 30% ⚔️ + 20% ✨).',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 12); postawDzialko('dzialko', 12, { obr: (12 + 0.3 * D.ad + 0.2 * D.ap) * M(i), co: 0.6, zr: 'Działko Strażnicze' }); } },
-  { id: 'krzakZycia', t: 1, ik: '🌳', n: 'Krzak Życia', cd: 18,
+  { id: 'wiezaMrozu', t: 1, ik: '❄️', n: 'Wieża Mrozu', cd: 15, wielokrotny: true,
+    opis: i => 'Co <b>15 s</b> stawia wieżę mrozu (10 s). Co 1,5 s fala zimna (r 120): spowolnienie 45% i <span class="mag">' + f0((10 + 0.2 * D.ap) * M(i)) + '</span> (10 + 20% ✨). Co trzecia fala zamraża na 0,8 s.',
+    tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 15); postawDzialko('wiezaMrozu', 10, { obr: (10 + 0.2 * D.ap) * M(i), co: 1.5, zr: 'Wieża Mrozu', aura: 120 * mnObszaru() }); } },
+  { id: 'mozdzierz', t: 1, ik: '🧨', n: 'Moździerz', cd: 14, wielokrotny: true,
+    opis: i => 'Co <b>14 s</b> stawia moździerz (12 s). Co 2 s pocisk spada na <b>największą grupę</b> wrogów w zasięgu 380 (r 75): <span class="fiz">' + f0((25 + 0.45 * D.ad + 0.25 * D.ap) * M(i)) + '</span> (25 + 45% ⚔️ + 25% ✨).',
+    tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 14); postawDzialko('mozdzierz', 12, { obr: (25 + 0.45 * D.ad + 0.25 * D.ap) * M(i), co: 2, zr: 'Moździerz' }); } },
+  { id: 'zrodlo', t: 1, ik: '⛲', n: 'Źródło Życia', cd: 20, wielokrotny: true,
+    opis: i => 'Co <b>20 s</b> stawia źródło (10 s): drużyna w promieniu 130 odzyskuje <b>' + fmt(2 * M(i)) + '%</b> maks. zdrowia na sekundę.',
+    tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 20); postawDzialko('zrodlo', 10, { lecz: 0.02 * M(i), co: 0.5, zr: 'Źródło Życia', aura: 130 }); } },
+  { id: 'krzakZycia', t: 1, ik: '🌳', n: 'Krzak Życia', cd: 18, wielokrotny: true,
     opis: i => 'Co <b>18 s</b> sadzi krzak (16 s), który co 2,5 s zrzuca owoc. Owoc leczy o <b>' + fmt(6 * M(i)) + '%</b> maks. zdrowia tego, kto go podniesie.',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 18); dodajStwora('krzak', gracz.x + losowo(-40, 40), gracz.y + losowo(-40, 40), 16, { co: 2.5, lecz: 0.06 * M(i), ikOwocu: '🍎', ik: '🌳' }); } },
-  { id: 'tesla', t: 1, ik: '⚡', n: 'Wieża Tesli', cd: 14,
+  { id: 'tesla', t: 1, ik: '⚡', n: 'Wieża Tesli', cd: 14, wielokrotny: true,
     opis: i => 'Co <b>14 s</b> stawia wieżę (10 s). Co sekundę razi łańcuchem 3 wrogów: <span class="mag">' + f0((15 + 0.3 * D.ap) * M(i)) + '</span> (15 + 30% ✨).',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 14); postawDzialko('tesla', 10, { obr: (15 + 0.3 * D.ap) * M(i), co: 1, zr: 'Wieża Tesli' }); } },
-  { id: 'ul', t: 1, ik: '🐝', n: 'Ul', cd: 9,
+  { id: 'ul', t: 1, ik: '🐝', n: 'Ul', cd: 9, wielokrotny: true,
     opis: i => 'Co <b>9 s</b> wypuszcza 3 pszczoły (6 s). Każda żądli co 0,6 s: <span class="fiz">' + f0((6 + 0.15 * D.ad + 0.15 * D.ap) * M(i)) + '</span> (6 + 15% ⚔️ + 15% ✨).',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 9); for (let n = 0; n < 3; n++) dodajStwora('pszczola', gracz.x, gracz.y, 6, { obr: (6 + 0.15 * D.ad + 0.15 * D.ap) * M(i), zr: 'Ul', ruchomy: true }); } },
-  { id: 'totemOgnia', t: 1, ik: '🗿', n: 'Totem Ognia', cd: 15,
+  { id: 'totemOgnia', t: 1, ik: '🗿', n: 'Totem Ognia', cd: 15, wielokrotny: true,
     opis: i => 'Co <b>15 s</b> stawia totem (10 s): wrogowie w promieniu 100 płoną — <span class="mag">' + f0((10 + 0.2 * D.ap) * M(i)) + '</span> (10 + 20% ✨) co 0,5 s.',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 15); dodajStwora('totem', gracz.x, gracz.y, 10, { obr: (10 + 0.2 * D.ap) * M(i), zr: 'Totem Ognia', aura: 100 * mnObszaru() }); } },
   { id: 'echoOstrza', t: 1, ik: '🔁', n: 'Echo Ostrza',
@@ -1429,17 +1535,21 @@ const PRZEDMIOTY = [
     naTrafienie(i, w, k) { if (!(w.elita || w.boss) || !cdGotowe(i)) return; cdUstaw(i, 8); zadaj(w, (60 + 0.06 * D.hpMax) * M(i), 'fiz', { zr: 'Stalowe Serce' }); i.stos = (i.stos || 0) + 1; przeliczStaty(); efektBlysk(w.x, w.y, '#ff6a6a'); },
     statyFlat(i, s) { s.hpMax += 8 * (i.stos || 0); } },
   { id: 'rozlupywacz', t: 1, ik: '⚒️', n: 'Czarny Rozłupywacz',
-    opis: i => 'Obrażenia <span class="fiz">fizyczne</span> kruszą pancerz celu o ' + Math.round(5 * M(i)) + '% (do 30%).',
-    naObrazenia(i, w, v, typ) { if (typ === 'fiz') w.krusz = Math.min(0.3, (w.krusz || 0) + 0.05 * M(i)); } },
+    opis: i => 'Obrażenia <span class="fiz">fizyczne</span> kruszą pancerz i odporność celu o ' + Math.round(8 * M(i)) + '% (do 45%). Wrogowie skruszeni o ponad 30% dostają od Ciebie <b>+10%</b> obrażeń.',
+    naObrazenia(i, w, v, typ) { if (typ === 'fiz') w.krusz = Math.min(0.45, (w.krusz || 0) + 0.08 * M(i)); },
+    modZadanych(i, w) { return w && (w.krusz || 0) > 0.3 ? 1.1 : 1; } },
 
   // ======================= EPICKIE (T3) =======================
-  { id: 'dzialoGromu', t: 2, ik: '💥', n: 'Działo Gromu', cd: 14,
+  { id: 'dzialoGromu', t: 2, ik: '💥', n: 'Działo Gromu', cd: 14, wielokrotny: true,
     opis: i => 'Co <b>14 s</b> stawia ciężkie działo (12 s). Co 1,2 s strzela pociskiem wybuchowym (r 60): <span class="fiz">' + f0((30 + 0.5 * D.ad + 0.3 * D.ap) * M(i)) + '</span> (30 + 50% ⚔️ + 30% ✨).',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 14); postawDzialko('dzialoGromu', 12, { obr: (30 + 0.5 * D.ad + 0.3 * D.ap) * M(i), co: 1.2, zr: 'Działo Gromu' }); } },
-  { id: 'drzewoZycia', t: 2, ik: '🌲', n: 'Drzewo Życia', cd: 25,
+  { id: 'snajper', t: 2, ik: '🎯', n: 'Wieża Snajperska', cd: 16, wielokrotny: true,
+    opis: i => 'Co <b>16 s</b> stawia wieżę snajperską (12 s). Co 2,5 s strzela w <b>najgroźniejszego</b> wroga w zasięgu 420 (elity i bossowie najpierw): <span class="fiz">' + f0((60 + 1.0 * D.ad + 0.4 * D.ap) * M(i)) + '</span> (60 + 100% ⚔️ + 40% ✨), przebija wszystkich na linii.',
+    tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 16); postawDzialko('snajper', 12, { obr: (60 + 1.0 * D.ad + 0.4 * D.ap) * M(i), co: 2.5, zr: 'Wieża Snajperska' }); } },
+  { id: 'drzewoZycia', t: 2, ik: '🌲', n: 'Drzewo Życia', cd: 25, wielokrotny: true,
     opis: i => 'Co <b>25 s</b> wyrasta drzewo (24 s): co 3 s zrzuca 2 owoce (leczą ' + fmt(7 * M(i)) + '% maks. zdrowia), a drużyna w promieniu 120 regeneruje 1,5% maks. zdrowia na sekundę.',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 25); dodajStwora('krzak', gracz.x + losowo(-30, 30), gracz.y + losowo(-30, 30), 24, { co: 3, lecz: 0.07 * M(i), ikOwocu: '🍐', ik: '🌲', owoce: 2, regen: 0.015 * M(i), aura: 120 }); } },
-  { id: 'chowaniec', t: 2, ik: '🐺', n: 'Wilczy Chowaniec',
+  { id: 'chowaniec', t: 2, ik: '🐺', n: 'Wilczy Chowaniec', wielokrotny: true,
     opis: i => 'Wilk biegnie przy Tobie i gryzie co 0,8 s: <span class="fiz">' + f0((15 + 0.4 * D.ad + 0.01 * D.hpMax) * M(i)) + '</span> (15 + 40% ⚔️ + 1% maks. zdrowia). Jest niezniszczalny.',
     tik(i) { if (!fala.aktywna) return; if (!i._s || i._s.czas <= 0 || stwory.indexOf(i._s) < 0) i._s = dodajStwora('wilk', gracz.x + 20, gracz.y, 9999, { ruchomy: true, zr: 'Wilczy Chowaniec', zrodlo: i });
       i._s.obr = (15 + 0.4 * D.ad + 0.01 * D.hpMax) * M(i); } },
@@ -1464,11 +1574,21 @@ const PRZEDMIOTY = [
     opis: i => 'Zwiększa Twoją moc umiejętności o <b>' + Math.round(30 * M(i)) + '%</b>.',
     statyMnoz(i, s) { s.ap *= 1 + 0.3 * M(i); } },
   { id: 'liandry', t: 2, ik: '🕯️', n: 'Udręka Liandry',
-    opis: i => 'Obrażenia <span class="mag">magiczne</span> podpalają: <span class="mag">' + fmt(2 * M(i)) + '%</span> maks. zdrowia celu na sekundę przez 3 s (bossowie: 0,6%).',
-    naObrazenia(i, w, v, typ, o) { if (typ === 'mag' && !o.dot && w.hp > 0) podpal(w, w.hpMax * (w.boss ? 0.006 : 0.02) * M(i), 3, 'mag', 'Udręka Liandry'); } },
-  { id: 'zhonya', t: 2, ik: '⏳', n: 'Klepsydra Zhonyi', cd: 70,
-    opis: () => 'Gdy zdrowie spadnie poniżej 25%: <b>zastój na 2 s</b> — jesteś niewrażliwy, ale nie ruszasz się i nie atakujesz. Odnowienie 70 s.',
-    naOtrzymanie(i) { if (cdGotowe(i) && gracz.hp > 0 && gracz.hp < D.hpMax * 0.25) { cdUstaw(i, 70); gracz.zastoj = 2; gracz.niewr = Math.max(gracz.niewr, 2); tekstSwiat(gracz.x, gracz.y - 28, '⏳ Zastój!', '#ffe08a'); DZ.tarcza(); } } },
+    opis: i => 'Obrażenia <span class="mag">magiczne</span> podpalają: <span class="mag">' + fmt(2.5 * M(i)) + '%</span> maks. zdrowia celu na sekundę przez 3 s (bossowie: 0,8%). Płonący zadajesz <b>+15%</b> obrażeń, a gdy płonący wróg zginie, ogień <b>przeskakuje na 2 najbliższych</b>.',
+    naObrazenia(i, w, v, typ, o) { if (typ === 'mag' && !o.dot && w.hp > 0) { podpal(w, w.hpMax * (w.boss ? 0.008 : 0.025) * M(i), 3, 'mag', 'Udręka Liandry'); w._liandry = czasGry + 3; } },
+    modZadanych(i, w) { return w && w._liandry > czasGry ? 1.15 : 1; },
+    naZabicie(i, w) { if (!(w._liandry > czasGry)) return;
+      najblizsi(w.x, w.y, 150, 2, [w]).forEach(c => { podpal(c, c.hpMax * (c.boss ? 0.008 : 0.025) * M(i), 3, 'mag', 'Udręka Liandry'); c._liandry = czasGry + 3; dodajBlyskawice(w.x, w.y, c.x, c.y, '#ff8a3c'); }); } },
+  { id: 'zhonya', t: 2, ik: '⏳', n: 'Klepsydra Zhonyi', cd: 45,
+    opis: i => 'Gdy zdrowie spadnie poniżej <b>30%</b>: 2,5 s zastoju — jesteś <b>niewrażliwy</b> (nie ruszasz się) i odzyskujesz <b>' + Math.round(25 * M(i)) + '%</b> maks. zdrowia. Na koniec złota fala (r 170): <span class="mag">' + f0((60 + 0.8 * D.ap + 0.08 * D.hpMax) * M(i)) + '</span> (60 + 80% ✨ + 8% maks. zdrowia) i ogłuszenie 1,2 s. Odnowienie 45 s.',
+    naOtrzymanie(i) {
+      if (!cdGotowe(i) || gracz.hp <= 0 || gracz.hp >= D.hpMax * 0.3) return;
+      cdUstaw(i, 45); gracz.zastoj = 2.5; gracz.niewr = Math.max(gracz.niewr, 2.5); tekstSwiat(gracz.x, gracz.y - 28, '⏳ Zastój!', '#ffe08a'); DZ.tarcza();
+      const ja = gracz, m = M(i), obr = (60 + 0.8 * D.ap + 0.08 * D.hpMax) * m;
+      for (let n = 1; n <= 5; n++) opoznione(0.5 * n, () => { if (gracz === ja) leczGracza(D.hpMax * 0.05 * m, 'Klepsydra Zhonyi'); });
+      opoznione(2.5, () => { if (gracz !== ja || stan !== 'walka') return; DZ.wybuch();
+        aura(170, '#ffd24a', w => { zadaj(w, obr, 'mag', { obszar: true, zr: 'Klepsydra Zhonyi' }); oglusz(w, 1.2, { zrodlo: 'Klepsydra Zhonyi' }); }, true); });
+    } },
   { id: 'aniol', t: 2, ik: '😇', n: 'Anioł Stróż',
     opis: i => 'Gdy zginiesz, wracasz z 50% zdrowia. Ładuje się raz na 3 fale. ' + ((i.ladowanie || 0) > 0 ? '<b class="czer">Ładuje się: jeszcze ' + i.ladowanie + ' fal(e)</b>' : '<b class="ziel">Gotowy</b>'),
     naSmierc(i) { if ((i.ladowanie || 0) > 0) return false; i.ladowanie = 3; gracz.hp = D.hpMax * 0.5; gracz.niewr = 2; tekstSwiat(gracz.x, gracz.y - 30, '😇 Wskrzeszenie!', '#fff6c0'); DZ.pryzmat(); return true; },
@@ -1483,10 +1603,10 @@ const PRZEDMIOTY = [
   { id: 'ciernie', t: 2, ik: '🦔', n: 'Kolczasta Zbroja',
     opis: i => 'Każde trafienie przez wroga odbija mu <span class="mag">' + f0((25 + 0.3 * D.pancerz) * M(i)) + '</span> (25 + 30% pancerza) obrażeń magicznych i nakłada <b>Rany</b>.',
     naOtrzymanie(i, v, typ, o) { if (o.wrog) { zadaj(o.wrog, (25 + 0.3 * D.pancerz) * M(i), 'mag', { zr: 'Kolczasta Zbroja', odbicie: true }); o.wrog.rany = 3; } } },
-  { id: 'luden', t: 2, ik: '🔊', n: 'Echo Ludena', cd: 6,
-    opis: i => 'Co 6 s następne obrażenia magiczne wywołują echo: <span class="mag">' + f0((80 + 0.35 * D.ap) * M(i)) + '</span> (80 + 35% ✨) w cel i 3 pobliskich wrogów.',
-    naObrazenia(i, w, v, typ, o) { if (typ !== 'mag' || o.zr === 'Echo Ludena' || !cdGotowe(i)) return; cdUstaw(i, 6); const obr = (80 + 0.35 * D.ap) * M(i);
-      [w].concat(najblizsi(w.x, w.y, 200, 3, [w])).forEach(c => { dodajBlyskawice(w.x, w.y, c.x, c.y, '#c9a8ff'); zadaj(c, obr, 'mag', { zr: 'Echo Ludena' }); }); } },
+  { id: 'luden', t: 2, ik: '🔊', n: 'Echo Ludena', cd: 4,
+    opis: i => 'Co 4 s następne obrażenia magiczne wywołują echo: <span class="mag">' + f0((90 + 0.4 * D.ap) * M(i)) + '</span> (90 + 40% ✨) w cel i 4 pobliskich wrogów.',
+    naObrazenia(i, w, v, typ, o) { if (typ !== 'mag' || o.zr === 'Echo Ludena' || !cdGotowe(i)) return; cdUstaw(i, 4); const obr = (90 + 0.4 * D.ap) * M(i);
+      [w].concat(najblizsi(w.x, w.y, 200, 4, [w])).forEach(c => { dodajBlyskawice(w.x, w.y, c.x, c.y, '#c9a8ff'); zadaj(c, obr, 'mag', { zr: 'Echo Ludena' }); }); } },
   { id: 'shiv', t: 2, ik: '🗡', n: 'Nóż Statikka', cd: 3,
     opis: i => 'Co 3 s następny atak puszcza łańcuch piorunów na 5 celów: <span class="mag">' + f0((35 + 0.35 * D.ad + 0.2 * D.ap) * M(i)) + '</span> (35 + 35% ⚔️ + 20% ✨).',
     naTrafienie(i, w, k) { if (!k.glowny || !cdGotowe(i)) return; cdUstaw(i, 3); lancuch(gracz, w, (35 + 0.35 * D.ad + 0.2 * D.ap) * M(i), 'mag', 5, 170, 1, 'Nóż Statikka'); } },
@@ -1508,9 +1628,9 @@ const PRZEDMIOTY = [
     opis: i => 'Co 10 s lodowy stożek w najbliższego wroga: <span class="mag">' + f0((100 + 0.5 * D.ap) * M(i)) + '</span> (100 + 50% ✨) i unieruchomienie na 1 s.',
     tik(i) { if (!cdGotowe(i)) return; const c = najblizszyWrog(gracz.x, gracz.y, 230); if (!c) return; cdUstaw(i, 10);
       stozek(kat(gracz, c), 240, 0.6, '#cfefff', w => { zadaj(w, (100 + 0.5 * D.ap) * M(i), 'mag', { zr: 'Wieczna Zmarzlina' }); oglusz(w, 1, { zrodlo: 'Zmarzlina' }); }); } },
-  { id: 'pasRakietowy', t: 2, ik: '🎇', n: 'Pas Rakietowy Hextech', cd: 12,
-    opis: i => 'Co 12 s wystrzeliwuje 7 pocisków w stożku: <span class="mag">' + f0((60 + 0.25 * D.ap) * M(i)) + '</span> (60 + 25% ✨) każdy.',
-    tik(i) { if (!cdGotowe(i)) return; const c = najblizszyWrog(gracz.x, gracz.y, 260); if (!c) return; cdUstaw(i, 12); const k0 = kat(gracz, c);
+  { id: 'pasRakietowy', t: 2, ik: '🎇', n: 'Pas Rakietowy Hextech', cd: 9,
+    opis: i => 'Co 9 s wystrzeliwuje 7 pocisków w stożku: <span class="mag">' + f0((60 + 0.25 * D.ap) * M(i)) + '</span> (60 + 25% ✨) każdy.',
+    tik(i) { if (!cdGotowe(i)) return; const c = najblizszyWrog(gracz.x, gracz.y, 260); if (!c) return; cdUstaw(i, 9); const k0 = kat(gracz, c);
       for (let n = 0; n < 7; n++) wystrzel({ x: gracz.x, y: gracz.y, kat: k0 + (n - 3) * 0.13, predkosc: 520, obr: (60 + 0.25 * D.ap) * M(i), typ: 'mag', kolor: '#ffb04a', ksztalt: 'kula', zr: 'Pas Rakietowy', zycie: 0.7 }); DZ.magia(); } },
   { id: 'pijawka', t: 2, ik: '🧛', n: 'Pijawka Krwi', cd: 9,
     opis: i => 'Co 9 s wir: <span class="fiz">' + f0((80 + 1.0 * D.ad) * M(i)) + '</span> (80 + 100% ⚔️) w promieniu 130; leczy 8% brakującego zdrowia + 2% za każdego trafionego.',
@@ -1520,10 +1640,10 @@ const PRZEDMIOTY = [
   { id: 'midas', t: 2, ik: '🪙', n: 'Monety Midasa',
     opis: i => '<b>' + Math.round(7 * M(i)) + '%</b> szansy, że podniesiona moneta jest warta 5×.',
     mnozMonety(i) { return Math.random() < 0.07 * M(i) ? 5 : 1; } },
-  { id: 'mejai', t: 2, ik: '📗', n: 'Księga Mejai',
-    opis: i => 'Co 15 zabójstw +1 ładunek: <b>+' + fmt(2.5 * M(i)) + ' ✨</b> na stałe (maks. 100). Przy 40 ładunkach +10% prędkości ruchu. Ładunki: <b>' + Math.min(100, Math.floor((i.zab || 0) / 15)) + '</b>.',
-    naZabicie(i) { i.zab = (i.zab || 0) + 1; if (i.zab % 15 === 0 && i.zab <= 1500) przeliczStaty(); },
-    statyFlat(i, s) { const n = Math.min(100, Math.floor((i.zab || 0) / 15)); s.ap += 2.5 * n * M(i); if (n >= 40) s.ms += 14; } },
+  { id: 'mejai', t: 2, ik: '📗', n: 'Księga Mejai', wielokrotny: true,
+    opis: i => 'Co 8 zabójstw (i za każdą elitę) +1 ładunek, maks. 60: każdy daje <b>+' + fmt(3 * M(i)) + ' ✨</b> i <b>+' + fmt(1.2 * M(i)) + ' ⚔️</b>. Przy 30 ładunkach +8% obrażeń. Ładunki: <b>' + Math.min(60, i.lad || 0) + '/60</b>.',
+    naZabicie(i, w) { i.zab = (i.zab || 0) + 1; if ((i.lad || 0) < 60 && (w.elita || w.boss || i.zab % 8 === 0)) { i.lad = (i.lad || 0) + 1; przeliczStaty(); } },
+    statyFlat(i, s) { const n = Math.min(60, i.lad || 0); s.ap += 3 * n * M(i); s.ad += 1.2 * n * M(i); if (n >= 30) s.obrBonus += 8; } },
 
   // ======================= LEGENDARNE (T4) =======================
   { id: 'korona', t: 3, ik: '👸', n: 'Korona Królowej', cd: 10,
@@ -1553,10 +1673,11 @@ const PRZEDMIOTY = [
     opis: i => 'Wrogowie w promieniu 220 atakują o <b>' + Math.round(Math.min(60, 25 * M(i))) + '%</b> wolniej i poruszają się o 15% wolniej.',
     tik(i) { const r = 220 * mnObszaru(); wrogowie.forEach(w => { if (!w.martwy && Math.hypot(w.x - gracz.x, w.y - gracz.y) < r + w.r) { spowolnij(w, 0.15, 0.2); w.zamarzniecieAtaku = Math.max(w.zamarzniecieAtaku || 0, Math.min(0.6, 0.25 * M(i))); w._zaT = 0.2; } }); } },
   { id: 'esencja', t: 3, ik: '🔷', n: 'Złodziej Esencji',
-    opis: i => 'Trafienia krytyczne skracają odnowienia o 0,25 s. Gdy coś się odnowi i aktywuje, następny atak zadaje dodatkowo <span class="fiz">' + f0((20 + 0.6 * D.ad) * M(i)) + '</span> (20 + 60% ⚔️).',
-    naKryt(i) { skrocCd(0.25); },
+    opis: i => 'Trafienia krytyczne skracają odnowienia o 0,3 s. Gdy coś się odnowi i aktywuje, następny atak zadaje dodatkowo <span class="fiz">' + f0((40 + 0.9 * D.ad) * M(i)) + '</span> (40 + 90% ⚔️) i daje +15% prędkości ataku na 3 s (do 3 razy).',
+    naKryt(i) { skrocCd(0.3); },
     naAktywacji(i, zrodlo) { if (zrodlo !== i) i.gotowy = 1; },
-    naTrafienie(i, w, k) { if (k.glowny && i.gotowy) { i.gotowy = 0; zadaj(w, (20 + 0.6 * D.ad) * M(i), 'fiz', { zr: 'Złodziej Esencji' }); } } },
+    naTrafienie(i, w, k) { if (k.glowny && i.gotowy) { i.gotowy = 0; zadaj(w, (40 + 0.9 * D.ad) * M(i), 'fiz', { zr: 'Złodziej Esencji' });
+      i.st = Math.min(3, (i.st > 0 && czasGry < i.tSt ? i.st : 0) + 1); i.tSt = czasGry + 3; dodajBuff('esencja', { as: 0 }, 3); gracz.buffy.esencja.staty = { as: 15 * i.st }; oznaczStaty(); } } },
   { id: 'fabryka', t: 3, ik: '🏭', n: 'Fabryka Wieżyczek', cd: 16,
     opis: i => 'Twoje działka i wieże stoją <b>2× dłużej</b> i strzelają o 30% szybciej. Co <b>16 s</b> stawia darmowe działko: <span class="fiz">' + f0((20 + 0.4 * D.ad + 0.3 * D.ap) * M(i)) + '</span> co 0,5 s.',
     fabryka: true,
@@ -1569,7 +1690,8 @@ const PRZEDMIOTY = [
     tik(i) { if (!fala.aktywna) return; if (!i._s || i._s.czas <= 0 || stwory.indexOf(i._s) < 0) i._s = dodajStwora('smok', gracz.x - 20, gracz.y, 9999, { ruchomy: true, zr: 'Smocze Jajo', zrodlo: i });
       i._s.obr = (30 + 0.6 * D.ap + 2 * nrFali()) * M(i); } },
 ];
-const DEF_PRZ = {}; PRZEDMIOTY.forEach(p => { DEF_PRZ[p.id] = p; if (p.unik === undefined) p.unik = true; });
+// unikalne: tylko jeden egzemplarz; wielokrotne (działka, stworzenia, Mejai...) można kupić kilka razy - każdy działa osobno
+const DEF_PRZ = {}; PRZEDMIOTY.forEach(p => { DEF_PRZ[p.id] = p; if (p.unik === undefined) p.unik = !p.wielokrotny; });
 
 function cenaPrzedmiotu(d) { return Math.round((d.cena || CENY_TIERU[d.t]) * mnCeny()); }
 function cenaUlepszenia(inst) { const d = DEF_PRZ[inst.id]; return Math.round((d.cena || CENY_TIERU[d.t]) * (0.55 + 0.35 * (inst.gw || 0)) * mnCeny()); }
@@ -1819,6 +1941,10 @@ const PRYZMATY = [
     opis: () => '<b>+2 miejsca</b> na bronie dodatkowe, ale broń główna zadaje 15% mniej obrażeń.',
     natychmiast() { gracz.slotyOreza += 2; }, mnGlownej: 0.85,
     cofnij() { gracz.slotyOreza = Math.max(0, gracz.slotyOreza - 2); while (gracz.oreze.length > gracz.slotyOreza) { const o = gracz.oreze.pop(); gracz.zloto += wartoscSprzedazyOreza(o); } } },
+  { id: 'kielich', ik: '🍷', n: 'Kielich Nadmiaru', s: { omni: 6, kradziez: 6 }, kielich: true,
+    opis: i => 'Limit wampiryzmu rośnie o <b>2%</b> zdrowia na sekundę, a wampiryzm <b>ponad limit nie przepada</b>: najpierw zamienia się w tarczę (do 25% maks. zdrowia), a gdy tarcza jest pełna — co sekundę wybucha wokół Ciebie (r 140) jako obrażenia magiczne. Zebrane: <b>' + f0(i.pula || 0) + '</b>.',
+    tik(i, dt) { i.t = (i.t || 0) + dt; if (i.t < 1) return; i.t = 0; const v = Math.min(i.pula || 0, D.hpMax * 0.2); if (v < 5 || !fala.aktywna) return; i.pula -= v;
+      aura(140, '#c0392b', w => zadaj(w, v, 'mag', { obszar: true, zr: 'Kielich Nadmiaru' }), true); } },
 ];
 PRYZMATY.forEach(p => { p.t = 'p'; p.unik = true; DEF_PRZ[p.id] = p; });
 function progKuli() { return 300 + 60 * nrFali(); }
@@ -2003,6 +2129,8 @@ const AUGMENTY = [
   { id: 'nadczlowiek', r: 'p', ik: '🦸', n: 'Nadczłowiek', opis: a => 'Umiejętność postaci odnawia się <b>2× szybciej</b>, a po jej użyciu przez 4 s zadajesz +' + Math.round(30 * MA(a)) + '% obrażeń.',
     cdUmi: () => 0.5, naUmiejetnosci(a) { dodajBuff('nadczl', { obrBonus: 30 * MA(a) }, 4); } },
   { id: 'echoBroni', r: 'p', ik: '🔂', n: 'Echo arsenału', opis: a => 'Efekty broni dodatkowych mają <b>' + Math.round(Math.min(60, 30 * MA(a))) + '%</b> szansy odpalić się drugi raz.', echoOreza: a => Math.min(0.6, 0.3 * MA(a)) },
+  { id: 'przelew', r: 'p', ik: '🫗', n: 'Przelew', przelew: a => MA(a),
+    opis: a => 'To, co przekracza limity, <b>nie przepada</b>: szansa na kryt ponad 100% → +' + fmt(1.5 * MA(a)) + '% obrażeń krytycznych za 1%; unik ponad limit → +' + fmt(1.5 * MA(a)) + '% obrażeń za 1%; redukcja obrażeń ponad limit → +' + fmt(2 * MA(a)) + '% maks. zdrowia za 1%; wampiryzm (kradzież + wszechwampiryzm) ponad 40 → +' + fmt(0.5 * MA(a)) + '% obrażeń za 1; prędkość ataku ponad 300% → +' + fmt(0.15 * MA(a)) + '% obrażeń za 1%.' },
 ];
 const DEF_AUG = {}; AUGMENTY.forEach(a => DEF_AUG[a.id] = a);
 function klonujPrzedmiot() { const kand = gracz.przedmioty.filter(p => p && gracz.przedmioty.filter(q => q && q.id === p.id).length < 2); if (!kand.length) { gracz.slotyPrzedm++; return; } const p = losZ(kand); if (czyPryzmat(p)) gracz.slotyPryzm = (gracz.slotyPryzm || 2) + 1; else gracz.slotyPrzedm++; gracz.przedmioty.push({ id: p.id, gw: p.gw || 0, cd: 0 }); toast('🧬 Sklonowano: ' + DEF_PRZ[p.id].n); }
@@ -2076,8 +2204,13 @@ const KLASY = {
     wyglad: { czapka: 'kapeluszMaga', kol: '#4a2a9a', broda: '#e8e0ff' },
     n: 'Mag', ik: '🧙', slotyOreza: 4, slotyPrzedm: 4, start: 'rozdzka', rodziny: ['magiczna'],
     staty: { ap: 25, haste: 25 },
-    opis: 'Mag: <b>moc umiejętności ×1,4</b> (procentowo, od wszystkiego) i +25 przyspieszenia — najlepiej gra się pod ✨.',
-    statyMnoz(st, s) { s.ap *= 1.4; },
+    opis: 'Gra się <b>umiejętnościami</b>: dwie umiejętności, obie o 25% mocniejsze, <b>moc umiejętności ×1,4</b> i +25 przyspieszenia. Różdżka jest słaba (obrażenia broni ×0,6).',
+    statyMnoz(st, s) { s.ap *= 1.4; }, mnBroni: () => 0.6, mnUmi: 0.25,
+    umi2: { n: 'Mrugnięcie', ik: '💫', cd: 7, opis: m => 'Teleport o 170 w kierunku ruchu. W miejscu startu wybucha lodowa nowa (r 130): <span class="mag">' + f0((50 + 0.8 * D.ap) * m) + '</span> (50 + 80% ✨) i zamrożenie wrogów na 1,2 s.',
+      uzyj(m) { const x0 = gracz.x, y0 = gracz.y, r = 130 * mnObszaru(); fale.push({ x: x0, y: y0, czas: 0.45, max: 0.45, r: r, kolor: '#9fd8ff' });
+        wrogowie.slice().forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - x0, w.y - y0) > r + w.r * 0.5) return; zadaj(w, (50 + 0.8 * D.ap) * m, 'mag', { obszar: true, zr: 'Mrugnięcie' }); oglusz(w, 1.2, { zrodlo: 'Mrugnięcie' }); });
+        for (let n = 0; n < 10; n++) czastki.push({ x: x0 + losowo(-20, 20), y: y0 + losowo(-20, 20), vx: losowo(-60, 60), vy: losowo(-60, 60), czas: 0.5, max: 0.5, kolor: '#cfefff' });
+        mrugnij(170); DZ.czar(); return true; } },
     umi: { n: 'Meteor', ik: '☄️', cd: 10, opis: m => 'Wielki meteor spada na największe skupisko wrogów (r 130): <span class="mag">' + f0((150 + 1.6 * D.ap) * m) + '</span> (150 + 160% ✨), a za nim 3 mniejsze po ' + f0((50 + 0.5 * D.ap) * m) + '.',
       uzyj(m) { const c = skupisko(gracz.x, gracz.y, 360, 130) || najblizszyWrog(gracz.x, gracz.y, 360); if (!c) return false; meteoryt(c.x, c.y, 0.7, 130, (150 + 1.6 * D.ap) * m, 'Meteor');
         for (let n = 0; n < 3; n++) meteoryt(c.x + losowo(-110, 110), c.y + losowo(-110, 110), 1 + n * 0.2, 70, (50 + 0.5 * D.ap) * m, 'Meteor'); return true; } },
@@ -2164,8 +2297,11 @@ const KLASY = {
     wyglad: { czapka: 'kask' },
     n: 'Inżynier', ik: '🔧', slotyOreza: 4, slotyPrzedm: 4, start: 'gwozdziarka', rodziny: ['strzelecka', 'alchemia'],
     staty: { haste: 15, pancerz: 10 },
-    opis: 'Działka, wieże i inne stworzenia zadają <b>2× obrażeń</b>. Zaczyna z <b>Małą Wieżyczką</b>.',
-    mnStworow: 1, dar() { gracz.przedmioty.push(nowyPrzedmiot('wiezyczka')); },
+    opis: 'Działka, wieże i inne stworzenia zadają <b>2× obrażeń</b>. Zaczyna z <b>Małą Wieżyczką</b>. Dwie umiejętności, a gwoździarka jest słabsza (obrażenia broni ×0,7).',
+    mnStworow: 1, mnBroni: () => 0.7, dar() { gracz.przedmioty.push(nowyPrzedmiot('wiezyczka')); },
+    umi2: { n: 'Przeładowanie', ik: '🔩', cd: 14, opis: m => 'Przez <b>5 s</b> wszystkie Twoje działka, wieże i stworzenia działają <b>2× szybciej</b>, a postawione stoją o 3 s dłużej. Dostajesz tarczę ' + f0(15 * m) + '% maks. zdrowia.',
+      uzyj(m) { dodajBuff('przeladowanie', {}, 5); stwory.forEach(s => { if (s.wl === gracz && s.max < 9000) s.czas += 3; }); dajTarcze(D.hpMax * 0.15 * m, 5);
+        fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 120, kolor: '#e6c15c' }); DZ.awans(); return true; } },
     umi: { n: 'Wieżyczka bojowa', ik: '🏗️', cd: 14, opis: m => 'Stawia ciężką wieżyczkę na 12 s: co 0,3 s <span class="fiz">' + f0((30 + 0.7 * D.ad + 0.5 * D.ap) * m) + '</span> (30 + 70% ⚔️ + 50% ✨).',
       uzyj(m) { postawDzialko('dzialko', 12, { obr: (30 + 0.7 * D.ad + 0.5 * D.ap) * m, co: 0.3, zr: 'Wieżyczka bojowa' }); return true; } },
     kolory: { plaszcz: ['#e6c15c', '#a07a1e'], tunika: ['#3a6ac4', '#1a3a7a'], wlosy: '#8a4a2a' },
@@ -2174,8 +2310,14 @@ const KLASY = {
     wyglad: { czapka: 'czaszka' },
     n: 'Nekromanta', ik: '💀', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturKosci', rodziny: ['magiczna'],
     staty: { ap: 20, hpMax: 10 },
-    opis: 'Sojusznicy zadają <b>3× obrażeń</b> i żyją 3× dłużej. Każdy zabity wróg ma 8% szans, że wstanie po Twojej stronie.',
-    mnSojusznikow: 2,
+    opis: 'Dowodzi armią: sojusznicy zadają <b>3× obrażeń</b> i żyją 3× dłużej, każdy zabity wróg ma 8% szans wstać po Twojej stronie. Dwie umiejętności, a kostur jest słaby (obrażenia broni ×0,6).',
+    mnSojusznikow: 2, mnBroni: () => 0.6,
+    umi2: { n: 'Detonacja', ik: '💥', cd: 8, brak: 'Nie masz sojuszników do wysadzenia',
+      opis: m => 'Twoi sojusznicy wybuchają (r 90): <span class="mag">' + f0((50 + 0.7 * D.ap) * m) + '</span> (50 + 70% ✨) każdy. Za każdego leczysz się o 2% maks. zdrowia. Najlepiej po <b>Armii ciemności</b>.',
+      uzyj(m) { const moi = wrogowie.filter(w => !w.martwy && w.sojusznik && w.zauroczony > 0 && w.wlasciciel === gracz); if (!moi.length) return false;
+        moi.forEach((s, n) => { s.martwy = true; s.bezLupu = true; rozbryzg(s.x, s.y, '#9ae07a', 10);
+          obszarowe(s.x, s.y, 90, '#9ae07a', w => zadaj(w, (50 + 0.7 * D.ap) * m, 'mag', { obszar: true, zr: 'Detonacja' })); });
+        leczGracza(D.hpMax * 0.02 * moi.length, 'Detonacja'); DZ.wybuch(); return true; } },
     naZabicie(st, w) { if (!w.boss && !w.sojusznik && Math.random() < 0.08) wskrzesSojusznika(w, 8); },
     umi: { n: 'Armia ciemności', ik: '☠️', cd: 16, opis: m => 'Przywołuje ' + f0(7 * m) + ' szkieletów, które walczą po Twojej stronie przez 12 s.',
       uzyj(m) { const n0 = Math.round(7 * m); for (let n = 0; n < n0; n++) { const k = n / n0 * Math.PI * 2; wskrzesSojusznika({ typ: 'szkielet', x: gracz.x + Math.cos(k) * 55, y: gracz.y + Math.sin(k) * 55 }, 12); } DZ.czar(); return true; } },
@@ -2185,8 +2327,20 @@ const KLASY = {
     wyglad: { czapka: 'wieniec', broda: true },
     n: 'Druid', ik: '🌿', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturNatury', rodziny: ['magiczna', 'alchemia'],
     staty: { regen: 3, leczenie: 30 },
-    opis: 'Natura: <b>regeneracja ×2</b>, leczenie +30%, owoce i stworzenia +50%. Zmęczenie osłabia jego leczenie tylko o połowę. Zaczyna z <b>Krzakiem Jagód</b>.',
-    statyMnoz(st, s) { s.regen *= 2; }, mnStworow: 0.5, polZmeczenia: true, dar() { gracz.przedmioty.push(nowyPrzedmiot('krzakJagod')); },
+    opis: 'Natura: <b>regeneracja ×2</b>, leczenie +30%, owoce i stworzenia +50%, zmęczenie słabsze o połowę. Druga umiejętność to <b>trujące zarodniki</b> zostawiane za sobą, które kosztują zdrowie. Kostur słabszy (obrażenia broni ×0,7). Zaczyna z <b>Krzakiem Jagód</b>.',
+    statyMnoz(st, s) { s.regen *= 2; }, mnStworow: 0.5, polZmeczenia: true, mnBroni: () => 0.7, dar() { gracz.przedmioty.push(nowyPrzedmiot('krzakJagod')); },
+    tik(st, dt) {
+      if (!st.zarodniki) return;
+      if (!fala.aktywna || gracz.powalony) { st.zarodniki = false; return; }
+      // koszt: 1% maks. zdrowia na sekundę (nie schodzi poniżej 10%)
+      if (gracz.hp > D.hpMax * 0.1) gracz.hp = Math.max(D.hpMax * 0.1, gracz.hp - D.hpMax * 0.01 * dt);
+      st.tZ = (st.tZ || 0) - dt; if (st.tZ > 0) return; st.tZ = 0.35;
+      polaEfektow.push({ wl: gracz, x: gracz.x + losowo(-6, 6), y: gracz.y + losowo(-6, 6), r: 48 * mnObszaru(), czas: 4, max: 4, tyk: 0.2, rodzaj: 'trucizna', spow: 0.2,
+        obr: (12 + 0.25 * D.ap + 0.01 * D.hpMax) * mnUmi() * 0.5, zr: 'Zarodniki' });
+    },
+    umi2: { n: 'Zarodniki', ik: '🍄', cd: 0, przelacz: true, aktywna: st => !!st.zarodniki,
+      opis: m => 'Przełącznik. <b>Włączone:</b> zostawiasz za sobą trujące chmury (4 s, r 48): <span class="mag">' + f0((12 + 0.25 * D.ap + 0.01 * D.hpMax) * m) + '</span>/s (12 + 25% ✨ + 1% maks. zdrowia) i spowolnienie 20%. Chmury się nakładają. Kosztuje <b>1% maks. zdrowia na sekundę</b> (nie zejdziesz poniżej 10%).',
+      uzyj() { const st = gracz.stanKlasy; st.zarodniki = !st.zarodniki; st.tZ = 0; tekstSwiat(gracz.x, gracz.y - 34, st.zarodniki ? '🍄 Zarodniki: wł.' : '🍄 Zarodniki: wył.', '#9ae07a', 0.9, 12); return true; } },
     umi: { n: 'Zarośla', ik: '🌱', cd: 13, opis: m => 'Korzenie unieruchamiają wrogów w promieniu 180 na ' + fmt(1.6 * m) + ' s i zadają <span class="mag">' + f0((60 + 0.9 * D.ap) * m) + '</span> (60 + 90% ✨). Drużyna w promieniu 240 leczy się o ' + f0(20 * m) + '% maks. zdrowia.',
       uzyj(m) { aura(180, '#5ac46a', w => { zadaj(w, (60 + 0.9 * D.ap) * m, 'mag', { obszar: true, zr: 'Zarośla' }); oglusz(w, 1.6 * m, { zrodlo: 'Zarośla' }); }, true); leczDruzyne(gracz.x, gracz.y, 240, 0, true, 0.2 * m); return true; } },
     kolory: { plaszcz: ['#3a7a2a', '#1a4a10'], tunika: ['#8a6a3a', '#5a4020'], wlosy: '#c87a2a' },
@@ -2398,7 +2552,7 @@ function aktualizujWrogow(dt) {
     if (w.spowCzas > 0) { w.spowCzas -= dt; if (w.spowCzas <= 0) w.spow = 0; }
     // odrzut
     if (w.kbx || w.kby) { w.x += w.kbx * dt; w.y += w.kby * dt; w.kbx *= Math.pow(0.002, dt); w.kby *= Math.pow(0.002, dt); if (Math.abs(w.kbx) + Math.abs(w.kby) < 5) { w.kbx = 0; w.kby = 0; } }
-    if (w.ogl > 0) { w.ogl -= dt; ogranicz(w); continue; }
+    if (w.ogl > 0) { w.ogl -= dt; w.zamach = 0; ogranicz(w); continue; }
     if (w.zauroczony > 0) { w.zauroczony -= dt; if (w.wlasciciel && gracze.indexOf(w.wlasciciel) >= 0) kontekst(w.wlasciciel); aiSojusznika(w, dt); ogranicz(w); continue; }
     // wabik (Strach na Wróble): idą do niego zamiast do gracza
     if (w.tWabik > 0) { w.tWabik -= dt; if (w.wabik && stwory.indexOf(w.wabik) >= 0) { const d = Math.hypot(w.wabik.x - w.x, w.wabik.y - w.y); if (d > 18) { w.x += (w.wabik.x - w.x) / d * w.ms * dt; w.y += (w.wabik.y - w.y) / d * w.ms * dt; } ogranicz(w); continue; } }
@@ -2435,6 +2589,22 @@ function strzalWroga(w, k, predkosc, obr, opcje) {
   pociskiWrogow.push(Object.assign({ x: w.x, y: w.y, vx: Math.cos(k) * predkosc, vy: Math.sin(k) * predkosc, obr: obr, typ: w.typObr || 'fiz', zycie: 2.4, kolor: '#c46ce8', wrog: w, r: 5, kto: w.n }, opcje));
 }
 
+// ZAMACH: wróg wręcz najpierw się zamachuje (czerwony łuk rośnie), a cios pada dopiero po chwili.
+// Kto w tym czasie odskoczy albo przebiegnie obok, nie oberwie; ogłuszenie przerywa zamach.
+const ZASIEG_ZAMACHU = 10;                       // o tyle dalej sięga cios niż odległość, z której zaczyna zamach
+function czasZamachu(w) { return w.boss ? 0.5 : w.elita ? 0.34 : 0.4; }
+function zacznijZamach(w, kat) { w.zamach = w.zamachMax = czasZamachu(w); w.zamKat = kat; }
+function wyprowadzCios(w, dAtak, mn) {
+  const T = TYPY_WROGOW[w.typ] || {};
+  const zas = w.r + gracz.r * rozmiarGracza() + (w.boss ? 8 : 6) - (gracz.zdalny ? 5 : 0) + ZASIEG_ZAMACHU;
+  const kat = Math.atan2(gracz.y - w.y, gracz.x - w.x);
+  ciecia.push({ x: w.x, y: w.y, kat: kat, luk: 1.7, r: w.r + 22, czas: 0.16, max: 0.16, kolor: '#ff6a5a' });
+  if (dAtak > zas) return false;                 // chybił - gracz zdążył uskoczyć
+  const zad = zranGracza(w.atak * (mn || 1), w.typObr || 'fiz', { wrog: w, wrecz: true });
+  if (T.wysysa && zad > 0) { w.hp = Math.min(w.hpMax, w.hp + zad * 3); czastkiLeczenia(w.x, w.y); }
+  if (w.afiksy.indexOf('lodowy') >= 0) spowolnijGracza(0.35, 1.5);
+  return true;
+}
 function odlegloscDoCiosu(w, d) {
   if (!gracz.zdalny || gracz.netX === undefined) return d;
   return Math.max(d, Math.hypot(gracz.netX - w.x, gracz.netY - w.y));
@@ -2446,6 +2616,8 @@ function aiWroga(w, dt, msMn) {
   const luz = gracz.zdalny ? 5 : 0, dAtak = odlegloscDoCiosu(w, d);
   const T = TYPY_WROGOW[w.typ] || {};
   w.kier = kg;
+  // trwa zamach: stoi w miejscu, a na końcu wyprowadza cios (trafia tylko, jeśli gracz nadal jest blisko)
+  if (w.zamach > 0) { w.zamach -= dt; if (w.zamach <= 0) { w.zamach = 0; wyprowadzCios(w, dAtak); } return; }
   // Upiorny rycerz: namierza (stoi 0,7 s) i szarżuje
   if (T.szarzuje) {
     if (w.dashT > 0) { w.dashT -= dt; w.x += w.dVX * dt; w.y += w.dVY * dt; if (!w.trafilDash && dAtak < w.r + gracz.r * rozmiarGracza() + 6 - luz) { w.trafilDash = true; zranGracza(w.atak * 1.6, 'fiz', { wrog: w, wrecz: true }); } return; }
@@ -2524,11 +2696,7 @@ function aiWroga(w, dt, msMn) {
     const belt = w.typ === 'kusznik' || w.typ === 'lucznik';
     strzalWroga(w, kg, belt ? 320 : 230, w.atak, { kolor: belt ? '#c9a36b' : '#c46ce8', ksztalt: belt ? 'belt' : null, zycie: 1.8 });
     DZ.wrogStrzal(w.typ);
-  } else {
-    const zad = zranGracza(w.atak, w.typObr || 'fiz', { wrog: w, wrecz: true });
-    if (T.wysysa && zad > 0) { w.hp = Math.min(w.hpMax, w.hp + zad * 3); czastkiLeczenia(w.x, w.y); }
-    if (w.afiksy.indexOf('lodowy') >= 0) spowolnijGracza(0.35, 1.5);
-  }
+  } else { zacznijZamach(w, kg); w.cd = Math.max(0.3, w.cd - w.zamach); }    // rytm ciosów jak dawniej (zamach liczy się do odnowienia)
 }
 
 function aktualizujAfiksy(w, dt) {
@@ -2628,10 +2796,11 @@ function aiBossa(w, dt, msMn) {
       break;
     }
   }
-  const dl = Math.hypot(rx, ry);
-  if (dl > 0.001) { w.x += rx / dl * w.ms * msMn * dt; w.y += ry / dl * w.ms * msMn * dt; }
+  const dl = Math.hypot(rx, ry), mnZam = w.zamach > 0 ? 0.2 : 1;
+  if (dl > 0.001) { w.x += rx / dl * w.ms * msMn * mnZam * dt; w.y += ry / dl * w.ms * msMn * mnZam * dt; }
   w.cd -= dt;
-  if (dAtak < w.r + gracz.r * rozmiarGracza() + 8 - luz && w.cd <= 0) { w.cd = 1.05; zranGracza(w.atak, 'fiz', { wrog: w, wrecz: true }); }
+  if (w.zamach > 0) { w.zamach -= dt; if (w.zamach <= 0) { w.zamach = 0; wyprowadzCios(w, odlegloscDoCiosu(w, Math.hypot(gracz.x - w.x, gracz.y - w.y))); } }
+  else if (dAtak < w.r + gracz.r * rozmiarGracza() + 8 - luz && w.cd <= 0) { w.cd = 1.05; zacznijZamach(w, kg); }
 }
 
 function wskrzesSojusznika(w, czas) {
@@ -2678,7 +2847,7 @@ function nowyGracz(klasa) {
     klasa: klasa, x: SRODEK, y: SRODEK, r: 13, hp: 100, poziom: 1, xp: 0, xpNast: xpDoPoziomu(1),
     zloto: 0, mikstury: 1, maksMikstur: 3, mocMikstur: 1, cdMikstury: 0,
     bronie: [], oreze: [], pancerz: { helm: null, zbroja: null, buty: null, amulet: null }, przedmioty: [], augmenty: [],
-    ulepszenia: {}, stale: {}, slotyOreza: K.slotyOreza || 4, slotyPrzedm: K.slotyPrzedm, slotyPryzm: K.slotyPryzm || 2, umi: { cd: 0, cdMax: 0 },
+    ulepszenia: {}, stale: {}, slotyOreza: K.slotyOreza || 4, slotyPrzedm: K.slotyPrzedm, slotyPryzm: K.slotyPryzm || 2, umi: { cd: 0, cdMax: 0 }, umi2: { cd: 0, cdMax: 0 },
     rabat: 0, darmowePrzerzuty: 0, przerzutyAug: 2, darmoweWybory: 0, kowadla: 0, doWyboru: 0, skrzynie: [],
     tarcze: [], buffy: {}, niewr: 0, zastoj: 0, spowG: 0, spowGCzas: 0, migotanie: 0, stanKlasy: {}, kierX: 1, kierY: 0,
     ostTrafienie: -99, wRuchu: false, faza: 0, augmentyDoWyboru: [], blysk: 0, _brudne: true, _ostDyn: 0, id: 0, nick: '',
@@ -2692,8 +2861,8 @@ const HAKI_NAZWY = ['statyFlat', 'statyDyn', 'statyMnoz', 'statyPost', 'naTrafie
   'modOtrzymanych', 'modZadanych', 'naKryt', 'naOgluszenie', 'naSpowolnieniu', 'tik', 'naStartFali', 'naKoniecFali', 'naSmierc',
   'naNadleczenie', 'naAktywacji', 'naSklep', 'naMiksturze', 'mnozMonety', 'rozmiar', 'naAwans', 'naUniku', 'mnSkrzyn', 'odbijPocisk', 'mocMikstur', 'naUmiejetnosci'];
 // flagi sumowane ze wszystkich źródeł (liczba albo funkcja od instancji, np. poziomu augmentu)
-const FLAGI_SUMA = ['mnPrzedmiotow', 'zasiegWrecz', 'onHitKryt', 'oszczedny', 'mnStworow', 'mnOreza', 'cdOreza', 'cdUmi', 'mnUmi', 'mnGlownejAug', 'echoOreza', 'mnTarcz', 'mnSojusznikow'];
-const FLAGI_LOG = ['bezKryt', 'superkryt', 'podwojnyOnHit', 'lepszeAugmenty', 'wszystkoMag', 'krysztalCzasu', 'odpornyNaSpow', 'fabryka'];
+const FLAGI_SUMA = ['przelew', 'mnPrzedmiotow', 'zasiegWrecz', 'onHitKryt', 'oszczedny', 'mnStworow', 'mnOreza', 'cdOreza', 'cdUmi', 'mnUmi', 'mnGlownejAug', 'echoOreza', 'mnTarcz', 'mnSojusznikow'];
+const FLAGI_LOG = ['kielich', 'bezKryt', 'superkryt', 'podwojnyOnHit', 'lepszeAugmenty', 'wszystkoMag', 'krysztalCzasu', 'odpornyNaSpow', 'fabryka'];
 let HAKI = {}, FLAGI = {};
 function zrodlaEfektow() {
   const z = [[KLASY[gracz.klasa], gracz.stanKlasy]];
@@ -2774,10 +2943,20 @@ function obliczStaty() {
   if (gracz.stale.hpProc) s.hpMax *= 1 + gracz.stale.hpProc / 100;
   hak('statyMnoz', s);
   hak('statyPost', s);
+  if (FLAGI.przelew) przelejNadmiar(s, FLAGI.przelew);
   if (TRUDNOSCI[run.trudnosc].regenGracza !== undefined) s.regen *= TRUDNOSCI[run.trudnosc].regenGracza;
   s.hpMax = Math.max(1, Math.round(s.hpMax));
   s.ms = Math.max(40, s.ms);
   return s;
+}
+// PRZELEW (augment): to, co przekracza limity, nie przepada, tylko zamienia się w coś innego
+function przelejNadmiar(s, m) {
+  if (s.kryt > 100) { s.krytObr += (s.kryt - 100) * 1.5 * m; s.kryt = 100; }
+  const lu = FLAGI.unikMax || 80; if (s.unik > lu) { s.obrBonus += (s.unik - lu) * 1.5 * m; s.unik = lu; }
+  const lr = FLAGI.redukcjaMax || 75; if (s.redukcja > lr) { s.hpMax *= 1 + (s.redukcja - lr) * 0.02 * m; s.redukcja = lr; }
+  const wamp = Math.max(0, s.kradziez) + Math.max(0, s.omni);           // powyżej 40 limit leczenia już nie rośnie
+  if (wamp > 40) s.obrBonus += (wamp - 40) * 0.5 * m;
+  const sp = s.as - 300; if (sp > 0) s.obrBonus += sp * 0.15 * m;      // bardzo szybkie ataki i tak tracą sens
 }
 function zastosujStaty() {
   const stareMax = D ? D.hpMax : null;
@@ -3237,7 +3416,7 @@ function opoznione(t, fn) { opoznioneLista.push({ t: t, fn: fn, wl: gracz }); }
 function dodajBuff(id, staty, czas) { const b = gracz.buffy[id]; if (b) b.czas = Math.max(b.czas, czas); else { gracz.buffy[id] = { staty: staty, czas: czas }; oznaczStaty(); } }
 function skrocCd(sek) {
   gracz.przedmioty.forEach(p => { if (p && p.cd > 0) p.cd = Math.max(0, p.cd - sek); }); gracz.augmenty.forEach(a => { if (a.cd > 0) a.cd = Math.max(0, a.cd - sek); });
-  gracz.oreze.forEach(o => { if (o.cd > 0) o.cd = Math.max(0, o.cd - sek); }); if (gracz.umi && gracz.umi.cd > 0) gracz.umi.cd = Math.max(0, gracz.umi.cd - sek * 0.5);
+  gracz.oreze.forEach(o => { if (o.cd > 0) o.cd = Math.max(0, o.cd - sek); }); if (gracz.umi && gracz.umi.cd > 0) gracz.umi.cd = Math.max(0, gracz.umi.cd - sek * 0.5); if (gracz.umi2 && gracz.umi2.cd > 0) gracz.umi2.cd = Math.max(0, gracz.umi2.cd - sek * 0.5);
 }
 function wystrzel(o) {
   const k = o.kat !== undefined ? o.kat : kat({ x: o.x, y: o.y }, o.cel);
@@ -3288,14 +3467,23 @@ function leczDruzyne(x, y, r, ile, zSoba, procHp, procTarczy) {
 // ---------------------------------------------------------------------
 function druzyna() { return gracze.length > 1 || (typeof SIEC !== 'undefined' && !!SIEC.rola); }
 // Limit wampiryzmu (kradzież życia + wszechwampiryzm): ułamek maks. zdrowia na sekundę
-function limitWampiryzmu() { const k = KLASY[gracz.klasa].limitWamp || 0; return Math.min(0.08 + k, 0.02 + k + 0.0015 * (Math.max(0, D.kradziez) + Math.max(0, D.omni))); }
+function limitWampiryzmu() { const k = (KLASY[gracz.klasa].limitWamp || 0) + (FLAGI.kielich ? 0.02 : 0); return Math.min(0.08 + k, 0.02 + k + 0.0015 * (Math.max(0, D.kradziez) + Math.max(0, D.omni))); }
 // Każde leczenie zależne od zadanych obrażeń / zabójstw idzie przez ten sam limit
 // (zapas = 1 sekunda limitu, odnawia się na bieżąco) — inaczej przy ogromnych obrażeniach nie dało się umrzeć.
 function leczWampirem(v, zr) {
   if (!(v > 0) || !gracz || !D) return 0;
   const b = gracz._wampB === undefined ? limitWampiryzmu() * D.hpMax : gracz._wampB;
   const x = Math.min(v, b); gracz._wampB = b - x;
+  if (v > x && FLAGI.kielich) nadmiarKielicha(v - x);
   return x > 0 ? leczGracza(x, zr, true) : 0;
+}
+// Kielich Nadmiaru: wampiryzm ponad limit -> tarcza, a gdy tarcza pełna -> pula wybuchająca co sekundę
+function nadmiarKielicha(v) {
+  if (fala.bezLeczenia) return;
+  const i = gracz.przedmioty.find(p => p && p.id === 'kielich'); if (!i) return;
+  const max = D.hpMax * 0.25, ob = tarczaSuma();
+  if (ob < max) { const t = Math.min(v, max - ob); dajTarcze(t, 5, true); v -= t; }
+  if (v > 0) i.pula = Math.min(D.hpMax * 0.5, (i.pula || 0) + v);
 }
 // Zmęczenie: od 11. fali każde leczenie (poza miksturami) słabnie o 2,5% na falę, maks. o połowę
 function zmeczenie(nr) { return Math.min(0.5, Math.max(0, ((nr || 0) - 10) * 0.025)); }
@@ -3608,7 +3796,7 @@ function aktualizujGracza(dt) {
   const dtCd = dt * (FLAGI.krysztalCzasu && gracz.hp < D.hpMax * 0.5 ? 2 : 1);
   gracz.przedmioty.forEach(p => { if (p && p.cd > 0) p.cd -= dtCd; });
   gracz.augmenty.forEach(a => { if (a.cd > 0) a.cd -= dtCd; });
-  if (gracz.umi.cd > 0) gracz.umi.cd -= dtCd;
+  if (gracz.umi.cd > 0) gracz.umi.cd -= dtCd; if (gracz.umi2 && gracz.umi2.cd > 0) gracz.umi2.cd -= dtCd;
   aktualizujOreze(dt, dtCd);
   hak('tik', dt);
   // zbiorcze liczby leczenia i obrażeń nad postacią
@@ -3635,19 +3823,37 @@ function aktualizujOreze(dt, dtCd) {
 }
 // ---- UMIEJĘTNOŚĆ AKTYWNA postaci ----
 function mnUmi() { return 1 + (FLAGI.mnUmi || 0); }
-function uzyjUmiejetnosci() {
+// Umiejętności postaci: nr 1 (każda postać) i nr 2 (tylko niektóre). Przełącznik (przelacz) włącza/wyłącza efekt.
+function umiPostaci(nr) { const K = KLASY[gracz.klasa]; return nr === 2 ? K.umi2 : K.umi; }
+function czyUmiAktywna(nr) {
+  if (typeof SIEC !== 'undefined' && SIEC.rola === 'klient' && !gracz.zdalny) return !!(SIEC.umiAkt && SIEC.umiAkt[nr - 1]);
+  const U = umiPostaci(nr); return !!(U && U.aktywna && U.aktywna(gracz.stanKlasy || {}));
+}
+function stanUmi(nr) { if (nr === 2) return gracz.umi2 || (gracz.umi2 = { cd: 0, cdMax: 0 }); return gracz.umi; }
+function uzyjUmiejetnosci(nr) {
+  nr = nr === 2 ? 2 : 1;
   if (stan !== 'walka' || !gracz || gracz.martwy || gracz.powalony || gracz.zastoj > 0) return false;
-  if (SIEC.rola === 'klient') { if (gracz.umi.cd > 0) return false; siecWyslijHost({ t: 'umi', k: [Math.round((gracz.kierRX || gracz.kierX || 1) * 100) / 100, Math.round((gracz.kierRY || 0) * 100) / 100] }); gracz.umi.cd = 0.5; return true; }
-  const U = KLASY[gracz.klasa].umi; if (!U || gracz.umi.cd > 0) return false;
+  const U = umiPostaci(nr), st = stanUmi(nr); if (!U) return false;
+  if (SIEC.rola === 'klient') { if (st.cd > 0) return false; siecWyslijHost({ t: 'umi', n: nr, k: [Math.round((gracz.kierRX || gracz.kierX || 1) * 100) / 100, Math.round((gracz.kierRY || 0) * 100) / 100] }); st.cd = 0.5; return true; }
+  if (st.cd > 0) return false;
   let ok = false;
-  try { ok = U.uzyj(mnUmi()) !== false; } catch (e) { zglosBlad(e, 'umiejetnosc ' + gracz.klasa); }
-  if (!ok) { if (!gracz.zdalny) toast(U.ik + ' Brak celu w pobliżu'); return false; }
-  gracz.umi.cdMax = U.cd * Math.max(0.25, 1 - (FLAGI.cdUmi || 0)) * 100 / (100 + Math.max(0, D.haste));
-  gracz.umi.cd = gracz.umi.cdMax;
-  if (gracz.stanKlasy.natychmiast) { gracz.stanKlasy.natychmiast = false; gracz.umi.cd = 0.4; }
-  tekstSwiat(gracz.x, gracz.y - 34, U.ik + ' ' + U.n, '#ffe08a', 1, 13);
+  try { ok = U.uzyj(mnUmi()) !== false; } catch (e) { zglosBlad(e, 'umiejetnosc ' + gracz.klasa + ' ' + nr); }
+  if (!ok) { if (!gracz.zdalny && !U.przelacz) toast(U.ik + ' ' + (U.brak || 'Brak celu w pobliżu')); return false; }
+  st.cdMax = U.przelacz ? 0.6 : U.cd * Math.max(0.25, 1 - (FLAGI.cdUmi || 0)) * 100 / (100 + Math.max(0, D.haste));
+  st.cd = st.cdMax;
+  if (nr === 1 && gracz.stanKlasy.natychmiast) { gracz.stanKlasy.natychmiast = false; gracz.umi.cd = 0.4; }
+  if (!U.przelacz) tekstSwiat(gracz.x, gracz.y - 34, U.ik + ' ' + U.n, '#ffe08a', 1, 13);
   hak('naUmiejetnosci');
   return true;
+}
+// mignięcie (np. Mag): szybki doskok w kierunku ruchu (u gracza online - przez zdarzenie u niego)
+function mrugnij(dl) {
+  let mx = gracz.kierRX || gracz.kierX || 1, my = gracz.kierRY || 0;
+  if (gracz.zdalny && gracz.umiKier) { mx = gracz.umiKier[0] || mx; my = gracz.umiKier[1] || my; }
+  const n = Math.hypot(mx, my) || 1; mx /= n; my /= n;
+  gracz.niewr = Math.max(gracz.niewr, 0.3);
+  if (gracz.zdalny) siecZdarzenieGracza(gracz, ['dash', Math.round(mx * 100), Math.round(my * 100), dl]);
+  else gracz.dash = { vx: mx * dl / 0.12, vy: my * dl / 0.12, t: 0.12 };
 }
 // Szarża (Rycerz): obrażenia od razu na linii, ruch postaci rozłożony na chwilę
 function szarza(dl, obr, ogl, zr) {
@@ -3746,7 +3952,7 @@ function aktualizujPlansze(dt) {
     if (p.wl) kontekst(p.wl);
     const rani = p.tyk <= 0; if (rani) p.tyk = 0.5;
     const n = wrogowie.length;
-    for (let j = 0; j < n; j++) { const w = wrogowie[j]; if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - p.x, w.y - p.y) > p.r + w.r * 0.5) continue; if (p.rodzaj === 'mroz') spowolnij(w, 0.3, 0.4);
+    for (let j = 0; j < n; j++) { const w = wrogowie[j]; if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - p.x, w.y - p.y) > p.r + w.r * 0.5) continue; if (p.rodzaj === 'mroz') spowolnij(w, 0.3, 0.4); if (p.spow) spowolnij(w, p.spow, 0.4);
       if (rani) { zadaj(w, p.obr, 'mag', { dot: true, obszar: true, zr: p.zr }); if (p.rodzaj === 'kwas') w.krusz = Math.max(w.krusz || 0, 0.15); else if (p.rodzaj === 'ogien') podpal(w, p.obr * 0.3, 1.5, 'mag', p.zr); } }
     if (p.czas <= 0) polaEfektow.splice(i, 1);
   }
@@ -3821,7 +4027,9 @@ function aktualizujStwory(dt) {
     if (s.wl && gracze.indexOf(s.wl) < 0) { stwory.splice(i, 1); continue; }
     if (s.wl) kontekst(s.wl);
     const T = TYPY_STWOROW[s.typ];
-    try { if (T.tik) T.tik(s, dt); } catch (e) { zglosBlad(e, 'stwor ' + s.typ); }
+    // Przeładowanie (Inżynier): wszystkie stworzenia właściciela działają 2× szybciej
+    const szyb = s.wl && s.wl.buffy && s.wl.buffy.przeladowanie ? 2 : 1;
+    try { if (T.tik) T.tik(s, dt * szyb); } catch (e) { zglosBlad(e, 'stwor ' + s.typ); }
     if (s.usun || s.czas <= 0) {
       if (!s.usun && T.koniec) { try { T.koniec(s); } catch (e) { zglosBlad(e, 'stwor koniec ' + s.typ); } }
       const j = stwory.indexOf(s); if (j >= 0) stwory.splice(j, 1);
@@ -3855,6 +4063,28 @@ const TYPY_STWOROW = {
     tik(s, dt) { s.t -= dt; if (s.t <= 0 && strzalDzialka(s, '#ffb04a', 'rakieta', true)) s.t = s.co; } },
   tesla: { ik: '⚡', r: 12, wiezyczka: true, kolor: '#9fd8ff',
     tik(s, dt) { s.t -= dt; if (s.t > 0) return; const c = wrogBlisko(s.x, s.y, 220); if (!c) return; s.t = s.co; s.kat = Math.atan2(c.y - s.y, c.x - s.x); lancuch({ x: s.x, y: s.y - 14 }, c, s.obr * mnStw(), 'mag', 3, 150, 1, s.zr); } },
+  // fala zimna co kilka sekund, co trzecia zamraża
+  wiezaMrozu: { ik: '❄️', r: 12, wiezyczka: true, kolor: '#9fd8ff',
+    tik(s, dt) { s.t -= dt; if (s.t > 0) return; s.t = s.co; s.n = (s.n || 0) + 1; const r = s.aura || 120;
+      fale.push({ x: s.x, y: s.y, czas: 0.4, max: 0.4, r: r, kolor: '#9fd8ff' });
+      wrogowie.forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - s.x, w.y - s.y) > r + w.r * 0.5) return;
+        spowolnij(w, 0.45, 1.6); zadaj(w, s.obr * mnStw(), 'mag', { obszar: true, zr: s.zr }); if (s.n % 3 === 0) oglusz(w, 0.8, { zrodlo: s.zr }); }); } },
+  // pocisk po łuku w największą grupę
+  mozdzierz: { ik: '🧨', r: 13, wiezyczka: true, kolor: '#c08a5a',
+    tik(s, dt) { s.t -= dt; if (s.t > 0) return; const c = skupisko(s.x, s.y, 380, 75); if (!c) return; s.t = s.co; s.kat = Math.atan2(c.y - s.y, c.x - s.x);
+      granat(s.x, s.y, c.x, c.y, 75, s.obr * mnStw(), 'fiz', s.zr, 0.8, 0); if (mozna('mozdzierz', 150)) ton(140, 0.08, 'square', 0.05); } },
+  // leczy drużynę wokół
+  zrodlo: { ik: '⛲', r: 13, kolor: '#5ae0c0',
+    tik(s, dt) { s.t -= dt; if (s.t > 0) return; s.t = s.co; leczDruzyne(s.x, s.y, s.aura || 130, 0, true, s.lecz * s.co * mnStw());
+      if (Math.random() < 0.5) czastki.push({ x: s.x + losowo(-10, 10), y: s.y - 8, vx: 0, vy: -40, czas: 0.6, max: 0.6, kolor: '#7ee8d0' }); } },
+  // jeden mocny strzał przebijający w najgroźniejszego wroga
+  snajper: { ik: '🎯', r: 12, wiezyczka: true, kolor: '#e8d8a0',
+    tik(s, dt) { s.t -= dt; if (s.t > 0) return;
+      let c = null, naj = -1;
+      for (const w of wrogowie) { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - s.x, w.y - s.y) > 420) continue; const v = (w.boss ? 1e9 : w.elita ? 1e6 : 0) + w.hp; if (v > naj) { naj = v; c = w; } }
+      if (!c) return; s.t = s.co; s.kat = Math.atan2(c.y - s.y, c.x - s.x);
+      wystrzel({ x: s.x, y: s.y, kat: s.kat, predkosc: 1100, obr: s.obr * mnStw(), typ: 'fiz', kolor: '#ffe8a0', ksztalt: 'strzala', zr: s.zr, zycie: 0.45, przebija: 99 });
+      if (mozna('snajper', 120)) ton(900, 0.05, 'sawtooth', 0.05); } },
   krzak: { ik: '🌳', r: 14,
     tik(s, dt) {
       s.t -= dt;
@@ -4019,7 +4249,7 @@ function startFali(nr) {
     const k = n > 1 ? i / n * Math.PI * 2 : 0;
     p.x = SRODEK + (n > 1 ? Math.cos(k) * 55 : 0); p.y = SRODEK + (n > 1 ? Math.sin(k) * 55 : 0); p.netX = undefined;
     p.tarcze = []; p.zastoj = 0; p.niewr = 1; p.celKat = null; p.spowG = 0; p.powalony = false; p.reanim = 0; p.cdMikstury = 0; p.dash = null;
-    if (p.umi) p.umi.cd = 0; p.oreze.forEach(o => { o.cd = Math.random() * 0.8; });
+    if (p.umi) p.umi.cd = 0; if (p.umi2) p.umi2.cd = 0; p.stanKlasy && (p.stanKlasy.zarodniki = false); p.oreze.forEach(o => { o.cd = Math.random() * 0.8; });
     zastosujStaty();
     p.hp = D.hpMax;
     hak('naStartFali');
@@ -4183,7 +4413,11 @@ function koniecFali() {
 // Kolejność ekranów między falami
 function kolejkaPrzerwy() {
   const p = run.przerwa;
-  if (!p) return;
+  if (!p) {
+    // zabezpieczenie: przerwa bez kolejki ekranów (np. po wczytaniu) - w grze solo po prostu następna fala
+    if (stan === 'przerwa' && !druzyna() && gracz && fala && !fala.aktywna) { zamknijEkran(); zamknijModal(); startFali((fala.nr || 0) + 1); }
+    return;
+  }
   zapiszGre();
   if (run.augOferta) { pokazAugmenty(run.augOferta.tier); return; }
   if (p.start) {
@@ -4415,6 +4649,18 @@ function rysujWrogow() {
     const w = wrogowie[i];
     if (w.martwy || !naEkranie(w.x, w.y, w.r + 40)) continue;
     const ey = w.y - (w.wysokosc || 0);
+    // zamach przed ciosem: czerwony klin w stronę celu, wypełnia się do momentu uderzenia
+    const zp = w.zamach > 0 && w.zamachMax ? 1 - w.zamach / w.zamachMax : (w.zamP || 0);
+    if (zp > 0) {
+      const R = w.r + 6 + ZASIEG_ZAMACHU + 13, k = w.zamKat || 0, pol = 0.85;
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,60,40,' + (0.12 + 0.16 * zp).toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(w.x, w.y); ctx.arc(w.x, w.y, R, k - pol, k + pol); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = 'rgba(255,90,60,' + (0.25 + 0.3 * zp).toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(w.x, w.y); ctx.arc(w.x, w.y, w.r * 0.6 + (R - w.r * 0.6) * zp, k - pol, k + pol); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,120,90,0.85)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(w.x, w.y, R, k - pol, k + pol); ctx.stroke();
+      ctx.restore();
+    }
     ctx.save();
     ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(w.x, w.y + w.r * 0.8, w.r * 0.9, w.r * 0.35, 0, 0, Math.PI * 2); ctx.fill();
     if (w.trafiony > 0) ctx.globalAlpha = 0.6;
@@ -4813,7 +5059,9 @@ function pokazModal(html, zachowaj) {
 function zamknijModal() { modalEl.classList.remove('widoczny'); modalTresc.innerHTML = ''; delete modalEl.dataset.build; delete modalEl.dataset.szczegol; delete modalEl.dataset.zBuildu; }
 modalEl.addEventListener('click', e => { if (e.target === modalEl && !modalEl.dataset.wymuszony) zamknijModal(); });
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-a]');
+  let el = e.target.closest('[data-a]');
+  // karta, którą da się wybrać w całości (np. próba): klik w kartę = klik w jej główny przycisk
+  if (!el) { const k = e.target.closest('[data-pad][data-klik]'); if (k) el = k.querySelector('[data-a="' + k.dataset.pad + '"]'); }
   if (!el || el.disabled) return;
   const f = AKCJE[el.dataset.a];
   if (!f) return;
@@ -4858,6 +5106,7 @@ function tagiDef(d, rodzaj, klucz) {
   if (d.naOtrzymanie) t.push(['', '🩹 gdy obrywasz']);
   if (d.naUniku) t.push(['', '💨 przy uniku']);
   if (d.naUmiejetnosci) t.push(['', '✨ po użyciu umiejętności']);
+  if (rodzaj === 'prz' && d.wielokrotny) t.push(['', '🔁 możesz mieć kilka — każdy działa osobno']);
   if (rodzaj === 'ore') { if (d.cd) t.push(['cd', '⏱️ co ' + fmt(d.cd) + ' s (Przyspieszenie skraca)']); else if (d.co) t.push(['cd', '⚔️ co ' + d.co + '. atak broni głównej']); }
   else if (rodzaj !== 'bron' && d.cd) t.push(['cd', '⏱️ odnowienie ' + fmt(d.cd) + ' s (Przyspieszenie skraca)']);
   const sk = SKALE_TAG.filter(([w]) => src.indexOf(w) >= 0).map(([, ik]) => ik);
@@ -4930,20 +5179,23 @@ function pokazMenu() {
   if (z && z.gracz && z.run && z.wersja === 2 && KLASY[z.gracz.klasa]) kont = '<button class="btn ziel" data-a="kontynuuj">⏩ Kontynuuj<br><small style="font-weight:700">' + KLASY[z.gracz.klasa].ik + ' ' + KLASY[z.gracz.klasa].n + ' · fala ' + (z.wznowFale || ((z.run.przerwa && z.run.przerwa.nr || 0) + 1)) + ' · ' + TRUDNOSCI[z.run.trudnosc].n + '</small></button>';
   pokazEkran('<div style="max-width:440px;margin:0 auto">' +
     '<div class="tytul duzy">⛓️ Więzień<br>Labiryntu</div><div class="podtytul">Nieskończone lochy. Fale potworów, setki kombinacji broni, przedmiotów i augmentów, bossowie.</div>' +
-    '<div style="text-align:center;font-size:60px;margin:6px 0 10px;filter:drop-shadow(0 4px 14px rgba(230,193,92,0.35))">🗝️</div>' +
+    '<div class="menu-klucz" style="text-align:center;font-size:60px;margin:6px 0 10px;filter:drop-shadow(0 4px 14px rgba(230,193,92,0.35))">🗝️</div>' +
     kont + '<button class="btn" data-a="nowaGra">⚔️ Nowa gra</button>' +
     '<button class="btn ziel" data-a="online">👥 Gra z przyjaciółmi (online)</button>' +
     '<div class="rzad-btn"><button class="btn drugi" data-a="kodeks">📖 Kodeks</button><button class="btn drugi" data-a="rekordy">🏆 Rekordy</button></div>' +
     '<div class="rzad-btn"><button class="btn drugi" data-a="jakGrac">❓ Jak grać</button><button class="btn drugi" data-a="dzwiek">' + (dzwiekWlaczony ? '🔊 Dźwięk' : '🔇 Bez dźwięku') + '</button></div>' +
     '<div class="rzad-btn"><button class="btn drugi" data-a="ustawienia">⚙️ Ustawienia</button><button class="btn drugi" data-a="sterowanie">🎮 Sterowanie' + (PAD.podlaczony ? ' <span class="ziel">· pad</span>' : '') + '</button></div>' +
+    przyciskPelnego() +
     '<div class="podtytul" style="margin-top:18px;opacity:0.6">' + KLUCZE_KLAS.length + ' postaci · ' + KLUCZE_BRONI.length + ' broni głównych · ' + OREZE.length + ' broni dodatkowych · ' + PRZEDMIOTY.length + ' przedmiotów · ' + PRYZMATY.length + ' pryzmatycznych · ' + AUGMENTY.length + ' augmentów</div></div>');
 }
 // ---------------------------------------------------------------------
 //  USTAWIENIA
 // ---------------------------------------------------------------------
 const OPCJE_USTAWIEN = [
-  { k: 'uklad', n: '🖥️ Układ ekranu', o: [['auto', 'Automatyczny'], ['tel', 'Telefon'], ['pc', 'Komputer']],
-    op: 'Automatyczny: na szerokim ekranie z myszką albo padem gra rozkłada się na całe okno.' },
+  { k: 'orientacja', n: '📱 Orientacja (telefon, tablet)', o: [['auto', 'Obie'], ['pion', 'Pionowa'], ['poziom', 'Pozioma']],
+    op: 'Poziomo plansza zajmuje cały ekran: drążek pojawia się pod kciukiem w dowolnym miejscu, przyciski są w prawym dolnym rogu. Najlepiej na pełnym ekranie.' },
+  { k: 'uklad', n: '🕹️ Sterowanie na ekranie (poziomo)', o: [['auto', 'Automatyczne'], ['tel', 'Dotykowe'], ['pc', 'Myszka']],
+    op: 'Automatyczne: na ekranie dotykowym drążek pod kciukiem i duże przyciski, przy myszce mały pasek akcji.' },
   { k: 'interfejs', n: '🔠 Wielkość napisów', o: [[0.9, 'Mniejsze'], [1, 'Normalne'], [1.15, 'Większe']] },
   { k: 'liczby', n: '💥 Liczby obrażeń', o: [['wszystkie', 'Wszystkie'], ['wazne', 'Tylko ważne'], ['brak', 'Wyłączone']],
     op: '„Tylko ważne” — trafienia krytyczne oraz obrażenia zadane elitom i bossom.' },
@@ -4958,6 +5210,7 @@ function pokazUstawienia(zachowaj) {
       (O.op ? '<div class="podtytul" style="text-align:left;margin:2px 2px 4px;font-size:11.5px">' + O.op + '</div>' : '');
   });
   h += '<div class="sekcja">🔊 Dźwięk</div><button class="btn drugi" data-a="dzwiekUst" style="margin-top:4px">' + (dzwiekWlaczony ? '🔊 Włączony' : '🔇 Wyłączony') + '</button>';
+  const pe = przyciskPelnego(); if (pe) h += '<div class="sekcja">⛶ Ekran</div>' + pe;
   h += '<button class="btn" data-a="zamknijModal">Gotowe</button>';
   pokazModal(h, zachowaj);
 }
@@ -4966,6 +5219,7 @@ AKCJE.ustaw = d => {
   const O = OPCJE_USTAWIEN.find(x => x.k === d.k); if (!O) return;
   const opc = O.o.find(([v]) => String(v) === d.v); if (!opc) return;
   USTAW[d.k] = opc[0]; zapiszUstawienia();
+  if (d.k === 'orientacja') zablokujOrientacje();
   dopasujRozmiar(); pokazUstawienia(true);
   if (stan === 'menu' && ekranEl.classList.contains('widoczny')) pokazMenu();
 };
@@ -4994,12 +5248,14 @@ AKCJE.wybierzTrudnosc = d => { wyborTrudnosci = +d.i; pokazTrudnosc(); };
 AKCJE.dalejDoPostaci = () => pokazPostacie();
 let wyborKlasy = 'wiezniarka';
 function opisKlasyHtml(K) {
-  const U = K.umi;
-  return '<div style="font-size:16px;font-weight:900;color:#ffe08a">' + K.ik + ' ' + K.n + '</div>' + K.opis +
+  const U = K.umi, U2 = K.umi2;
+  const blokUmi = (X, kl) => '<div style="margin-top:6px;padding:7px 9px;border-radius:9px;background:rgba(255,224,138,0.08)"><b>' + X.ik + ' ' + X.n + '</b> ' +
+    (X.przelacz ? '<span class="cd-tag">🔁 przełącznik</span>' : '<span class="cd-tag">⏱️ ' + X.cd + ' s</span>') + (kl ? ' <span class="cd-tag">' + kl + '</span>' : '') + '<br>' + wKontekscie(() => X.opis(1)) + '</div>';
+  return '<div style="font-size:16px;font-weight:900;color:#ffe08a">' + K.ik + ' ' + K.n + (U2 ? ' <span class="cd-tag">2 umiejętności</span>' : '') + '</div>' + K.opis +
     (Object.keys(K.staty).length ? '<div style="margin-top:6px">' + opisStatow(K.staty) + '</div>' : '') +
     '<div style="margin-top:6px">⭐ Broń główna: <b>' + opisBroniStartowej(K) + '</b> · 🗡️ broni dodatkowych: <b>' + K.slotyOreza + '</b> · 🎒 przedmiotów: <b>' + K.slotyPrzedm + '</b> + 🔨 pryzmatów: <b>' + (K.slotyPryzm || 2) + '</b></div>' +
     (K.rodziny ? '<div style="margin-top:4px">🧩 Dobrze łączy się z rodzinami: <b>' + opisRodzinKlasy(K) + '</b></div>' : '') +
-    (U ? '<div style="margin-top:6px;padding:7px 9px;border-radius:9px;background:rgba(255,224,138,0.08)"><b>' + U.ik + ' ' + U.n + '</b> <span class="cd-tag">⏱️ ' + U.cd + ' s</span><br>' + wKontekscie(() => U.opis(1)) + '</div>' : '');
+    (U ? blokUmi(U, U2 ? '1.' : '') : '') + (U2 ? blokUmi(U2, '2. · klawisz R · pad RB/B') : '');
 }
 function pokazPostacie() {
   const K0 = KLASY[wyborKlasy];
@@ -5007,7 +5263,7 @@ function pokazPostacie() {
   KLUCZE_KLAS.forEach(k => {
     const K = KLASY[k];
     h += '<div class="kafel' + (k === wyborKlasy ? ' wybrany' : '') + '" data-a="wybierzKlase" data-k="' + k + '"><div class="ik">' + K.ik + '</div><div class="n">' + K.n + '</div>' +
-      '<div class="o">' + BRONIE_IK(K) + ' ' + (K.umi ? K.umi.ik : '') + '</div></div>';
+      '<div class="o">' + BRONIE_IK(K) + ' ' + (K.umi ? K.umi.ik : '') + (K.umi2 ? K.umi2.ik : '') + '</div></div>';
   });
   h += '</div>';
   h += '<button class="btn" data-a="startRunu" style="margin-top:12px">⚔️ Do lochu jako ' + K0.ik + ' ' + K0.n + '</button><button class="btn drugi" data-a="nowaGraWstecz">◀ Wstecz</button>';
@@ -5050,7 +5306,8 @@ function pokazWyborBroniStart() {
 AKCJE.bronStart = d => { gracz.bronie = [nowaBron(d.r, 1)]; run.ofertaBroni = null; poZmianieBuildu(); DZ.wybor(); kolejkaPrzerwy(); };
 
 AKCJE.jakGrac = () => pokazModal('<div class="tytul">❓ Jak grać</div><div class="info-pole">' +
-  '<b>Ruch:</b> na telefonie przeciągnij palcem po dolnym pasku (drążek pojawi się pod palcem). Na komputerze <b>WASD</b> / strzałki albo przytrzymaj <b>lewy przycisk myszy</b> — postać idzie w stronę kursora. Atakujesz <b>automatycznie</b>.<br>' +
+  '<b>Ruch:</b> na telefonie trzymanym pionowo przeciągnij palcem po dolnym pasku (drążek pojawi się pod palcem). <b>Poziomo</b> dotknij planszy w dowolnym miejscu — drążek pojawi się pod kciukiem, a przyciski są w prawym dolnym rogu (⛶ pełny ekran w menu). Na komputerze <b>WASD</b> / strzałki albo przytrzymaj <b>lewy przycisk myszy</b> — postać idzie w stronę kursora. Atakujesz <b>automatycznie</b>.<br>' +
+  '<b>⚠️ Zamach:</b> wrogowie walczący wręcz przed ciosem się zamachują (czerwony klin). Odskocz albo przebiegnij obok, zanim się wypełni — cios trafi w powietrze. Ogłuszenie przerywa zamach.<br>' +
   '<b>✨ Umiejętność:</b> każda postać ma swoją — przycisk po prawej, na komputerze <b>E</b>, spacja albo <b>prawy przycisk myszy</b> (w stronę kursora). Mikstura: <b>Q</b>, pauza: <b>Esc</b>. Odnawia się szybciej z Przyspieszeniem.<br>' +
   '<b>🎮 Pad:</b> podłącz kontroler (kabel albo Bluetooth) i naciśnij dowolny przycisk — gra przełączy się na sterowanie padem. Prawą gałką celujesz (puszczona = automatyczne namierzanie). Szczegóły w menu „Sterowanie”.<br>' +
   '<b>⭐ Broń główna</b> to Twoja broń z klasy — to ona atakuje. Ulepszasz ją w sklepie (tiery I–V). Skaluje się od kilku statystyk naraz.<br>' +
@@ -5299,7 +5556,7 @@ function pokazSklep(zachowaj) {
     if (o.rodzaj === 'kowadlo') karta = '<div class="karta tp"><div class="karta-gora"><div class="karta-ik">🔨</div><div><div class="karta-nazwa">Pryzmatyczne Kowadło</div><div class="karta-tier"><span class="kol-p">Wybór przedmiotu pryzmatycznego</span></div></div></div><div class="karta-opis">Po zakupie wybierasz jeden z 3 przedmiotów pryzmatycznych.</div><div class="karta-dol">' + dol + '</div></div>';
     else if (o.rodzaj === 'oreze') karta = kartaOreza(o.o, (paraOreza(o.o) ? '<span class="tag" style="background:rgba(126,201,138,0.2);color:#7ec98a">⬆️ połączy się</span>' : '') + dol);
     else if (o.rodzaj === 'pancerz') { const ob = gracz.pancerz[DEF_PANC[o.p.id].slot]; karta = kartaPancerza(o.p, (ob ? '<span class="tag">zamieni: ' + DEF_PANC[ob.id].ik + ' ' + TIERY[ob.tier].rz + '</span>' : '') + dol); }
-    else karta = kartaPrzedmiotu(nowyPrzedmiot(o.id), dol);
+    else { const ile = gracz.przedmioty.filter(p => p && p.id === o.id).length; karta = kartaPrzedmiotu(nowyPrzedmiot(o.id), (ile ? '<span class="tag" style="background:rgba(126,201,138,0.2);color:#7ec98a">masz: ' + ile + ' · kolejny działa osobno</span>' : '') + dol); }
     h += kartaPad(karta, 'kup', 'kup', 'zablokuj', o.zabl ? 'odblokuj' : 'zablokuj');
   });
   h += sekcjeBuildu(true);
@@ -5512,7 +5769,7 @@ function pokazProby() {
     (druzyna() ? '<div class="info-pole">👥 Próbę wybierasz dla <b>całej drużyny</b>. Nagrodę dostaje każdy, kto skończy falę na nogach.</div>' : '');
   run.ofertaProb.forEach(id => {
     const p = DEF_PROB[id];
-    h += '<div class="karta az" data-pad="probaWybierz" data-padn="podejmij"><div class="karta-gora"><div class="karta-ik">' + p.ik + '</div><div><div class="karta-nazwa">' + p.n + '</div></div></div>' +
+    h += '<div class="karta az wybieralna" data-pad="probaWybierz" data-padn="podejmij" data-klik="1"><div class="karta-gora"><div class="karta-ik">' + p.ik + '</div><div><div class="karta-nazwa">' + p.n + '</div></div></div>' +
       '<div class="karta-opis"><span class="czer">Utrudnienie:</span> ' + p.opis + '<br><span class="ziel">Nagroda:</span> ' + p.nagroda + '</div>' +
       '<div class="karta-dol"><button class="btn-maly zl" data-a="probaWybierz" data-id="' + id + '" style="margin-left:auto">Podejmuję próbę</button></div></div>';
   });
@@ -5570,7 +5827,7 @@ function pokazEkwipunek(zak) {
   if (ekwZakladka === 'staty') h += htmlStatow();
   else if (ekwZakladka === 'build') h += sekcjeBuildu(false);
   else h += htmlObrazen();
-  h += '<div class="rzad-btn" style="margin-top:16px"><button class="btn drugi" data-a="ustawienia">⚙️ Ustawienia</button><button class="btn drugi" data-a="sterowanie">🎮 Sterowanie</button></div>';
+  h += '<div class="rzad-btn" style="margin-top:16px"><button class="btn drugi" data-a="ustawienia">⚙️ Ustawienia</button><button class="btn drugi" data-a="sterowanie">🎮 Sterowanie</button></div>' + przyciskPelnego();
   if (!druzyna()) h += '<button class="btn czerw" data-a="poddaj" style="margin-top:6px">🏳️ Zakończ tę grę</button>';
   else h += '<button class="btn czerw" data-a="opuscDruzyne" style="margin-top:6px">🚪 Opuść drużynę</button>';
   pokazEkran(h, { polprzezroczysty: true });
@@ -5593,7 +5850,8 @@ $('btnEkw').addEventListener('click', () => {
   else if (stan === 'pauza') AKCJE.wznow();
 });
 $('btnMikstura').addEventListener('click', () => wypijMiksture());
-$('btnUmi').addEventListener('click', () => uzyjUmiejetnosci());
+$('btnUmi').addEventListener('click', () => uzyjUmiejetnosci(1));
+$('btnUmi2').addEventListener('click', () => uzyjUmiejetnosci(2));
 
 // ---------------------------------------------------------------------
 //  ŚMIERĆ
@@ -5682,15 +5940,18 @@ function odswiezHud(wymus) {
   $('zlotoInfo').textContent = '💰 ' + Math.floor(gracz.zloto) + (gracz.skrzynie.length ? '  📦' + gracz.skrzynie.length : '');
   $('licznikMikstur').textContent = gracz.mikstury;
   $('miksturaCd').style.setProperty('--p', (gracz.cdMikstury > 0 ? gracz.cdMikstury / 2 * 100 : 0) + '%');
-  // umiejętność postaci
-  const U = KLASY[gracz.klasa].umi, bu = $('btnUmi');
-  if (U && bu) {
-    if (bu._k !== gracz.klasa) { bu._k = gracz.klasa; $('umiIk').textContent = U.ik; }
-    const u = gracz.umi || { cd: 0, cdMax: 1 }, gotowa = !(u.cd > 0);
-    $('umiCd').style.setProperty('--p', (gotowa ? 0 : Math.min(100, u.cd / Math.max(0.1, u.cdMax) * 100)) + '%');
-    $('umiCzas').textContent = gotowa ? '' : Math.ceil(u.cd);
-    bu.classList.toggle('gotowa', gotowa && !gracz.powalony);
-  }
+  // umiejętności postaci (druga tylko u niektórych)
+  [[1, 'btnUmi', 'umiIk', 'umiCd', 'umiCzas'], [2, 'btnUmi2', 'umi2Ik', 'umi2Cd', 'umi2Czas']].forEach(([nr, idB, idI, idC, idT]) => {
+    const U = umiPostaci(nr), bu = $(idB); if (!bu) return;
+    if (nr === 2) bu.style.display = U ? '' : 'none';
+    if (!U) return;
+    if (bu._k !== gracz.klasa) { bu._k = gracz.klasa; $(idI).textContent = U.ik; bu.title = U.n; }
+    const u = stanUmi(nr), gotowa = !(u.cd > 0), akt = czyUmiAktywna(nr);
+    $(idC).style.setProperty('--p', (gotowa || U.przelacz ? 0 : Math.min(100, u.cd / Math.max(0.1, u.cdMax) * 100)) + '%');
+    $(idT).textContent = gotowa || U.przelacz ? '' : Math.ceil(u.cd);
+    bu.classList.toggle('gotowa', gotowa && !gracz.powalony && !akt);
+    bu.classList.toggle('wlaczona', akt);
+  });
   // pasek broni dodatkowych i przedmiotów z odnowieniem
   const pasek = $('pasekPrzedm');
   const elem = gracz.oreze.map(o => ({ i: o, d: DEF_ORE[o.id], kol: TIERY[o.tier].kolor, st: '' }))
@@ -5746,7 +6007,7 @@ function wczytajGre() {
     gracz.augmenty = (gracz.augmenty || []).filter(a => a && DEF_AUG[a.id]);
     gracz.oreze = (gracz.oreze || []).filter(o => o && DEF_ORE[o.id]).map(o => Object.assign(o, { ore: 1 }));
     gracz.bronie = (gracz.bronie || []).filter(b => b && BRONIE[b.rodzaj]); if (!gracz.bronie.length) gracz.bronie = [nowaBron(bronStartowa(KLASY[gracz.klasa]), 0)];
-    gracz.umi = { cd: 0, cdMax: 0 }; if (gracz.slotyOreza === undefined) gracz.slotyOreza = KLASY[gracz.klasa].slotyOreza || 4; if (gracz.slotyPryzm === undefined) gracz.slotyPryzm = KLASY[gracz.klasa].slotyPryzm || 2; gracz.slotyPryzm = Math.max(gracz.slotyPryzm, liczPrzedm(true)); gracz.slotyPrzedm = Math.max(gracz.slotyPrzedm, liczPrzedm(false));
+    gracz.umi = { cd: 0, cdMax: 0 }; gracz.umi2 = { cd: 0, cdMax: 0 }; if (gracz.slotyOreza === undefined) gracz.slotyOreza = KLASY[gracz.klasa].slotyOreza || 4; if (gracz.slotyPryzm === undefined) gracz.slotyPryzm = KLASY[gracz.klasa].slotyPryzm || 2; gracz.slotyPryzm = Math.max(gracz.slotyPryzm, liczPrzedm(true)); gracz.slotyPrzedm = Math.max(gracz.slotyPrzedm, liczPrzedm(false));
     fala = { nr: z.falaNr || 0, aktywna: false };
     D = null; przebudujHaki(); zastosujStaty(); gracz.hp = D.hpMax;
     stan = 'przerwa';
@@ -5936,7 +6197,9 @@ function aktualizujPada(dt) {
     // prawa gałka: celowanie (puszczona = postać sama namierza najbliższego wroga)
     const ja = lokalny || gracz, dr = Math.hypot(s.rx, s.ry);
     if (ja) { if (dr > 0.35) { ja.celKat = Math.atan2(s.ry, s.rx); PAD.celuje = true; } else if (PAD.celuje) { ja.celKat = null; PAD.celuje = false; } }
-    if (nowe(PB.A) || nowe(PB.RT) || nowe(PB.RB)) { if (uzyjUmiejetnosci()) wibruj(0.3, 70); }
+    const maDruga = !!(gracz && KLASY[gracz.klasa] && KLASY[gracz.klasa].umi2);
+    if (nowe(PB.A) || nowe(PB.RT) || (!maDruga && nowe(PB.RB))) { if (uzyjUmiejetnosci(1)) wibruj(0.3, 70); }
+    if (maDruga && (nowe(PB.RB) || nowe(PB.B))) { if (uzyjUmiejetnosci(2)) wibruj(0.25, 60); }
     if (nowe(PB.X) || nowe(PB.LT) || nowe(PB.LB)) wypijMiksture();
     if (nowe(PB.Y) || nowe(PB.START)) $('btnEkw').click();
     if (cokolwiek) PAD.fokusWidoczny = true;
@@ -6225,13 +6488,13 @@ function htmlSterowania() {
   return '<div class="tytul">🎮 Sterowanie</div>' +
     '<div class="info-pole" id="padStatus">' + statusPadaHtml() + '</div>' +
     '<div class="sekcja">Walka — pad</div>' +
-    w('🕹️ Ruch', 'lewa gałka albo krzyżak') + w('🎯 Celowanie', 'prawa gałka (puszczona = postać sama namierza)') + w('✨ Umiejętność postaci', kl('A') + ' albo ' + kl('RT') + ' / ' + kl('RB')) +
+    w('🕹️ Ruch', 'lewa gałka albo krzyżak') + w('🎯 Celowanie', 'prawa gałka (puszczona = postać sama namierza)') + w('✨ Umiejętność postaci', kl('A') + ' albo ' + kl('RT') + ' (' + kl('RB') + ', gdy postać ma jedną)') + w('✨ Druga umiejętność (niektóre postacie)', kl('RB') + ' albo ' + kl('B')) +
     w('🧪 Mikstura', kl('X') + ' albo ' + kl('LT') + ' / ' + kl('LB')) + w('⏸️ Pauza i build', kl('Y') + ' albo ' + kl('START')) +
     '<div class="sekcja">Menu i sklep — pad</div>' +
     w('Przesuwanie', 'krzyżak albo lewa gałka') + w('Wybierz / kup', kl('A')) + w('Zablokuj ofertę w sklepie', kl('X')) + w('Wstecz / zamknij', kl('B')) +
     w('Zakładki', kl('LB') + ' ' + kl('RB')) + w('Przewijanie', 'prawa gałka') +
     '<div class="sekcja">Klawiatura i myszka (komputer)</div>' +
-    w('Ruch', 'WASD / strzałki') + w('Umiejętność · mikstura', 'E lub spacja · Q') + w('Pauza', 'Esc lub P') +
+    w('Ruch', 'WASD / strzałki') + w('Umiejętność · druga · mikstura', 'E lub spacja · R · Q') + w('Pauza', 'Esc lub P') +
     w('Menu', 'strzałki, Enter, Esc, Q/E zakładki') +
     w('🖱️ Ruch myszą', 'przytrzymaj lewy przycisk') + w('🖱️ Umiejętność w stronę kursora', 'prawy przycisk') +
     '<div class="info-pole" style="font-size:11.5px">Działa w Chrome, Edge, Safari (także na iPhonie) i Firefoksie. Na telefonie sparuj pada w ustawieniach Bluetooth — tak jak słuchawki. ' +
@@ -6544,7 +6807,7 @@ function odbierzOdKlienta(conn, d) {
     case 'zb': if (stan === 'walka' && fala.aktywna && Array.isArray(d.k)) d.k.slice(0, 80).forEach(i => zbierzLupPoId(+i)); break;
     case 'po': { const r = performance.now() - (+d.c || 0); if (r >= 0 && r < 5000) { const st = SIEC.rttG[id]; SIEC.rttG[id] = st ? st * 0.75 + r * 0.25 : r; const p = gracze.find(q => q.id === id); if (p) p.opoz = Math.min(0.15, SIEC.rttG[id] / 2000); } break; }
     case 'mik': { const p = gracze.find(q => q.id === id); if (p && stan === 'walka') { kontekst(p); wypijMiksture(); kontekst(z0); } break; }
-    case 'umi': { const p = gracze.find(q => q.id === id); if (p && stan === 'walka') { kontekst(p); p.umiKier = Array.isArray(d.k) ? [+d.k[0] || 0, +d.k[1] || 0] : null; uzyjUmiejetnosci(); kontekst(z0); } break; }
+    case 'umi': { const p = gracze.find(q => q.id === id); if (p && stan === 'walka') { kontekst(p); p.umiKier = Array.isArray(d.k) ? [+d.k[0] || 0, +d.k[1] || 0] : null; uzyjUmiejetnosci(d.n === 2 ? 2 : 1); kontekst(z0); } break; }
     case 'niegotowy':
       // klient chce wrócić do sklepu - tylko dopóki fala nie ruszyła
       if (SIEC.wGrze && stan === 'przerwa' && SIEC.gotowi[id]) {
@@ -6663,7 +6926,7 @@ function zbudujZdalnego(id, dane) {
   p.id = id; p.zdalny = true; p.nick = l.nick || p.nick || 'Gracz';
   p.tarcze = []; p.buffy = {}; p.augmentyDoWyboru = p.augmentyDoWyboru || []; p.skrzynie = p.skrzynie || [];
   p.przedmioty = (p.przedmioty || []).filter(q => q && DEF_PRZ[q.id]); p.augmenty = (p.augmenty || []).filter(a => a && DEF_AUG[a.id]);
-  p.oreze = (p.oreze || []).filter(o => o && DEF_ORE[o.id]); p.bronie = (p.bronie || []).filter(b => b && BRONIE[b.rodzaj]); p.umi = { cd: 0, cdMax: 0 }; p.dash = null;
+  p.oreze = (p.oreze || []).filter(o => o && DEF_ORE[o.id]); p.bronie = (p.bronie || []).filter(b => b && BRONIE[b.rodzaj]); p.umi = { cd: 0, cdMax: 0 }; p.umi2 = { cd: 0, cdMax: 0 }; p.dash = null;
   p._D = null; p._brudne = true;
   gracz = p; D = null; run = p._run;
   przebudujHaki(); zastosujStaty();
@@ -6766,7 +7029,8 @@ function siecWyslijStan(dt) {
     const fl = (w.elita ? 1 : 0) | (w.boss ? 2 : 0) | (w.zauroczony > 0 ? 4 : 0) | (w.sojusznik ? 8 : 0) | (w.trafiony > 0 ? 16 : 0) | (w.duch ? 32 : 0) |
       (w.przygotowanie > 0 ? 64 : 0) | (w.spow > 0 && w.spowCzas > 0 ? 128 : 0) | (w.ogl > 0 ? 256 : 0) | (w.ogien ? 512 : 0) | (w.krew ? 1024 : 0) |
       (w.naznaczony > 0 ? 2048 : 0) | (w.pole ? 4096 : 0) | (w.czempion ? 8192 : 0);
-    W.push([w.id, r1(w.x), r1(w.y), r1(w.hp / w.hpMax * 1000), fl, r1(w.wysokosc || 0), w.tarczaMax ? r1(w.tarcza / w.tarczaMax * 100) : -1, w.boss ? r1(w.hp) : 0]);
+    W.push([w.id, r1(w.x), r1(w.y), r1(w.hp / w.hpMax * 1000), fl, r1(w.wysokosc || 0), w.tarczaMax ? r1(w.tarcza / w.tarczaMax * 100) : -1, w.boss ? r1(w.hp) : 0,
+      w.zamach > 0 && w.zamachMax ? Math.max(1, r1((1 - w.zamach / w.zamachMax) * 100)) : 0, r1((w.zamKat || 0) * 100)]);
     if (!w._w) { w._w = true; WN.push([w.id, r1(w.r), w.ik, w.kolor, w.obraz || '', w.afiksy.map(a => AFIKSY[a].ik).join(''), w.boss ? w.n : '', w.poswiata || '']); }
     else if (w.boss && w._posw !== w.poswiata) { w._posw = w.poswiata; WN.push([w.id, r1(w.r), w.ik, w.kolor, '', '', w.n, w.poswiata || '']); }
   }
@@ -6821,7 +7085,7 @@ function siecWyslijStan(dt) {
       cdMik: Math.round(p.cdMikstury * 10) / 10, sk: p.skrzynie.length, dw: p.doWyboru, prz: p.przedmioty.map(q => q ? [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10] : [0, 0]),
       ms: r1(D.ms), roz: rozmiarGracza(), spowG: p.spowG, zastoj: p.zastoj > 0 ? 1 : 0, pow: p.powalony ? 1 : 0, niewr: p.niewr > 0 ? 1 : 0, zb: r1(D.zbieranie),
       rtt: r1(SIEC.rttG[id] || 0),
-      umi: [Math.round((p.umi.cd || 0) * 10) / 10, Math.round((p.umi.cdMax || 0) * 10) / 10], ore: p.oreze.map(q => [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10]) };
+      umi: [Math.round((p.umi.cd || 0) * 10) / 10, Math.round((p.umi.cdMax || 0) * 10) / 10], umi2: p.umi2 ? [Math.round((p.umi2.cd || 0) * 10) / 10, Math.round((p.umi2.cdMax || 0) * 10) / 10] : null, ua: [czyUmiAktywna(1) ? 1 : 0, czyUmiAktywna(2) ? 1 : 0], ore: p.oreze.map(q => [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10]) };
     for (const k in q) stanW[k] = q[k];
     stanW.eg = SIEC.zdarzeniaG[p.id] || [];
     const txt = JSON.stringify(stanW);
@@ -6886,7 +7150,7 @@ function klientPrzerwa(d) {
   const g = nowyGracz(d.gracz.klasa); Object.assign(g, d.gracz);
   g.tarcze = []; g.buffy = {}; g.zdalny = false; g.id = SIEC.mojeId; g._run = run; g.powalony = false;
   g.przedmioty = (g.przedmioty || []).filter(q => q && DEF_PRZ[q.id]); g.augmenty = (g.augmenty || []).filter(a => a && DEF_AUG[a.id]);
-  g.oreze = (g.oreze || []).filter(o => o && DEF_ORE[o.id]); g.umi = { cd: 0, cdMax: 0 }; g.dash = null;
+  g.oreze = (g.oreze || []).filter(o => o && DEF_ORE[o.id]); g.umi = { cd: 0, cdMax: 0 }; g.umi2 = { cd: 0, cdMax: 0 }; g.dash = null;
   gracz = g; gracze = [g]; lokalny = g; D = null;
   przebudujHaki(); zastosujStaty();
   fala = { nr: d.nr, aktywna: false };
@@ -6957,6 +7221,8 @@ function klientStan(d) {
     w.przygotowanie = fl & 64 ? 1 : 0; w.spow = fl & 128 ? 0.3 : 0; w.spowCzas = fl & 128 ? 1 : 0; w.ogl = fl & 256 ? 1 : 0; w.ogien = !!(fl & 512); w.krew = !!(fl & 1024);
     w.naznaczony = fl & 2048 ? 1 : 0; w.pole = !!(fl & 4096); w.czempion = !!(fl & 8192);
     w.wysokosc = a[5]; w.tarczaMax = a[6] >= 0 ? 100 : 0; w.tarcza = a[6] >= 0 ? a[6] : 0; w.hpBossa = a[7];
+    // zamach przed ciosem: postęp z gospodarza, a między stanami dolicza się sam
+    const zp = (a[8] || 0) / 100; if (zp > 0) { if (!(w.zamP > 0) || zp > w.zamP) w.zamP = zp; w.zamKat = (a[9] || 0) / 100; } else w.zamP = 0;
     w.afiksy = []; w.afIk = st.afIk || '';
     return w;
   });
@@ -6992,7 +7258,7 @@ function klientStan(d) {
     gracz.cdMikstury = ja.cdMik; gracz.doWyboru = ja.dw; gracz.skrzynie.length = 0; for (let i = 0; i < ja.sk; i++) gracz.skrzynie.push({ tier: 0 });
     (ja.prz || []).forEach((c, i) => { const q = gracz.przedmioty[i]; if (q) { q.cd = c[0]; q.cdMax = c[1]; } });
     (ja.ore || []).forEach((c, i) => { const q = gracz.oreze[i]; if (q) { q.cd = c[0]; q.cdMax = c[1]; } });
-    if (ja.umi) { gracz.umi.cd = ja.umi[0]; gracz.umi.cdMax = ja.umi[1]; }
+    if (ja.umi) { gracz.umi.cd = ja.umi[0]; gracz.umi.cdMax = ja.umi[1]; } if (ja.umi2) { const u2 = stanUmi(2); u2.cd = ja.umi2[0]; u2.cdMax = ja.umi2[1]; } SIEC.umiAkt = ja.ua || [0, 0];
     if (ja.zb) SIEC.zbieranie = ja.zb; if (ja.rtt !== undefined) SIEC.rtt = ja.rtt;
     SIEC.ms = ja.ms; SIEC.roz = ja.roz; gracz.spowG = ja.spowG; gracz.zastoj = ja.zastoj ? 1 : 0; gracz.powalony = !!ja.pow; gracz.niewr = ja.niewr ? 0.1 : 0;
   }
@@ -7048,7 +7314,7 @@ function krokKlienta(dt) {
   if (!gracz.powalony) ruszGracza(dt, SIEC.ms || (D && D.ms) || 140, SIEC.roz || 1);
   if (dt > 0) { SIEC.vx = (gracz.x - x0) / dt; SIEC.vy = (gracz.y - y0) / dt; }
   const teraz = performance.now(), k = Math.min(1, dt * 18);
-  wrogowie.forEach(w => przesunDoTeraz(w, teraz, k));
+  wrogowie.forEach(w => { przesunDoTeraz(w, teraz, k); if (w.zamP > 0) w.zamP = Math.min(1, w.zamP + dt / 0.4); });
   SIEC.widokGraczy.forEach(p => { if (p === SIEC.mojWidok) { p.x = gracz.x; p.y = gracz.y; p.kierX = gracz.kierX; p.wRuchu = gracz.wRuchu; p.faza = gracz.faza; } else przesunDoTeraz(p, teraz, k); });
   pociski.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; if (p.ksztalt === 'bumerang') p.obrot += dt * 18; });
   pociskiWrogow.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; });
@@ -7105,6 +7371,124 @@ function sprawdzZaproszenie() {
 }
 
 // =====================================================================
+//  PEŁNY EKRAN, ORIENTACJA I DRĄŻEK POD KCIUKIEM (poziomo na dotyku)
+// =====================================================================
+// okna od gry w górę (gra siedzi w ramkach strony Streamlit) - tylko te, do których mamy dostęp
+function oknaWGore() {
+  const lista = [window]; let w = window;
+  for (let i = 0; i < 6; i++) { try { if (!w.parent || w.parent === w) break; void w.parent.document; w = w.parent; lista.push(w); } catch (e) { break; } }
+  return lista;
+}
+function elementPelny(d) { try { return d.fullscreenElement || d.webkitFullscreenElement || null; } catch (e) { return null; } }
+function czyAplikacja() {
+  // gra uruchomiona z ikonki na ekranie początkowym (bez pasków przeglądarki)
+  for (const w of oknaWGore()) {
+    try { if (w.navigator.standalone === true || w.matchMedia('(display-mode: standalone)').matches || w.matchMedia('(display-mode: fullscreen)').matches) return true; } catch (e) {}
+  }
+  return false;
+}
+function czyPelnyEkran() { return oknaWGore().some(w => { try { return !!elementPelny(w.document); } catch (e) { return false; } }); }
+function obslugaPelnegoEkranu() { const el = document.documentElement; return !!(el.requestFullscreen || el.webkitRequestFullscreen); }
+function czyIPhone() { return /iPhone|iPod/.test(navigator.userAgent || ''); }
+async function wejdzPelnyEkran() {
+  // najpierw cała ramka gry na stronie (najwyżej, jak się da), potem sama gra
+  const okna = oknaWGore(), kand = [];
+  for (let i = okna.length - 1; i >= 1; i--) { try { const f = okna[i - 1].frameElement; if (f) kand.push(f); } catch (e) {} }
+  kand.push(document.documentElement);
+  for (const el of kand) {
+    const f = el.requestFullscreen || el.webkitRequestFullscreen; if (!f) continue;
+    try {
+      const p = f.call(el, { navigationUI: 'hide' });
+      if (p && p.then) await p; else await new Promise(r => setTimeout(r, 250));
+      if (czyPelnyEkran()) { zablokujOrientacje(); setTimeout(dopasujRozmiar, 250); return true; }
+    } catch (e) {}
+  }
+  return false;
+}
+function wyjdzPelnyEkran() {
+  for (const w of oknaWGore()) { try { const d = w.document; if (elementPelny(d)) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; } } catch (e) {} }
+}
+function instrukcjaPelnegoEkranu() {
+  pokazModal('<div class="tytul">⛶ Pełny ekran</div>' +
+    (czyIPhone()
+      ? '<div class="info-pole">Safari na iPhonie nie pozwala stronie zasłonić swoich pasków. Da się to obejść, robiąc z gry <b>aplikację</b>:<br><br>' +
+        '1. Stuknij <b>Udostępnij</b> (kwadrat ze strzałką w górę).<br>2. Wybierz <b>„Do ekranu początkowego”</b> (jeśli jest przełącznik „Otwórz jako aplikację” — zostaw włączony).<br>' +
+        '3. Uruchamiaj grę z nowej ikonki — bez pasków Safari, poziomo i pionowo.</div>'
+      : '<div class="info-pole">Ta przeglądarka nie pozwoliła włączyć pełnego ekranu. Spróbuj w Chrome albo dodaj grę do ekranu początkowego (menu przeglądarki → „Dodaj do ekranu głównego” / „Zainstaluj aplikację”).</div>') +
+    '<button class="btn" data-a="zamknijModal">Rozumiem</button>');
+}
+AKCJE.pelnyEkran = async () => {
+  if (czyPelnyEkran()) { wyjdzPelnyEkran(); setTimeout(dopasujRozmiar, 300); odswiezPrzyciskiPelnego(); return; }
+  if (!obslugaPelnegoEkranu()) { instrukcjaPelnegoEkranu(); return; }
+  const ok = await wejdzPelnyEkran();
+  if (!ok) instrukcjaPelnegoEkranu();
+  odswiezPrzyciskiPelnego();
+};
+function tekstPelnego() { return czyPelnyEkran() ? '⛶ Zamknij pełny ekran' : '⛶ Pełny ekran'; }
+function przyciskPelnego(klasa) { return czyAplikacja() ? '' : '<button class="' + (klasa || 'btn drugi') + '" data-a="pelnyEkran" data-pelny="1">' + tekstPelnego() + '</button>'; }
+function odswiezPrzyciskiPelnego() { setTimeout(() => document.querySelectorAll('[data-pelny]').forEach(b => { b.textContent = tekstPelnego(); }), 350); }
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => oknaWGore().forEach(w => { try { w.document.addEventListener(ev, () => { setTimeout(dopasujRozmiar, 200); odswiezPrzyciskiPelnego(); }); } catch (e) {} }));
+
+// ---------- orientacja: automatyczna albo wybrana (pionowa / pozioma) ----------
+function oknoGory() { const o = oknaWGore(); return o[o.length - 1]; }
+function zablokujOrientacje() {
+  // blokada działa tylko tam, gdzie przeglądarka pozwala (np. Chrome na Androidzie w pełnym ekranie)
+  for (const w of oknaWGore().reverse()) {
+    try {
+      const so = w.screen && w.screen.orientation; if (!so) continue;
+      if (USTAW.orientacja === 'auto') { if (so.unlock) so.unlock(); }
+      else if (so.lock) so.lock(USTAW.orientacja === 'poziom' ? 'landscape' : 'portrait').catch(() => {});
+      return;
+    } catch (e) {}
+  }
+}
+function sprawdzObrot() {
+  const el = $('obrocInfo'); if (!el) return;
+  const poziomo = window.innerWidth > window.innerHeight;
+  const zle = USTAW.orientacja !== 'auto' && czyDotykowy() && ((USTAW.orientacja === 'poziom') !== poziomo);
+  if (zle) {
+    $('obrocTytul').textContent = USTAW.orientacja === 'poziom' ? 'Obróć urządzenie poziomo' : 'Obróć urządzenie pionowo';
+    $('obrocTekst').innerHTML = 'Wybrana orientacja: <b>' + (USTAW.orientacja === 'poziom' ? 'pozioma' : 'pionowa') + '</b> (⚙️ Ustawienia).' +
+      (czyIPhone() ? '<br>Żeby ekran się nie obracał, włącz blokadę obrotu w Centrum sterowania.' : '');
+    el.classList.toggle('pion', USTAW.orientacja === 'pion');
+    if (!el.classList.contains('widoczny') && stan === 'walka' && !druzyna()) { stan = 'pauza'; pokazEkwipunek('staty'); }
+  }
+  el.classList.toggle('widoczny', zle);
+}
+AKCJE.obrocAuto = () => { USTAW.orientacja = 'auto'; zapiszUstawienia(); zablokujOrientacje(); sprawdzObrot(); };
+
+// ---------- drążek pod kciukiem (poziomo na dotyku): dotknij planszy w dowolnym miejscu ----------
+const drazekPlyw = $('drazekPlyw'), galkaPlyw = drazekPlyw.querySelector('.galka');
+let palecPlyw = null, srodekPlyw = { x: 0, y: 0 };
+function ustawDrazekPlyw(x, y) { const r = $('gra').getBoundingClientRect(); drazekPlyw.style.left = (x - r.left) + 'px'; drazekPlyw.style.top = (y - r.top) + 'px'; }
+function ustawGalkePlyw(dx, dy) {
+  const dl = Math.hypot(dx, dy), o = Math.min(dl, 50), jx = dl ? dx / dl * o : 0, jy = dl ? dy / dl * o : 0;
+  galkaPlyw.style.transform = 'translate(' + jx.toFixed(1) + 'px,' + jy.toFixed(1) + 'px)';
+}
+widok.addEventListener('pointerdown', e => {
+  if (e.pointerType === 'mouse' || palecPlyw !== null) return;
+  const g = $('gra'); if (!g.classList.contains('dotyk') || g.classList.contains('tryb-pad')) return;
+  e.preventDefault(); inicjujDzwiek();
+  palecPlyw = e.pointerId; srodekPlyw = { x: e.clientX, y: e.clientY };
+  ustawDrazekPlyw(e.clientX, e.clientY); drazekPlyw.classList.add('aktywny'); ustawGalkePlyw(0, 0);
+  try { widok.setPointerCapture(e.pointerId); } catch (x) {}
+  joy.aktywny = true; joy.x = 0; joy.y = 0;
+});
+widok.addEventListener('pointermove', e => {
+  if (e.pointerId !== palecPlyw) return;
+  let dx = e.clientX - srodekPlyw.x, dy = e.clientY - srodekPlyw.y; const dl = Math.hypot(dx, dy);
+  // gdy kciuk ucieka daleko, drążek jedzie za nim (nie trzeba wracać do miejsca dotknięcia)
+  if (dl > 70) { srodekPlyw.x += dx / dl * (dl - 70); srodekPlyw.y += dy / dl * (dl - 70); ustawDrazekPlyw(srodekPlyw.x, srodekPlyw.y); dx = e.clientX - srodekPlyw.x; dy = e.clientY - srodekPlyw.y; }
+  joy.x = dx; joy.y = dy; ustawGalkePlyw(dx, dy);
+});
+function puscDrazekPlyw(e) {
+  if (e && e.pointerId !== palecPlyw) return;
+  palecPlyw = null; joy.aktywny = false; joy.x = 0; joy.y = 0;
+  drazekPlyw.classList.remove('aktywny'); drazekPlyw.style.left = ''; drazekPlyw.style.top = ''; ustawGalkePlyw(0, 0);
+}
+['pointerup', 'pointercancel'].forEach(ev => widok.addEventListener(ev, puscDrazekPlyw));
+
+// =====================================================================
 //  STEROWANIE, PĘTLA GRY, START
 // =====================================================================
 // ---------- drążek ----------
@@ -7151,7 +7535,7 @@ widok.addEventListener('pointerdown', e => {
   if (e.button === 2) {
     const k = kierunekMyszy();
     if (k && gracz) { gracz.kierRX = k[0]; gracz.kierRY = k[1]; }
-    uzyjUmiejetnosci(); e.preventDefault(); return;
+    uzyjUmiejetnosci(1); e.preventDefault(); return;
   }
   if (e.button !== 0 || !USTAW.mysz) return;
   MYSZ.aktywna = true; inicjujDzwiek();
@@ -7169,7 +7553,8 @@ document.addEventListener('keydown', e => {
   if (wPolu) return;                    // pisanie pseudonimu albo kodu drużyny
   if (MAPA_KL[e.code]) { klawisze[MAPA_KL[e.code]] = true; e.preventDefault(); }
   if (e.code === 'KeyQ') wypijMiksture();
-  if (e.code === 'KeyE' || e.code === 'Space') { uzyjUmiejetnosci(); e.preventDefault(); }
+  if (e.code === 'KeyE' || e.code === 'Space') { uzyjUmiejetnosci(1); e.preventDefault(); }
+  if (e.code === 'KeyR' || e.code === 'KeyF') { uzyjUmiejetnosci(2); e.preventDefault(); }
   if (e.code === 'Escape' || e.code === 'KeyP') $('btnEkw').click();
 });
 document.addEventListener('keyup', e => { if (MAPA_KL[e.code]) klawisze[MAPA_KL[e.code]] = false; });
@@ -7247,7 +7632,7 @@ window.__test = {
   dajOreze(id, tier) { gracz.oreze.push(nowyOrez(id, tier || 0)); if (gracz.oreze.length > gracz.slotyOreza) gracz.slotyOreza = gracz.oreze.length; poZmianieBuildu(); },
   dajAugment(id, poz) { const inst = { id: id, poz: poz || 1 }; gracz.augmenty.push(inst); if (DEF_AUG[id].natychmiast) DEF_AUG[id].natychmiast(inst); poZmianieBuildu(); },
   bronGlowna(r, t) { gracz.bronie = [nowaBron(r, t || 0)]; poZmianieBuildu(); },
-  umi() { return uzyjUmiejetnosci(); },
+  umi(nr) { return uzyjUmiejetnosci(nr || 1); },
   startFali(n) { zamknijEkran(); startFali(n); },
   // drużyna lokalna (testy silnika): kolejny gracz sterowany botem na tym samym urządzeniu
   dodajGracza(kl, nick) {
