@@ -118,7 +118,7 @@ GRA_HTML = r'''<!DOCTYPE html>
       display:flex; align-items:center; justify-content:space-between; padding:0 14px; touch-action:none; }
   .btn-boczny { position:relative; width:62px; height:62px; border-radius:16px; border:1.5px solid #5a4a2e;
       background:linear-gradient(135deg,#3a3550,#262038); font-size:26px; box-shadow:0 3px 10px rgba(0,0,0,0.45); padding:0; }
-  .btn-boczny:active { transform:scale(0.94); }
+  .btn-boczny:active, .btn-boczny.wcisniety { transform:scale(0.94); }
   .kolumna-btn { display:flex; flex-direction:column; gap:9px; }
   .btn-boczny.maly { width:50px; height:50px; border-radius:14px; font-size:22px; }
   .btn-boczny.maly .cdm { border-radius:13px; }
@@ -202,6 +202,31 @@ GRA_HTML = r'''<!DOCTYPE html>
   .karta-dol .cena { font-weight:900; color:#ffd24a; font-size:14px; margin-right:auto; }
   .kol-t0 { color:var(--t0); } .kol-t1 { color:var(--t1); } .kol-t2 { color:var(--t2); } .kol-t3 { color:var(--t3); } .kol-t4 { color:var(--t4); }
   .kol-p { background:linear-gradient(90deg,#ff7ae0,#7ae0ff,#ffe07a); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  /* odznaki tierów (kamienie) - obrazki wstawiane przez przygotujOdznaki() */
+  .kol-t0::before, .kol-t1::before, .kol-t2::before, .kol-t3::before, .kol-t4::before, .kol-p::before, .gem-as::before, .gem-az::before, .gem-ap::before {
+    content:''; display:inline-block; width:max(1.3em, 15px); height:max(1.3em, 15px); margin:-0.3em 0.15em -0.3em -0.05em; vertical-align:-0.32em; background-position:center; background-size:contain; background-repeat:no-repeat; }
+  .kol-t0::before { background-image:var(--gem-t0); } .kol-t1::before { background-image:var(--gem-t1); } .kol-t2::before { background-image:var(--gem-t2); }
+  .kol-t3::before { background-image:var(--gem-t3); } .kol-t4::before { background-image:var(--gem-t4); } .kol-p::before { background-image:var(--gem-p); }
+  .gem-as::before { background-image:var(--gem-as); } .gem-az::before { background-image:var(--gem-az); } .gem-ap::before { background-image:var(--gem-ap); }
+  .karta-ik::after { content:''; position:absolute; right:-7px; top:-7px; width:21px; height:21px; background-position:center; background-size:contain; background-repeat:no-repeat; pointer-events:none; }
+  .karta.t0 .karta-ik::after { background-image:var(--gem-t0); } .karta.t1 .karta-ik::after { background-image:var(--gem-t1); } .karta.t2 .karta-ik::after { background-image:var(--gem-t2); }
+  .karta.t3 .karta-ik::after { background-image:var(--gem-t3); } .karta.t4 .karta-ik::after { background-image:var(--gem-t4); } .karta.tp .karta-ik::after { background-image:var(--gem-p); }
+  .karta.as .karta-ik::after { background-image:var(--gem-as); } .karta.az .karta-ik::after { background-image:var(--gem-az); } .karta.ap .karta-ik::after { background-image:var(--gem-ap); }
+  .karta.t1 .karta-ik { background:radial-gradient(circle at 50% 40%, rgba(90,168,230,0.3), rgba(0,0,0,0.35) 72%); box-shadow:inset 0 0 0 1px rgba(90,168,230,0.4); }
+  .karta.t2 .karta-ik { background:radial-gradient(circle at 50% 40%, rgba(176,108,232,0.34), rgba(0,0,0,0.35) 72%); box-shadow:inset 0 0 0 1px rgba(176,108,232,0.45); }
+  .karta.t3 .karta-ik, .karta.az .karta-ik { background:radial-gradient(circle at 50% 40%, rgba(230,181,60,0.36), rgba(0,0,0,0.35) 72%); box-shadow:inset 0 0 0 1px rgba(230,181,60,0.5); }
+  .karta.t4 .karta-ik { background:radial-gradient(circle at 50% 40%, rgba(255,90,74,0.4), rgba(0,0,0,0.35) 72%); box-shadow:inset 0 0 0 1px rgba(255,90,74,0.55); }
+  .karta.tp .karta-ik, .karta.ap .karta-ik { background:radial-gradient(circle at 50% 40%, rgba(255,122,224,0.32), rgba(122,224,255,0.12) 55%, rgba(0,0,0,0.35) 75%); box-shadow:inset 0 0 0 1px rgba(255,160,240,0.5); }
+  .hud-slot::after { content:''; position:absolute; right:0; top:0; width:10px; height:10px; background-position:center; background-size:contain; background-repeat:no-repeat; pointer-events:none; }
+  .hud-slot.t1::after { background-image:var(--gem-t1); } .hud-slot.t2::after { background-image:var(--gem-t2); } .hud-slot.t3::after { background-image:var(--gem-t3); }
+  .hud-slot.t4::after { background-image:var(--gem-t4); } .hud-slot.tp::after { background-image:var(--gem-p); }
+  .hud-slot .ik { position:relative; line-height:1; }
+  .kfl .kfl-ik::after { content:''; position:absolute; left:-5px; top:-5px; width:17px; height:17px; background-position:center; background-size:contain; background-repeat:no-repeat; pointer-events:none; }
+  .kfl.g-t0 .kfl-ik::after { background-image:var(--gem-t0); } .kfl.g-t1 .kfl-ik::after { background-image:var(--gem-t1); } .kfl.g-t2 .kfl-ik::after { background-image:var(--gem-t2); }
+  .kfl.g-t3 .kfl-ik::after { background-image:var(--gem-t3); } .kfl.g-t4 .kfl-ik::after { background-image:var(--gem-t4); } .kfl.g-p .kfl-ik::after { background-image:var(--gem-p); }
+  .kfl.g-as .kfl-ik::after { background-image:var(--gem-as); } .kfl.g-az .kfl-ik::after { background-image:var(--gem-az); } .kfl.g-ap .kfl-ik::after { background-image:var(--gem-ap); }
+  img.emo { width:1.22em; height:1.22em; margin:-0.11em 0.02em; vertical-align:-0.3em; display:inline-block; object-fit:contain; }
+  img.odznaka { width:1.3em; height:1.3em; vertical-align:-0.3em; }
   .fiz { color:var(--fiz); font-weight:800; } .mag { color:var(--mag); font-weight:800; } .praw { color:var(--praw); font-weight:900; }
   .zl { color:#ffd24a; font-weight:800; } .ziel { color:var(--dobre); font-weight:800; } .czer { color:var(--zle); font-weight:800; }
   .cd-tag { display:inline-block; font-size:10px; font-weight:900; padding:1px 6px; border-radius:6px; background:rgba(126,196,255,0.16);
@@ -216,6 +241,12 @@ GRA_HTML = r'''<!DOCTYPE html>
       border-radius:13px; padding:10px 8px; text-align:center; }
   .kafel.wybrany { border-color:#ffe08a; box-shadow:0 0 14px rgba(255,224,138,0.4); }
   .kafel .ik { font-size:30px; }
+  .port { position:relative; margin:0 auto; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--kp) 55%, transparent) 0%, color-mix(in srgb, var(--kp) 18%, transparent) 48%, transparent 70%); }
+  @supports not (background:color-mix(in srgb, red 50%, blue)) { .port { background:radial-gradient(circle at 50% 46%, rgba(255,224,138,0.22), transparent 70%); } }
+  .port img.p { width:100%; height:100%; display:block; filter:drop-shadow(0 2px 2px rgba(0,0,0,0.5)); }
+  .port .ikk { position:absolute; left:-3px; top:-3px; font-size:15px; filter:drop-shadow(0 1px 1px rgba(0,0,0,0.8)); }
+  .mini-klasy .port .ikk { font-size:11px; left:-4px; top:-4px; }
   .kafel .n { font-size:13px; font-weight:900; margin-top:2px; }
   .kafel .o { font-size:10.5px; color:#cfc4a8; margin-top:3px; line-height:1.35; }
 
@@ -284,8 +315,31 @@ GRA_HTML = r'''<!DOCTYPE html>
   .chip { font-size:11px; font-weight:700; padding:3px 8px; border-radius:9px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#d8cdb0; }
   .chip b { color:#ffe08a; }
   #gra.pc .kafelki { grid-template-columns:repeat(auto-fill, minmax(92px, 1fr)); }
-  .kowadlo-statow { display:block; width:100%; margin:-4px 0 10px; padding:9px 10px; }
-  #gra.pc .szeroka > .kowadlo-statow { width:min(100%, 600px); justify-self:center; }
+  .sklep-akcje { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:6px 0 10px; }
+  #gra.pc .szeroka > .sklep-akcje { width:min(100%, 600px); justify-self:center; }
+  .akcja-sklepu { display:flex; align-items:center; justify-content:center; gap:10px; padding:11px 10px; border-radius:14px; font:inherit; cursor:pointer; text-align:left; color:#fff; min-height:58px; }
+  .akcja-sklepu.przerzut { background:linear-gradient(135deg,#3f78c0,#22457c); border:1.5px solid #8cbcff; box-shadow:0 0 14px rgba(127,178,255,0.35); }
+  .akcja-sklepu.staty { background:linear-gradient(135deg,#ecc860,#b38a24); border:1.5px solid #ffe08a; color:#1a1408; box-shadow:0 0 14px rgba(255,224,138,0.3); }
+  .akcja-sklepu.ewo { width:100%; margin:0 0 10px; justify-content:flex-start; background:linear-gradient(135deg,#7a4ac4,#3e2470); border:1.5px solid #c9a8ff; box-shadow:0 0 14px rgba(201,168,255,0.3); }
+  #gra.pc .szeroka > .akcja-sklepu.ewo { width:min(100%, 600px); justify-self:center; }
+  .btn.hazard, .btn-maly.hazard { background:linear-gradient(135deg,#8a2a8a,#4a1050); border:1.5px solid #ff9ae0; color:#fff; }
+  .btn.hazard { margin-top:8px; font-size:14px; }
+  .hazard-anim { text-align:center; padding:18px 0 8px; }
+  .hazard-kostka { font-size:72px; display:inline-block; animation:hazardKrec 0.55s cubic-bezier(.2,.8,.3,1); }
+  .hazard-wynik { font-size:22px; font-weight:900; margin-top:8px; opacity:0; animation:hazardWynik 0.2s 0.38s forwards; }
+  @keyframes hazardKrec { from { transform:rotate(-720deg) scale(0.3); } to { transform:rotate(0deg) scale(1); } }
+  @keyframes hazardWynik { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  .blok-umi { margin-top:6px; padding:7px 9px; border-radius:9px; background:rgba(255,224,138,0.08); font-size:12.5px; line-height:1.5; }
+  .btn-boczny .auto-znak { position:absolute; left:-4px; top:-6px; font-size:9px; font-weight:900; background:#3f8a52; color:#fff; border-radius:6px; padding:1px 4px; display:none; }
+  .btn-boczny.auto .auto-znak { display:block; }
+  .akcja-sklepu:disabled { opacity:0.38; box-shadow:none; cursor:not-allowed; }
+  .akcja-sklepu:not(:disabled):active { transform:scale(0.97); }
+  .akcja-sklepu .as-ik { flex:none; width:30px; height:30px; }
+  .akcja-sklepu .as-tekst { display:flex; flex-direction:column; line-height:1.15; }
+  .akcja-sklepu .as-tekst b { font-size:16px; font-weight:900; }
+  .akcja-sklepu .as-tekst span { font-size:13px; font-weight:800; opacity:0.92; white-space:nowrap; }
+  .akcja-sklepu.kreci .as-ik { animation:kreci 0.55s cubic-bezier(.3,.7,.4,1); }
+  @keyframes kreci { from { transform:rotate(-360deg); } to { transform:rotate(0deg); } }
   /* ---------- PAD ---------- */
   .pad-fokus { outline:3px solid #7ae0ff !important; outline-offset:2px !important;
       box-shadow:0 0 0 6px rgba(122,224,255,0.22), 0 0 20px rgba(122,224,255,0.55) !important; }
@@ -440,12 +494,11 @@ GRA_HTML = r'''<!DOCTYPE html>
   <div id="pasSterowania">
     <div class="kolumna-btn">
       <button class="btn-boczny maly" id="btnEkw" title="Pauza i build (Esc)">🎒<span class="pad-kl" data-k="Y">Y</span><span class="kb-kl">Esc</span></button>
-      <button class="btn-boczny maly" id="btnMikstura" title="Mikstura (Q)">🧪<span class="cdm" id="miksturaCd"></span><span class="licznik" id="licznikMikstur">1</span><span class="pad-kl" data-k="X">X</span><span class="kb-kl">Q</span></button>
     </div>
     <div id="strefaDrazka"><div id="drazekBaza"><div id="drazekGalka"></div></div></div>
     <div id="padSrodek"></div>
-    <button class="btn-boczny" id="btnUmi2" style="display:none"><span id="umi2Ik">✨</span><span class="cdm" id="umi2Cd"></span><span class="czas" id="umi2Czas"></span><span class="pad-kl" data-k="RB">RB</span><span class="kb-kl">R</span></button>
-    <button class="btn-boczny" id="btnUmi"><span id="umiIk">✨</span><span class="cdm" id="umiCd"></span><span class="czas" id="umiCzas"></span><span class="pad-kl" data-k="A">A</span><span class="kb-kl">E</span></button>
+    <button class="btn-boczny" id="btnUmi2" style="display:none"><span class="auto-znak">AUTO</span><span id="umi2Ik">✨</span><span class="cdm" id="umi2Cd"></span><span class="czas" id="umi2Czas"></span><span class="pad-kl" data-k="RB">RB</span><span class="kb-kl">R</span></button>
+    <button class="btn-boczny" id="btnUmi"><span class="auto-znak">AUTO</span><span id="umiIk">✨</span><span class="cdm" id="umiCd"></span><span class="czas" id="umiCzas"></span><span class="pad-kl" data-k="A">A</span><span class="kb-kl">E</span></button>
   </div>
   <div id="ekran"></div>
   <div id="modal"><div id="modalTresc"></div></div>
@@ -457,6 +510,9 @@ GRA_HTML = r'''<!DOCTYPE html>
     <button class="btn drugi" data-a="obrocAuto">Graj w obu orientacjach</button></div>
 </div>
 <script>
+'use strict';
+// atlas fff746044b99 — zapasowe ikony (Noto Color Emoji, licencja SIL OFL 1.1)
+const ATLAS_EMOJI = {"kom": 72, "font": 56, "kol": 12, "lista": ["🟠", "🟢", "🟣", "🟧", "🟩", "🥷", "🦣", "🦨", "🦺", "🧉", "🧊", "🧌", "🧑‍🌾", "🩴", "🩸", "🩹", "🩻", "🪃", "🪄", "🪐", "🪓", "🪖", "🪙", "🪚", "🪝", "🪞", "🪢", "🪤", "🪨", "🪬", "🪶", "🪽", "🫀", "🫐", "🫗", "🫥"], "src": "data:image/png;base64,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"};
 'use strict';
 // =====================================================================
 //  WIĘZIEŃ LABIRYNTU — nieskończone lochy
@@ -515,6 +571,7 @@ const USTAW = Object.assign({
   mysz: true,             // komputer: ruch przytrzymanym lewym przyciskiem myszy
   interfejs: 1,           // 0.9 / 1 / 1.15 — wielkość napisów i przycisków
   orientacja: 'auto',     // auto / pion / poziom — telefon i tablet
+  ikony: 'auto',          // auto / zawsze / systemowe — zapasowe obrazki emoji, których brakuje na urządzeniu
 }, lStorGet('wiezien_ustawienia', {}));
 function zapiszUstawienia() { lStorSet('wiezien_ustawienia', USTAW); }
 let SKALA_TEKSTU = 1;     // liczby nad wrogami (na komputerze nieco mniejsze, bo plansza jest większa)
@@ -710,6 +767,7 @@ const DZ = {
   kulka() { if (mozna('kul', 40)) ton(760 + Math.random() * 260, 0.045, 'triangle', 0.04); },
   awans() { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => ton(f, 0.15, 'triangle', 0.12), i * 90)); },
   mikstura() { ton(400, 0.07, 'sine', 0.12); setTimeout(() => ton(700, 0.13, 'sine', 0.11), 70); },
+  naladowanie() { if (!mozna('nal', 300)) return; tonSlizg(500, 1300, 0.12, 'triangle', 0.07); },
   obrazenia() { if (mozna('obr', 90)) ton(150, 0.09, 'sawtooth', 0.11); },
   unik() { if (mozna('unik', 120)) tonSlizg(900, 1600, 0.12, 'sine', 0.05); },
   zwyciestwo() { [523, 659, 784, 1046, 1318].forEach((f, i) => setTimeout(() => ton(f, 0.18, 'triangle', 0.13), i * 120)); },
@@ -736,6 +794,184 @@ const DZ = {
 };
 
 // =====================================================================
+//  IKONY: emoji rysowane jako gotowe obrazki (dużo szybciej niż tekst),
+//  z obrysem / białym błyskiem / szarością, oraz zapasowy atlas dla emoji,
+//  których urządzenie nie ma (np. Windows 10, starsze telefony).
+//  Atlas: czcionka Noto Color Emoji (SIL Open Font License 1.1).
+// =====================================================================
+const FONT_EMOJI = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","Twemoji Mozilla","Segoe UI Symbol",sans-serif';
+const IKONY = { brak: new Set(), atlas: null, cache: new Map(), url: {}, regex: null, obserwator: null };
+let SKALA_RYS = 1;   // pikseli ekranu na jednostkę planszy - ustawiane przy każdym rysowaniu
+
+(function () {
+  if (typeof ATLAS_EMOJI === 'undefined') return;
+  const im = new Image();
+  im.onload = () => { IKONY.cache.clear(); IKONY.url = {}; if (IKONY.brak.size) wlaczPodmianeEmoji(); };
+  im.src = ATLAS_EMOJI.src; IKONY.atlas = im;
+})();
+
+// Które emoji z atlasu nie wyświetlą się na tym urządzeniu? Rysujemy je i porównujemy
+// z „pustym kwadracikiem” (znak, którego żadna czcionka nie ma) - oraz sprawdzamy,
+// czy sekwencja (np. 🧑‍🌾) nie rozpadła się na dwa osobne znaki.
+function wykryjBrakiEmoji() {
+  IKONY.brak.clear();
+  if (typeof ATLAS_EMOJI === 'undefined') return;
+  if (USTAW.ikony === 'zawsze') ATLAS_EMOJI.lista.forEach(e => IKONY.brak.add(e));
+  else if (USTAW.ikony !== 'systemowe') {
+    try {
+      const R = 28, c = document.createElement('canvas'); c.width = c.height = R;
+      const x = c.getContext('2d', { willReadFrequently: true });
+      x.font = '22px ' + FONT_EMOJI; x.textAlign = 'center'; x.textBaseline = 'middle';
+      const rys = t => { x.clearRect(0, 0, R, R); x.fillText(t, R / 2, R / 2); return x.getImageData(0, 0, R, R).data; };
+      const tofu = rys('\u{10FFFD}'), wzor = x.measureText('😀').width || 22;
+      ATLAS_EMOJI.lista.forEach(e => {
+        const d = rys(e); let pusty = true, jakTofu = true;
+        for (let i = 3; i < d.length; i += 4) if (d[i] > 24) { pusty = false; break; }
+        for (let i = 0; i < d.length; i++) if (d[i] !== tofu[i]) { jakTofu = false; break; }
+        if (pusty || jakTofu || x.measureText(e).width > wzor * 1.45) IKONY.brak.add(e);
+      });
+    } catch (e) {}
+  }
+  IKONY.cache.clear(); IKONY.url = {};
+  IKONY.regex = IKONY.brak.size ? new RegExp(Array.from(IKONY.brak).sort((a, b) => b.length - a.length).map(e => e.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g') : null;
+  wlaczPodmianeEmoji();
+}
+
+function kubelekIkony(px) { return px <= 24 ? Math.max(8, Math.ceil(px / 4) * 4) : px <= 64 ? Math.ceil(px / 8) * 8 : Math.min(224, Math.ceil(px / 16) * 16); }
+function rysujGlif(x, ik, cx, cy, px) {
+  const A = typeof ATLAS_EMOJI !== 'undefined' ? ATLAS_EMOJI : null;
+  if (A && IKONY.brak.has(ik) && IKONY.atlas && IKONY.atlas.complete && IKONY.atlas.naturalWidth) {
+    const i = A.lista.indexOf(ik), s = px / A.font * A.kom;
+    x.drawImage(IKONY.atlas, (i % A.kol) * A.kom, Math.floor(i / A.kol) * A.kom, A.kom, A.kom, cx - s / 2, cy - s / 2, s, s);
+  } else { x.font = px + 'px ' + FONT_EMOJI; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(ik, cx, cy); }
+}
+// Gotowy obrazek ikony. war: '' zwykła, 'o' z ciemnym obrysem (wrogowie), 'b' biała sylwetka (błysk trafienia),
+// 's' szara (można łączyć: 'so' - szara z obrysem)
+function obrazIkony(ik, px, war) {
+  const k = ik + '|' + px + '|' + (war || '');
+  let im = IKONY.cache.get(k);
+  if (im) return im;
+  if (IKONY.cache.size > 700) IKONY.cache.clear();
+  const pad = Math.ceil(px * 0.2) + 3, R = px + pad * 2;
+  const c = document.createElement('canvas'); c.width = c.height = R;
+  const x = c.getContext('2d');
+  rysujGlif(x, ik, R / 2, R / 2, px);
+  war = war || '';
+  if (war.indexOf('s') >= 0) {
+    try { const d = x.getImageData(0, 0, R, R), p = d.data; for (let i = 0; i < p.length; i += 4) { const l = p[i] * 0.3 + p[i + 1] * 0.59 + p[i + 2] * 0.11; p[i] = p[i + 1] = p[i + 2] = l; } x.putImageData(d, 0, 0); } catch (e) {}
+  }
+  if (war.indexOf('o') >= 0 || war === 'b') {
+    const s = document.createElement('canvas'); s.width = s.height = R;
+    const y = s.getContext('2d');
+    y.drawImage(c, 0, 0); y.globalCompositeOperation = 'source-in'; y.fillStyle = war === 'b' ? '#ffffff' : 'rgba(14,8,20,0.92)'; y.fillRect(0, 0, R, R);
+    if (war === 'b') im = s;
+    else {
+      const g = Math.max(1, px / 24), h = g * 0.72;
+      x.globalCompositeOperation = 'destination-over';
+      [[g, 0], [-g, 0], [0, g], [0, -g], [h, h], [-h, h], [h, -h], [-h, -h]].forEach(([dx, dy]) => x.drawImage(s, dx, dy));
+      x.globalCompositeOperation = 'source-over';
+    }
+  }
+  im = im || c; im.k = R / px;
+  IKONY.cache.set(k, im);
+  return im;
+}
+function skalaKontekstu(c) {
+  if (c.getTransform) { const t = c.getTransform(); return Math.hypot(t.a, t.b) || 1; }
+  return c === ctx ? SKALA_RYS : 2;
+}
+// Rysuje jedno emoji wyśrodkowane w (x, y); rozm - jak wielkość czcionki w starym fillText
+function rysujIk(c, ik, x, y, rozm, war, skala) {
+  if (!ik || !(rozm > 0)) return;
+  const im = obrazIkony(ik, kubelekIkony(rozm * (skala || skalaKontekstu(c))), war), w = rozm * im.k;
+  c.drawImage(im, x - w / 2, y - w / 2, w, w);
+}
+// Kilka emoji obok siebie (np. ikony afiksów elity)
+function podzielIkony(t) {
+  const z = Array.from(t || ''), w = [];
+  for (let i = 0; i < z.length; i++) {
+    const cp = z[i].codePointAt(0), pop = w.length ? w[w.length - 1] : '';
+    if (pop && (cp === 0xFE0F || cp === 0x200D || cp === 0x20E3 || (cp >= 0x1F3FB && cp <= 0x1F3FF) || pop.endsWith('‍'))) w[w.length - 1] += z[i];
+    else if (z[i].trim()) w.push(z[i]);
+  }
+  return w;
+}
+function rysujIki(c, t, x, y, rozm, war) {
+  const l = podzielIkony(t), krok = rozm * 1.12;
+  l.forEach((ik, i) => rysujIk(c, ik, x + (i - (l.length - 1) / 2) * krok, y, rozm, war));
+}
+// Tekst z obrysem, w którym mogą być emoji (te, których brakuje, rysujemy z atlasu)
+function tekstZObrysem(c, t, x, y) {
+  if (!IKONY.regex || !IKONY.regex.test(t)) { if (IKONY.regex) IKONY.regex.lastIndex = 0; c.strokeText(t, x, y); c.fillText(t, x, y); return; }
+  IKONY.regex.lastIndex = 0;
+  const czesci = [], re = IKONY.regex; let i = 0, m;
+  while ((m = re.exec(t))) { if (m.index > i) czesci.push([0, t.slice(i, m.index)]); czesci.push([1, m[0]]); i = m.index + m[0].length; }
+  if (i < t.length) czesci.push([0, t.slice(i)]);
+  re.lastIndex = 0;
+  const rozm = parseFloat((c.font.match(/(\d+(?:\.\d+)?)px/) || [0, 12])[1]);
+  const szer = czesci.map(p => p[0] ? rozm * 1.15 : c.measureText(p[1]).width), suma = szer.reduce((a, b) => a + b, 0);
+  const wyr = c.textAlign, base = c.textBaseline;
+  let px = wyr === 'center' ? x - suma / 2 : (wyr === 'right' || wyr === 'end') ? x - suma : x;
+  c.textAlign = 'left';
+  const sy = base === 'middle' ? y : base === 'top' ? y + rozm * 0.5 : y - rozm * 0.36;
+  czesci.forEach((p, j) => {
+    if (p[0]) rysujIk(c, p[1], px + szer[j] / 2, sy, rozm);
+    else { c.strokeText(p[1], px, y); c.fillText(p[1], px, y); }
+    px += szer[j];
+  });
+  c.textAlign = wyr;
+}
+
+// ---------- strona (HTML): brakujące emoji zamieniamy na obrazki ----------
+const POMIN_PODMIANE = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, OPTION: 1, SELECT: 1, INPUT: 1, CANVAS: 1, TITLE: 1 };
+function urlIkony(ik) {
+  if (!IKONY.url[ik]) {
+    const c = document.createElement('canvas'), R = 64; c.width = c.height = R;
+    rysujGlif(c.getContext('2d'), ik, R / 2, R / 2, 50);
+    IKONY.url[ik] = c.toDataURL('image/png');
+  }
+  return IKONY.url[ik];
+}
+function zamienWezelEmoji(n) {
+  const t = n.nodeValue, re = IKONY.regex, f = document.createDocumentFragment(); let i = 0, m;
+  re.lastIndex = 0;
+  while ((m = re.exec(t))) {
+    if (m.index > i) f.appendChild(document.createTextNode(t.slice(i, m.index)));
+    const im = document.createElement('img'); im.className = 'emo'; im.alt = m[0]; im.draggable = false; im.src = urlIkony(m[0]);
+    f.appendChild(im); i = m.index + m[0].length;
+  }
+  re.lastIndex = 0;
+  if (i < t.length) f.appendChild(document.createTextNode(t.slice(i)));
+  if (n.parentNode) n.parentNode.replaceChild(f, n);
+}
+function sprawdzWezel(n) {
+  const re = IKONY.regex;
+  if (!re || !n.parentNode || POMIN_PODMIANE[n.parentNode.nodeName]) return;
+  const jest = re.test(n.nodeValue || ''); re.lastIndex = 0;
+  if (jest) zamienWezelEmoji(n);
+}
+function podmienEmojiW(el) {
+  if (!IKONY.regex || !el) return;
+  if (el.nodeType === 3) { sprawdzWezel(el); return; }
+  if (el.nodeType !== 1 || POMIN_PODMIANE[el.nodeName]) return;
+  const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), lista = [];
+  let n; while ((n = tw.nextNode())) lista.push(n);
+  lista.forEach(sprawdzWezel);
+}
+function wlaczPodmianeEmoji() {
+  if (IKONY.obserwator) { IKONY.obserwator.disconnect(); IKONY.obserwator = null; }
+  if (!IKONY.regex || typeof MutationObserver === 'undefined' || !document.body) return;
+  podmienEmojiW(document.body);
+  IKONY.obserwator = new MutationObserver(lista => {
+    for (const m of lista) {
+      if (m.type === 'characterData') sprawdzWezel(m.target);
+      else m.addedNodes.forEach(podmienEmojiW);
+    }
+  });
+  IKONY.obserwator.observe(document.body, { childList: true, subtree: true, characterData: true });
+}
+
+// =====================================================================
 //  STATYSTYKI, TIERY, OPISY
 // =====================================================================
 const TIERY = [
@@ -755,7 +991,7 @@ const TIERY_AUG = {
 // k - klucz, n - nazwa, i - ikona, j - jednostka, o - objaśnienie, g - grupa
 const DEF_STATOW = [
   { k: 'hpMax', n: 'Maks. zdrowie', i: '❤️', g: 'obrona', o: 'Ile obrażeń zniesiesz. Leczenie nie przekroczy tej wartości.' },
-  { k: 'regen', n: 'Regeneracja', i: '💗', j: '/s', d: 1, g: 'obrona', o: 'Zdrowie odzyskiwane co sekundę.' },
+  { k: 'regen', n: 'Regeneracja', i: '💗', d: 1, g: 'obrona', o: 'Każdy punkt leczy co sekundę 1 zdrowia (+10% za każdą falę) i 0,1% maks. zdrowia. Nie słabnie od zmęczenia.' },
   { k: 'pancerz', n: 'Pancerz', i: '🛡️', g: 'obrona', o: 'Zmniejsza obrażenia fizyczne: 100 pancerza = −50%.' },
   { k: 'odpMag', n: 'Odporność na magię', i: '🔰', g: 'obrona', o: 'Zmniejsza obrażenia magiczne: 100 = −50%.' },
   { k: 'unik', n: 'Unik', i: '💨', j: '%', g: 'obrona', o: 'Szansa, że trafienie Cię ominie (maks. 80%, ze Skrzydlatymi Sandałami 95%). Nie działa na wybuchy.' },
@@ -803,11 +1039,12 @@ function wartoscStatuTekst(k, v) {
   if (k === 'krytObr') return Math.round(175 + v) + '%';
   if (d && d.j === '%') return fmt(v) + '%';
   if (d && d.j === '/s') return fmt(v) + '/s';
+  if (k === 'regen' && typeof regenNaSekunde === 'function' && D && run) return fmt(v) + ' (' + fmt(regenNaSekunde(v)) + ' zdrowia/s)';
   return fmt(v);
 }
 // "+25 ⚔️ Obrażeń od ataku" - linijki statów przedmiotu
 const NAZWY_W_OPISIE = {
-  hpMax: 'zdrowia', regen: 'regeneracji/s', pancerz: 'pancerza', odpMag: 'odp. na magię', unik: 'uniku', redukcja: 'redukcji obrażeń',
+  hpMax: 'zdrowia', regen: 'regeneracji', pancerz: 'pancerza', odpMag: 'odp. na magię', unik: 'uniku', redukcja: 'redukcji obrażeń',
   wytrwalosc: 'nieustępliwości', ad: 'obrażeń od ataku', ap: 'mocy umiejętności', as: 'prędkości ataku', kryt: 'szansy na kryt',
   krytObr: 'obrażeń krytycznych', obrBonus: 'obrażeń', lethality: 'przebicia pancerza', przebPancP: 'przebicia pancerza',
   przebMag: 'przebicia magii', przebMagP: 'przebicia magii', kradziez: 'kradzieży życia', omni: 'wszechwampiryzmu', zasieg: 'zasięgu',
@@ -835,11 +1072,11 @@ const ULEPSZENIA_STATOW = [
   { k: 'regen', w: [0.5, 1, 1.7, 2.8] },
   { k: 'pancerz', w: [5, 9, 15, 23] },
   { k: 'odpMag', w: [5, 9, 15, 23] },
-  { k: 'ad', w: [3, 6, 10, 15] },
-  { k: 'ap', w: [5, 10, 16, 25] },
+  { k: 'ad', w: [6, 10, 16, 24] },
+  { k: 'ap', w: [9, 15, 24, 36] },
   { k: 'as', w: [5, 9, 14, 21] },
-  { k: 'kryt', w: [3, 5, 8, 12] },
-  { k: 'krytObr', w: [8, 14, 22, 34] },
+  { k: 'kryt', w: [4, 7, 10, 15] },
+  { k: 'krytObr', w: [5, 9, 14, 20] },
   { k: 'obrBonus', w: [3, 5, 8, 12] },
   { k: 'kradziez', w: [1.5, 3, 4.5, 7] },
   { k: 'ms', w: [6, 10, 15, 22] },
@@ -849,10 +1086,12 @@ const ULEPSZENIA_STATOW = [
   { k: 'haste', w: [5, 9, 14, 21] },
   { k: 'lethality', w: [2, 4, 6, 9] },
   { k: 'przebMag', w: [3, 5, 8, 12] },
-  { k: 'chciwosc', w: [5, 8, 12, 18] },
-  { k: 'xpBonus', w: [6, 10, 15, 22] },
+  { k: 'chciwosc', w: [3, 5, 8, 12] },
+  { k: 'xpBonus', w: [4, 6, 9, 13] },
   { k: 'zbieranie', w: [20, 35, 55, 80] },
   { k: 'leczenie', w: [5, 8, 12, 18] },
+  { k: 'onHitFiz', w: [5, 8, 13, 20] },
+  { k: 'onHitMag', w: [5, 8, 13, 20] },
 ];
 
 // =====================================================================
@@ -878,22 +1117,22 @@ const IKONY_SKAL = { ad: '⚔️', ap: '✨', hpMax: '❤️ maks. zdrowia', pan
 const BRONIE = {
   // ======================= BROŃ BIAŁA =======================
   miecz: {
-    nazwa: 'Miecz', ikona: '🗡️', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 0.8, zasieg: 76, obr: 20, skal: { ad: 1.0 }, luk: 2.0,
+    nazwa: 'Miecz', ikona: '🗡️', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 0.8, zasieg: 76, obr: 24, skal: { ad: 1.18 }, luk: 2.0,
     opisEf: t => 'Leczy o <b>' + (4 + 2 * t) + '%</b> zadanych obrażeń.',
     naTrafienie(w, b, k) { if (k.zadane > 0) leczWampirem(k.zadane * (0.04 + 0.02 * b.tier), 'Miecz'); },
   },
   mieczTarcza: {
-    nazwa: 'Miecz i Tarcza', ikona: '🛡️', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 0.95, zasieg: 72, obr: 22, skal: { ad: 0.9, pancerz: 0.35 }, luk: 2.2,
+    nazwa: 'Miecz i Tarcza', ikona: '🛡️', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 0.95, zasieg: 72, obr: 31, skal: { ad: 1.26, pancerz: 0.49 }, luk: 2.2,
     opisEf: t => 'Co 4. cios: tarcza <b>' + (25 + 15 * t) + ' + 20% pancerza</b> na 3 s i odrzut wrogów wokół.',
     naTrafienie(w, b, k) { if (!k.glowny || k.echo) return; b.licznik = (b.licznik || 0) + 1; if (b.licznik % 4) return; dajTarcze(25 + 15 * b.tier + 0.2 * D.pancerz, 3); obszarowe(gracz.x, gracz.y, 80, '#e8e8f0', o => odrzuc(o, 30), true); },
   },
   topor: {
-    nazwa: 'Topór', ikona: '🪓', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.05, zasieg: 70, obr: 30, skal: { ad: 1.1, hpMax: 0.02 }, luk: 2.1,
+    nazwa: 'Topór', ikona: '🪓', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.05, zasieg: 70, obr: 33, skal: { ad: 1.21, hpMax: 0.022 }, luk: 2.1,
     opisEf: t => 'Krwawienie: <b>' + (40 + 10 * t) + '%</b> obrażeń przez 2,5 s · krwawienie leczy Cię o 20% swoich obrażeń.',
     naTrafienie(w, b, k) { krwawienie(w, k.bazowe * (0.40 + 0.10 * b.tier) / 2.5, 2.5, true); },
   },
   mlot: {
-    nazwa: 'Młot', ikona: '🔨', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.45, zasieg: 70, obr: 46, skal: { ad: 1.2, hpMax: 0.04 }, luk: 2.6,
+    nazwa: 'Młot', ikona: '🔨', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.45, zasieg: 70, obr: 54, skal: { ad: 1.416, hpMax: 0.047 }, luk: 2.6,
     opisEf: t => 'Szeroki zamach · ogłusza na <b>' + fmt(0.35 + 0.1 * t) + ' s</b> i odrzuca.',
     naTrafienie(w, b, k) { oglusz(w, 0.35 + 0.1 * b.tier, { zrodlo: 'Młot' }); odrzuc(w, 34); },
   },
@@ -904,16 +1143,16 @@ const BRONIE = {
     tempo(b) { return 1 + (b.rozped || 0); },
   },
   wlocznia: {
-    nazwa: 'Włócznia', ikona: '🔱', rodz: 'biala', atak: 'pchniecie', obrTyp: 'fiz', cd: 0.9, zasieg: 112, obr: 22, skal: { ad: 0.95, ms: 0.08 },
+    nazwa: 'Włócznia', ikona: '🔱', rodz: 'biala', atak: 'pchniecie', obrTyp: 'fiz', cd: 0.9, zasieg: 112, obr: 19, skal: { ad: 0.817, ms: 0.069 }, rzut: true,
     opisEf: t => 'Pchnięcie trafia wszystkich w linii · co <b>' + (t >= 2 ? 3 : 4) + '.</b> atak rzut przebijającą włócznią (150% obrażeń).',
   },
   kastety: {
-    nazwa: 'Kastety', ikona: '🥊', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 0.4, zasieg: 52, obr: 10, skal: { ad: 0.65, pancerz: 0.12, hpMax: 0.008 }, luk: 1.4,
+    nazwa: 'Kastety', ikona: '🥊', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 0.4, zasieg: 52, obr: 14, skal: { ad: 0.878, pancerz: 0.162, hpMax: 0.011 }, luk: 1.4,
     opisEf: t => 'Bardzo szybkie · co 4. cios ogłusza na <b>' + fmt(0.5 + 0.1 * t) + ' s</b>.',
     naTrafienie(w, b, k) { b.licznik = (b.licznik || 0) + (k.glowny ? 1 : 0); if (k.glowny && b.licznik % 4 === 0) oglusz(w, 0.5 + 0.1 * b.tier, { zrodlo: 'Kastety' }); odrzuc(w, 8); },
   },
   kosa: {
-    nazwa: 'Kosa', ikona: '🌙', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.25, zasieg: 86, obr: 24, skal: { ad: 0.85, ap: 0.35 }, luk: Math.PI * 2,
+    nazwa: 'Kosa', ikona: '🌙', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.25, zasieg: 86, obr: 31, skal: { ad: 1.088, ap: 0.448 }, luk: Math.PI * 2,
     opisEf: t => 'Obrót o 360° · każdy trafiony wróg leczy Cię o <b>' + fmt(0.6 + 0.2 * t) + '%</b> maks. zdrowia (do 5 naraz).',
     naTrafienie(w, b, k) { if ((k.licznikCiosu || 0) <= 5) leczWampirem(D.hpMax * (0.003 + 0.001 * b.tier), 'Kosa'); },
   },
@@ -925,32 +1164,32 @@ const BRONIE = {
 
   // ======================= BROŃ STRZELECKA =======================
   luk: {
-    nazwa: 'Łuk', ikona: '🎯', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.72, zasieg: 250, obr: 17, skal: { ad: 0.9, as: 0.15 }, dystans: true,
+    nazwa: 'Łuk', ikona: '🎯', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.72, zasieg: 300, obr: 27, skal: { ad: 1.44, as: 0.24 }, dystans: true,
     predkosc: 590, ksztalt: 'strzala', kolor: '#e8d8b0', kryt: 10, krytObr: 25,
     opisEf: t => '+10% szansy na kryt, +25% obr. krytycznych' + (t >= 3 ? ' · <b>2 strzały</b> naraz' : ''),
   },
   kusza: {
-    nazwa: 'Kusza', ikona: '🏹', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 1.5, zasieg: 275, obr: 48, skal: { ad: 1.2 }, dystans: true,
+    nazwa: 'Kusza', ikona: '🏹', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 1.5, zasieg: 330, obr: 52, skal: { ad: 1.296 }, dystans: true,
     predkosc: 680, ksztalt: 'belt', kolor: '#d8d0b0', przebija: 2, przebPanc: 25,
     opisEf: t => 'Bełt przebija <b>' + (2 + t) + '</b> wrogów · ignoruje 25% pancerza.',
   },
   bumerang: {
-    nazwa: 'Bumerang', ikona: '🪃', rodz: 'strzelecka', atak: 'bumerang', obrTyp: 'fiz', cd: 1.2, zasieg: 215, obr: 22, skal: { ad: 0.85, ms: 0.1 }, dystans: true,
+    nazwa: 'Bumerang', ikona: '🪃', rodz: 'strzelecka', atak: 'bumerang', obrTyp: 'fiz', cd: 1.2, zasieg: 215, obr: 19, skal: { ad: 0.722, ms: 0.085 }, dystans: true,
     opisEf: t => 'Leci i wraca, raniąc w obie strony' + (t >= 3 ? ' · rzuca <b>2</b> bumerangi' : '') + '.',
   },
   pistolet: {
-    nazwa: 'Pistolet', ikona: '🔫', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.5, zasieg: 225, obr: 12, skal: { ad: 0.7, szczescie: 0.15 }, dystans: true,
+    nazwa: 'Pistolet', ikona: '🔫', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.5, zasieg: 270, obr: 15, skal: { ad: 0.889, szczescie: 0.191 }, dystans: true,
     predkosc: 820, ksztalt: 'kula', kolor: '#ffe08a', kryt: 8,
     opisEf: t => 'Szybkie strzały · co <b>6.</b> strzał to <b>salwa ' + (3 + Math.floor(t / 2)) + ' kul</b> (każda 70% obrażeń).',
     przyAtaku(b) { b.licznikP = (b.licznikP || 0) + 1; },
   },
   muszkiet: {
-    nazwa: 'Muszkiet Snajpera', ikona: '🎖️', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 2.2, zasieg: 380, obr: 95, skal: { ad: 1.6 }, dystans: true,
+    nazwa: 'Muszkiet Snajpera', ikona: '🎖️', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 2.2, zasieg: 455, obr: 88, skal: { ad: 1.488 }, dystans: true,
     predkosc: 1100, ksztalt: 'belt', kolor: '#fff0c0', przebija: 4, krytObr: 50, celDaleki: true,
     opisEf: t => 'Bardzo wolny, ogromne obrażenia · celuje w <b>najdalszego</b> wroga w zasięgu · przebija ' + (4 + t) + ' wrogów · +50% obr. krytycznych.',
   },
   gwozdziarka: {
-    nazwa: 'Gwoździarka', ikona: '🔩', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.3, zasieg: 210, obr: 7, skal: { ad: 0.45, pancerz: 0.06 }, dystans: true,
+    nazwa: 'Gwoździarka', ikona: '🔩', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.3, zasieg: 250, obr: 10, skal: { ad: 0.621, pancerz: 0.083 }, dystans: true,
     predkosc: 640, ksztalt: 'belt', kolor: '#c0c8d0', przebija: 1,
     opisEf: t => 'Seria gwoździ · każdy przebija 1 wroga · trafienia kruszą pancerz o <b>' + (3 + t) + '%</b> (do 30%).',
     naTrafienie(w, b) { w.krusz = Math.min(0.3, (w.krusz || 0) + 0.03 + 0.01 * b.tier); },
@@ -958,13 +1197,13 @@ const BRONIE = {
 
   // ======================= BROŃ MAGICZNA =======================
   rozdzka: {
-    nazwa: 'Różdżka', ikona: '🪄', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 0.8, zasieg: 240, obr: 19, skal: { ap: 0.9, ad: 0.15 }, dystans: true,
+    nazwa: 'Różdżka', ikona: '🪄', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 0.8, zasieg: 290, obr: 24, skal: { ap: 1.152, ad: 0.192 }, dystans: true,
     predkosc: 410, ksztalt: 'kula', kolor: '#c58ae6', naprowadza: 3.5,
     opisEf: t => 'Lekko naprowadzany pocisk' + (t >= 1 ? ' · odbija się do <b>' + (t >= 3 ? 2 : 1) + '</b> kolejnych wrogów' : '') + '.',
     odbicia: t => (t >= 3 ? 2 : (t >= 1 ? 1 : 0)),
   },
   rozdzkaOgnia: {
-    nazwa: 'Różdżka Ognia', ikona: '🔥', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 1.1, zasieg: 220, obr: 20, skal: { ap: 0.8 }, dystans: true,
+    nazwa: 'Różdżka Ognia', ikona: '🔥', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 1.1, zasieg: 265, obr: 20, skal: { ap: 0.8 }, dystans: true,
     predkosc: 380, ksztalt: 'kula', kolor: '#ff7a3c',
     opisEf: t => 'Wybucha (r 58): <b>50%</b> obrażeń wokół i podpala na 3 s (<b>' + (25 + 5 * t) + '%</b> obr./s).',
     naTrafienie(w, b, k) {
@@ -975,11 +1214,11 @@ const BRONIE = {
     },
   },
   rozdzkaPior: {
-    nazwa: 'Różdżka Piorunów', ikona: '⚡', rodz: 'magiczna', atak: 'piorun', obrTyp: 'mag', cd: 0.72, zasieg: 220, obr: 12, skal: { ap: 0.6, as: 0.1 }, dystans: true,
+    nazwa: 'Różdżka Piorunów', ikona: '⚡', rodz: 'magiczna', atak: 'piorun', obrTyp: 'mag', cd: 0.72, zasieg: 220, obr: 18, skal: { ap: 0.9, as: 0.15 }, dystans: true,
     opisEf: t => 'Natychmiastowa błyskawica · przeskakuje na <b>' + (3 + t) + '</b> kolejnych wrogów (−25% za skok).',
   },
   rozdzkaZimy: {
-    nazwa: 'Różdżka Zimy', ikona: '❄️', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 1.0, zasieg: 220, obr: 17, skal: { ap: 0.8, odpMag: 0.2 }, dystans: true,
+    nazwa: 'Różdżka Zimy', ikona: '❄️', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 1.0, zasieg: 265, obr: 15, skal: { ap: 0.72, odpMag: 0.18 }, dystans: true,
     predkosc: 380, ksztalt: 'kula', kolor: '#a8e0f5',
     opisEf: t => 'Wybuch mrozu (r 60): <b>60%</b> obrażeń wokół i spowolnienie <b>' + (30 + 5 * t) + '%</b> · zostawia lodowe pole.',
     naTrafienie(w, b, k) {
@@ -991,19 +1230,19 @@ const BRONIE = {
     },
   },
   kosturPustki: {
-    nazwa: 'Kostur Pustki', ikona: '🔮', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 1.3, zasieg: 235, obr: 26, skal: { ap: 0.9 }, dystans: true,
+    nazwa: 'Kostur Pustki', ikona: '🔮', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 1.3, zasieg: 280, obr: 26, skal: { ap: 0.9 }, dystans: true,
     predkosc: 330, ksztalt: 'pustka', kolor: '#9a6aff', przebija: 99,
     opisEf: t => 'Kula przelatuje przez wszystkich · dodatkowo <b>' + (20 + 5 * t) + '%</b> obrażeń jako prawdziwe.',
     naTrafienie(w, b, k) { zadaj(w, k.bazowe * (0.20 + 0.05 * b.tier), 'praw', { zr: 'Kostur Pustki' }); },
   },
   kosturKosci: {
-    nazwa: 'Kostur Kości', ikona: '🦴', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 0.95, zasieg: 230, obr: 20, skal: { ap: 0.75, hpMax: 0.015 }, dystans: true,
+    nazwa: 'Kostur Kości', ikona: '🦴', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 0.95, zasieg: 275, obr: 32, skal: { ap: 1.2, hpMax: 0.024 }, dystans: true,
     predkosc: 420, ksztalt: 'kosc', kolor: '#e8f0ff',
     opisEf: t => 'Zabici tym kosturem wrogowie mają <b>' + (10 + 4 * t) + '%</b> szansy powstać jako Twój szkielet na 8 s.',
     naZabicie(w, b) { if (!w.boss && !w.sojusznik && Math.random() < 0.10 + 0.04 * b.tier) wskrzesSojusznika(w); },
   },
   kosturNatury: {
-    nazwa: 'Kostur Natury', ikona: '🌿', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 0.9, zasieg: 230, obr: 18, skal: { ap: 0.7, hpMax: 0.01, regen: 2 }, dystans: true,
+    nazwa: 'Kostur Natury', ikona: '🌿', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 0.9, zasieg: 275, obr: 31, skal: { ap: 1.19, hpMax: 0.017, regen: 3.4 }, dystans: true,
     predkosc: 430, ksztalt: 'kolec', kolor: '#7ee87a',
     opisEf: t => 'Ciernie oplątują (spowolnienie 40% na 0,8 s) · co 5. trafienie leczy Cię o <b>' + (2 + t) + '%</b> maks. zdrowia.',
     naTrafienie(w, b, k) { spowolnij(w, 0.4, 0.8); if (!k.glowny) return; b.licznik = (b.licznik || 0) + 1; if (b.licznik % 5 === 0) leczGracza(D.hpMax * (0.02 + 0.01 * b.tier), 'Kostur Natury'); },
@@ -1011,19 +1250,19 @@ const BRONIE = {
 
   // ======================= ALCHEMIA =======================
   granatnik: {
-    nazwa: 'Granatnik', ikona: '🧨', rodz: 'alchemia', atak: 'granat', obrTyp: 'fiz', cd: 1.35, zasieg: 245, obr: 30, skal: { ad: 0.7, ap: 0.5 }, dystans: true,
+    nazwa: 'Granatnik', ikona: '🧨', rodz: 'alchemia', atak: 'granat', obrTyp: 'fiz', cd: 1.35, zasieg: 245, obr: 26, skal: { ad: 0.602, ap: 0.43 }, dystans: true,
     promien: 68, kolor: '#ffb070',
     opisEf: t => 'Granat wybucha w miejscu celu (r <b>' + (68 + 6 * t) + '</b>) i rani wszystkich w zasięgu wybuchu.',
   },
   // ---- nowe bronie ----
   kosci: {
-    nazwa: 'Kości do gry', ikona: '🎲', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.6, zasieg: 230, obr: 11, skal: { ad: 0.45, szczescie: 0.25 }, dystans: true,
+    nazwa: 'Kości do gry', ikona: '🎲', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.6, zasieg: 275, obr: 25, skal: { ad: 1.012, szczescie: 0.562 }, dystans: true,
     predkosc: 520, ksztalt: 'kula', kolor: '#f0f0f0',
     opisEf: t => 'Słabe, ale losowe: każdy rzut to <b>1–6</b> oczek (obrażenia ×oczka/3,5). Szóstka trafia za <b>×' + fmt(2.4 + 0.2 * t) + '</b>.',
     mnTrafienia(b, w, o) { if (!o.glowny) return 1; const r = 1 + Math.floor(Math.random() * 6); if (r === 6) { tekstSwiat(w.x, w.y - w.r - 14, '🎲 6!', '#ffe08a', 0.6, 12); return 2.4 + 0.2 * b.tier; } return r / 3.5; },
   },
   katana: {
-    nazwa: 'Katana', ikona: '🗡️', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 0.75, zasieg: 72, obr: 20, skal: { ad: 0.9, kryt: 0.4 }, luk: 1.9, kryt: 15, krytObr: 25,
+    nazwa: 'Katana', ikona: '🗡️', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 0.75, zasieg: 72, obr: 23, skal: { ad: 1.035, kryt: 0.46 }, luk: 1.9, kryt: 15, krytObr: 25,
     opisEf: t => '+15% szansy na kryt, krytyki +25% · <b>trafienie krytyczne nakłada efekty przy trafieniu ' + (t >= 3 ? '3 razy' : '2 razy') + '</b>.',
     naTrafienie(w, b, k) { if (k.kryt && k.glowny && !w.martwy) zastosujOnHit(w, b, { razy: b.tier >= 3 ? 2 : 1 }); },
   },
@@ -1033,40 +1272,87 @@ const BRONIE = {
     naTrafienie(w, b, k) { w.naznaczony = Math.max(w.naznaczony || 0, 3); w.mnNazn = Math.max(w.mnNazn || 0, 0.10 + 0.03 * b.tier); },
   },
   buzdygan: {
-    nazwa: 'Buzdygan', ikona: '🏏', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.1, zasieg: 64, obr: 36, skal: { ad: 1.0, hpMax: 0.02 }, luk: 1.6,
+    nazwa: 'Buzdygan', ikona: '🏏', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.1, zasieg: 64, obr: 40, skal: { ad: 1.12, hpMax: 0.022 }, luk: 1.6,
     opisEf: t => 'Ciężkie uderzenia: <b>' + (15 + 5 * t) + '%</b> szansy na ogłuszenie (0,8 s) · <b>+' + (30 + 10 * t) + '%</b> obrażeń elitom i bossom.',
     mnTrafienia(b, w) { return (w.elita || w.boss) ? 1.3 + 0.1 * b.tier : 1; },
     naTrafienie(w, b, k) { if (k.glowny && Math.random() < 0.15 + 0.05 * b.tier) oglusz(w, 0.8, { zrodlo: 'Buzdygan' }); },
   },
   lukDlugi: {
-    nazwa: 'Łuk Długi', ikona: '🎯', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 1.7, zasieg: 340, obr: 58, skal: { ad: 1.35 }, dystans: true, celDaleki: true,
+    nazwa: 'Łuk Długi', ikona: '🎯', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 1.7, zasieg: 410, obr: 58, skal: { ad: 1.35 }, dystans: true, celDaleki: true,
     predkosc: 900, ksztalt: 'strzala', kolor: '#f0e0b0', przebija: 3, kryt: 10, krytObr: 40,
     opisEf: t => 'Snajperski: celuje w <b>najdalszego</b> wroga, przebija ' + (3 + t) + ' wrogów, krytyki +40% · im dalej leci, tym mocniej (do +' + (30 + 10 * t) + '%).',
     mnTrafienia(b, w) { const d = Math.hypot(w.x - gracz.x, w.y - gracz.y); return 1 + Math.min(1, d / 340) * (0.3 + 0.1 * b.tier); },
   },
   ksiegaZaklec: {
-    nazwa: 'Księga Zaklęć', ikona: '📕', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 1.1, zasieg: 250, obr: 13, skal: { ap: 0.6, haste: 0.3 }, dystans: true,
+    nazwa: 'Księga Zaklęć', ikona: '📕', rodz: 'magiczna', atak: 'pocisk', obrTyp: 'mag', cd: 1.1, zasieg: 300, obr: 11, skal: { ap: 0.504, haste: 0.252 }, dystans: true,
     predkosc: 360, ksztalt: 'kula', kolor: '#ff8ab0', naprowadza: 6, dodPociski: 2, rozrzut: 0.5,
     opisEf: t => 'Wystrzeliwuje <b>' + (3 + Math.floor(t / 2)) + '</b> naprowadzanych pocisków naraz (każdy 100% obrażeń) · skaluje się z przyspieszeniem.',
     dodPociskiT: t => 2 + Math.floor(t / 2), pelnePociski: true,
   },
   berloSlonca: {
-    nazwa: 'Berło Słońca', ikona: '☀️', rodz: 'magiczna', atak: 'granat', obrTyp: 'mag', cd: 1.45, zasieg: 250, obr: 30, skal: { ap: 1.0 }, dystans: true,
+    nazwa: 'Berło Słońca', ikona: '☀️', rodz: 'magiczna', atak: 'granat', obrTyp: 'mag', cd: 1.45, zasieg: 250, obr: 21, skal: { ap: 0.7 }, dystans: true,
     promien: 72, kolor: '#ffd24a',
     opisEf: t => 'Słoneczny wybuch w miejscu celu (r <b>' + (72 + 6 * t) + '</b>) · podpala trafionych na 2 s (<b>' + (20 + 6 * t) + '%</b> obr./s).',
     naTrafienie(w, b, k) { podpal(w, k.bazowe * (0.2 + 0.06 * b.tier), 2, 'mag', 'Berło Słońca'); },
   },
   kwasomiot: {
-    nazwa: 'Kwasomiot', ikona: '🧪', rodz: 'alchemia', atak: 'stozek', obrTyp: 'fiz', cd: 0.4, zasieg: 115, obr: 8, skal: { ad: 0.35, ap: 0.25 }, dystans: false,
+    nazwa: 'Kwasomiot', ikona: '🧪', rodz: 'alchemia', atak: 'stozek', obrTyp: 'fiz', cd: 0.4, zasieg: 115, obr: 7, skal: { ad: 0.315, ap: 0.225 }, dystans: false,
     pol: 0.38, kolor: '#9aff5a',
     opisEf: t => 'Strumień kwasu w stożku · <b>rozpuszcza pancerz</b>: każde trafienie −4% pancerza i odporności celu (do −' + (40 + 5 * t) + '%).',
     naTrafienie(w, b, k) { w.krusz = Math.min(0.40 + 0.05 * b.tier, (w.krusz || 0) + 0.04); },
   },
   miotaczOgnia: {
-    nazwa: 'Miotacz Ognia', ikona: '🌋', rodz: 'alchemia', atak: 'stozek', obrTyp: 'mag', cd: 0.35, zasieg: 125, obr: 8, skal: { ap: 0.35, ad: 0.25 }, dystans: false,
+    nazwa: 'Miotacz Ognia', ikona: '🌋', rodz: 'alchemia', atak: 'stozek', obrTyp: 'mag', cd: 0.35, zasieg: 125, obr: 6, skal: { ap: 0.252, ad: 0.18 }, dystans: false,
     pol: 0.42, kolor: '#ff8a3a',
     opisEf: t => 'Strumień ognia w stożku · podpala na 2 s (<b>' + (30 + 8 * t) + '%</b> obr./s).',
     naTrafienie(w, b, k) { podpal(w, k.bazowe * (0.30 + 0.08 * b.tier), 2, 'mag', 'Miotacz Ognia'); },
+  },
+  // ======================= NOWE BRONIE =======================
+  glewia: {
+    nazwa: 'Glewia Piorunów', ikona: '⚡', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.0, zasieg: 92, obr: 24, skal: { ad: 0.85, ap: 0.35 }, luk: 2.4, energia: true,
+    opisEf: t => 'Szeroki zamach · ⚡ <b>naładowany cios</b> (energia z biegania i ciosów) puszcza łańcuch piorunów na <b>' + (3 + t) + '</b> wrogów: 70% obrażeń ciosu (magiczne).',
+    naNaladowanym(b, cel) { if (cel.wirtualny || cel.martwy) return; lancuch(gracz, cel, obrBroni(b) * 0.7, 'mag', 3 + b.tier, 170, 1, 'Glewia Piorunów'); },
+  },
+  batPogromcy: {
+    nazwa: 'Bat Pogromcy', ikona: '🪢', rodz: 'biala', atak: 'pchniecie', obrTyp: 'fiz', cd: 0.85, zasieg: 165, obr: 24, skal: { ad: 1.125, as: 0.15 }, szer: 14,
+    opisEf: t => 'Długie smagnięcie przez linię · wrogowie na <b>końcu bata</b> (ostatnia 1/3 zasięgu) dostają <b>+' + (40 + 10 * t) + '%</b> obrażeń.',
+    mnTrafienia(b, w) { const d = Math.hypot(w.x - gracz.x, w.y - gracz.y); return d > zasiegAtaku(b) * 0.66 ? 1.4 + 0.1 * b.tier : 1; },
+  },
+  szpada: {
+    nazwa: 'Szpada', ikona: '🤺', rodz: 'biala', atak: 'pchniecie', obrTyp: 'fiz', cd: 0.6, zasieg: 96, obr: 14, skal: { ad: 0.8, kryt: 0.3 }, kryt: 20, szer: 12,
+    opisEf: t => 'Bardzo szybkie pchnięcia · +20% szansy na kryt · co <b>4.</b> pchnięcie trafia w punkt witalny: <b>pewny kryt</b> i dodatkowo <b>' + (40 + 10 * t) + '%</b> tego trafienia jako obrażenia prawdziwe.',
+    przyAtaku(b) { b.licznikW = (b.licznikW || 0) + 1; b._wital = b.licznikW % 4 === 0; if (b._wital) gracz.stanKlasy.pewnyKryt = true; },
+    naTrafienie(w, b, k) { if (!k.glowny || !b._wital || w.martwy) return; b._wital = false; zadaj(w, k.zadaneSurowe * (0.4 + 0.1 * b.tier), 'praw', { zr: 'Szpada' }); efektBlysk(w.x, w.y, '#fff6c0'); },
+  },
+  puklerz: {
+    nazwa: 'Puklerz', ikona: '🛡️', rodz: 'biala', atak: 'wrecz', obrTyp: 'fiz', cd: 1.1, zasieg: 62, obr: 37, skal: { ad: 0.85, pancerz: 0.85, hpMax: 0.043 }, luk: 1.8,
+    opisEf: t => 'Uderzenie tarczą: odrzuca i ogłusza cel na 0,3 s · każde uderzenie daje tarczę <b>' + fmt(1.5 + 0.5 * t) + '%</b> maks. zdrowia (2 s, najwyżej 4 naraz) · skaluje się z pancerzem i zdrowiem.',
+    naTrafienie(w, b, k) { if (!k.glowny) return; oglusz(w, 0.3, { zrodlo: 'Puklerz' }); odrzuc(w, 24);
+      if (gracz.tarcze.filter(x => x.puklerz).length < 4) { dajTarcze(D.hpMax * (0.015 + 0.005 * b.tier), 2); gracz.tarcze[gracz.tarcze.length - 1].puklerz = 1; } },
+  },
+  czakram: {
+    nazwa: 'Czakram', ikona: '🥏', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.95, zasieg: 260, obr: 25, skal: { ad: 1.163, kryt: 0.775 }, dystans: true,
+    predkosc: 560, ksztalt: 'czakram', kolor: '#e0e8f0', kryt: 10, odbicia: t => 2 + t, bezSpadku: true, zasiegOdbicia: 200,
+    opisEf: t => 'Odbija się między <b>' + (3 + t) + '</b> wrogami <b>bez utraty siły</b> · +10% szansy na kryt · skaluje się z szansą na kryt.',
+  },
+  noze: {
+    nazwa: 'Noże do Rzucania', ikona: '🔪', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.85, zasieg: 235, obr: 12, skal: { ad: 0.7, kryt: 0.25 }, dystans: true,
+    predkosc: 640, ksztalt: 'noz', kolor: '#d8d8e4', kryt: 10, krytObr: 20, rozrzut: 0.22, dodPociskiT: t => 2 + Math.floor(t / 2),
+    opisEf: t => 'Wachlarz <b>' + (3 + Math.floor(t / 2)) + '</b> noży (każdy kolejny 60% obrażeń) · +10% szansy na kryt, krytyki +20%.',
+  },
+  kosturGromu: {
+    nazwa: 'Kostur Gromu', ikona: '🌩️', rodz: 'magiczna', atak: 'grom', obrTyp: 'mag', cd: 1.25, zasieg: 280, obr: 26, skal: { ap: 0.828 }, dystans: true, promien: 55, energia: true,
+    opisEf: t => 'Piorun z nieba w miejsce celu (r <b>' + (55 + 5 * t) + '</b>) · ⚡ <b>naładowany</b>: dodatkowo <b>' + (2 + Math.floor(t / 2)) + '</b> pioruny w pobliskich wrogów (60% obrażeń).',
+    naNaladowanym(b, cel) { const ile = 2 + Math.floor(b.tier / 2); najblizsi(cel.x, cel.y, 220, ile, [cel]).forEach((w, n) => opoznione(0.08 * (n + 1), () => { if (stan === 'walka' && !w.martwy) uderzGromem(b, w.x, w.y, w, 0.6); })); },
+  },
+  widly: {
+    nazwa: 'Widły', ikona: '🔱', rodz: 'biala', atak: 'pchniecie', obrTyp: 'fiz', cd: 0.95, zasieg: 104, obr: 17, skal: { ad: 0.85, hpMax: 0.012 }, szer: 22,
+    opisEf: t => 'Szerokie pchnięcie trzema zębami · zabici widłami wrogowie zostawiają <b>+' + (30 + 10 * t) + '%</b> doświadczenia więcej.',
+    naZabicie(w, b) { if (!w.bezLupu && !w.sojusznik) rozsypKulki(w.x, w.y, w.xp * (0.3 + 0.1 * b.tier)); },
+  },
+  kule: {
+    nazwa: 'Krążące Kule', ikona: '🪐', rodz: 'magiczna', atak: 'orbita', obrTyp: 'mag', cd: 0.5, zasieg: 72, obr: 15, skal: { ap: 0.56, hpMax: 0.011 },
+    opisEf: t => '<b>' + (2 + t) + '</b> kule krążą wokół Ciebie i ranią każdego, kogo dotkną (ten sam wróg co 0,5 s — szybciej z prędkością ataku) · zasięg = promień orbity · dobre do walki wręcz.',
   },
 };
 const KLUCZE_BRONI = Object.keys(BRONIE);
@@ -1076,10 +1362,10 @@ function nazwaBroni(b) { return BRONIE[b.rodzaj].nazwa + ' ' + TIERY[b.tier].rz;
 function obrBroni(b) {
   const B = BRONIE[b.rodzaj];
   let v = B.obr * MN_BRONI[b.tier];
-  for (const k in B.skal) v += B.skal[k] * (k === 'zloto' ? gracz.zloto : (D[k] || 0));
+  for (const k in B.skal) v += B.skal[k] * (k === 'zloto' ? gracz.zloto : (k === 'ad' && FLAGI.wszystkoMag) ? D.ap : (D[k] || 0));   // Kostur Arcymaga: przelicznik ⚔️ liczy się od ✨
   const kl = KLASY[gracz.klasa];
   if (kl && kl.mnBroni) v *= kl.mnBroni(B, b);
-  v *= (FLAGI.mnGlownej || 1) * (1 + (FLAGI.mnGlownejAug || 0));
+  v *= (FLAGI.mnGlownej || 1) * (1 + (FLAGI.mnGlownejAug || 0)) * ((b.ewo || 0) >= 1 ? 1.2 : 1) * (1 + 0.15 * (b.mistrz || 0));
   return Math.max(1, v);
 }
 // faktyczny odstęp między atakami (z prędkością ataku)
@@ -1087,7 +1373,7 @@ function odstepAtaku(b) { const B = BRONIE[b.rodzaj]; const t = ogr((1 + D.as / 
 function zasiegBroni(b) {
   const B = BRONIE[b.rodzaj];
   const premia = D.zasieg / 100 * (B.dystans ? 1 : 0.5);
-  return B.zasieg * Math.max(0.4, 1 + premia);
+  return B.zasieg * Math.max(0.4, 1 + premia) * ((b.ewo || 0) >= 2 ? 1.15 : 1);
 }
 function opisSkalowania(B) {
   return Object.keys(B.skal).map(k => {
@@ -1178,7 +1464,7 @@ function rysujKsztaltBroni(c, b) {
       c.fillStyle = '#8a3a2a'; c.fillRect(-10, -4, 10, 8); c.fillStyle = ciemny; c.fillRect(0, -2, 16, 4); c.fillStyle = '#ff8a3a'; c.beginPath(); c.arc(18, 0, 2.5 + Math.random() * 1.5, 0, Math.PI * 2); c.fill();
       c.fillStyle = kol; c.fillRect(-10, -4, 3, 8); break;
     case 'kosturKosci':
-      c.fillStyle = '#d8d0c0'; c.fillRect(-10, -1.5, 22, 3); c.font = '11px sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('💀', 16, 0); break;
+      c.fillStyle = '#d8d0c0'; c.fillRect(-10, -1.5, 22, 3); rysujIk(c, '💀', 16, 0, 11); break;
     case 'kosturNatury':
       c.fillStyle = '#5a3a1a'; c.fillRect(-10, -1.6, 22, 3.2); c.fillStyle = '#5ac46a'; c.beginPath(); c.ellipse(15, -4, 5, 2.5, -0.6, 0, Math.PI * 2); c.ellipse(16, 3, 4.5, 2.2, 0.6, 0, Math.PI * 2); c.fill();
       c.fillStyle = kol; c.fillRect(8, -2.2, 3, 4.4); break;
@@ -1186,6 +1472,66 @@ function rysujKsztaltBroni(c, b) {
     case 'rozdzkaZimy': rozdzkaZKrysztalem('#7ec4e8'); break;
     case 'rozdzkaPior': rozdzkaZKrysztalem('#ffe066'); break;
     case 'kosturPustki': rozdzkaZKrysztalem('#9a6aff', true); break;
+    case 'katana':
+      c.fillStyle = '#2a2230'; c.fillRect(-11, -1.7, 9, 3.4); c.fillStyle = '#c8b070'; for (let i = 0; i < 3; i++) c.fillRect(-10 + i * 3, -1.7, 1.2, 3.4);
+      c.fillStyle = kol; c.beginPath(); c.ellipse(-1.5, 0, 1.6, 4.4, 0, 0, Math.PI * 2); c.fill();
+      c.fillStyle = metal; c.beginPath(); c.moveTo(0, -1.6); c.quadraticCurveTo(13, -3.6, 26, -5.4); c.lineTo(23.5, -1.2); c.quadraticCurveTo(12, 0.6, 0, 1.6); c.closePath(); c.fill();
+      c.strokeStyle = 'rgba(255,255,255,0.7)'; c.lineWidth = 0.7; c.beginPath(); c.moveTo(1, -1.1); c.quadraticCurveTo(13, -3, 24, -4.8); c.stroke(); break;
+    case 'halabarda':
+      c.fillStyle = drewno; c.fillRect(-14, -1.6, 34, 3.2); c.fillStyle = metal;
+      c.beginPath(); c.moveTo(14, -1.6); c.lineTo(15, -10); c.quadraticCurveTo(22, -8, 23, -1.6); c.closePath(); c.fill();
+      c.beginPath(); c.moveTo(20, -1.4); c.lineTo(30, 0); c.lineTo(20, 1.4); c.closePath(); c.fill();
+      c.beginPath(); c.moveTo(16, 1.6); c.lineTo(18, 6); c.lineTo(20, 1.6); c.closePath(); c.fill(); c.fillStyle = kol; c.fillRect(12, -2.4, 2.5, 4.8); break;
+    case 'buzdygan':
+      c.fillStyle = drewno; c.fillRect(-9, -1.8, 18, 3.6); c.fillStyle = kol; c.fillRect(-9, -2.4, 3, 4.8);
+      c.fillStyle = ciemny; c.beginPath(); c.arc(14, 0, 6, 0, Math.PI * 2); c.fill(); c.fillStyle = metal;
+      for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; c.beginPath(); c.moveTo(14 + Math.cos(a - 0.35) * 5, Math.sin(a - 0.35) * 5); c.lineTo(14 + Math.cos(a) * 9.5, Math.sin(a) * 9.5); c.lineTo(14 + Math.cos(a + 0.35) * 5, Math.sin(a + 0.35) * 5); c.closePath(); c.fill(); } break;
+    case 'lukDlugi':
+      c.strokeStyle = '#5a3a1a'; c.lineWidth = 3.4; c.beginPath(); c.arc(-6, 0, 18, -1.2, 1.2); c.stroke();
+      c.strokeStyle = '#e8e0c8'; c.lineWidth = 1; c.beginPath(); c.moveTo(0.5, -16.8); c.lineTo(0.5, 16.8); c.stroke();
+      c.fillStyle = kol; c.fillRect(10, -2, 3, 4); break;
+    case 'kosci':
+      [[2, -5, 0.3], [10, 3, -0.4]].forEach(([x, y, a]) => { c.save(); c.translate(x, y); c.rotate(a); c.fillStyle = '#f4f4f4'; c.fillRect(-4.5, -4.5, 9, 9); c.strokeStyle = kol; c.lineWidth = 1; c.strokeRect(-4.5, -4.5, 9, 9);
+        c.fillStyle = '#c0392b'; [[-2, -2], [2, 2], [0, 0]].forEach(([dx, dy]) => { c.beginPath(); c.arc(dx, dy, 1.1, 0, Math.PI * 2); c.fill(); }); c.restore(); }); break;
+    case 'ksiegaZaklec':
+      c.fillStyle = '#7a2a4a'; c.fillRect(-2, -8, 16, 16); c.fillStyle = '#f4ead8'; c.fillRect(0, -7, 13, 14); c.fillStyle = '#ff8ab0'; c.fillRect(-2, -8, 3, 16);
+      c.strokeStyle = '#c06090'; c.lineWidth = 0.8; for (let i = 0; i < 4; i++) { c.beginPath(); c.moveTo(3, -4 + i * 3); c.lineTo(11, -4 + i * 3); c.stroke(); } c.fillStyle = kol; c.fillRect(11, -8, 3, 3); break;
+    case 'berloSlonca':
+      c.fillStyle = '#c8a040'; c.fillRect(-10, -1.6, 22, 3.2); c.save(); c.translate(16, 0); c.fillStyle = '#ffd24a'; c.globalAlpha = 0.35; c.beginPath(); c.arc(0, 0, 9, 0, Math.PI * 2); c.fill(); c.globalAlpha = 1;
+      for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; c.beginPath(); c.moveTo(Math.cos(a) * 4, Math.sin(a) * 4); c.lineTo(Math.cos(a) * 8, Math.sin(a) * 8); c.strokeStyle = '#ffb030'; c.lineWidth = 1.6; c.stroke(); }
+      c.beginPath(); c.arc(0, 0, 4.5, 0, Math.PI * 2); c.fill(); c.restore(); c.fillStyle = kol; c.fillRect(8, -2.2, 3, 4.4); break;
+    case 'kwasomiot':
+      c.fillStyle = '#4a6a2a'; c.beginPath(); c.arc(-6, 0, 6.5, 0, Math.PI * 2); c.fill(); c.fillStyle = '#9aff5a'; c.beginPath(); c.arc(-6, 0, 3.5, 0, Math.PI * 2); c.fill();
+      c.fillStyle = ciemny; c.fillRect(0, -2, 15, 4); c.fillStyle = '#9aff5a'; c.globalAlpha = 0.8; c.beginPath(); c.arc(17, 0, 2 + Math.random() * 1.2, 0, Math.PI * 2); c.fill(); c.globalAlpha = 1;
+      c.fillStyle = kol; c.fillRect(4, -2.6, 2.5, 5.2); break;
+    case 'glewia':
+      c.fillStyle = drewno; c.fillRect(-13, -1.6, 30, 3.2); c.fillStyle = metal;
+      c.beginPath(); c.moveTo(15, -2); c.quadraticCurveTo(25, -9, 31, -2); c.quadraticCurveTo(26, 1, 15, 2); c.closePath(); c.fill();
+      c.strokeStyle = '#9fe8ff'; c.lineWidth = 1.2; c.shadowColor = '#7ae0ff'; c.shadowBlur = 6; c.beginPath(); c.moveTo(18, -4); c.lineTo(22, -1); c.lineTo(20, 0); c.lineTo(26, 3); c.stroke(); c.shadowBlur = 0;
+      c.fillStyle = kol; c.fillRect(13, -2.6, 2.5, 5.2); break;
+    case 'batPogromcy':
+      c.fillStyle = '#4a2a1a'; c.fillRect(-9, -1.8, 9, 3.6); c.fillStyle = kol; c.fillRect(-1, -2.2, 2, 4.4);
+      c.strokeStyle = '#7a4a2a'; c.lineWidth = 1.8; c.lineCap = 'round'; c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(8, -9, 14, 8, 22, -2); c.quadraticCurveTo(26, -6, 29, -3); c.stroke(); c.lineCap = 'butt'; break;
+    case 'szpada':
+      c.fillStyle = drewno; c.fillRect(-9, -1.4, 7, 2.8); c.fillStyle = kol; c.beginPath(); c.arc(-1, 0, 4.4, -Math.PI / 2, Math.PI / 2); c.fill();
+      c.fillStyle = metal; c.beginPath(); c.moveTo(0, -0.9); c.lineTo(26, -0.3); c.lineTo(27, 0); c.lineTo(26, 0.3); c.lineTo(0, 0.9); c.closePath(); c.fill(); break;
+    case 'puklerz':
+      c.fillStyle = '#6a5a3a'; c.beginPath(); c.arc(6, 0, 10, 0, Math.PI * 2); c.fill(); c.strokeStyle = kol; c.lineWidth = 2; c.stroke();
+      c.fillStyle = metal; c.beginPath(); c.arc(6, 0, 3.4, 0, Math.PI * 2); c.fill(); break;
+    case 'czakram':
+      c.save(); c.translate(8, 0); c.rotate(Date.now() / 160); c.strokeStyle = metal; c.lineWidth = 2.6; c.beginPath(); c.arc(0, 0, 7.5, 0, Math.PI * 2); c.stroke();
+      c.fillStyle = kol; for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; c.beginPath(); c.moveTo(Math.cos(a) * 7, Math.sin(a) * 7); c.lineTo(Math.cos(a + 0.4) * 11, Math.sin(a + 0.4) * 11); c.lineTo(Math.cos(a + 0.5) * 7, Math.sin(a + 0.5) * 7); c.closePath(); c.fill(); } c.restore(); break;
+    case 'noze':
+      [-0.45, 0, 0.45].forEach(a => { c.save(); c.rotate(a); c.fillStyle = '#3a2a2a'; c.fillRect(-2, -1, 5, 2); ostrze(13, 3, metal); c.restore(); }); c.fillStyle = kol; c.fillRect(-3, -1.5, 2, 3); break;
+    case 'kosturGromu':
+      c.fillStyle = '#4a3a5a'; c.fillRect(-10, -1.6, 22, 3.2); c.save(); c.translate(16, 0); c.fillStyle = '#8a8aa0'; c.beginPath(); c.arc(-2, -1, 4.5, 0, Math.PI * 2); c.arc(2.5, -2, 4, 0, Math.PI * 2); c.arc(2, 2, 3.6, 0, Math.PI * 2); c.fill();
+      c.strokeStyle = '#ffe066'; c.lineWidth = 1.5; c.shadowColor = '#ffe066'; c.shadowBlur = 6; c.beginPath(); c.moveTo(0, 2); c.lineTo(-2, 6); c.lineTo(1, 6); c.lineTo(-1, 10); c.stroke(); c.restore(); c.fillStyle = kol; c.fillRect(8, -2.2, 3, 4.4); break;
+    case 'widly':
+      c.fillStyle = drewno; c.fillRect(-12, -1.5, 26, 3); c.fillStyle = metal; c.fillRect(13, -6.5, 2.4, 13);
+      [-5.5, 0, 5.5].forEach(y => { c.fillRect(14, y - 0.9, 10, 1.8); c.beginPath(); c.moveTo(24, y - 0.9); c.lineTo(27, y); c.lineTo(24, y + 0.9); c.fill(); }); c.fillStyle = kol; c.fillRect(10, -2, 2.5, 4); break;
+    case 'kule':
+      c.fillStyle = '#b48aff'; c.globalAlpha = 0.35; c.beginPath(); c.arc(6, 0, 8, 0, Math.PI * 2); c.fill(); c.globalAlpha = 1; c.beginPath(); c.arc(6, 0, 4.6, 0, Math.PI * 2); c.fill();
+      c.strokeStyle = kol; c.lineWidth = 1.4; c.beginPath(); c.ellipse(6, 0, 9, 3, -0.4, 0, Math.PI * 2); c.stroke(); break;
     default: rozdzkaZKrysztalem('#c58ae6');
   }
 }
@@ -1334,6 +1680,27 @@ const OREZE = [
     opis: i => 'Co <b>7 s</b> 4 rakiety w różnych wrogów (wybuch r 50): <span class="fiz">' + f0((25 + 0.35 * D.ad + 0.35 * D.ap) * MO(i)) + '</span> (25 + 35% ⚔️ + 35% ✨) każda.',
     tik(i) { if (!cdGotowe(i)) return; const cele = najblizsi(gracz.x, gracz.y, 280, 4); if (!cele.length) return; cdUstaw(i, 7); const v = (25 + 0.35 * D.ad + 0.35 * D.ap) * MO(i);
       cele.forEach((c, n) => wystrzel({ x: gracz.x, y: gracz.y, kat: kat(gracz, c) + (n - 1.5) * 0.4, cel: c, naprowadza: 6, predkosc: 420, obr: v * 0.5, typ: 'fiz', kolor: '#ffb04a', ksztalt: 'rakieta', zr: 'Rakietnica', zycie: 1.4, wybuch: { r: 50, obr: v } })); } },
+  // ---- nowe: naładowanie, cięcie wokół celu, odbijające się czakramy ----
+  { id: 'kosaStatikka', rodz: 'biala', ik: '⚡', n: 'Kosa Statikka', s: { as: 10, ms: 8 }, energia: true,
+    opis: i => '⚡ <b>Naładowany atak</b> broni głównej puszcza łańcuch piorunów na 4 wrogów: <span class="mag">' + f0((25 + 0.3 * D.ad + 0.2 * D.ap) * MO(i)) + '</span> (25 + 30% ⚔️ + 20% ✨) każdemu. Energia ładuje się z biegania i ataków.',
+    naNaladowanym(i, b, cel) { lancuch(gracz, cel, (25 + 0.3 * D.ad + 0.2 * D.ap) * MO(i), 'mag', 4, 170, 1, 'Kosa Statikka'); } },
+  { id: 'tiamat', rodz: 'biala', ik: '🌊', n: 'Tiamat', s: { ad: 12, hpMax: 30 }, co: 1,
+    opis: i => 'Każdy atak broni głównej tnie wrogów wokół celu (r 70): <span class="fiz">' + f0(12 * MO(i)) + '%</span> obrażeń ataku (fizyczne).',
+    naTrafienie(i, w, k) { if (!k.glowny || k.zadaneSurowe <= 0) return; const v = k.zadaneSurowe * 0.12 * MO(i); obszarowe(w.x, w.y, 70, '#7ab8e8', o => { if (o !== w) zadaj(o, v, 'fiz', { obszar: true, zr: 'Tiamat' }); }, true); } },
+  { id: 'szybkostrzal', rodz: 'strzelecka', ik: '🎆', n: 'Działo Szybkostrzelne', s: { as: 10, zasieg: 10 }, energia: true,
+    opis: i => '⚡ <b>Naładowany atak</b> wystrzeliwuje dodatkowy ognisty pocisk w <b>najdalszego</b> wroga do 480: <span class="fiz">' + f0((40 + 0.5 * D.ad) * MO(i)) + '</span> (40 + 50% ⚔️), przebija 2 wrogów.',
+    naNaladowanym(i, b, cel) { const c = najdalszyWrog(gracz.x, gracz.y, 480) || cel; if (!c || c.wirtualny) return; wystrzel({ x: gracz.x, y: gracz.y, cel: c, predkosc: 760, obr: (40 + 0.5 * D.ad) * MO(i), typ: 'fiz', kolor: '#ffb04a', ksztalt: 'rakieta', zr: 'Działo Szybkostrzelne', zycie: 0.9, przebija: 2, naprowadza: 4 }); } },
+  { id: 'czakram', rodz: 'strzelecka', ik: '🥏', n: 'Mały Czakram', s: { ad: 10, kryt: 6 }, cd: 3,
+    opis: i => 'Co <b>3 s</b> rzuca czakram, który odbija się między <b>4</b> wrogami bez utraty siły: <span class="fiz">' + f0((20 + 0.5 * D.ad) * MO(i)) + '</span> (20 + 50% ⚔️), może trafić krytycznie.',
+    tik(i) { if (!cdGotowe(i)) return; const c = najblizszyWrog(gracz.x, gracz.y, 260); if (!c) return; cdUstaw(i, 3);
+      wystrzel({ x: gracz.x, y: gracz.y, cel: c, predkosc: 560, obr: (20 + 0.5 * D.ad) * MO(i), typ: 'fiz', kolor: '#e8e8f0', ksztalt: 'czakram', zr: 'Mały Czakram', zycie: 1.2, naprowadza: 8, odbicia: 3, mozeKryt: true, bezSpadku: true, zasiegOdbicia: 200 }); } },
+  { id: 'grimuar', rodz: 'magiczna', ik: '📓', n: 'Grimuar Cieni', s: { ap: 16, haste: 8 }, energia: true,
+    opis: i => '⚡ <b>Naładowany atak</b>: cień celu wybucha (r 85): <span class="mag">' + f0((35 + 0.5 * D.ap) * MO(i)) + '</span> (35 + 50% ✨) i ogłusza trafionych na 0,6 s.',
+    naNaladowanym(i, b, cel) { if (cel.wirtualny) return; const v = (35 + 0.5 * D.ap) * MO(i); fale.push({ x: cel.x, y: cel.y, czas: 0.4, max: 0.4, r: 85 * mnObszaru(), kolor: '#7a4ac4' });
+      obszarowe(cel.x, cel.y, 85, '#7a4ac4', o => { zadaj(o, v, 'mag', { obszar: true, zr: 'Grimuar Cieni' }); oglusz(o, 0.6, { zrodlo: 'Grimuar Cieni' }); }, true); } },
+  { id: 'zatruteStrzalki', rodz: 'alchemia', ik: '🎋', n: 'Zatrute Strzałki', s: { as: 8, ap: 8 }, co: 2,
+    opis: i => 'Co <b>2.</b> atak broni głównej zatruwa cel na 3 s: <span class="mag">' + f0((8 + 0.15 * D.ap) * MO(i)) + ' + 25% obrażeń ataku</span> na sekundę (magiczne).',
+    naTrafienie(i, w, k) { if (!k.glowny) return; i.licz = (i.licz || 0) + 1; if (i.licz % 2) return; podpal(w, (8 + 0.15 * D.ap) * MO(i) + k.bazowe * 0.25, 3, 'mag', 'Zatrute Strzałki'); } },
 ];
 const DEF_ORE = {}; OREZE.forEach(o => { o.oreze = true; DEF_ORE[o.id] = o; });
 function nowyOrez(id, tier) { return { id: id, tier: tier || 0, cd: 0, licz: 0, ore: 1 }; }
@@ -1451,9 +1818,9 @@ const PRZEDMIOTY = [
   { id: 'pulapka', t: 0, ik: '🪤', n: 'Wnyki', cd: 7, wielokrotny: true,
     opis: i => 'Co <b>7 s</b> zostawia wnyki (20 s). Pierwszy wróg, który w nie wejdzie, jest unieruchomiony na 1,5 s i dostaje <span class="fiz">' + f0((20 + 0.3 * D.ad) * M(i)) + '</span> (20 + 30% ⚔️).',
     tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 7); dodajStwora('wnyki', gracz.x, gracz.y, 20, { obr: (20 + 0.3 * D.ad) * M(i), zr: 'Wnyki' }); } },
-  { id: 'ksiazkaKucharska', t: 0, ik: '🍳', n: 'Książka Kucharska',
-    opis: i => 'Mikstury leczą o <b>' + Math.round(40 * M(i)) + '%</b> mocniej, a po wypiciu dostajesz tarczę ' + Math.round(15 * M(i)) + '% maks. zdrowia na 4 s.',
-    naMiksturze(i) { dajTarcze(D.hpMax * 0.15 * M(i), 4); }, mocMikstur(i) { return 0.4 * M(i); } },
+  { id: 'ksiazkaKucharska', t: 0, ik: '🍳', n: 'Książka Kucharska', cd: 15,
+    opis: i => 'Co <b>15 s</b> w walce zjadasz przekąskę: leczysz się o <b>' + fmt(6 * M(i)) + '%</b> maks. zdrowia i dostajesz tarczę ' + fmt(8 * M(i)) + '% maks. zdrowia na 3 s.',
+    tik(i) { if (!cdGotowe(i) || !fala.aktywna) return; cdUstaw(i, 15); leczGracza(D.hpMax * 0.06 * M(i), 'Książka Kucharska'); dajTarcze(D.hpMax * 0.08 * M(i), 3); } },
 
   // ======================= RZADKIE (T2) =======================
   { id: 'dzialko', t: 1, ik: '🔫', n: 'Działko Strażnicze', cd: 12, wielokrotny: true,
@@ -1486,9 +1853,9 @@ const PRZEDMIOTY = [
   { id: 'iskrownik', t: 1, ik: '🔋', n: 'Iskrownik', cd: 4,
     opis: i => 'Co 4 s następny atak razi piorunem do 4 wrogów: <span class="mag">' + f0((30 + 0.3 * D.ap + 0.2 * D.ad) * M(i)) + '</span> (30 + 30% ✨ + 20% ⚔️).',
     naTrafienie(i, w, k) { if (!k.glowny || !cdGotowe(i)) return; cdUstaw(i, 4); lancuch(gracz, w, (30 + 0.3 * D.ap + 0.2 * D.ad) * M(i), 'mag', 4, 160, 1, 'Iskrownik'); } },
-  { id: 'ostrzeBurzy', t: 1, ik: '⛈️', n: 'Ostrze Burzy', cd: 6,
-    opis: i => 'Co 6 s następny atak zadaje dodatkowo <span class="mag">' + f0((40 + 0.5 * D.ad) * M(i)) + '</span> (40 + 50% ⚔️) i daje +40 prędkości ruchu na 1,5 s.',
-    naTrafienie(i, w, k) { if (!k.glowny || !cdGotowe(i)) return; cdUstaw(i, 6); zadaj(w, (40 + 0.5 * D.ad) * M(i), 'mag', { zr: 'Ostrze Burzy' }); efektBlysk(w.x, w.y, '#9fd8ff'); dodajBuff('burza', { ms: 40 }, 1.5); } },
+  { id: 'ostrzeBurzy', t: 1, ik: '⛈️', n: 'Ostrze Burzy', energia: true,
+    opis: i => '⚡ <b>Naładowany atak</b> zadaje dodatkowo <span class="mag">' + f0((50 + 0.6 * D.ad) * M(i)) + '</span> (50 + 60% ⚔️), spowalnia cel o 50% na 1,5 s i daje Ci +40 prędkości ruchu na 1,5 s.',
+    naNaladowanym(i, b, cel) { if (cel.martwy) return; zadaj(cel, (50 + 0.6 * D.ad) * M(i), 'mag', { zr: 'Ostrze Burzy' }); spowolnij(cel, 0.5, 1.5); efektBlysk(cel.x, cel.y, '#9fd8ff'); dodajBuff('burza', { ms: 40 }, 1.5); } },
   { id: 'kordelas', t: 1, ik: '🗡️', n: 'Ząbkowany Kordelas',
     opis: i => 'Po zabiciu wroga następny atak zadaje <b>+' + Math.round(45 * M(i)) + '%</b> obrażeń.',
     naZabicie(i) { i.gotowy = 1; },
@@ -1554,16 +1921,16 @@ const PRZEDMIOTY = [
     tik(i) { if (!fala.aktywna) return; if (!i._s || i._s.czas <= 0 || stwory.indexOf(i._s) < 0) i._s = dodajStwora('wilk', gracz.x + 20, gracz.y, 9999, { ruchomy: true, zr: 'Wilczy Chowaniec', zrodlo: i });
       i._s.obr = (15 + 0.4 * D.ad + 0.01 * D.hpMax) * M(i); } },
   { id: 'botrk', t: 2, ik: '👑', n: 'Ostrze Zniszczonego Króla',
-    opis: i => 'Ataki zadają dodatkowo <span class="fiz">' + fmt(6 * M(i)) + '%</span> AKTUALNEGO zdrowia celu jako obrażenia fizyczne (bossowie: połowa) i leczą o 30% tej wartości.',
-    naTrafienie(i, w, k) { if (w.hp > 0) { const v = zadaj(w, w.hp * 0.06 * M(i) * (w.boss ? 0.5 : 1), 'fiz', { onhit: true, zr: 'Ostrze Zniszczonego Króla' }); if (v > 0) leczWampirem(v * 0.3, 'BotRK'); } } },
+    opis: i => 'Przy trafieniu: <span class="fiz">' + fmt(6 * M(i)) + '%</span> AKTUALNEGO zdrowia celu jako obrażenia fizyczne (bossowie: połowa). Pełna wartość na celu głównym, <b>1/3</b> na pozostałych trafionych tym samym atakiem. Leczy o 30% tej wartości (w limicie wampiryzmu).',
+    naTrafienie(i, w, k) { if (w.hp > 0) { const v = zadaj(w, w.hp * 0.06 * M(i) * (w.boss ? 0.5 : 1) * (k.glowny ? 1 : 1 / 3), 'fiz', { onhit: true, zr: 'Ostrze Zniszczonego Króla' }); if (v > 0) leczWampirem(v * 0.3, 'BotRK'); } } },
   { id: 'huragan', t: 2, ik: '🌪️', n: 'Huragan Runaana',
     opis: i => 'Ataki <b>dystansowe</b> wystrzeliwują 2 dodatkowe pociski w pobliskich wrogów (<span class="fiz">' + Math.round(40 * M(i)) + '%</span> obrażeń, nakładają efekty przy trafieniu).',
     naAtak(i, b, cel) { const B = BRONIE[b.rodzaj]; if (!B.dystans) return; najblizsi(cel.x, cel.y, 260, 2, [cel]).forEach(w => strzalPomocniczy(b, w, 0.4 * M(i))); } },
   { id: 'guinsoo', t: 2, ik: '🟧', n: 'Ostrze Furii Guinsoo',
-    opis: i => 'Twoja szansa na kryt nie działa — zamiast tego każdy 1% daje <span class="fiz">' + fmt(1.5 * M(i)) + '</span> obrażeń fizycznych przy trafieniu. Co 3. atak nakłada efekty przy trafieniu <b>dwukrotnie</b>.',
-    bezKryt: true,
-    statyPost(i, s) { s.onHitFiz += 1.5 * s.kryt * M(i); },
-    naAtak(i, b) { i.licz = (i.licz || 0) + 1; if (i.licz % 3 === 0) b._podwojnyOnHit = true; } },
+    opis: i => 'Każdy atak daje ładunek Furii: <b>+' + fmt(5 * M(i)) + '%</b> prędkości ataku na 4 s (maks. 10 ładunków, nowy atak odnawia czas). Przy 10 ładunkach co <b>2.</b> atak nakłada efekty przy trafieniu <b>dwukrotnie</b>.' + (i.st ? ' Teraz: <b>' + i.st + '</b>.' : ''),
+    naAtak(i, b, cel, o) { if (o && o.echo) return; if (czasGry - (i.t || -99) > 4) i.st = 0; i.st = Math.min(10, (i.st || 0) + 1); i.t = czasGry; oznaczStaty();
+      if (i.st >= 10) { i.licz = (i.licz || 0) + 1; if (i.licz % 2 === 0) b._podwojnyOnHit = true; } },
+    statyDyn(i, s) { if (czasGry - (i.t || -99) > 4) i.st = 0; s.as += 5 * (i.st || 0) * M(i); } },
   { id: 'trojca', t: 2, ik: '🔺', n: 'Trójca', cd: 4,
     opis: i => '<b>Czaroostrze:</b> co 4 s następny atak zadaje dodatkowo <span class="fiz">' + f0((30 + 1.0 * D.ad) * M(i)) + '</span> (30 + 100% ⚔️) i daje +25 prędkości ruchu na 2 s.',
     naTrafienie(i, w, k) { if (!k.glowny || !cdGotowe(i)) return; cdUstaw(i, 4); zadaj(w, (30 + D.ad) * M(i), 'fiz', { zr: 'Trójca' }); efektBlysk(w.x, w.y, '#ffd24a'); dodajBuff('trojca', { ms: 25 }, 2); } },
@@ -1607,19 +1974,19 @@ const PRZEDMIOTY = [
     opis: i => 'Co 4 s następne obrażenia magiczne wywołują echo: <span class="mag">' + f0((90 + 0.4 * D.ap) * M(i)) + '</span> (90 + 40% ✨) w cel i 4 pobliskich wrogów.',
     naObrazenia(i, w, v, typ, o) { if (typ !== 'mag' || o.zr === 'Echo Ludena' || !cdGotowe(i)) return; cdUstaw(i, 4); const obr = (90 + 0.4 * D.ap) * M(i);
       [w].concat(najblizsi(w.x, w.y, 200, 4, [w])).forEach(c => { dodajBlyskawice(w.x, w.y, c.x, c.y, '#c9a8ff'); zadaj(c, obr, 'mag', { zr: 'Echo Ludena' }); }); } },
-  { id: 'shiv', t: 2, ik: '🗡', n: 'Nóż Statikka', cd: 3,
-    opis: i => 'Co 3 s następny atak puszcza łańcuch piorunów na 5 celów: <span class="mag">' + f0((35 + 0.35 * D.ad + 0.2 * D.ap) * M(i)) + '</span> (35 + 35% ⚔️ + 20% ✨).',
-    naTrafienie(i, w, k) { if (!k.glowny || !cdGotowe(i)) return; cdUstaw(i, 3); lancuch(gracz, w, (35 + 0.35 * D.ad + 0.2 * D.ap) * M(i), 'mag', 5, 170, 1, 'Nóż Statikka'); } },
+  { id: 'shiv', t: 2, ik: '🗡️', n: 'Nóż Statikka', energia: true,
+    opis: i => '⚡ <b>Naładowany atak</b> puszcza łańcuch piorunów na <b>6</b> wrogów: <span class="mag">' + f0((45 + 0.4 * D.ad + 0.25 * D.ap) * M(i)) + '</span> (45 + 40% ⚔️ + 25% ✨) każdemu.',
+    naNaladowanym(i, b, cel) { lancuch(gracz, cel, (45 + 0.4 * D.ad + 0.25 * D.ap) * M(i), 'mag', 6, 180, 1, 'Nóż Statikka'); } },
   { id: 'kraken', t: 2, ik: '🦑', n: 'Pogromca Krakena',
     opis: i => 'Co 3. atak zadaje dodatkowo <span class="praw">' + f0((50 + 0.5 * D.ad) * M(i)) + '</span> (50 + 50% ⚔️) obrażeń prawdziwych.',
     naTrafienie(i, w, k) { if (!k.glowny) return; i.licz = (i.licz || 0) + 1; if (i.licz % 3 === 0) { zadaj(w, (50 + 0.5 * D.ad) * M(i), 'praw', { zr: 'Pogromca Krakena' }); efektBlysk(w.x, w.y, '#7ae0ff'); } } },
-  { id: 'hydra', t: 2, ik: '🐉', n: 'Hydra Tytana',
+  { id: 'hydra', t: 2, ik: '🐉', n: 'Tytaniczna Hydra',
     opis: i => 'Ataki zadają dodatkowo <span class="fiz">' + fmt(1.5 * M(i)) + '%</span> maks. zdrowia przy trafieniu, a wrogowie wokół celu (r 70) dostają <span class="fiz">' + fmt(2.5 * M(i)) + '%</span> maks. zdrowia.',
     statyPost(i, s) { s.onHitFiz += s.hpMax * 0.015 * M(i); },
-    naTrafienie(i, w, k) { if (!k.glowny) return; const v = D.hpMax * 0.025 * M(i); obszarowe(w.x, w.y, 70, '#c0a080', o => { if (o !== w) zadaj(o, v, 'fiz', { obszar: true, zr: 'Hydra Tytana' }); }, true); } },
+    naTrafienie(i, w, k) { if (!k.glowny) return; const v = D.hpMax * 0.025 * M(i); obszarowe(w.x, w.y, 70, '#c0a080', o => { if (o !== w) zadaj(o, v, 'fiz', { obszar: true, zr: 'Tytaniczna Hydra' }); }, true); } },
   { id: 'navori', t: 2, ik: '🔵', n: 'Ostrze Navori',
-    opis: i => 'Trafienia krytyczne skracają odnowienie wszystkich broni, przedmiotów i umiejętności o <b>' + fmt(0.4 * M(i)) + ' s</b>.',
-    naKryt(i) { skrocCd(0.4 * M(i)); } },
+    opis: i => 'Każde trafienie celu głównego skraca <b>pozostałe</b> odnowienie Twoich umiejętności o <b>' + fmt(6 * M(i)) + '%</b> (krytyczne: ' + fmt(12 * M(i)) + '%).',
+    naTrafienie(i, w, k) { if (!k.glowny) return; const p = Math.min(0.3, (k.kryt ? 0.12 : 0.06) * M(i)); [gracz.umi, gracz.umi2].forEach(u => { if (u && u.cd > 0) u.cd *= 1 - p; }); } },
   { id: 'czarnyOgien', t: 2, ik: '🏮', n: 'Pochodnia Czarnego Ognia',
     opis: i => 'Obrażenia magiczne podpalają: <span class="mag">' + f0((30 + 0.12 * D.ap) * M(i)) + '</span> (30 + 12% ✨) przez 3 s. +3% obrażeń za każdego płonącego wroga w pobliżu (maks. 30%).',
     naObrazenia(i, w, v, typ, o) { if (typ === 'mag' && !o.dot && w.hp > 0) podpal(w, (30 + 0.12 * D.ap) * M(i) / 3, 3, 'mag', 'Pochodnia Czarnego Ognia'); },
@@ -1666,9 +2033,9 @@ const PRZEDMIOTY = [
     opis: i => 'Pierwsze trafienie każdego wroga zadaje dodatkowo <span class="mag">' + f0((100 + 0.2 * D.ap) * M(i)) + '</span> (100 + 20% ✨) obrażeń magicznych.',
     naObrazenia(i, w, v, typ, o) { if (w._zniw || o.zr === 'Żniwiarz Nocy') return; w._zniw = 1; zadaj(w, (100 + 0.2 * D.ap) * M(i), 'mag', { zr: 'Żniwiarz Nocy' }); } },
   { id: 'warmog', t: 3, ik: '🟩', n: 'Kirys Warmoga',
-    opis: i => 'Jeśli przez 4 s nie otrzymasz obrażeń, odzyskujesz <b>' + fmt(5 * M(i)) + '%</b> maks. zdrowia na sekundę. +20% maks. zdrowia.',
+    opis: i => '+20% maks. zdrowia. <b>Zawsze</b> odzyskujesz <b>' + fmt(1.2 * M(i)) + '%</b> maks. zdrowia na sekundę, a gdy przez 2 s nikt Cię nie trafi — <b>3×</b> tyle. Nie słabnie od zmęczenia.',
     statyMnoz(i, s) { s.hpMax *= 1.2; },
-    tik(i, dt) { if (czasGry - (gracz.ostTrafienie || -99) > 4 && gracz.hp < D.hpMax) leczGracza(D.hpMax * 0.05 * M(i) * dt, 'Kirys Warmoga', true); } },
+    tik(i, dt) { if (!fala.aktywna || gracz.hp >= D.hpMax) return; const spokoj = czasGry - (gracz.ostTrafienie || -99) > 2; leczGracza(D.hpMax * 0.012 * M(i) * (spokoj ? 3 : 1) * dt, 'Kirys Warmoga', true); } },
   { id: 'lodoweSerce', t: 3, ik: '❄️', n: 'Lodowe Serce',
     opis: i => 'Wrogowie w promieniu 220 atakują o <b>' + Math.round(Math.min(60, 25 * M(i))) + '%</b> wolniej i poruszają się o 15% wolniej.',
     tik(i) { const r = 220 * mnObszaru(); wrogowie.forEach(w => { if (!w.martwy && Math.hypot(w.x - gracz.x, w.y - gracz.y) < r + w.r) { spowolnij(w, 0.15, 0.2); w.zamarzniecieAtaku = Math.max(w.zamarzniecieAtaku || 0, Math.min(0.6, 0.25 * M(i))); w._zaT = 0.2; } }); } },
@@ -1689,12 +2056,55 @@ const PRZEDMIOTY = [
     opis: i => 'Wykluwa się smoczek, który leci przy Tobie i co 2 s zieje ogniem w stożku: <span class="mag">' + f0((30 + 0.6 * D.ap + 2 * nrFali()) * M(i)) + '</span> (30 + 60% ✨ + 2 × numer fali) i podpala.',
     tik(i) { if (!fala.aktywna) return; if (!i._s || i._s.czas <= 0 || stwory.indexOf(i._s) < 0) i._s = dodajStwora('smok', gracz.x - 20, gracz.y, 9999, { ruchomy: true, zr: 'Smocze Jajo', zrodlo: i });
       i._s.obr = (30 + 0.6 * D.ap + 2 * nrFali()) * M(i); } },
+  // ======================= NOWE: naładowanie, przy trafieniu, uniwersalne =======================
+  { id: 'kolczan', t: 0, ik: '🪶', n: 'Kołczan Lekkości',
+    opis: i => 'Ataki zadają przy trafieniu <span class="fiz">' + f0((8 + 0.06 * Math.max(0, D.as)) * M(i)) + '</span> (8 + 6% Twojej prędkości ataku) obrażeń fizycznych.',
+    statyPost(i, s) { s.onHitFiz += (8 + 0.06 * Math.max(0, s.as)) * M(i); } },
+  { id: 'iskrzaceButy', t: 0, ik: '👢', n: 'Iskrzące Buty', energia: true,
+    opis: i => '⚡ <b>Naładowany atak</b>: +' + f0(30 * M(i)) + ' prędkości ruchu na 2 s i odnowienie umiejętności krótsze o <b>' + fmt(1 * M(i)) + ' s</b>. (Energia ładuje się z biegania i ataków.)',
+    naNaladowanym(i) { dodajBuff('iskrzaceButy', { ms: 30 * M(i) }, 2); [gracz.umi, gracz.umi2].forEach(u => { if (u && u.cd > 0) u.cd = Math.max(0, u.cd - M(i)); }); } },
+  { id: 'pierscienDoliny', t: 0, ik: '💍', n: 'Pierścień Doliny',
+    opis: i => 'Na początku każdej fali dostajesz tarczę <b>' + f0(15 * M(i)) + '%</b> maks. zdrowia na 8 s, a co 20 s w walce kolejną na ' + f0(6 * M(i)) + '% (4 s).', cd: 20,
+    naStartFali(i) { i._start = true; },
+    tik(i) { if (!fala.aktywna) return; if (i._start) { i._start = false; dajTarcze(D.hpMax * 0.15 * M(i), 8); cdUstaw(i, 20); return; } if (!cdGotowe(i)) return; cdUstaw(i, 20); dajTarcze(D.hpMax * 0.06 * M(i), 4); } },
+  { id: 'luneta', t: 0, ik: '🔭', n: 'Luneta',
+    opis: i => '+' + f0(15 * M(i)) + '% zasięgu broni (wręcz: połowa). Trafienia z odległości ponad 220 zadają <b>' + f0(12 * M(i)) + '%</b> więcej obrażeń.',
+    statyFlat(i, s) { s.zasieg += 15 * M(i); },
+    modZadanych(i, w) { return w && Math.hypot(w.x - gracz.x, w.y - gracz.y) > 220 ? 1 + 0.12 * M(i) : 1; } },
+  { id: 'kondensator', t: 1, ik: '🔌', n: 'Kondensator', energia: true, energiaTempo: i => 0.4 * M(i),
+    opis: i => 'Energia ładuje się o <b>' + f0(40 * M(i)) + '%</b> szybciej. ⚡ <b>Naładowany atak</b> daje tarczę ' + fmt(8 * M(i)) + '% maks. zdrowia i +' + f0(20 * M(i)) + '% prędkości ataku na 3 s.',
+    naNaladowanym(i) { dajTarcze(D.hpMax * 0.08 * M(i), 3); dodajBuff('kondensator', { as: 20 * M(i) }, 3); } },
+  { id: 'zegarBitewny', t: 1, ik: '⏱️', n: 'Zegar Bitewny',
+    opis: i => 'Każde trafienie celu głównego skraca odnowienia Twoich <b>przedmiotów i broni dodatkowych</b> o ' + fmt(0.15 * M(i)) + ' s (krytyczne: ' + fmt(0.3 * M(i)) + ' s).',
+    naTrafienie(i, w, k) { if (!k.glowny) return; const s = (k.kryt ? 0.3 : 0.15) * M(i);
+      gracz.przedmioty.forEach(p => { if (p && p !== i && p.cd > 0) p.cd = Math.max(0, p.cd - s); }); gracz.oreze.forEach(o => { if (o.cd > 0) o.cd = Math.max(0, o.cd - s); }); } },
+  { id: 'zabNashora', t: 1, ik: '🦷', n: 'Ząb Nashora',
+    opis: i => 'Ataki zadają przy trafieniu <span class="mag">' + f0((12 + 0.2 * Math.max(0, D.ap)) * M(i)) + '</span> (12 + 20% ✨) obrażeń magicznych.',
+    statyKonc(i, s) { s.onHitMag += (12 + 0.2 * Math.max(0, s.ap)) * M(i); } },
+  { id: 'koniecRozumu', t: 1, ik: '🧿', n: 'Koniec Rozumu',
+    opis: i => 'Przy trafieniu: <span class="mag">' + f0((15 + 0.15 * Math.max(0, D.odpMag)) * M(i)) + '</span> (15 + 15% odporności na magię) obrażeń magicznych. Leczy o 25% tej wartości (w limicie wampiryzmu).',
+    naTrafienie(i, w) { if (w.martwy) return; const v = zadaj(w, (15 + 0.15 * Math.max(0, D.odpMag)) * M(i), 'mag', { onhit: true, zr: 'Koniec Rozumu' }); if (v > 0) leczWampirem(v * 0.25, 'Koniec Rozumu'); } },
+  { id: 'medalion', t: 1, ik: '🏅', n: 'Medalion Odwagi',
+    opis: i => 'Gdy masz mniej niż <b>40% zdrowia</b>: otrzymujesz <b>' + f0(Math.min(40, 25 * M(i))) + '%</b> mniej obrażeń i masz +' + f0(25 * M(i)) + ' prędkości ruchu.',
+    modOtrzymanych(i) { return gracz.hp < D.hpMax * 0.4 ? 1 - Math.min(0.4, 0.25 * M(i)) : 1; },
+    statyDyn(i, s) { if (gracz.hp < s.hpMax * 0.4) s.ms += 25 * M(i); } },
+  { id: 'krwiozerczaHydra', t: 2, ik: '🐲', n: 'Krwiożercza Hydra',
+    opis: i => 'Ataki tną wszystkich wrogów wokół celu (r 80): <span class="fiz">' + f0(25 * M(i)) + '%</span> obrażeń ataku. Leczysz się o 15% obrażeń cięcia (w limicie wampiryzmu).',
+    naTrafienie(i, w, k) { if (!k.glowny || k.zadaneSurowe <= 0) return; const v = k.zadaneSurowe * 0.25 * M(i); let suma = 0;
+      obszarowe(w.x, w.y, 80, '#c0392b', o => { if (o !== w) suma += zadaj(o, v, 'fiz', { obszar: true, zr: 'Krwiożercza Hydra' }); }, true); if (suma > 0) leczWampirem(suma * 0.15, 'Krwiożercza Hydra'); } },
+  { id: 'zegarek', t: 2, ik: '⌚', n: 'Zegarek Kieszonkowy', cd: 30,
+    opis: i => 'Co <b>' + f0(30 / M(i)) + ' s</b> (przyspieszenie skraca) <b>zeruje odnowienie</b> Twoich umiejętności, jeśli zostało im więcej niż 2 s.',
+    tik(i) { if (!fala.aktywna || !cdGotowe(i)) return; const u = [gracz.umi, gracz.umi2].filter(x => x && x.cd > 2); if (!u.length) return; u.forEach(x => x.cd = 0); cdUstaw(i, 30 / M(i)); tekstSwiat(gracz.x, gracz.y - 30, '⌚ Gotowe!', '#ffe08a', 0.8, 13); } },
+  { id: 'kamienFilozoficzny', t: 2, ik: '🔶', n: 'Kamień Filozoficzny',
+    opis: i => 'Na koniec każdej fali losowa statystyka rośnie <b>na stałe</b> (jak zwykły wybór przy awansie' + (i.gw ? ', ×' + fmt(M(i)) : '') + '). Zostaje nawet po sprzedaży. Dotąd: ' + (i.licz || 0) + '.',
+    naKoniecFali(i) { const u = losZ(ULEPSZENIA_STATOW); const v = u.w[0] * M(i); gracz.stale[u.k] = (gracz.stale[u.k] || 0) + v; i.licz = (i.licz || 0) + 1; oznaczStaty();
+      dziennik('🔶 Kamień Filozoficzny: ' + STAT[u.k].i + ' ' + STAT[u.k].n + ' +' + fmt(v) + (STAT[u.k].j === '%' ? '%' : '')); } },
 ];
 // unikalne: tylko jeden egzemplarz; wielokrotne (działka, stworzenia, Mejai...) można kupić kilka razy - każdy działa osobno
 const DEF_PRZ = {}; PRZEDMIOTY.forEach(p => { DEF_PRZ[p.id] = p; if (p.unik === undefined) p.unik = !p.wielokrotny; });
 
 function cenaPrzedmiotu(d) { return Math.round((d.cena || CENY_TIERU[d.t]) * mnCeny()); }
-function cenaUlepszenia(inst) { const d = DEF_PRZ[inst.id]; return Math.round((d.cena || CENY_TIERU[d.t]) * (0.55 + 0.35 * (inst.gw || 0)) * mnCeny()); }
+function cenaUlepszenia(inst) { const d = DEF_PRZ[inst.id]; const baza = d.t === 'p' ? 170 * (gracz && KLASY[gracz.klasa].ulepszaPryzmaty && ewo('pas') >= 1 ? 0.75 : 1) : (d.cena || CENY_TIERU[d.t]); return Math.round(baza * (0.55 + 0.35 * (inst.gw || 0)) * mnCeny()); }
 function wartoscSprzedazy(inst) { const d = DEF_PRZ[inst.id]; const baza = d.t === 'p' ? 120 : (d.cena || CENY_TIERU[d.t]); return Math.round(baza * mnCeny() * (0.4 + 0.15 * (inst.gw || 0))); }
 function nowyPrzedmiot(id) { return { id: id, gw: 0, cd: 0 }; }
 function gwiazdki(n) { return n ? '★'.repeat(n) : ''; }
@@ -1847,8 +2257,8 @@ const PRYZMATY = [
     opis: () => 'Każdy punkt szczęścia daje <b>0,2%</b> szansy na kryt i <b>0,4%</b> obrażeń krytycznych (teraz +' + fmt(D.szczescie * 0.2) + '% / +' + fmt(D.szczescie * 0.4) + '%).',
     statyPost(i, s) { s.kryt += Math.max(0, s.szczescie) * 0.2; s.krytObr += Math.max(0, s.szczescie) * 0.4; } },
   { id: 'kosturArcymaga', ik: '🧙', n: 'Kostur Arcymaga', s: { ap: 60 },
-    opis: () => 'Twoje ⚔️ zamieniają się w ✨ (×2), a <b>wszystkie</b> ataki zadają obrażenia <span class="mag">magiczne</span>.',
-    wszystkoMag: true, statyPost(i, s) { s.ap += 2 * Math.max(0, s.ad); s.ad = 0; } },
+    opis: () => 'Całe Twoje ⚔️ zamienia się w ✨ (<b>1 ⚔️ → 2 ✨</b>). Ataki bronią zadają obrażenia <span class="mag">magiczne</span>, a przelicznik ⚔️ broni liczy się od ✨ (np. miecz 100% ⚔️ → 100% ✨). Działa po Harmonii i Wadze Sprawiedliwości.',
+    wszystkoMag: true, statyKonw3(i, s) { s.ap += 2 * Math.max(0, s.ad); s.ad = 0; } },
   { id: 'zelaznaDziewica', ik: '⚙️', n: 'Żelazna Dziewica', s: { pancerz: 30, odpMag: 30, hpMax: 150 },
     opis: () => 'Otrzymujesz <b>15% więcej</b> obrażeń, ale każde trafienie odbija <span class="praw">100%</span> obrażeń (przed obroną) jako prawdziwe w napastnika i wrogów w promieniu 80.',
     modOtrzymanych() { return 1.15; },
@@ -1859,8 +2269,8 @@ const PRYZMATY = [
     statyDyn(i, s) { s.kradziez += 50 * Math.max(0, 1 - gracz.hp / Math.max(1, s.hpMax)); },
     modZadanych() { return 1 + 1.2 * Math.max(0, 1 - gracz.hp / D.hpMax); } },
   { id: 'wagaSprawiedliwosci', ik: '⚖️', n: 'Waga Sprawiedliwości', s: { ad: 20, ap: 20 },
-    opis: () => 'Twoje ⚔️ i ✨ wyrównują się do <b>wyższej</b> z nich.',
-    statyPost(i, s) { const m = Math.max(s.ad, s.ap); s.ad = m; s.ap = m; } },
+    opis: () => 'Twoje ⚔️ i ✨ wyrównują się do <b>wyższej</b> z nich (po Harmonii, przed Kosturem Arcymaga).',
+    statyKonw2(i, s) { const m = Math.max(s.ad, s.ap); s.ad = m; s.ap = m; } },
   { id: 'grubyPortfel', ik: '💰', n: 'Gruby Portfel', s: { chciwosc: 30 },
     opis: () => '+1% obrażeń za każde 10 posiadanego złota (bez limitu). Teraz: +' + Math.round(gracz.zloto / 10) + '%.',
     modZadanych() { return 1 + gracz.zloto / 1000; } },
@@ -1903,9 +2313,9 @@ const PRYZMATY = [
     opis: () => 'Każde zabójstwo wypuszcza <b>pszczołę</b> (6 s, maks. 12 naraz). Żądli za <span class="fiz">' + f0(10 + 0.2 * D.ap) + '</span> (10 + 20% ✨).',
     naZabicie(i) { if (stwory.filter(s => s.typ === 'pszczola' && s.wl === gracz).length >= 12) return; dodajStwora('pszczola', gracz.x, gracz.y, 6, { obr: 10 + 0.2 * D.ap, zr: 'Matka Roju', ruchomy: true }); } },
   { id: 'sakwaAlchemika', ik: '🧉', n: 'Sakwa Alchemika', s: { hpMax: 200 },
-    opis: () => '+2 mikstury maks. Mikstury leczą <b>2×</b> mocniej i wypuszczają falę: koledzy w promieniu 180 leczą się o połowę tego, a wrogowie dostają tyle <span class="mag">obrażeń</span>.',
-    natychmiast() { gracz.maksMikstur += 2; }, cofnij() { gracz.maksMikstur = Math.max(1, gracz.maksMikstur - 2); gracz.mikstury = Math.min(gracz.mikstury, gracz.maksMikstur); }, mocMikstur() { return 1; },
-    naMiksturze() { const v = D.hpMax * 0.2 * gracz.mocMikstur; aura(180, '#7ee87a', w => zadaj(w, v, 'mag', { obszar: true, zr: 'Sakwa Alchemika' }), true); leczDruzyne(gracz.x, gracz.y, 180, v * 0.5, true); } },
+    opis: () => 'Gdy spadniesz poniżej <b>50% zdrowia</b>, sam wypijasz eliksir (odnowienie 12 s): leczysz się o <b>25% maks. zdrowia</b>, wrogowie w promieniu 180 dostają tyle <span class="mag">obrażeń magicznych</span>, a koledzy w tym promieniu leczą się o połowę.',
+    tik(i) { if (!fala.aktywna || !cdGotowe(i) || gracz.hp >= D.hpMax * 0.5 || fala.bezLeczenia) return; cdUstaw(i, 12); const v = D.hpMax * 0.25;
+      leczGracza(v, 'Sakwa Alchemika'); aura(180, '#7ee87a', w => zadaj(w, v, 'mag', { obszar: true, zr: 'Sakwa Alchemika' }), true); leczDruzyne(gracz.x, gracz.y, 180, v * 0.5, true); DZ.mikstura(); } },
   { id: 'bezdennaPaszcza', ik: '👄', n: 'Bezdenna Paszcza', s: { hpMax: 250 },
     opis: i => 'Zabicie wroga leczy o 1% jego maks. zdrowia (maks. 1% Twojego, w limicie wampiryzmu) i daje <b>na stałe</b> 0,5% tej wartości do maks. zdrowia — najwyżej +1 za zwykłego wroga, +4 za elitę, +15 za bossa, łącznie do +6000 (teraz +' + f0(i.stos || 0) + ').',
     naZabicie(i, w) { leczWampirem(Math.min(w.hpMax * 0.01, D.hpMax * 0.01), 'Bezdenna Paszcza'); if ((i.stos || 0) >= 6000) return; i.stos = Math.min(6000, (i.stos || 0) + Math.min(w.boss ? 15 : w.elita ? 4 : 1, w.hpMax * 0.005)); if (w.elita || w.boss || Math.random() < 0.1) oznaczStaty(); },
@@ -1945,6 +2355,20 @@ const PRYZMATY = [
     opis: i => 'Limit wampiryzmu rośnie o <b>2%</b> zdrowia na sekundę, a wampiryzm <b>ponad limit nie przepada</b>: najpierw zamienia się w tarczę (do 25% maks. zdrowia), a gdy tarcza jest pełna — co sekundę wybucha wokół Ciebie (r 140) jako obrażenia magiczne. Zebrane: <b>' + f0(i.pula || 0) + '</b>.',
     tik(i, dt) { i.t = (i.t || 0) + dt; if (i.t < 1) return; i.t = 0; const v = Math.min(i.pula || 0, D.hpMax * 0.2); if (v < 5 || !fala.aktywna) return; i.pula -= v;
       aura(140, '#c0392b', w => zadaj(w, v, 'mag', { obszar: true, zr: 'Kielich Nadmiaru' }), true); } },
+  // ---- nowe ----
+  { id: 'kondensatorBurzy', ik: '⚡', n: 'Kondensator Burzy', s: { as: 30, ms: 15 }, energia: true, energiaTempo: 1, naladowanyKryt: true, naladowanyOnHit: 2,
+    opis: () => 'Energia ładuje się <b>2× szybciej</b>. ⚡ <b>Naładowany atak</b> zawsze trafia krytycznie i nakłada efekty przy trafieniu <b>3 razy</b>. (Energia: bieganie i ataki.)' },
+  { id: 'sercHydry', ik: '💢', n: 'Serce Hydry', s: { ad: 30, hpMax: 200 },
+    opis: () => 'Ataki broni głównej (najwyżej co 0,8 s) tną <b>wszystkich wrogów wokół Ciebie</b> (r 110): <span class="fiz">60% obrażeń broni + 2% maks. zdrowia</span>' + (D && gracz && gracz.bronie[0] ? ' (teraz ' + f0(obrBroni(gracz.bronie[0]) * 0.6 + D.hpMax * 0.02) + ')' : '') + '.',
+    naAtak(i, b, cel, o) { if ((o && o.echo) || czasGry - (i.t || -99) < 0.8) return; i.t = czasGry; const v = obrBroni(b) * 0.6 + D.hpMax * 0.02;
+      aura(110, '#c0392b', w => zadaj(w, v, 'fiz', { obszar: true, zr: 'Serce Hydry' }), true); } },
+  { id: 'wiecznyMechanizm', ik: '🕰️', n: 'Wieczny Mechanizm', s: { haste: 30 },
+    opis: () => 'Każde trafienie celu głównego skraca odnowienia <b>umiejętności, przedmiotów i broni dodatkowych</b> o 0,1 s (krytyczne: 0,2 s).',
+    naTrafienie(i, w, k) { if (!k.glowny) return; const s = k.kryt ? 0.2 : 0.1;
+      [gracz.umi, gracz.umi2].forEach(u => { if (u && u.cd > 0) u.cd = Math.max(0, u.cd - s); });
+      gracz.przedmioty.forEach(p => { if (p && p.cd > 0) p.cd = Math.max(0, p.cd - s); }); gracz.oreze.forEach(o => { if (o.cd > 0) o.cd = Math.max(0, o.cd - s); }); } },
+  { id: 'gwiazdaNeutronowa', ik: '🌟', n: 'Gwiazda Neutronowa', s: { ap: 40, ad: 20 }, wszyscyGlowni: true,
+    opis: () => 'Efekty „przy trafieniu” i „cel główny” działają na <b>każdego</b> trafionego wroga — w łuku ciosu, przebitych pociskiem i w wybuchu (efekty z odnowieniem nadal raz).' },
 ];
 PRYZMATY.forEach(p => { p.t = 'p'; p.unik = true; DEF_PRZ[p.id] = p; });
 function progKuli() { return 300 + 60 * nrFali(); }
@@ -1994,9 +2418,10 @@ const AUGMENTY = [
     naAtak(a, b, cel) { a.licz = (a.licz || 0) + 1; if (a.licz % 8 === 0) lancuch(gracz, cel, (60 + 0.4 * D.ad + 0.4 * D.ap) * MA(a), 'mag', 3, 170, 1, 'Ładunek statyczny'); } },
   { id: 'egzekutorka', r: 's', ik: '🪓', n: 'Egzekutor', opis: a => 'Dobija zwykłych wrogów (nie elity, nie bossów) poniżej <b>' + Math.round(10 + 4 * (MA(a) - 1) * 2) + '%</b> zdrowia.',
     naObrazenia(a, w) { const p = 0.10 + 0.08 * (MA(a) - 1); if (!w.boss && !w.elita && w.hp > 0 && w.hp < w.hpMax * p) { w.hp = 0; zabij(w, { zr: 'Egzekutor' }); } } },
-  { id: 'zapasMikstur', r: 's', ik: '🧪', n: 'Zapas mikstur', opis: () => 'Natychmiast +2 mikstury, mieścisz o 1 więcej, a mikstury leczą o 30% mocniej. Ulepszenie powtarza efekt.',
-    natychmiast() { gracz.maksMikstur++; gracz.mocMikstur += 0.3; gracz.mikstury = Math.min(gracz.maksMikstur, gracz.mikstury + 2); },
-    naUlepszenie() { gracz.maksMikstur++; gracz.mocMikstur += 0.3; gracz.mikstury = Math.min(gracz.maksMikstur, gracz.mikstury + 2); } },
+  { id: 'zapasMikstur', r: 's', ik: '💨', n: 'Drugi oddech', opis: a => 'Gdy spadniesz poniżej <b>35% zdrowia</b>: leczysz się o <b>35% maks. zdrowia</b> i masz 1 s niewrażliwości. Działa <b>' + ((a && a.poz) || 1) + '×</b> na falę (ulepszenie: +1 raz).',
+    naStartFali(a) { a.uzyte = 0; },
+    tik(a) { if (!fala.aktywna || gracz.hp >= D.hpMax * 0.35 || gracz.hp <= 0 || (a.uzyte || 0) >= ((a.poz) || 1) || fala.bezLeczenia) return; a.uzyte = (a.uzyte || 0) + 1;
+      leczGracza(D.hpMax * 0.35, 'Drugi oddech'); gracz.niewr = Math.max(gracz.niewr || 0, 1); tekstSwiat(gracz.x, gracz.y - 30, '💨 Drugi oddech', '#9fe8ff', 1, 14); DZ.mikstura(); } },
   { id: 'lodoweDotkniecie', r: 's', ik: '🧊', n: 'Lodowe dotknięcie', opis: a => 'Ataki spowalniają o <b>' + Math.round(Math.min(50, 25 * MA(a))) + '%</b> na 1 s.',
     naTrafienie(a, w) { spowolnij(w, Math.min(0.5, 0.25 * MA(a)), 1); } },
   { id: 'podpalaczka', r: 's', ik: '🔥', n: 'Podpalacz', opis: a => 'Ataki podpalają: <span class="mag">' + f0((14 + 0.15 * D.ad + 0.15 * D.ap) * MA(a)) + '</span> (14 + 15% ⚔️ + 15% ✨) na sekundę przez 3 s.',
@@ -2040,10 +2465,8 @@ const AUGMENTY = [
   { id: 'gruboskorna', r: 'z', ik: '🦏', n: 'Gruboskórny', s: { hpMax: 150, redukcja: 15 } },
   { id: 'tytan', r: 'z', ik: '🗿', n: 'Tytan', opis: a => '+' + Math.round(25 * MA(a)) + '% maks. zdrowia, ataki zadają <span class="fiz">' + fmt(2.5 * MA(a)) + '% maks. zdrowia</span> przy trafieniu. Jesteś większy.',
     statyMnoz(a, s) { s.hpMax *= 1 + 0.25 * MA(a); }, statyPost(a, s) { s.onHitFiz += s.hpMax * 0.025 * MA(a); }, rozmiar() { return 1.15; } },
-  { id: 'alchemiczka', r: 'z', ik: '⚗️', n: 'Alchemik', opis: a => 'Po każdej fali +1 mikstura. Mikstury leczą o ' + Math.round(50 * MA(a)) + '% mocniej i dają +' + Math.round(35 * MA(a)) + '% prędkości ataku na 5 s.',
-    mocMikstur(a) { return 0.5 * MA(a); },
-    naKoniecFali() { gracz.mikstury = Math.min(gracz.maksMikstur, gracz.mikstury + 1); },
-    naMiksturze(a) { dodajBuff('alchemia', { as: 35 * MA(a) }, 5); } },
+  { id: 'alchemiczka', r: 'z', ik: '⚗️', n: 'Alchemik', opis: a => 'Co <b>10 s</b> w walce rozbijasz eliksir: Ty i koledzy w promieniu 150 leczycie się o <b>' + fmt(8 * MA(a)) + '%</b> maks. zdrowia, a Ty dostajesz +' + Math.round(35 * MA(a)) + '% prędkości ataku na 5 s.',
+    tik(a) { if (!fala.aktywna || a.cd > 0) return; a.cd = 10 * 100 / (100 + Math.max(0, D.haste)); leczDruzyne(gracz.x, gracz.y, 150, 0, true, 0.08 * MA(a)); dodajBuff('alchemia', { as: 35 * MA(a) }, 5); fale.push({ x: gracz.x, y: gracz.y, czas: 0.4, max: 0.4, r: 150, kolor: '#7ee87a' }); } },
   { id: 'inwestorka', r: 'z', ik: '📈', n: 'Inwestor', opis: a => 'Na koniec fali odsetki: ' + Math.round(15 * MA(a)) + '% posiadanego złota (maks. ' + f0(45 * MA(a)) + ').',
     naKoniecFali(a) { const z = Math.min(45 * MA(a), gracz.zloto * 0.15 * MA(a)); if (z >= 1) dodajZloto(Math.floor(z), true, 'Odsetki'); } },
   { id: 'kowal', r: 'z', ik: '⚒️', n: 'Kowal', opis: a => 'Przy każdej wizycie w sklepie ' + (MA(a) > 1.5 ? '2 losowe przedmioty zyskują' : 'losowy przedmiot zyskuje') + ' ★ za darmo.',
@@ -2055,7 +2478,7 @@ const AUGMENTY = [
   { id: 'olowiane', r: 'z', ik: '📌', n: 'Ołowiane pociski', s: { przebicie: 2 }, opis: a => 'Pociski zadają +' + Math.round(15 * MA(a)) + '% obrażeń.',
     modZadanych(a, w, typ, o) { return o.pocisk ? 1 + 0.15 * MA(a) : 1; } },
   { id: 'magiczneOstrze', r: 'z', ik: '🔮', n: 'Magiczne ostrze', opis: a => 'Ataki zadają dodatkowo <span class="mag">' + f0((15 + 0.3 * D.ap) * MA(a)) + '</span> (15 + 30% ✨) obrażeń magicznych przy trafieniu.',
-    statyPost(a, s) { s.onHitMag += (15 + 0.3 * s.ap) * MA(a); } },
+    statyKonc(a, s) { s.onHitMag += (15 + 0.3 * s.ap) * MA(a); } },
   { id: 'rozblysk', r: 'z', ik: '💥', n: 'Rozbłysk', cd: 5, opis: a => 'Co 5 s wybuch wokół Ciebie (r 120): <span class="mag">' + f0((55 + 0.7 * D.ap + 0.4 * D.ad) * MA(a)) + '</span> (55 + 70% ✨ + 40% ⚔️).',
     tik(a) { if (!cdGotowe(a) || policzWrogow(gracz.x, gracz.y, 120) === 0) return; cdUstaw(a, 5); aura(120, '#ffd24a', w => zadaj(w, (55 + 0.7 * D.ap + 0.4 * D.ad) * MA(a), 'mag', { obszar: true, zr: 'Rozbłysk' }), true); } },
   { id: 'glod', r: 'z', ik: '🍗', n: 'Wieczny głód', opis: a => 'Każde zabójstwo daje na stałe +' + fmt(0.7 * MA(a)) + ' maks. zdrowia (maks. +' + f0(400 * MA(a)) + '). Teraz: +' + fmt(Math.min(400 * MA(a), (a.stos || 0) * 0.7 * MA(a))) + '.',
@@ -2085,8 +2508,8 @@ const AUGMENTY = [
   { id: 'wielorekaAug', r: 'p', ik: '🦑', n: 'Wieloręki', opis: a => '<b>+2 miejsca</b> na bronie dodatkowe. Każda broń dodatkowa daje +' + Math.round(6 * MA(a)) + '% prędkości ataku.',
     natychmiast() { gracz.slotyOreza += 2; }, statyFlat(a, s) { s.as += 6 * MA(a) * gracz.oreze.length; } },
   { id: 'kwintesencja', r: 'p', ik: '💠', n: 'Kwintesencja', opis: a => 'Statystyki z broni dodatkowych i pancerza są większe o ' + Math.round(35 * MA(a)) + '%.', mnPrzedmiotow: a => 0.35 * MA(a) },
-  { id: 'zamiana', r: 'p', ik: '☯️', n: 'Harmonia', opis: a => 'Twoje ⚔️ zwiększają ✨ o ' + Math.round(60 * MA(a)) + '% swojej wartości — i odwrotnie.',
-    statyPost(a, s) { const ad = s.ad, ap = s.ap, m = 0.6 * MA(a); s.ad += ap * m; s.ap += ad * m; } },
+  { id: 'zamiana', r: 'p', ik: '☯️', n: 'Harmonia', opis: a => 'Twoje ⚔️ zwiększają ✨ o ' + Math.round(60 * MA(a)) + '% swojej wartości — i odwrotnie. Działa przed Wagą Sprawiedliwości i Kosturem Arcymaga.',
+    statyKonw1(a, s) { const ad = s.ad, ap = s.ap, m = 0.6 * MA(a); s.ad += ap * m; s.ap += ad * m; } },
   { id: 'bogini', r: 'p', ik: '👼', n: 'Bogini', opis: a => 'Gdy zginiesz, odradzasz się z PEŁNYM zdrowiem. Ładuje się raz na ' + Math.max(1, 3 - ((a && a.poz) || 1)) + ' fal(e). ' + ((a.lad || 0) > 0 ? '<b class="czer">Ładuje się</b>' : '<b class="ziel">Gotowa</b>'),
     naSmierc(a) { if ((a.lad || 0) > 0) return false; a.lad = Math.max(1, 3 - (a.poz || 1)); gracz.hp = D.hpMax; gracz.niewr = 2.5; tekstSwiat(gracz.x, gracz.y - 30, '👼 Odrodzenie!', '#fff6c0'); DZ.pryzmat(); return true; },
     naKoniecFali(a) { if (a.lad > 0) a.lad--; } },
@@ -2131,6 +2554,18 @@ const AUGMENTY = [
   { id: 'echoBroni', r: 'p', ik: '🔂', n: 'Echo arsenału', opis: a => 'Efekty broni dodatkowych mają <b>' + Math.round(Math.min(60, 30 * MA(a))) + '%</b> szansy odpalić się drugi raz.', echoOreza: a => Math.min(0.6, 0.3 * MA(a)) },
   { id: 'przelew', r: 'p', ik: '🫗', n: 'Przelew', przelew: a => MA(a),
     opis: a => 'To, co przekracza limity, <b>nie przepada</b>: szansa na kryt ponad 100% → +' + fmt(1.5 * MA(a)) + '% obrażeń krytycznych za 1%; unik ponad limit → +' + fmt(1.5 * MA(a)) + '% obrażeń za 1%; redukcja obrażeń ponad limit → +' + fmt(2 * MA(a)) + '% maks. zdrowia za 1%; wampiryzm (kradzież + wszechwampiryzm) ponad 40 → +' + fmt(0.5 * MA(a)) + '% obrażeń za 1; prędkość ataku ponad 300% → +' + fmt(0.15 * MA(a)) + '% obrażeń za 1%.' },
+  // ---- nowe: naładowanie i przy trafieniu ----
+  { id: 'iskrzenie', r: 's', ik: '⚡', n: 'Iskrzenie', energia: true, energiaTempo: a => 0.3 * MA(a), naladowanyObr: a => 0.25 * MA(a),
+    opis: a => 'Energia ładuje się o <b>' + Math.round(30 * MA(a)) + '%</b> szybciej, a ⚡ naładowane ataki zadają <b>+' + Math.round(25 * MA(a)) + '%</b> obrażeń. (Energia: bieganie i ataki; przy 100 następny atak jest naładowany.)' },
+  { id: 'jadSkorpiona', r: 's', ik: '🦂', n: 'Jad Skorpiona', opis: a => 'Ataki zadają przy trafieniu <span class="fiz">' + f0((10 + 0.1 * Math.max(0, D.ad)) * MA(a)) + '</span> (10 + 10% ⚔️) obrażeń fizycznych.',
+    statyKonc(a, s) { s.onHitFiz += (10 + 0.1 * Math.max(0, s.ad)) * MA(a); } },
+  { id: 'burzowyPed', r: 'z', ik: '🌩️', n: 'Burzowy Pęd', energia: true,
+    opis: a => '⚡ <b>Naładowany atak</b> przywołuje 3 pioruny w pobliskich wrogów: <span class="mag">' + f0((40 + 0.4 * D.ad + 0.4 * D.ap) * MA(a)) + '</span> (40 + 40% ⚔️ + 40% ✨) każdy.',
+    naNaladowanym(a, b, cel) { const v = (40 + 0.4 * D.ad + 0.4 * D.ap) * MA(a); najblizsi(cel.x, cel.y, 220, 3).forEach((w, n) => opoznione(n * 0.07, () => { if (w.martwy) return; dodajBlyskawice(w.x + losowo(-20, 20), w.y - 140, w.x, w.y, '#ffe066'); zadaj(w, v, 'mag', { zr: 'Burzowy Pęd' }); efektBlysk(w.x, w.y, '#ffe066'); })); DZ.piorun(); } },
+  { id: 'pospiech', r: 'z', ik: '⏩', n: 'Pośpiech', opis: a => 'Każde trafienie celu głównego skraca pozostałe odnowienie Twoich umiejętności o <b>' + fmt(0.15 * MA(a)) + ' s</b>.',
+    naTrafienie(a, w, k) { if (!k.glowny) return; const s = 0.15 * MA(a); [gracz.umi, gracz.umi2].forEach(u => { if (u && u.cd > 0) u.cd = Math.max(0, u.cd - s); }); } },
+  { id: 'wiecznaBurza', r: 'p', ik: '♾️', n: 'Wieczna Burza', energia: true, coTrzeciNaladowany: true, naladowanyObr: a => 0.15 * MA(a),
+    opis: a => 'Co <b>3.</b> atak jest ⚡ naładowany bez względu na energię (energia nadal ładuje kolejne). Naładowane ataki zadają +' + Math.round(15 * MA(a)) + '% obrażeń.' },
 ];
 const DEF_AUG = {}; AUGMENTY.forEach(a => DEF_AUG[a.id] = a);
 function klonujPrzedmiot() { const kand = gracz.przedmioty.filter(p => p && gracz.przedmioty.filter(q => q && q.id === p.id).length < 2); if (!kand.length) { gracz.slotyPrzedm++; return; } const p = losZ(kand); if (czyPryzmat(p)) gracz.slotyPryzm = (gracz.slotyPryzm || 2) + 1; else gracz.slotyPrzedm++; gracz.przedmioty.push({ id: p.id, gw: p.gw || 0, cd: 0 }); toast('🧬 Sklonowano: ' + DEF_PRZ[p.id].n); }
@@ -2138,262 +2573,647 @@ function vaBanque() { gracz.zloto = 0; const pula = PRZEDMIOTY.filter(p => p.t =
 function statyAugmentu(a) { const d = DEF_AUG[a.id]; if (!d.s) return null; const s = {}; for (const k in d.s) s[k] = d.s[k] * MA(a); return s; }
 
 // =====================================================================
-//  POSTACIE (klasy): broń startowa, rodziny broni, umiejętność aktywna
+//  POSTACIE (klasy): broń startowa, statystyki bazowe, pasywka, umiejętności
+//  i DRZEWKO EWOLUCJI (3 gałęzie × 3 rangi, kupowane w sklepie, rangi odblokowują poziomy 3/10/20).
 // =====================================================================
 // rodziny: tylko podpowiedź, z jakimi rodzinami broni postać dobrze się łączy (premia zestawu).
 // Szanse w sklepie, skrzyniach, augmentach i kowadłach są takie same dla każdej postaci.
+// staty: różnice względem bazy (120 zdrowia, 140 prędkości ruchu).
+const EWO_BRONI = ['+20% obrażeń tej broni', '+15% zasięgu, bronie strzelające: +1 pocisk', 'efekty przy trafieniu tej broni działają <b>2 razy</b>'];
 const KLASY = {
+  // ------------------------------------------------------------------ WIĘZIEŃ
   wiezniarka: {
     wyglad: { czapka: 'kajdany', broda: true },
-    n: 'Więzień', ik: '⛓️', slotyOreza: 4, slotyPrzedm: 4, start: 'lancuch', rodziny: null,
-    staty: { xpBonus: 25 },
-    opis: 'Rośnie z każdym poziomem: <b>+1,5% obrażeń za każdy poziom</b> (bez limitu), +25% doświadczenia, co 5 poziomów darmowy wybór statystyk. Na start +1 przerzut augmentów i +1 mikstura.',
-    dar() { gracz.przerzutyAug += 1; gracz.mikstury += 1; },
-    modZadanych() { return 1 + 0.015 * gracz.poziom; },
-    tik(st, dt) { if (!gracz.buffy.kajdany) return; st.tKaj = (st.tKaj || 0) - dt; if (st.tKaj > 0) return; st.tKaj = 0.5;
-      aura(150, '#ffd24a', w => zadaj(w, (25 + 0.6 * D.ad + 0.3 * D.ap) * mnUmi(), 'fiz', { obszar: true, zr: 'Zerwane kajdany' })); },
-    umi: { n: 'Zerwane kajdany', ik: '⛓️‍💥', cd: 14, opis: m => 'Przez 6 s: <b>+' + f0(70 * m) + '%</b> prędkości ataku, +' + f0(40 * m) + ' prędkości ruchu, a łańcuchy co 0,5 s smagają wszystkich w promieniu 150: <span class="fiz">' + f0((25 + 0.6 * D.ad + 0.3 * D.ap) * m) + '</span> (25 + 60% ⚔️ + 30% ✨).',
-      uzyj(m) { dodajBuff('kajdany', { as: 70 * m, ms: 40 * m }, 6); gracz.stanKlasy.tKaj = 0; fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 150, kolor: '#ffd24a' }); DZ.awans(); return true; } },
+    n: 'Więzień', ik: '⛓️', rola: 'wręcz · rośnie z poziomem', slotyOreza: 4, slotyPrzedm: 4, start: 'lancuch', rodziny: null, hpZaPoziom: 7,
+    staty: { hpMax: 10, ms: 5, xpBonus: 25 },
+    opis: 'Rośnie z każdym poziomem: <b>+1,5% obrażeń za poziom</b> (bez limitu), +25% doświadczenia, co 5 poziomów darmowy wybór statystyk. Na start +1 przerzut augmentów.',
+    dar() { gracz.przerzutyAug += 1; },
+    wyborCo: () => ewo('pas') >= 2 ? 4 : 5,
+    modZadanych() { return 1 + (ewo('pas') >= 1 ? 0.02 : 0.015) * gracz.poziom; },
+    statyMnoz(st, s) { if (ewo('pas') >= 3) s.hpMax *= 1 + 0.01 * gracz.poziom; },
+    naZabicie(st) { if (ewo('u2') >= 3 && gracz.buffy.kajdany && (st.przedl || 0) < 4) { gracz.buffy.kajdany.czas += 0.5; st.przedl = (st.przedl || 0) + 0.5; } },
+    tik(st, dt) {
+      tikWiruKajdan(st, dt);
+      if (!gracz.buffy.kajdany) return; st.tKaj = (st.tKaj || 0) - dt; if (st.tKaj > 0) return; st.tKaj = 0.5;
+      const r = 150 + (ewo('u2') >= 2 ? 40 : 0);
+      aura(r, '#ffd24a', w => { zadaj(w, (25 + 0.6 * D.ad + 0.3 * D.ap) * mnUmi(), 'fiz', { obszar: true, zr: 'Zerwane kajdany' }); if (ewo('u2') >= 2) spowolnij(w, 0.25, 0.6); });
+    },
+    umi: { n: 'Wir kajdan', ik: '🌀', cd: 14,
+      opis: m => '<b>Zatrzymujesz się</b> na ' + fmt(2.5 + (ewo('u1') >= 1 ? 0.5 : 0)) + ' s i <b>nie otrzymujesz obrażeń</b>. Łańcuchy smagają najbliższego wroga (do 170) — tym częściej, im większa prędkość ataku (teraz co ' + fmt(odstepWiru()) + ' s): <span class="fiz">' + f0((15 + 0.45 * D.ad + 0.15 * D.ap) * m) + '</span> (15 + 45% ⚔️ + 15% ✨), mogą trafić krytycznie i <b>nakładają efekty przy trafieniu</b>. Leczysz się o 15% zadanych (w limicie wampiryzmu).',
+      uzyj(m) { const t = 2.5 + (ewo('u1') >= 1 ? 0.5 : 0); gracz.stanKlasy.wir = { t: t, tL: 0, m: m, suma: 0 }; gracz.niewr = Math.max(gracz.niewr, t); gracz.korzen = t;
+        if (gracz.zdalny) siecZdarzenieGracza(gracz, ['korzen', Math.round(t * 10)]); fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 120, kolor: '#c8c8d8' }); DZ.ciecie(); return true; } },
+    umi2: { n: 'Zerwane kajdany', ik: '⛓️', cd: 16,
+      opis: m => 'Przez ' + fmt(6 + (ewo('u2') >= 1 ? 2 : 0)) + ' s: <b>+' + f0(70 * m) + '%</b> prędkości ataku, +' + f0(40 * m) + ' prędkości ruchu, a łańcuchy co 0,5 s smagają wszystkich w promieniu ' + (150 + (ewo('u2') >= 2 ? 40 : 0)) + ': <span class="fiz">' + f0((25 + 0.6 * D.ad + 0.3 * D.ap) * m) + '</span> (25 + 60% ⚔️ + 30% ✨).',
+      uzyj(m) { dodajBuff('kajdany', { as: 70 * m, ms: 40 * m }, 6 + (ewo('u2') >= 1 ? 2 : 0)); gracz.stanKlasy.tKaj = 0; gracz.stanKlasy.przedl = 0; fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 150, kolor: '#ffd24a' }); DZ.awans(); return true; } },
+    ewo: [
+      { id: 'u1', ik: '🌀', n: 'Wir kajdan', r: ['+0,5 s trwania', 'każde smagnięcie przeskakuje na drugiego wroga (50%)', 'na koniec wybuch łańcuchów (r 160): 40 + 150% ⚔️ i +40% prędkości ruchu na 2 s'] },
+      { id: 'u2', ik: '⛓️', n: 'Zerwane kajdany', r: ['+2 s trwania', 'promień +40 i spowolnienie 25%', 'każde zabójstwo przedłuża efekt o 0,5 s (do +4 s)'] },
+      { id: 'pas', ik: '📈', n: 'Więzienna krzepa', r: ['+2% obrażeń za poziom (zamiast 1,5%)', 'darmowy wybór statystyk co 4 poziomy', 'każdy poziom: +1% maks. zdrowia'] },
+    ],
     kolory: { plaszcz: ['#b3263a', '#6e1424'], tunika: ['#41b097', '#21645a'], wlosy: '#5a3420' },
   },
+  // ------------------------------------------------------------------ RYCERZ
   rycerz: {
     wyglad: { czapka: 'helm' },
-    n: 'Rycerz', ik: '🛡️', slotyOreza: 4, slotyPrzedm: 4, start: 'mieczTarcza', rodziny: ['biala'],
-    staty: { pancerz: 30, hpMax: 60 },
+    n: 'Rycerz', ik: '🛡️', rola: 'wręcz · tank, pancerz to siła', slotyOreza: 4, slotyPrzedm: 4, start: 'mieczTarcza', rodziny: ['biala'], hpZaPoziom: 8,
+    staty: { hpMax: 60, pancerz: 30, ms: -5 },
     opis: 'Pancerz to siła: <b>+1% obrażeń za każde 3 pancerza</b> (bez limitu) i <b>pancerz ×1,25</b>. Otrzymuje 15% mniej obrażeń, tarcze +30%.',
-    statyMnoz(st, s) { s.pancerz *= 1.25; }, statyPost(st, s) { s.obrBonus += Math.max(0, s.pancerz) / 3; },
-    modOtrzymanych() { return 0.85; }, mnTarcz: 0.3,
-    umi: { n: 'Szarża', ik: '🐎', cd: 8, opis: m => 'Szarżuje 200 px w kierunku ruchu: wrogowie na drodze dostają <span class="fiz">' + f0((60 + 1.5 * D.ad + 1.0 * D.pancerz) * m) + '</span> (60 + 150% ⚔️ + 100% 🛡️) i są ogłuszeni na 1,2 s. Dostajesz tarczę ' + f0((40 + 0.8 * D.pancerz) * m) + '.',
-      uzyj(m) { szarza(200, (60 + 1.5 * D.ad + 1.0 * D.pancerz) * m, 1.2, 'Szarża'); dajTarcze((40 + 0.8 * D.pancerz) * m, 3); return true; } },
+    statyMnoz(st, s) { s.pancerz *= ewo('pas') >= 1 ? 1.35 : 1.25; }, statyPost(st, s) { s.obrBonus += Math.max(0, s.pancerz) / (ewo('pas') >= 2 ? 2.5 : 3); },
+    modOtrzymanych(st) { return (ewo('pas') >= 3 ? 0.75 : 0.85) * (st.wyzwanie > czasGry ? 0.6 : 1); }, mnTarcz: 0.3,
+    naOtrzymanie(st, v, typ, o) { if (!(st.wyzwanie > czasGry) || !o.wrog || o.dot) return; zadaj(o.wrog, (o.przed || v) * (ewo('u2') >= 2 ? 1 : 0.5), 'praw', { zr: 'Wyzwanie', odbicie: true });
+      if (ewo('u2') >= 3) leczGracza(D.hpMax * 0.03, 'Wyzwanie'); },
+    umi: { n: 'Szarża', ik: '🐎', cd: () => ewo('u1') >= 2 ? 6 : 8,
+      opis: m => 'Szarżuje ' + (200 + (ewo('u1') >= 1 ? 80 : 0)) + ' px w kierunku ruchu: wrogowie na drodze dostają <span class="fiz">' + f0((60 + 1.5 * D.ad + 1.0 * D.pancerz) * m) + '</span> (60 + 150% ⚔️ + 100% 🛡️) i są ogłuszeni na 1,2 s. Dostajesz tarczę ' + f0((40 + 0.8 * D.pancerz) * m) + ' (40 + 80% 🛡️).',
+      uzyj(m) { szarza(200 + (ewo('u1') >= 1 ? 80 : 0), (60 + 1.5 * D.ad + 1.0 * D.pancerz) * m, 1.2, 'Szarża'); dajTarcze((40 + 0.8 * D.pancerz) * m, 3);
+        if (ewo('u1') >= 3) { const ja = gracz; opoznione(0.25, () => { if (gracz !== ja || stan !== 'walka') return; fale.push({ x: gracz.x, y: gracz.y, czas: 0.4, max: 0.4, r: 120, kolor: '#e8e8f0' });
+          aura(120, '#e8e8f0', w => { zadaj(w, (30 + 1.0 * D.pancerz) * m, 'fiz', { obszar: true, zr: 'Szarża' }); oglusz(w, 0.8, { zrodlo: 'Szarża' }); }, true); }); }
+        return true; } },
+    umi2: { n: 'Wyzwanie', ik: '📯', cd: 16,
+      opis: m => 'Wyzywasz wrogów w promieniu 260 — przez ' + fmt(3 + (ewo('u2') >= 1 ? 1 : 0)) + ' s atakują tylko Ciebie. Otrzymujesz <b>40% mniej obrażeń</b>, a każdy cios w Ciebie odbija <span class="praw">' + (ewo('u2') >= 2 ? 100 : 50) + '%</span> obrażeń (przed obroną) jako prawdziwe.',
+      uzyj(m) { const t = 3 + (ewo('u2') >= 1 ? 1 : 0); gracz.stanKlasy.wyzwanie = czasGry + t; wrogowie.forEach(w => { if (!w.martwy && !(w.zauroczony > 0) && Math.hypot(w.x - gracz.x, w.y - gracz.y) < 260) { w.cel = gracz; w.tCelu = t; } });
+        fale.push({ x: gracz.x, y: gracz.y, czas: 0.6, max: 0.6, r: 260, kolor: '#ffe08a', odwrot: true }); DZ.boss(); return true; } },
+    ewo: [
+      { id: 'u1', ik: '🐎', n: 'Szarża', r: ['+80 długości', 'odnowienie 6 s (zamiast 8)', 'na końcu fala uderzeniowa (r 120): 30 + 100% 🛡️ i ogłuszenie 0,8 s'] },
+      { id: 'u2', ik: '📯', n: 'Wyzwanie', r: ['+1 s trwania', 'odbija 100% obrażeń', 'każdy cios w Ciebie podczas Wyzwania leczy 3% maks. zdrowia'] },
+      { id: 'pas', ik: '🛡️', n: 'Bastion', r: ['pancerz ×1,35', '+1% obrażeń za każde 2,5 pancerza', 'otrzymujesz 25% mniej obrażeń (zamiast 15%)'] },
+    ],
     kolory: { plaszcz: ['#3a4a8a', '#1a2450'], tunika: ['#c8ccd8', '#7a7e8c'], wlosy: '#c8a060' },
   },
+  // ------------------------------------------------------------------ LEPRIKON
   szczesciara: {
     wyglad: { czapka: 'melonik' },
-    n: 'Szczęściarz', ik: '🍀', slotyOreza: 4, slotyPrzedm: 4, start: 'sztylety', rodziny: null,
-    staty: { kryt: 15, krytObr: 30, unik: 8 },
-    opis: 'Fart w walce: +15% kryta, krytyki +30%, +8% uniku. <b>Po każdym uniku następny atak jest pewnym krytem.</b> Każde 5 🍀 szczęścia daje mu jeszcze +1% kryta.',
-    statyPost(st, s) { s.kryt += Math.max(0, s.szczescie) / 5; },
-    naUniku(st) { st.pewnyKryt = true; },
-    umi: { n: 'Fart', ik: '🌈', cd: 15, opis: m => 'Przez ' + fmt(5 * m) + ' s <b>każdy atak jest krytyczny</b>, krytyki zadają +50% więcej i masz +40% uniku.',
-      uzyj(m) { dodajBuff('fart', { kryt: 300, krytObr: 50, unik: 40 }, 5 * m); DZ.pryzmat(); return true; } },
+    n: 'Leprikon', ik: '🍀', rola: 'dystans · szczęście i kryty', slotyOreza: 4, slotyPrzedm: 4, start: 'pistolet', rodziny: null,
+    staty: { hpMax: -10, ms: 10, kryt: 15, krytObr: 15, unik: 8 },
+    opis: 'Fart w walce: +15% kryta, +8% uniku. <b>Po każdym uniku następny atak jest pewnym krytem.</b> Każde 5 🍀 daje +1% kryta, a każdy kryt ma 6% szans upuścić <b>monetę</b>.',
+    statyPost(st, s) { s.kryt += Math.max(0, s.szczescie) / 5; if (ewo('pas') >= 1) { s.kryt += 5; s.krytObr += 10; } },
+    statyDyn(st, s) { if (st.zryw > czasGry) s.as += 20; },
+    modZadanych(st) { return ewo('pas') >= 3 ? 1 + Math.max(0, D.szczescie) / 1000 : 1; },
+    naUniku(st) { st.pewnyKryt = true; if (ewo('pas') >= 2) { st.zryw = czasGry + 2; oznaczStaty(); } },
+    naKryt(st, w) { if (Math.random() < 0.06) rozsypMonety(w.x, w.y, 1 + fala.nr * 0.1, true); if (gracz.buffy.fart) { st.fartObr = (st.fartObr || 0); if (ewo('u1') >= 2) leczWampirem(D.hpMax * 0.01, 'Fart'); } },
+    naObrazenia(st, w, v) { if (gracz.buffy.fart) st.fartObr = (st.fartObr || 0) + v; },
+    umi: { n: 'Fart', ik: '🌈', cd: 15,
+      opis: m => 'Przez ' + fmt((5 + (ewo('u1') >= 1 ? 1 : 0)) * Math.min(1.5, m)) + ' s <b>każdy atak jest krytyczny</b>, krytyki zadają +50% więcej i masz +40% uniku.',
+      uzyj(m) { const t = (5 + (ewo('u1') >= 1 ? 1 : 0)) * Math.min(1.5, m); dodajBuff('fart', { kryt: 300, krytObr: 50, unik: 40 }, t); gracz.stanKlasy.fartObr = 0; DZ.pryzmat();
+        if (ewo('u1') >= 3) { const ja = gracz; opoznione(t, () => { if (gracz !== ja || stan !== 'walka') return; const v = (gracz.stanKlasy.fartObr || 0) * 0.1; if (v < 1) return;
+          aura(200, '#ffd24a', w => zadaj(w, v / Math.max(1, policzWrogow(gracz.x, gracz.y, 200)), 'praw', { obszar: true, zr: 'Garniec złota' }), true); DZ.moneta(); }); }
+        return true; } },
+    umi2: { n: 'Tęcza', ik: '🌈', cd: () => ewo('u2') >= 3 ? 8 : 12,
+      opis: m => 'Przemykasz po tęczy ' + (180 + (ewo('u2') >= 1 ? 60 : 0)) + ' px w kierunku ruchu: wrogowie na drodze dostają <span class="fiz">' + f0((40 + 1.0 * D.ad + 0.2 * D.szczescie) * m) + '</span> (40 + 100% ⚔️ + 20% 🍀), a zabici upuszczają monety.' + (ewo('u2') >= 2 ? ' Trafieni są spowolnieni o 40%, a Ty masz +30% prędkości ruchu na 3 s.' : ''),
+      uzyj(m) { const dl = 180 + (ewo('u2') >= 1 ? 60 : 0), v = (40 + 1.0 * D.ad + 0.2 * D.szczescie) * m;
+        let mx = gracz.kierRX || gracz.kierX || 1, my = gracz.kierRY || 0; if (gracz.zdalny && gracz.umiKier) { mx = gracz.umiKier[0] || mx; my = gracz.umiKier[1] || my; }
+        liniowe(Math.atan2(my, mx), dl, 30, w => { zadaj(w, v, 'fiz', { zr: 'Tęcza' }); if (w.martwy) rozsypMonety(w.x, w.y, 2, true); if (ewo('u2') >= 2) spowolnij(w, 0.4, 2); });
+        if (ewo('u2') >= 2) dodajBuff('tecza', { ms: 0.3 * D.ms }, 3);
+        for (let n = 0; n < 7; n++) czastki.push({ x: gracz.x + mx * n * dl / 7, y: gracz.y + my * n * dl / 7, vx: 0, vy: -20, czas: 0.6, max: 0.6, kolor: ['#ff5a5a', '#ffb04a', '#ffe066', '#7ee87a', '#5aa8e6', '#9a6ae0', '#ff7ae0'][n] });
+        mrugnij(dl); DZ.czar(); return true; } },
+    ewo: [
+      { id: 'u1', ik: '🌈', n: 'Fart', r: ['+1 s trwania', 'podczas Fartu każdy kryt leczy 1% maks. zdrowia', 'na koniec Garniec złota: 10% obrażeń zadanych w czasie Fartu wybucha wokół (prawdziwe)'] },
+      { id: 'u2', ik: '🌈', n: 'Tęcza', r: ['+60 długości', 'spowalnia trafionych o 40%, +30% prędkości ruchu na 3 s', 'odnowienie 8 s (zamiast 12)'] },
+      { id: 'pas', ik: '🍀', n: 'Fart w genach', r: ['+5% kryta i +10% obrażeń krytycznych', 'unik daje +20% prędkości ataku na 2 s', 'każde 10 🍀 = +1% wszystkich obrażeń'] },
+    ],
     kolory: { plaszcz: ['#2e8a3a', '#14501e'], tunika: ['#e6c15c', '#a07a1e'], wlosy: '#c8742a' },
   },
+  // ------------------------------------------------------------------ AKIMBO
   wieloreka: {
-    wyglad: { czapka: 'macki' },
-    n: 'Wieloręki', ik: '🦑', slotyOreza: 6, slotyPrzedm: 4, start: 'losowa', rodziny: null,
-    staty: {},
-    opis: 'Nosi <b>6 broni dodatkowych</b>: ich efekty są o <b>30% mocniejsze</b> i odnawiają się o 15% szybciej, każda daje też +4% prędkości ataku. Broń główna zadaje 25% mniej. Losowa broń główna.',
-    mnBroni: () => 0.75, mnOreza: 0.3, cdOreza: 0.15,
-    statyFlat(st, s) { s.as += 4 * gracz.oreze.length; },
-    umi: { n: 'Burza broni', ik: '🌪️', cd: 14, opis: m => 'Wszystkie bronie dodatkowe <b>odpalają natychmiast, a po 0,6 s jeszcze raz</b>. Przez 5 s +' + f0(60 * m) + '% prędkości ataku.',
-      uzyj(m) { gracz.oreze.forEach(o => { o.cd = 0; }); opoznione(0.6, () => gracz.oreze.forEach(o => { o.cd = 0; })); dodajBuff('burzaBroni', { as: 60 * m }, 5); fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 120, kolor: '#9a6ae0' }); return true; } },
+    wyglad: { czapka: 'opaska' },
+    n: 'Akimbo', ik: '👐', rola: 'dwie bronie główne · prędkość ataku', slotyOreza: 2, slotyPrzedm: 4, start: 'wybor2', rodziny: null, hpZaPoziom: 6,
+    staty: { hpMax: -5, ms: 5, as: 10 },
+    opis: '<b>Dwie bronie główne</b> naraz (wybierasz obie, każda ×0,75 obrażeń), 2 miejsca na broń dodatkową, <b>bez umiejętności</b>. <b>Krzyżowy ogień:</b> gdy wroga trafi jedna broń, a zaraz potem druga (do 2 s), druga zadaje +30% i dostajesz ładunek +4% prędkości ataku do końca fali (maks. 25). Zabójstwo jedną bronią „podaje” krzyżowe trafienie drugiej.',
+    mnBroni: () => 0.75,
+    naStartFali(st) { st.stosy = 0; st.podanie = null; },
+    statyDyn(st, s) { s.as += 4 * (st.stosy || 0); },
+    naTrafienie(st, w, k) {
+      if (!k.glowny || gracz.bronie.length < 2 || w.martwy && !k.zadane) return;
+      const i = gracz.bronie.indexOf(k.bron); if (i < 0) return;
+      const p = w._akimbo, pd = st.podanie;
+      const krzyz = (p && p.g === gracz.id && p.i !== i && czasGry - p.t < 2) || (pd && pd.i !== i && czasGry - pd.t < 1.5);
+      w._akimbo = { i: i, t: czasGry, g: gracz.id };
+      if (!krzyz) return;
+      st.podanie = null;
+      if (!w.martwy) zadaj(w, k.zadaneSurowe * (ewo('pas') >= 2 ? 0.6 : 0.3), BRONIE[k.bron.rodzaj].obrTyp, { zr: 'Krzyżowy ogień' });
+      if (ewo('pas') >= 3) obszarowe(w.x, w.y, 60, '#ffb04a', o => { if (o !== w) zadaj(o, k.zadaneSurowe * 0.4, 'fiz', { obszar: true, zr: 'Krzyżowy ogień' }); }, true);
+      const maks = ewo('pas') >= 1 ? 35 : 25; if ((st.stosy || 0) < maks) { st.stosy = (st.stosy || 0) + 1; oznaczStaty(); }
+      efektBlysk(w.x, w.y, '#ffb04a');
+    },
+    naZabicie(st, w, o) { if (o && o.bron) { const i = gracz.bronie.indexOf(o.bron); if (i >= 0) st.podanie = { i: i, t: czasGry }; } },
+    ewo: [
+      { id: 'b1', ik: '🤛', n: 'Lewa ręka (1. broń)', bron: 0, r: EWO_BRONI },
+      { id: 'b2', ik: '🤜', n: 'Prawa ręka (2. broń)', bron: 1, r: EWO_BRONI },
+      { id: 'pas', ik: '✖️', n: 'Krzyżowy ogień', r: ['maks. 35 ładunków', 'krzyżowe trafienie +60% (zamiast 30%)', 'krzyżowe trafienie wybucha wokół celu (r 60, 40%)'] },
+    ],
     kolory: { plaszcz: ['#4a5ac4', '#24306e'], tunika: ['#9a6ae0', '#5a3a8a'], wlosy: '#2a2030' },
   },
+  // ------------------------------------------------------------------ ONE-HANDED
   jedynaczka: {
     wyglad: { czapka: 'opaska' },
-    n: 'Mistrz Jednej Broni', ik: '🗡️', slotyOreza: 2, slotyPrzedm: 5, start: 'wybor', rodziny: null,
-    staty: { as: 20 },
-    opis: 'Broń główna zadaje <b>2× obrażeń</b>, zaczyna na II tierze (do wyboru), a jej ulepszanie jest o 50% tańsze. Tylko <b>2 miejsca</b> na bronie dodatkowe, za to +1 na przedmiot.',
-    mnBroni: () => 2, rabatBroni: 0.5,
-    umi: { n: 'Cięcie mistrza', ik: '⚔️', cd: 8, opis: m => 'Potężny cios bronią główną we <b>wszystkich</b> wrogów w zasięgu ×2: <b>' + f0(400 * m) + '%</b> obrażeń broni (z efektami przy trafieniu).',
-      uzyj(m) { const b = gracz.bronie[0]; if (!b) return false; const zas = zasiegAtaku(b) * 2; ciecia.push({ x: gracz.x, y: gracz.y, kat: 0, luk: Math.PI * 2, r: zas, czas: 0.3, max: 0.3, kolor: '#ffe08a' });
-        wrogowie.slice().forEach(w => { if (!w.martwy && !(w.zauroczony > 0) && Math.hypot(w.x - gracz.x, w.y - gracz.y) < zas + w.r) trafienieAtakiem(w, b, { mn: 4 * m, glowny: true }); }); DZ.kryt(); return true; } },
+    n: 'One-handed', ik: '🗡️', rola: 'jedna broń · bez umiejętności', slotyOreza: 0, slotyPrzedm: 5, slotyPryzm: 3, start: 'wybor', rodziny: null, hpZaPoziom: 6,
+    staty: { hpMax: 5, ms: 5, as: 20 },
+    opis: 'Jedna broń na całe życie: zadaje <b>2× obrażeń</b>, zaczyna na II tierze (do wyboru), ulepszanie −50%, a po V tierze rośnie dalej — <b>Mistrzostwo I–V</b> (każde: +15% obrażeń i wybór jednej z 3 cech broni). <b>Nie nosi broni dodatkowych</b> i nie ma umiejętności. <b>3 miejsca na pryzmaty</b> — każdy pryzmat <b>nasyca broń</b>: +15% jej obrażeń.',
+    mnBroni: () => 2 * (1 + (ewo('pryzm') >= 2 ? 0.3 : 0.15) * liczPrzedm(true)), rabatBroni: 0.5, mistrzostwo: true,
+    kowadloWybor: () => ewo('pryzm') >= 1 ? 4 : 3,
+    statyFlat(st, s) { if (ewo('tech') >= 1) { s.as += 10; s.kryt += 5; } if (ewo('tech') >= 2) { s.krytObr += 15; s.kradziez += 4; }
+      const b = gracz.bronie[0]; if (b && b.perki) b.perki.forEach(p => { const P = PERKI_MISTRZA[p]; if (P && P.s) dodajStaty(s, P.s); }); },
+    naAtak(st, b, cel, o) { if (ewo('tech') < 3 || (o && o.echo)) return; st.licz = (st.licz || 0) + 1; if (st.licz % 5 === 0) opoznione(0.12, () => echoAtaku(b, cel)); },
+    ewo: [
+      { id: 'ostrze', ik: '🗡️', n: 'Ostrze', bron: 0, r: EWO_BRONI },
+      { id: 'pryzm', ik: '🔨', n: 'Nasycenie pryzmatami', r: ['Pryzmatyczne Kowadło: wybór z 4 zamiast 3', 'każdy pryzmat +30% obrażeń broni (zamiast 15%)', '+1 miejsce na pryzmat (4)'], naZakup: r => { if (r === 3) gracz.slotyPryzm++; } },
+      { id: 'tech', ik: '🥋', n: 'Technika', r: ['+10% prędkości ataku i +5% kryta', '+15% obrażeń krytycznych i +4% kradzieży życia', 'co 5. atak powtarza się (echo)'] },
+    ],
     kolory: { plaszcz: ['#2a2a2a', '#0e0e0e'], tunika: ['#c0c0d0', '#6a6a7a'], wlosy: '#e8e0d0' },
   },
+  // ------------------------------------------------------------------ MAG
   czarodziejka: {
     wyglad: { czapka: 'kapeluszMaga', kol: '#4a2a9a', broda: '#e8e0ff' },
-    n: 'Mag', ik: '🧙', slotyOreza: 4, slotyPrzedm: 4, start: 'rozdzka', rodziny: ['magiczna'],
-    staty: { ap: 25, haste: 25 },
-    opis: 'Gra się <b>umiejętnościami</b>: dwie umiejętności, obie o 25% mocniejsze, <b>moc umiejętności ×1,4</b> i +25 przyspieszenia. Różdżka jest słaba (obrażenia broni ×0,6).',
-    statyMnoz(st, s) { s.ap *= 1.4; }, mnBroni: () => 0.6, mnUmi: 0.25,
-    umi2: { n: 'Mrugnięcie', ik: '💫', cd: 7, opis: m => 'Teleport o 170 w kierunku ruchu. W miejscu startu wybucha lodowa nowa (r 130): <span class="mag">' + f0((50 + 0.8 * D.ap) * m) + '</span> (50 + 80% ✨) i zamrożenie wrogów na 1,2 s.',
+    n: 'Mag', ik: '🧙', rola: 'dystans · umiejętności', slotyOreza: 4, slotyPrzedm: 4, start: 'rozdzka', rodziny: ['magiczna'], hpZaPoziom: 4,
+    staty: { hpMax: -25, ap: 25, haste: 25 },
+    opis: 'Gra się <b>umiejętnościami</b>: obie o 25% mocniejsze, <b>moc umiejętności ×1,4</b> i +25 przyspieszenia. Różdżka jest słaba (obrażenia broni ×0,6).',
+    statyMnoz(st, s) { s.ap *= ewo('pas') >= 2 ? 1.5 : 1.4; }, mnBroni: () => ewo('pas') >= 1 ? 0.75 : 0.6, mnUmi: 0.25,
+    naUmiejetnosci(st) { if (ewo('pas') >= 3) st.czaroostrze = 3; },
+    modZadanych(st, w, typ, o) { if (o && o.atak && st.czaroostrze > 0) { st.czaroostrze--; return 1.5; } return 1; },
+    umi2: { n: 'Mrugnięcie', ik: '💫', cd: () => ewo('u2') >= 2 ? 4.5 : 7,
+      opis: m => 'Teleport o ' + (170 + (ewo('u2') >= 1 ? 60 : 0)) + ' w kierunku ruchu. W miejscu startu wybucha lodowa nowa (r 130): <span class="mag">' + f0((50 + 0.8 * D.ap) * m) + '</span> (50 + 80% ✨) i zamrożenie wrogów na 1,2 s.' + (ewo('u2') >= 3 ? ' Zamrożeni dostają +30% obrażeń przez 3 s.' : ''),
       uzyj(m) { const x0 = gracz.x, y0 = gracz.y, r = 130 * mnObszaru(); fale.push({ x: x0, y: y0, czas: 0.45, max: 0.45, r: r, kolor: '#9fd8ff' });
-        wrogowie.slice().forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - x0, w.y - y0) > r + w.r * 0.5) return; zadaj(w, (50 + 0.8 * D.ap) * m, 'mag', { obszar: true, zr: 'Mrugnięcie' }); oglusz(w, 1.2, { zrodlo: 'Mrugnięcie' }); });
+        wrogowie.slice().forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - x0, w.y - y0) > r + w.r * 0.5) return; zadaj(w, (50 + 0.8 * D.ap) * m, 'mag', { obszar: true, zr: 'Mrugnięcie' }); oglusz(w, 1.2, { zrodlo: 'Mrugnięcie' });
+          if (ewo('u2') >= 3) { w.naznaczony = Math.max(w.naznaczony || 0, 3); w.mnNazn = Math.max(w.mnNazn || 0, 0.3); } });
         for (let n = 0; n < 10; n++) czastki.push({ x: x0 + losowo(-20, 20), y: y0 + losowo(-20, 20), vx: losowo(-60, 60), vy: losowo(-60, 60), czas: 0.5, max: 0.5, kolor: '#cfefff' });
-        mrugnij(170); DZ.czar(); return true; } },
-    umi: { n: 'Meteor', ik: '☄️', cd: 10, opis: m => 'Wielki meteor spada na największe skupisko wrogów (r 130): <span class="mag">' + f0((150 + 1.6 * D.ap) * m) + '</span> (150 + 160% ✨), a za nim 3 mniejsze po ' + f0((50 + 0.5 * D.ap) * m) + '.',
-      uzyj(m) { const c = skupisko(gracz.x, gracz.y, 360, 130) || najblizszyWrog(gracz.x, gracz.y, 360); if (!c) return false; meteoryt(c.x, c.y, 0.7, 130, (150 + 1.6 * D.ap) * m, 'Meteor');
-        for (let n = 0; n < 3; n++) meteoryt(c.x + losowo(-110, 110), c.y + losowo(-110, 110), 1 + n * 0.2, 70, (50 + 0.5 * D.ap) * m, 'Meteor'); return true; } },
+        mrugnij(170 + (ewo('u2') >= 1 ? 60 : 0)); DZ.czar(); return true; } },
+    umi: { n: 'Meteor', ik: '☄️', cd: 10,
+      opis: m => 'Wielki meteor spada na największe skupisko wrogów (r 130): <span class="mag">' + f0((150 + 1.6 * D.ap) * m) + '</span> (150 + 160% ✨), a za nim ' + (3 + (ewo('u1') >= 1 ? 2 : 0)) + ' mniejsze po ' + f0((50 + 0.5 * D.ap) * m) + ' (50 + 50% ✨).' + (ewo('u1') >= 2 ? ' Zostawia płonącą ziemię (3 s).' : '') + (ewo('u1') >= 3 ? ' Co 3. meteor jest olbrzymi (r 200, ×2).' : ''),
+      uzyj(m) { const c = skupisko(gracz.x, gracz.y, 360, 130) || najblizszyWrog(gracz.x, gracz.y, 360); if (!c) return false; const st = gracz.stanKlasy;
+        st.meteory = (st.meteory || 0) + 1; const olb = ewo('u1') >= 3 && st.meteory % 3 === 0;
+        meteoryt(c.x, c.y, 0.7, olb ? 200 : 130, (150 + 1.6 * D.ap) * m * (olb ? 2 : 1), 'Meteor');
+        if (ewo('u1') >= 2) { const ja = gracz; opoznione(0.7, () => { if (gracz !== ja) return; polaEfektow.push({ wl: gracz, x: c.x, y: c.y, r: 110 * mnObszaru(), czas: 3, max: 3, tyk: 0.5, rodzaj: 'ogien', obr: (0.3 * D.ap) * m / 2, zr: 'Meteor' }); }); }
+        for (let n = 0; n < 3 + (ewo('u1') >= 1 ? 2 : 0); n++) meteoryt(c.x + losowo(-110, 110), c.y + losowo(-110, 110), 1 + n * 0.2, 70, (50 + 0.5 * D.ap) * m, 'Meteor'); return true; } },
+    ewo: [
+      { id: 'u1', ik: '☄️', n: 'Meteor', r: ['+2 małe meteory', 'zostawia płonącą ziemię na 3 s (30% ✨/s)', 'co 3. meteor jest olbrzymi (r 200, ×2 obrażeń)'] },
+      { id: 'u2', ik: '💫', n: 'Mrugnięcie', r: ['+60 odległości', 'odnowienie 4,5 s (zamiast 7)', 'zamrożeni dostają +30% obrażeń przez 3 s'] },
+      { id: 'pas', ik: '📜', n: 'Arkana', r: ['broń ×0,75 (zamiast ×0,6)', 'moc umiejętności ×1,5', 'po umiejętności 3 następne ataki bronią: +50% obrażeń'] },
+    ],
     kolory: { plaszcz: ['#6a3ac4', '#341a6e'], tunika: ['#3a7ae0', '#1a3a8a'], wlosy: '#e8e0ff' },
   },
+  // ------------------------------------------------------------------ BERSERKER
   berserkerka: {
     wyglad: { czapka: 'rogi', broda: true },
-    n: 'Berserker', ik: '🪓', slotyOreza: 4, slotyPrzedm: 4, start: 'topor', rodziny: ['biala'],
-    staty: { as: 15, kradziez: 4 },
-    opis: 'Im mniej zdrowia, tym groźniejszy: <b>+1% prędkości ataku i +0,6% obrażeń za każdy 1% brakującego zdrowia</b>. Regeneracja o połowę słabsza.',
+    n: 'Berserker', ik: '🪓', rola: 'wręcz · im mniej zdrowia, tym groźniej', slotyOreza: 4, slotyPrzedm: 4, start: 'topor', rodziny: ['biala'], hpZaPoziom: 7,
+    staty: { hpMax: 20, ms: 10, as: 15, kradziez: 4 },
+    opis: 'Im mniej zdrowia, tym groźniejszy: <b>+1% prędkości ataku i +0,6% obrażeń za każdy 1% brakującego zdrowia</b>. <b>Rozpęd:</b> każde zabójstwo daje ładunek (+2% prędkości ataku, +3 prędkości ruchu, 4 s, maks. 10); przy pełnych ładunkach ciosy tną wszystkich wokół (40%). Regeneracja o połowę słabsza.',
     statyMnoz(st, s) { s.regen *= 0.5; },
-    statyDyn(st, s) { const b = Math.max(0, 1 - gracz.hp / Math.max(1, s.hpMax)) * 100; s.as += b; s.obrBonus += b * 0.6; },
-    umi: { n: 'Szał', ik: '😡', cd: 15, opis: m => 'Tracisz 10% aktualnego zdrowia. Przez 7 s: <b>+' + f0(80 * m) + '%</b> prędkości ataku, +' + f0(12 * m) + '% kradzieży życia, +30 prędkości ruchu i 25% redukcji obrażeń.',
-      uzyj(m) { gracz.hp = Math.max(1, gracz.hp * 0.9); dodajBuff('szal', { as: 80 * m, kradziez: 12 * m, ms: 30, redukcja: 25 }, 7); rozbryzg(gracz.x, gracz.y, '#c0392b', 16); DZ.boss(); return true; } },
+    statyDyn(st, s) { const b = Math.max(0, 1 - gracz.hp / Math.max(1, s.hpMax)) * 100; s.as += b; s.obrBonus += b * 0.6;
+      if (czasGry > (st.tRozp || 0)) st.rozped = 0; const r = st.rozped || 0; s.as += 2 * r; s.ms += 3 * r; if (st.szalDo > czasGry) { s.as += 60; s.kradziez += 10; } },
+    modOtrzymanych(st) { return ewo('pas') >= 2 && gracz.hp < D.hpMax * 0.3 ? 0.8 : 1; },
+    limitWampF: st => st.szalDo > czasGry && ewo('u1') >= 2 ? 0.04 : 0,
+    naZabicie(st, w, o) { const maks = ewo('pas') >= 1 ? 15 : 10; st.rozped = Math.min(maks, (st.rozped || 0) + 1); st.tRozp = czasGry + 4; oznaczStaty();
+      if (o && o.zr === 'Skok Rzeźnika' && ewo('u2') >= 3) gracz.umi2.cd = 0; },
+    naTrafienie(st, w, k) { const prog = ewo('pas') >= 3 ? 6 : (ewo('pas') >= 1 ? 15 : 10); if (!k.glowny || (st.rozped || 0) < prog || czasGry - (st.tCiecia || -9) < 0.5) return; st.tCiecia = czasGry;
+      aura(95, '#c0392b', o => { if (o !== w) zadaj(o, k.zadaneSurowe * 0.4, 'fiz', { obszar: true, zr: 'Rozpęd' }); }, false); },
+    naOtrzymanie(st, v) { if (st.szalDo > czasGry) st.przyjeteSzal = (st.przyjeteSzal || 0) + v; },
+    naSmierc(st) { if (st.szalDo > czasGry) { gracz.hp = 1; return true; } return false; },
+    umi: { n: 'Szał', ik: '😡', cd: 16,
+      opis: m => 'Przez ' + fmt(6 + (ewo('u1') >= 1 ? 1.5 : 0)) + ' s <b>nie możesz zginąć</b> (zdrowie nie spadnie poniżej 1), +60% prędkości ataku, +10% kradzieży życia, +30 prędkości ruchu.' + (ewo('u1') >= 3 ? ' Na koniec wybuchasz za 30% obrażeń przyjętych w Szale (r 180).' : ''),
+      uzyj(m) { const st = gracz.stanKlasy, t = 6 + (ewo('u1') >= 1 ? 1.5 : 0); st.szalDo = czasGry + t; st.przyjeteSzal = 0; dodajBuff('szal', { ms: 30 }, t); rozbryzg(gracz.x, gracz.y, '#c0392b', 16); DZ.boss(); oznaczStaty();
+        if (ewo('u1') >= 3) { const ja = gracz; opoznione(t, () => { if (gracz !== ja || stan !== 'walka') return; const v = (st.przyjeteSzal || 0) * 0.3; if (v < 1) return; fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 180, kolor: '#c0392b' });
+          aura(180, '#c0392b', w => zadaj(w, v, 'fiz', { obszar: true, zr: 'Szał' }), true); DZ.wybuch(); }); }
+        return true; } },
+    umi2: { n: 'Skok Rzeźnika', ik: '🦘', cd: () => ewo('u2') >= 1 ? 8 : 10,
+      opis: m => 'Skaczesz na skupisko wrogów (do 240) i uderzasz o ziemię (r 120): <span class="fiz">' + f0((40 + 1.2 * D.ad + 0.04 * D.hpMax) * m) + '</span> (40 + 120% ⚔️ + 4% maks. zdrowia), ogłuszenie 0,5 s.' + (ewo('u2') >= 2 ? ' Trafieni krwawią 3 s.' : '') + (ewo('u2') >= 3 ? ' Zabójstwo skokiem odnawia go.' : ''),
+      uzyj(m) { const c = skupisko(gracz.x, gracz.y, 240, 120) || najblizszyWrog(gracz.x, gracz.y, 240); if (!c) return false; skokDo(c.x, c.y, 240);
+        const ja = gracz; opoznione(0.2, () => { if (gracz !== ja || stan !== 'walka') return; const v = (40 + 1.2 * D.ad + 0.04 * D.hpMax) * m; fale.push({ x: gracz.x, y: gracz.y, czas: 0.4, max: 0.4, r: 120, kolor: '#c0392b' }); rozbryzg(gracz.x, gracz.y, '#8a5a3a', 14);
+          aura(120, '#c0392b', w => { zadaj(w, v, 'fiz', { obszar: true, zr: 'Skok Rzeźnika' }); oglusz(w, 0.5, { zrodlo: 'Skok Rzeźnika' }); if (ewo('u2') >= 2) krwawienie(w, v * 0.3, 3, true); }, true); DZ.wybuch(); });
+        return true; } },
+    ewo: [
+      { id: 'u1', ik: '😡', n: 'Szał', r: ['+1,5 s trwania', 'limit wampiryzmu +4%/s w czasie Szału', 'na koniec wybuch: 30% przyjętych obrażeń (r 180)'] },
+      { id: 'u2', ik: '🦘', n: 'Skok Rzeźnika', r: ['odnowienie 8 s', 'trafieni krwawią (30%/s przez 3 s)', 'zabójstwo skokiem odnawia go'] },
+      { id: 'pas', ik: '🩸', n: 'Rozpęd', r: ['maks. 15 ładunków', 'poniżej 30% zdrowia: −20% otrzymywanych obrażeń', 'cięcie wokół już od 6 ładunków'] },
+    ],
     kolory: { plaszcz: ['#8a2a1a', '#4a1008'], tunika: ['#7a5a3a', '#4a3020'], wlosy: '#d04020' },
   },
-  handlarka: {
-    wyglad: { czapka: 'cylinder' },
-    n: 'Kupiec', ik: '💼', slotyOreza: 4, slotyPrzedm: 4, start: 'kusza', rodziny: ['strzelecka', 'alchemia'],
-    staty: { chciwosc: 25 },
-    opis: 'Złoto to siła: <b>+1% obrażeń za każde 20 złota</b> (bez limitu). Ceny w sklepie −25%. Na koniec fali odsetki: 10% złota (maks. 60). Zaczyna z 60 złota.',
-    dar() { gracz.rabat += 25; gracz.zloto += 60; },
-    modZadanych() { return 1 + gracz.zloto / 2000; },
-    naKoniecFali() { const z = Math.min(60, gracz.zloto * 0.1); if (z >= 1) dodajZloto(Math.floor(z), true, 'Odsetki'); },
-    umi: { n: 'Deszcz złota', ik: '🪙', cd: 14, opis: m => 'Deszcz monet wokół Ciebie (r 180): <span class="fiz">' + f0((40 + 0.08 * gracz.zloto + 0.8 * D.ad) * m) + '</span> (40 + 8% złota + 80% ⚔️). Zabici nim wrogowie upuszczają dodatkowe złoto.',
-      uzyj(m) { const v = (40 + 0.08 * gracz.zloto + 0.8 * D.ad) * m; aura(180, '#ffd24a', w => { zadaj(w, v, 'fiz', { obszar: true, zr: 'Deszcz złota' }); if (w.martwy) rozsypMonety(w.x, w.y, 3); }, true); for (let n = 0; n < 16; n++) czastki.push({ x: gracz.x + losowo(-170, 170), y: gracz.y + losowo(-170, 170), vx: 0, vy: 60, czas: 0.6, max: 0.6, kolor: '#ffd24a' }); DZ.moneta(); return true; } },
-    kolory: { plaszcz: ['#a07a1e', '#5a4008'], tunika: ['#2a6a4a', '#14402a'], wlosy: '#3a2a1a' },
-  },
+  // ------------------------------------------------------------------ WAMPIR
   wampirzyca: {
     wyglad: { czapka: 'wampir' },
-    n: 'Wampir', ik: '🧛', slotyOreza: 4, slotyPrzedm: 4, start: 'kosa', rodziny: ['biala', 'magiczna'],
-    staty: { omni: 8, leczenie: 25 },
-    opis: 'Jedyny z <b>prawdziwym wampiryzmem</b>: limit wampiryzmu wyższy o 4% zdrowia/s, +8% wszechwampiryzmu, leczenie +25%. Każde zabójstwo leczy o 0,5% maks. zdrowia. <b>Nie ma regeneracji</b> — każdy 1 regeneracji zamienia się w +5% mocy leczenia.',
+    n: 'Wampir', ik: '🧛', rola: 'wręcz/magia · prawdziwy wampiryzm', slotyOreza: 4, slotyPrzedm: 4, start: 'kosa', rodziny: ['biala', 'magiczna'], hpZaPoziom: 6,
+    staty: { hpMax: -5, ms: 10, omni: 8, leczenie: 25 },
+    opis: '<b>Prawdziwy wampiryzm</b>: limit wampiryzmu wyższy o 4% zdrowia/s, +8% wszechwampiryzmu, leczenie +25%, zabójstwo leczy 0,5% maks. zdrowia. Nie ma regeneracji (1 regeneracji = +5% mocy leczenia). <b>Pula krwi:</b> nadmiar leczenia zbiera się (do 40% maks. zdrowia) i wzmacnia Ucztę krwi.',
     statyMnoz(st, s) { s.leczenie += Math.max(0, s.regen) * 5; s.regen = Math.min(0, s.regen); },
-    naZabicie() { leczWampirem(D.hpMax * 0.005, 'Wampirzyca'); }, limitWamp: 0.04,
-    umi: { n: 'Uczta krwi', ik: '🩸', cd: 12, opis: m => 'Wysysa krew z wrogów w promieniu 190: <span class="mag">' + f0((60 + 0.08 * D.hpMax + 0.7 * D.ap) * m) + '</span> (60 + 8% maks. zdrowia + 70% ✨) każdemu. Leczysz się o 50% zadanych (maks. 30% zdrowia).',
-      uzyj(m) { if (!policzWrogow(gracz.x, gracz.y, 190)) return false; let suma = 0; aura(190, '#c0392b', w => { suma += zadaj(w, (60 + 0.08 * D.hpMax + 0.7 * D.ap) * m, 'mag', { obszar: true, zr: 'Uczta krwi' }); dodajBlyskawice(w.x, w.y, gracz.x, gracz.y, '#e04050'); }, true); leczGracza(Math.min(suma * 0.5, D.hpMax * 0.3), 'Uczta krwi'); return true; } },
+    naZabicie() { leczWampirem(D.hpMax * (ewo('pas') >= 1 ? 0.01 : 0.005), 'Wampir'); },
+    limitWampF: () => 0.04 + (ewo('pas') >= 3 ? 0.02 : 0),
+    naNadleczenie(st, v) { st.pula = Math.min(D.hpMax * (ewo('pas') >= 2 ? 0.6 : 0.4), (st.pula || 0) + v); },
+    naObrazenia(st, w, v) { if (w.krwawyZnak > czasGry && v > 0) leczWampirem(v * 0.04, 'Znak krwi'); },
+    naTrafienie(st, w, k) { if (!k.glowny || !(st.ukaszenia > 0)) return; st.ukaszenia--; leczGracza(D.hpMax * 0.05, 'Ukąszenie'); },
+    tik(st, dt) {
+      if (!(gracz.forma === 'nietoperz')) return;
+      wrogowie.forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - gracz.x, w.y - gracz.y) > 34 + w.r) return; const kl = '_mgla' + gracz.id; if (w[kl] && czasGry - w[kl] < 0.5) return; w[kl] = czasGry;
+        const v = zadaj(w, (30 + 0.5 * D.ap) * (st.mMgly || 1), 'mag', { zr: 'Mgła nietoperzy' }); leczWampirem(v * 0.3, 'Mgła nietoperzy'); if (ewo('u2') >= 2) spowolnij(w, 0.4, 1.5); });
+    },
+    umi: { n: 'Uczta krwi', ik: '🩸', cd: () => ewo('u1') >= 3 ? 8 : 12,
+      opis: m => 'Wysysa krew z wrogów w promieniu ' + (190 + (ewo('u1') >= 1 ? 50 : 0)) + ': <span class="mag">' + f0((60 + 0.08 * D.hpMax + 0.7 * D.ap) * m) + '</span> (60 + 8% maks. zdrowia + 70% ✨) każdemu, plus <b>cała Pula krwi</b> (' + f0(gracz.stanKlasy.pula || 0) + ') rozdzielona między nich. Leczysz się o 50% zadanych (maks. 30% zdrowia).' + (ewo('u1') >= 2 ? ' Naznacza: przez 5 s Twoje obrażenia im leczą Cię o 4%.' : ''),
+      uzyj(m) { const r = 190 + (ewo('u1') >= 1 ? 50 : 0), n = policzWrogow(gracz.x, gracz.y, r); if (!n) return false; const st = gracz.stanKlasy, dod = (st.pula || 0) / n; st.pula = 0; let suma = 0;
+        aura(r, '#c0392b', w => { suma += zadaj(w, (60 + 0.08 * D.hpMax + 0.7 * D.ap) * m + dod, 'mag', { obszar: true, zr: 'Uczta krwi' }); dodajBlyskawice(w.x, w.y, gracz.x, gracz.y, '#e04050'); if (ewo('u1') >= 2) w.krwawyZnak = czasGry + 5; }, true);
+        leczGracza(Math.min(suma * 0.5, D.hpMax * 0.3), 'Uczta krwi'); return true; } },
+    umi2: { n: 'Mgła nietoperzy', ik: '🦇', cd: 14,
+      opis: m => 'Zamieniasz się w rój nietoperzy na ' + fmt(2 + (ewo('u2') >= 1 ? 1 : 0)) + ' s: <b>niewrażliwość</b>, +60% prędkości ruchu, a każdy wróg, przez którego przelatujesz, dostaje <span class="mag">' + f0((30 + 0.5 * D.ap) * m) + '</span> (30 + 50% ✨) co 0,5 s i leczy Cię o 30%.' + (ewo('u2') >= 3 ? ' Potem 3 ataki leczą po 5% maks. zdrowia.' : ''),
+      uzyj(m) { const t = 2 + (ewo('u2') >= 1 ? 1 : 0), st = gracz.stanKlasy; st.mMgly = m; gracz.forma = 'nietoperz'; gracz.formaDo = czasGry + t; gracz.niewr = Math.max(gracz.niewr, t); dodajBuff('mgla', { ms: 0.6 * D.ms }, t);
+        if (ewo('u2') >= 3) { const ja = gracz; opoznione(t, () => { if (gracz === ja) st.ukaszenia = 3; }); } rozbryzg(gracz.x, gracz.y, '#3a0a1a', 14); DZ.czar(); return true; } },
+    ewo: [
+      { id: 'u1', ik: '🩸', n: 'Uczta krwi', r: ['promień +50', 'naznacza: przez 5 s Twoje obrażenia im leczą Cię o 4%', 'odnowienie 8 s (zamiast 12)'] },
+      { id: 'u2', ik: '🦇', n: 'Mgła nietoperzy', r: ['+1 s trwania', 'spowalnia przelatywanych o 40%', 'potem 3 ataki leczą po 5% maks. zdrowia'] },
+      { id: 'pas', ik: '🧛', n: 'Pradawna krew', r: ['zabójstwo leczy 1% maks. zdrowia', 'Pula krwi do 60% maks. zdrowia', 'limit wampiryzmu jeszcze +2%/s'] },
+    ],
     kolory: { plaszcz: ['#3a0a1a', '#1a0008'], tunika: ['#6a0a2a', '#3a0418'], wlosy: '#101010' },
   },
+  // ------------------------------------------------------------------ SIGMA
   kolos: {
     wyglad: { lysy: true, broda: true },
-    n: 'Kolos', ik: '🗿', slotyOreza: 4, slotyPrzedm: 5, start: 'kastety', rodziny: ['biala'],
-    staty: { hpMax: 120, pancerz: 25, odpMag: 15, ms: -20, as: -15 },
-    opis: 'Góra mięśni: <b>maks. zdrowie ×1,3</b>, ataki zadają <span class="fiz">3% maks. zdrowia</span> przy trafieniu. Wolniejszy, większy. +1 miejsce na przedmiot.',
-    statyMnoz(st, s) { s.hpMax *= 1.3; }, statyPost(st, s) { s.onHitFiz += s.hpMax * 0.03; }, rozmiar() { return 1.2; },
-    umi: { n: 'Kamienna skóra', ik: '🪨', cd: 18, opis: m => '<b>' + fmt(3.5 * Math.min(1.6, m)) + ' s niewrażliwości</b>, wrogowie w promieniu 260 rzucają się na Ciebie. Na koniec fala uderzeniowa (r 200): <span class="fiz">' + f0(0.12 * D.hpMax * m) + '</span> (12% maks. zdrowia).',
-      uzyj(m) { const t = 3.5 * Math.min(1.6, m); gracz.niewr = Math.max(gracz.niewr, t); wrogowie.forEach(w => { if (!w.martwy && Math.hypot(w.x - gracz.x, w.y - gracz.y) < 260) { w.cel = gracz; w.tCelu = t; } });
+    n: 'Sigma', ik: '🗿', rola: 'wręcz · ogromne zdrowie', slotyOreza: 4, slotyPrzedm: 5, start: 'kastety', rodziny: ['biala'], hpZaPoziom: 10,
+    staty: { hpMax: 80, pancerz: 25, odpMag: 15, ms: -15, as: -10, wytrwalosc: 30 },
+    opis: 'Nie przejmuje się niczym: <b>maks. zdrowie ×1,3</b>, ataki zadają <span class="fiz">3% maks. zdrowia</span> przy trafieniu, <b>nie da się go spowolnić</b>, +30% nieustępliwości. Wolniejszy, większy. +1 miejsce na przedmiot.',
+    odpornyNaSpow: true,
+    statyMnoz(st, s) { s.hpMax *= ewo('pas') >= 1 ? 1.4 : 1.3; }, statyPost(st, s) { s.onHitFiz += s.hpMax * (ewo('pas') >= 2 ? 0.04 : 0.03); if (ewo('pas') >= 3) s.redukcja += Math.min(25, s.hpMax / 100); }, rozmiar() { return 1.2; },
+    umi: { n: 'Kamienna skóra', ik: '🪨', cd: 18,
+      opis: m => '<b>' + fmt((3.5 + (ewo('u1') >= 1 ? 1 : 0)) * Math.min(1.6, m)) + ' s niewrażliwości</b>, wrogowie w promieniu 260 rzucają się na Ciebie' + (ewo('u1') >= 2 ? ' i dostają +20% obrażeń' : '') + '. Na koniec fala uderzeniowa (r ' + (ewo('u1') >= 3 ? 300 : 200) + '): <span class="fiz">' + f0((ewo('u1') >= 3 ? 0.2 : 0.12) * D.hpMax * m) + '</span> (' + (ewo('u1') >= 3 ? 20 : 12) + '% maks. zdrowia).',
+      uzyj(m) { const t = (3.5 + (ewo('u1') >= 1 ? 1 : 0)) * Math.min(1.6, m); gracz.niewr = Math.max(gracz.niewr, t);
+        wrogowie.forEach(w => { if (!w.martwy && Math.hypot(w.x - gracz.x, w.y - gracz.y) < 260) { w.cel = gracz; w.tCelu = t; if (ewo('u1') >= 2) { w.naznaczony = Math.max(w.naznaczony || 0, t); w.mnNazn = Math.max(w.mnNazn || 0, 0.2); } } });
         fale.push({ x: gracz.x, y: gracz.y, czas: 0.6, max: 0.6, r: 260, kolor: '#c0b8a0', odwrot: true }); DZ.tarcza();
-        const ja = gracz; opoznione(t, () => { if (gracz !== ja || stan !== 'walka') return; aura(200, '#c0b8a0', w => { zadaj(w, 0.12 * D.hpMax * m, 'fiz', { obszar: true, zr: 'Kamienna skóra' }); oglusz(w, 0.8, { zrodlo: 'Kamienna skóra' }); }, true); DZ.wybuch(); }); return true; } },
+        const ja = gracz, r = ewo('u1') >= 3 ? 300 : 200, p = ewo('u1') >= 3 ? 0.2 : 0.12;
+        opoznione(t, () => { if (gracz !== ja || stan !== 'walka') return; aura(r, '#c0b8a0', w => { zadaj(w, p * D.hpMax * m, 'fiz', { obszar: true, zr: 'Kamienna skóra' }); oglusz(w, 0.8, { zrodlo: 'Kamienna skóra' }); }, true); DZ.wybuch(); }); return true; } },
+    umi2: { n: 'Trzęsienie', ik: '🌋', cd: () => ewo('u2') >= 2 ? 8 : 11,
+      opis: m => 'Tupnięcie (r 170): <span class="fiz">' + f0((20 + 0.06 * D.hpMax) * m) + '</span> (20 + 6% maks. zdrowia) i podrzucenie wrogów (0,7 s ogłuszenia).' + (ewo('u2') >= 1 ? ' Po 0,8 s wstrząs wtórny (50%).' : '') + (ewo('u2') >= 3 ? ' Zostawia szczelinę spowalniającą o 50% (3 s).' : ''),
+      uzyj(m) { const v = (20 + 0.06 * D.hpMax) * m, x = gracz.x, y = gracz.y; const tup = (mn) => { fale.push({ x: x, y: y, czas: 0.45, max: 0.45, r: 170 * mnObszaru(), kolor: '#a08a6a' }); rozbryzg(x, y, '#8a7a5a', 12);
+          obszarowe(x, y, 170, '#a08a6a', w => { zadaj(w, v * mn, 'fiz', { obszar: true, zr: 'Trzęsienie' }); oglusz(w, 0.7 * mn, { zrodlo: 'Trzęsienie' }); }, true); DZ.wybuch(); };
+        tup(1); if (ewo('u2') >= 1) { const ja = gracz; opoznione(0.8, () => { if (gracz === ja && stan === 'walka') tup(0.5); }); }
+        if (ewo('u2') >= 3) polaEfektow.push({ wl: gracz, x: x, y: y, r: 140 * mnObszaru(), czas: 3, max: 3, tyk: 0.5, rodzaj: 'kwas', spow: 0.5, obr: v * 0.05, zr: 'Trzęsienie' });
+        return true; } },
+    ewo: [
+      { id: 'u1', ik: '🪨', n: 'Kamienna skóra', r: ['+1 s niewrażliwości', 'przyciągnięci wrogowie dostają +20% obrażeń', 'fala końcowa r 300 i 20% maks. zdrowia'] },
+      { id: 'u2', ik: '🌋', n: 'Trzęsienie', r: ['wstrząs wtórny po 0,8 s (50%)', 'odnowienie 8 s (zamiast 11)', 'szczelina spowalnia o 50% przez 3 s'] },
+      { id: 'pas', ik: '🗿', n: 'Sigma grindset', r: ['maks. zdrowie ×1,4', 'przy trafieniu 4% maks. zdrowia', 'każde 100 maks. zdrowia: +1% redukcji obrażeń (do 25%)'] },
+    ],
     kolory: { plaszcz: ['#5a5a6a', '#2a2a34'], tunika: ['#8a7a6a', '#4a4034'], wlosy: '#3a3030' },
   },
-  lowczyni: {
-    wyglad: { czapka: 'kaptur', kol: '#2e5a22' },
-    n: 'Łowca', ik: '🏹', slotyOreza: 4, slotyPrzedm: 4, start: 'luk', rodziny: ['strzelecka'],
-    staty: { zasieg: 25, kryt: 15, krytObr: 50 },
-    opis: 'Snajper: <b>+50% obrażeń krytycznych</b>, +15% kryta, +25% zasięgu i <b>+30% obrażeń</b> wrogom dalej niż 150 px.',
-    modZadanych(st, w) { return Math.hypot(w.x - gracz.x, w.y - gracz.y) > 150 ? 1.3 : 1; },
-    umi: { n: 'Deszcz strzał', ik: '🌧️', cd: 10, opis: m => 'Na skupisko wrogów spada ' + f0(20 * m) + ' strzał (r 130): <span class="fiz">' + f0(30 + 0.7 * D.ad) + '</span> (30 + 70% ⚔️) każda, mogą trafić krytycznie.',
-      uzyj(m) { const c = skupisko(gracz.x, gracz.y, 340, 130) || najblizszyWrog(gracz.x, gracz.y, 340); if (!c) return false; const n = Math.round(20 * m), v = 30 + 0.7 * D.ad, x = c.x, y = c.y;
-        for (let s = 0; s < n; s++) opoznione(0.035 * s, () => { const px = x + losowo(-120, 120), py = y + losowo(-120, 120); const kr = Math.random() * 100 < D.kryt; dodajBlyskawice(px - 20, py - 120, px, py, '#e8d8b0'); obszarowe(px, py, 34, '#e8d8b0', w => zadaj(w, v * (kr ? kryt2() : 1), 'fiz', { zr: 'Deszcz strzał', obszar: true, kryt: kr }), true); }); DZ.strzal(); return true; } },
-    kolory: { plaszcz: ['#3a6a2a', '#1a3a10'], tunika: ['#8a6a3a', '#4a3a1a'], wlosy: '#e0a040', piorko: '#e6c15c' },
+  // ------------------------------------------------------------------ ELF
+  elf: {
+    wyglad: { czapka: 'kaptur', kol: '#2e7a3a', uszy: true },
+    n: 'Elf', ik: '🧝', rola: 'dystans · naładowane salwy', slotyOreza: 4, slotyPrzedm: 4, start: 'luk', rodziny: ['strzelecka'], hpZaPoziom: 4,
+    staty: { hpMax: -35, ms: 20, zasieg: 15, kryt: 10 },
+    opis: 'Szybki łucznik z małą ilością zdrowia. Bieganie i strzały ładują <b>⚡ energię</b> (szybciej niż innym). Pełna energia <b>sama odpala Salwę</b>: większe, przebijające strzały, kilka naraz, dużo prędkości ataku i obrażeń. Pierwsza strzała Salwy jest naładowana (działa z przedmiotami „naładowany atak”).',
+    energia: true, mnEnergii: 1.8,
+    blokujEnergie: st => st.salwa > czasGry,
+    naPelnaEnergie(st) { st.salwa = czasGry + 3 + (ewo('u1') >= 1 ? 1 : 0); oznaczStaty(); if (gracz === lokalny || !druzyna()) DZ.pryzmat(); fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 90, kolor: '#9fe8ff' }); },
+    statyDyn(st, s) { if (!(st.salwa > czasGry)) return; s.as += 60 + (ewo('u1') >= 2 ? 20 : 0); s.obrBonus += 30; s.przebicie += 99; const b = gracz.bronie[0];
+      s.pociski += 2 + Math.floor(((b && b.tier) || 0) / 2) + (ewo('u1') >= 2 ? 1 : 0); },
+    modZadanych(st, w, typ, o) { if (o && o.atak && st.mocna) { st.mocna = false; spowolnij(w, 0.5, 1.5); efektBlysk(w.x, w.y, '#9fe8ff'); return 2; } return 1; },
+    naTrafienie(st, w, k) { if (ewo('u1') >= 3 && st.salwa > czasGry && k.glowny && !w._wybSalwy) { w._wybSalwy = 1; obszarowe(w.x, w.y, 50, '#9fe8ff', o => { if (o !== w) zadaj(o, k.zadaneSurowe * 0.5, 'fiz', { obszar: true, zr: 'Salwa' }); }, true); } },
+    umi: { n: 'Salwa', ik: '🏹', pasywna: true, podpowiedz: 'Salwa odpala się sama przy pełnej ⚡ energii (bieganie i strzały)',
+      opis: m => '<b>Odpala się sama</b> przy pełnej ⚡ energii. Przez ' + fmt(3 + (ewo('u1') >= 1 ? 1 : 0)) + ' s: +' + (60 + (ewo('u1') >= 2 ? 20 : 0)) + '% prędkości ataku, +30% obrażeń, strzały są większe i <b>przebijają wszystkich</b>, a łuk wypuszcza <b>' + (3 + Math.floor(((gracz.bronie[0] && gracz.bronie[0].tier) || 0) / 2) + (ewo('u1') >= 2 ? 1 : 0)) + '</b> strzały naraz (więcej z tierem łuku).',
+      uzyj() { return false; } },
+    umi2: { n: 'Odskok', ik: '🍃', cd: () => ewo('u2') >= 1 ? 5 : 7,
+      opis: m => 'Odskakujesz 150 px od najbliższego wroga. Następna strzała zadaje <b>2× obrażeń</b> i spowalnia o 50%, a Ty dostajesz +' + (ewo('u2') >= 2 ? 50 : 30) + ' ⚡ energii.' + (ewo('u2') >= 3 ? ' Zostawiasz wabik, który przyciąga wrogów na 2 s.' : ''),
+      uzyj(m) { const c = najblizszyWrog(gracz.x, gracz.y, 400); let kx = -(gracz.kierX || 1), ky = 0; if (c) { const d = Math.hypot(gracz.x - c.x, gracz.y - c.y) || 1; kx = (gracz.x - c.x) / d; ky = (gracz.y - c.y) / d; }
+        if (ewo('u2') >= 3) dodajStwora('wabik', gracz.x, gracz.y, 2, { aura: 160, obr: 0, zr: 'Odskok' });
+        gracz.kierRX = kx; gracz.kierRY = ky; if (gracz.zdalny) gracz.umiKier = [kx, ky]; mrugnij(150); gracz.stanKlasy.mocna = true; dodajEnergie(ewo('u2') >= 2 ? 50 : 30); DZ.czar(); return true; } },
+    ewo: [
+      { id: 'u1', ik: '🏹', n: 'Salwa', r: ['+1 s trwania', '+1 strzała i +20% prędkości ataku', 'pierwsze trafienie każdego wroga wybucha (r 50, 50%)'] },
+      { id: 'u2', ik: '🍃', n: 'Odskok', r: ['odnowienie 5 s (zamiast 7)', '+50 energii (zamiast 30)', 'zostawia wabik na 2 s'] },
+      { id: 'luk', ik: '🎯', n: 'Łuk', bron: 0, r: EWO_BRONI },
+    ],
+    kolory: { plaszcz: ['#3a8a3a', '#1a4a1a'], tunika: ['#c0d890', '#6a8a3a'], wlosy: '#f0e0a0' },
   },
-  rewolwerowiec: {
-    wyglad: { czapka: 'kowboj', broda: '#2a1a10' },
-    n: 'Rewolwerowiec', ik: '🤠', slotyOreza: 4, slotyPrzedm: 4, start: 'pistolet', rodziny: ['strzelecka', 'alchemia'],
-    staty: { as: 15, kryt: 10, krytObr: 25 },
-    opis: 'Co <b>3. strzał</b> broni głównej jest zawsze krytyczny, a krytyki +25%.',
-    naAtak(st) { st.licz = (st.licz || 0) + 1; st.pewnyKryt = st.licz % 3 === 0; },
-    umi: { n: 'Wachlarz', ik: '💫', cd: 8, opis: m => 'Wystrzeliwuje ' + f0(20 * m) + ' kul dookoła: <span class="fiz">' + f0(30 + 0.9 * D.ad) + '</span> (30 + 90% ⚔️) każda, przebijają 2 wrogów i mogą trafić krytycznie.',
-      uzyj(m) { const n = Math.round(20 * m); for (let s = 0; s < n; s++) { const kr = Math.random() * 100 < D.kryt; wystrzel({ x: gracz.x, y: gracz.y, kat: s / n * Math.PI * 2, predkosc: 720, obr: (30 + 0.9 * D.ad) * (kr ? kryt2() : 1), typ: 'fiz', kolor: '#ffe08a', ksztalt: 'kula', zr: 'Wachlarz', zycie: 0.5, przebija: 2 }); } DZ.strzal(); DZ.wybuch(); return true; } },
-    kolory: { plaszcz: ['#7a4a2a', '#4a2a14'], tunika: ['#c0a070', '#7a6040'], wlosy: '#2a1a10' },
+  // ------------------------------------------------------------------ ASSASSIN
+  assassin: {
+    wyglad: { czapka: 'maska' },
+    n: 'Assassin', ik: '🥷', rola: 'wręcz · kryty, shurikeny', slotyOreza: 4, slotyPrzedm: 4, start: 'sztylety', rodziny: ['biala', 'strzelecka'], hpZaPoziom: 5,
+    staty: { hpMax: -30, ms: 15, kryt: 15, lethality: 8 },
+    opis: 'Mało zdrowia, dużo krytów. <b>Shurikeny (pasywka):</b> co ' + '1,6 s (skraca przyspieszenie) rzuca 2 shurikeny w najbliższych wrogów; każdy odbija się 2 razy bez utraty siły, może trafić krytycznie i rośnie z ⚔️ i szansą na kryt.',
+    tik(st, dt) { tikShurikenow(st, dt); },
+    naZabicie(st, w, o) { if (o && o.zr === 'Cięcie cienia' && ewo('u1') >= 2 && gracz.umi.cd > 0) gracz.umi.cd *= 0.5; },
+    naAtak(st) { if (st.zCienia > 0) { st.zCienia--; st.pewnyKryt = true; } },
+    umi: { n: 'Cięcie cienia', ik: '🗡️', cd: 9,
+      opis: m => 'Doskok o 200 px, a potem cięcie wszystkich wrogów w promieniu ' + f0(Math.max(120, zasiegAtakuGl() * 2)) + ': <b>' + f0(300 * m) + '%</b> obrażeń broni (z efektami przy trafieniu). Dobija zwykłych wrogów i elity poniżej <b>' + (ewo('u1') >= 1 ? 18 : 12) + '%</b> zdrowia.' + (ewo('u1') >= 3 ? ' Po 0,5 s cień powtarza cięcie (50%).' : ''),
+      uzyj(m) { const b = gracz.bronie[0]; if (!b) return false; mrugnij(200); const ja = gracz;
+        const tnij = (mn) => { if (gracz !== ja || stan !== 'walka') return; const zas = Math.max(120, zasiegAtaku(b) * 2), prog = ewo('u1') >= 1 ? 0.18 : 0.12;
+          ciecia.push({ x: gracz.x, y: gracz.y, kat: 0, luk: Math.PI * 2, r: zas, czas: 0.3, max: 0.3, kolor: '#9a6ae0' });
+          wrogowie.slice().forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - gracz.x, w.y - gracz.y) > zas + w.r) return; trafienieAtakiem(w, b, { mn: 3 * m * mn, glowny: true });
+            if (!w.martwy && !w.boss && w.hp < w.hpMax * prog) { w.hp = 0; zabij(w, { zr: 'Cięcie cienia' }); tekstSwiat(w.x, w.y - w.r - 12, '✂️', '#e0c8ff', 0.6, 13); } }); DZ.kryt(); };
+        opoznione(0.14, () => tnij(1)); if (ewo('u1') >= 3) opoznione(0.65, () => tnij(0.5)); return true; } },
+    umi2: { n: 'Zasłona dymna', ik: '💨', cd: 15,
+      opis: m => 'Znikasz na ' + fmt(2.5 + (ewo('u2') >= 1 ? 1 : 0)) + ' s: wrogowie Cię nie widzą i nie atakują, +30% prędkości ruchu' + (ewo('u2') >= 2 ? ', shurikeny lecą 2× częściej' : '') + '. ' + (ewo('u2') >= 3 ? '3 pierwsze ataki' : 'Pierwszy atak') + ' po wyjściu z cienia to <b>pewny kryt</b>.',
+      uzyj(m) { const t = 2.5 + (ewo('u2') >= 1 ? 1 : 0); gracz.niewidzialny = t; dodajBuff('dym', { ms: 0.3 * D.ms }, t); gracz.stanKlasy.zCienia = ewo('u2') >= 3 ? 3 : 1;
+        wrogowie.forEach(w => { if (w.cel === gracz) { w.cel = null; w.tCelu = 0; w.zamach = 0; } }); for (let n = 0; n < 14; n++) czastki.push({ x: gracz.x + losowo(-30, 30), y: gracz.y + losowo(-30, 30), vx: losowo(-40, 40), vy: losowo(-60, 0), czas: 0.8, max: 0.8, kolor: '#8a8a9a' });
+        DZ.czar(); return true; } },
+    ewo: [
+      { id: 'sh', ik: '✴️', n: 'Shurikeny', r: ['+1 shuriken', '+2 odbicia', '+1 shuriken i shurikeny nakładają efekty przy trafieniu'] },
+      { id: 'u1', ik: '🗡️', n: 'Cięcie cienia', r: ['dobija poniżej 18%', 'zabójstwo skraca odnowienie o połowę', 'cień powtarza cięcie po 0,5 s (50%)'] },
+      { id: 'u2', ik: '💨', n: 'Zasłona dymna', r: ['+1 s trwania', 'w cieniu shurikeny lecą 2× częściej', '3 pewne kryty po wyjściu z cienia'] },
+    ],
+    kolory: { plaszcz: ['#2a2a3a', '#101018'], tunika: ['#4a3a6a', '#24183a'], wlosy: '#1a1a1a' },
   },
+  // ------------------------------------------------------------------ BOMBA
   bombardierka: {
     wyglad: { czapka: 'gogle' },
-    n: 'Bombardier', ik: '💣', slotyOreza: 4, slotyPrzedm: 4, start: 'granatnik', rodziny: ['alchemia'],
-    staty: { obszar: 30, hpMax: 20 },
-    opis: 'Wybuchy i obszar zadają <b>+40%</b> obrażeń, +30% wielkości obszarów.',
-    modZadanych(st, w, typ, o) { return o.obszar ? 1.4 : 1; },
-    umi: { n: 'Wielka bomba', ik: '💥', cd: 12, opis: m => 'Rzuca wielką bombę na skupisko wrogów (r 200, po 1,1 s): <span class="fiz">' + f0((200 + 2 * D.ad + 1.5 * D.ap) * m) + '</span> (200 + 200% ⚔️ + 150% ✨) i ogłuszenie 1,5 s.',
-      uzyj(m) { const c = skupisko(gracz.x, gracz.y, 320, 160) || najblizszyWrog(gracz.x, gracz.y, 320); if (!c) return false; granat(gracz.x, gracz.y, c.x, c.y, 200, (200 + 2 * D.ad + 1.5 * D.ap) * m, 'fiz', 'Wielka bomba', 1.1, 1.5); return true; } },
+    n: 'Bomba', ik: '💣', rola: 'dystans · wybuchy', slotyOreza: 4, slotyPrzedm: 4, start: 'granatnik', rodziny: ['alchemia'],
+    staty: { hpMax: 5, obszar: 30 },
+    opis: 'Wybuchy i obszar zadają <b>+40%</b> obrażeń, +30% wielkości obszarów. <b>Reakcja łańcuchowa:</b> wrogowie zabici obrażeniami obszarowymi mają 25% szans wybuchnąć (r 60): 20 + 30% ⚔️ + 30% ✨.',
+    statyFlat(st, s) { if (ewo('pas') >= 2) s.obszar += 20; },
+    modZadanych(st, w, typ, o) { return o.obszar ? (ewo('pas') >= 3 ? 1.65 : 1.4) : 1; },
+    naZabicie(st, w, o) { if (!o || !o.obszar || Math.random() > (ewo('pas') >= 1 ? 0.4 : 0.25)) return; const v = (20 + 0.3 * D.ad + 0.3 * D.ap) * mnUmi();
+      opoznione(0.08, () => { if (stan !== 'walka') return; fale.push({ x: w.x, y: w.y, czas: 0.3, max: 0.3, r: 60 * mnObszaru(), kolor: '#ffb070' }); rozbryzg(w.x, w.y, '#ffb070', 8);
+        obszarowe(w.x, w.y, 60, '#ffb070', o2 => zadaj(o2, v, 'fiz', { obszar: true, zr: 'Reakcja łańcuchowa' }), true); }); },
+    umi: { n: 'Wielka bomba', ik: '💥', cd: () => ewo('u1') >= 3 ? 8 : 12,
+      opis: m => 'Rzuca wielką bombę na skupisko wrogów (r ' + (200 + (ewo('u1') >= 1 ? 40 : 0)) + ', po 1,1 s): <span class="fiz">' + f0((200 + 2 * D.ad + 1.5 * D.ap) * m) + '</span> (200 + 200% ⚔️ + 150% ✨) i ogłuszenie 1,5 s.' + (ewo('u1') >= 2 ? ' Rozpada się na 4 bomby kasetowe (40%).' : ''),
+      uzyj(m) { const c = skupisko(gracz.x, gracz.y, 320, 160) || najblizszyWrog(gracz.x, gracz.y, 320); if (!c) return false; const v = (200 + 2 * D.ad + 1.5 * D.ap) * m;
+        granat(gracz.x, gracz.y, c.x, c.y, 200 + (ewo('u1') >= 1 ? 40 : 0), v, 'fiz', 'Wielka bomba', 1.1, 1.5);
+        if (ewo('u1') >= 2) for (let n = 0; n < 4; n++) { const k = n * Math.PI / 2 + 0.6; granat(c.x, c.y, c.x + Math.cos(k) * 120, c.y + Math.sin(k) * 120, 80, v * 0.4, 'fiz', 'Wielka bomba', 1.6, 0.4); }
+        return true; } },
+    umi2: { n: 'Miny', ik: '⚙️', cd: 10,
+      opis: m => 'Rozrzuca ' + (5 + (ewo('u2') >= 1 ? 3 : 0)) + ' min wokół siebie (15 s). Wróg, który wejdzie, wysadza minę (r 70): <span class="fiz">' + f0((40 + 0.6 * D.ad + 0.4 * D.ap) * m) + '</span> (40 + 60% ⚔️ + 40% ✨).' + (ewo('u2') >= 2 ? ' Wybuch spowalnia o 40%.' : '') + (ewo('u2') >= 3 ? ' Miny przyciągają wrogów.' : ''),
+      uzyj(m) { const n = 5 + (ewo('u2') >= 1 ? 3 : 0), v = (40 + 0.6 * D.ad + 0.4 * D.ap) * m;
+        for (let i = 0; i < n; i++) { const k = i / n * Math.PI * 2, r = losowo(50, 110); const s = dodajStwora('mina', gracz.x + Math.cos(k) * r, gracz.y + Math.sin(k) * r, 15, { obr: v / mnStw(), r: 70 * mnObszaru(), zr: 'Miny', spow: ewo('u2') >= 2 ? 0.4 : 0 });
+          if (ewo('u2') >= 3) s.wabi = 1; } DZ.klik(); return true; } },
+    ewo: [
+      { id: 'u1', ik: '💥', n: 'Wielka bomba', r: ['promień +40', 'rozpada się na 4 bomby kasetowe (40%)', 'odnowienie 8 s (zamiast 12)'] },
+      { id: 'u2', ik: '⚙️', n: 'Miny', r: ['+3 miny', 'wybuch spowalnia o 40%', 'miny przyciągają wrogów'] },
+      { id: 'pas', ik: '🔥', n: 'Reakcja łańcuchowa', r: ['szansa na wybuch 40%', '+20% wielkości obszarów', 'obrażenia obszarowe +65% (zamiast 40%)'] },
+    ],
     kolory: { plaszcz: ['#e6743c', '#8a3a14'], tunika: ['#2a2a2a', '#101010'], wlosy: '#ffb050' },
   },
+  // ------------------------------------------------------------------ INŻYNIER
   inzynierka: {
     wyglad: { czapka: 'kask' },
-    n: 'Inżynier', ik: '🔧', slotyOreza: 4, slotyPrzedm: 4, start: 'gwozdziarka', rodziny: ['strzelecka', 'alchemia'],
-    staty: { haste: 15, pancerz: 10 },
-    opis: 'Działka, wieże i inne stworzenia zadają <b>2× obrażeń</b>. Zaczyna z <b>Małą Wieżyczką</b>. Dwie umiejętności, a gwoździarka jest słabsza (obrażenia broni ×0,7).',
-    mnStworow: 1, mnBroni: () => 0.7, dar() { gracz.przedmioty.push(nowyPrzedmiot('wiezyczka')); },
-    umi2: { n: 'Przeładowanie', ik: '🔩', cd: 14, opis: m => 'Przez <b>5 s</b> wszystkie Twoje działka, wieże i stworzenia działają <b>2× szybciej</b>, a postawione stoją o 3 s dłużej. Dostajesz tarczę ' + f0(15 * m) + '% maks. zdrowia.',
-      uzyj(m) { dodajBuff('przeladowanie', {}, 5); stwory.forEach(s => { if (s.wl === gracz && s.max < 9000) s.czas += 3; }); dajTarcze(D.hpMax * 0.15 * m, 5);
+    n: 'Inżynier', ik: '🔧', rola: 'dystans · działka', slotyOreza: 4, slotyPrzedm: 4, start: 'gwozdziarka', rodziny: ['strzelecka', 'alchemia'],
+    staty: { hpMax: 5, haste: 15, pancerz: 10 },
+    opis: 'Działka, wieże i inne stworzenia zadają <b>2× obrażeń</b>. Zaczyna z <b>Małą Wieżyczką</b>. Gwoździarka jest słabsza (obrażenia broni ×0,7).',
+    mnStworow: () => 1 + (ewo('pas') >= 1 ? 0.4 : 0) + (ewo('pas') >= 3 ? 0.3 : 0), mnBroni: () => 0.7, dar() { gracz.przedmioty.push(nowyPrzedmiot('wiezyczka')); },
+    naStartFali() { if (ewo('pas') >= 2) opoznione(0.5, () => postawDzialko('dzialko', 12, { obr: (30 + 0.7 * D.ad + 0.5 * D.ap) * mnUmi() * 0.6, co: 0.4, zr: 'Wieżyczka bojowa' })); },
+    naObrazenia(st, w, v, typ, o) { if (ewo('u2') >= 3 && gracz.buffy.przeladowanie && o && (o.zr === 'Wieżyczka bojowa' || o.zr === 'Mała Wieżyczka')) leczWampirem(v * 0.05, 'Przeładowanie'); },
+    umi2: { n: 'Przeładowanie', ik: '🔩', cd: 14,
+      opis: m => 'Przez <b>' + (5 + (ewo('u2') >= 1 ? 2 : 0)) + ' s</b> wszystkie Twoje działka, wieże i stworzenia działają <b>2× szybciej</b>, a postawione stoją o 3 s dłużej. Tarcza ' + f0(15 * m) + '% maks. zdrowia.' + (ewo('u2') >= 2 ? ' +40% prędkości ataku.' : '') + (ewo('u2') >= 3 ? ' Działka leczą Cię o 5% swoich obrażeń.' : ''),
+      uzyj(m) { const t = 5 + (ewo('u2') >= 1 ? 2 : 0); dodajBuff('przeladowanie', ewo('u2') >= 2 ? { as: 40 } : {}, t); stwory.forEach(s => { if (s.wl === gracz && s.max < 9000) s.czas += 3; }); dajTarcze(D.hpMax * 0.15 * m, 5);
         fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 120, kolor: '#e6c15c' }); DZ.awans(); return true; } },
-    umi: { n: 'Wieżyczka bojowa', ik: '🏗️', cd: 14, opis: m => 'Stawia ciężką wieżyczkę na 12 s: co 0,3 s <span class="fiz">' + f0((30 + 0.7 * D.ad + 0.5 * D.ap) * m) + '</span> (30 + 70% ⚔️ + 50% ✨).',
-      uzyj(m) { postawDzialko('dzialko', 12, { obr: (30 + 0.7 * D.ad + 0.5 * D.ap) * m, co: 0.3, zr: 'Wieżyczka bojowa' }); return true; } },
+    umi: { n: 'Wieżyczka bojowa', ik: '🏗️', cd: 14,
+      opis: m => 'Stawia ' + (ewo('u1') >= 3 ? '<b>2</b> ciężkie wieżyczki' : 'ciężką wieżyczkę') + ' na ' + (12 + (ewo('u1') >= 1 ? 4 : 0)) + ' s: co ' + (ewo('u1') >= 2 ? '0,2' : '0,3') + ' s <span class="fiz">' + f0((30 + 0.7 * D.ad + 0.5 * D.ap) * m) + '</span> (30 + 70% ⚔️ + 50% ✨).',
+      uzyj(m) { const n = ewo('u1') >= 3 ? 2 : 1; for (let i = 0; i < n; i++) postawDzialko('dzialko', 12 + (ewo('u1') >= 1 ? 4 : 0), { obr: (30 + 0.7 * D.ad + 0.5 * D.ap) * m, co: ewo('u1') >= 2 ? 0.2 : 0.3, zr: 'Wieżyczka bojowa' }); return true; } },
+    ewo: [
+      { id: 'u1', ik: '🏗️', n: 'Wieżyczka bojowa', r: ['+4 s trwania', 'strzela co 0,2 s', 'stawia 2 wieżyczki'] },
+      { id: 'u2', ik: '🔩', n: 'Przeładowanie', r: ['+2 s trwania', '+40% prędkości ataku', 'działka leczą Cię o 5% swoich obrażeń'] },
+      { id: 'pas', ik: '🔧', n: 'Warsztat', r: ['stworzenia ×2,4 obrażeń', 'na start fali darmowa wieżyczka (12 s)', 'stworzenia jeszcze +30% obrażeń'] },
+    ],
     kolory: { plaszcz: ['#e6c15c', '#a07a1e'], tunika: ['#3a6ac4', '#1a3a7a'], wlosy: '#8a4a2a' },
   },
+  // ------------------------------------------------------------------ NEKROMANTA
   nekromantka: {
     wyglad: { czapka: 'czaszka' },
-    n: 'Nekromanta', ik: '💀', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturKosci', rodziny: ['magiczna'],
-    staty: { ap: 20, hpMax: 10 },
-    opis: 'Dowodzi armią: sojusznicy zadają <b>3× obrażeń</b> i żyją 3× dłużej, każdy zabity wróg ma 8% szans wstać po Twojej stronie. Dwie umiejętności, a kostur jest słaby (obrażenia broni ×0,6).',
-    mnSojusznikow: 2, mnBroni: () => 0.6,
+    n: 'Nekromanta', ik: '💀', rola: 'dystans · armia sojuszników', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturKosci', rodziny: ['magiczna'], hpZaPoziom: 4,
+    staty: { hpMax: -15, ap: 20 },
+    opis: 'Dowodzi armią: sojusznicy zadają <b>3× obrażeń</b> i żyją 3× dłużej, każdy zabity wróg ma 8% szans wstać po Twojej stronie. Kostur jest słaby (obrażenia broni ×0,6).',
+    mnSojusznikow: () => 2 + (ewo('pas') >= 2 ? 0.5 : 0) + (ewo('pas') >= 3 ? 0.5 : 0), mnBroni: () => 0.6,
     umi2: { n: 'Detonacja', ik: '💥', cd: 8, brak: 'Nie masz sojuszników do wysadzenia',
-      opis: m => 'Twoi sojusznicy wybuchają (r 90): <span class="mag">' + f0((50 + 0.7 * D.ap) * m) + '</span> (50 + 70% ✨) każdy. Za każdego leczysz się o 2% maks. zdrowia. Najlepiej po <b>Armii ciemności</b>.',
-      uzyj(m) { const moi = wrogowie.filter(w => !w.martwy && w.sojusznik && w.zauroczony > 0 && w.wlasciciel === gracz); if (!moi.length) return false;
+      opis: m => 'Twoi sojusznicy wybuchają (r ' + (90 + (ewo('u2') >= 1 ? 40 : 0)) + '): <span class="mag">' + f0((50 + 0.7 * D.ap) * m) + '</span> (50 + 70% ✨) każdy. Za każdego leczysz się o ' + (ewo('u2') >= 2 ? 4 : 2) + '% maks. zdrowia.' + (ewo('u2') >= 3 ? ' Połowa wysadzonych wstaje ponownie.' : ''),
+      uzyj(m) { const moi = wrogowie.filter(w => !w.martwy && w.sojusznik && w.zauroczony > 0 && w.wlasciciel === gracz); if (!moi.length) return false; const r = 90 + (ewo('u2') >= 1 ? 40 : 0);
         moi.forEach((s, n) => { s.martwy = true; s.bezLupu = true; rozbryzg(s.x, s.y, '#9ae07a', 10);
-          obszarowe(s.x, s.y, 90, '#9ae07a', w => zadaj(w, (50 + 0.7 * D.ap) * m, 'mag', { obszar: true, zr: 'Detonacja' })); });
-        leczGracza(D.hpMax * 0.02 * moi.length, 'Detonacja'); DZ.wybuch(); return true; } },
-    naZabicie(st, w) { if (!w.boss && !w.sojusznik && Math.random() < 0.08) wskrzesSojusznika(w, 8); },
-    umi: { n: 'Armia ciemności', ik: '☠️', cd: 16, opis: m => 'Przywołuje ' + f0(7 * m) + ' szkieletów, które walczą po Twojej stronie przez 12 s.',
-      uzyj(m) { const n0 = Math.round(7 * m); for (let n = 0; n < n0; n++) { const k = n / n0 * Math.PI * 2; wskrzesSojusznika({ typ: 'szkielet', x: gracz.x + Math.cos(k) * 55, y: gracz.y + Math.sin(k) * 55 }, 12); } DZ.czar(); return true; } },
+          obszarowe(s.x, s.y, r, '#9ae07a', w => zadaj(w, (50 + 0.7 * D.ap) * m, 'mag', { obszar: true, zr: 'Detonacja' }));
+          if (ewo('u2') >= 3 && n % 2 === 0) { const ja = gracz; opoznione(0.6, () => { if (gracz === ja && stan === 'walka') wskrzesSojusznika({ typ: s.typ, x: s.x, y: s.y }, 8); }); } });
+        leczGracza(D.hpMax * (ewo('u2') >= 2 ? 0.04 : 0.02) * moi.length, 'Detonacja'); DZ.wybuch(); return true; } },
+    naZabicie(st, w) { if (!w.boss && !w.sojusznik && Math.random() < (ewo('pas') >= 1 ? 0.12 : 0.08)) wskrzesSojusznika(w, 8); },
+    umi: { n: 'Armia ciemności', ik: '☠️', cd: 16,
+      opis: m => 'Przywołuje ' + f0((7 + (ewo('u1') >= 1 ? 3 : 0)) * m) + ' szkieletów' + (ewo('u1') >= 2 ? ' (w tym kuszników)' : '') + ', które walczą po Twojej stronie przez ' + (ewo('u1') >= 3 ? 20 : 12) + ' s' + (ewo('u1') >= 3 ? ' (+50% zdrowia)' : '') + '.',
+      uzyj(m) { const n0 = Math.round((7 + (ewo('u1') >= 1 ? 3 : 0)) * m), t = ewo('u1') >= 3 ? 20 : 12;
+        for (let n = 0; n < n0; n++) { const k = n / n0 * Math.PI * 2; wskrzesSojusznika({ typ: ewo('u1') >= 2 && n % 3 === 0 ? 'kusznik' : 'szkielet', x: gracz.x + Math.cos(k) * 55, y: gracz.y + Math.sin(k) * 55 }, t);
+          const s = wrogowie[wrogowie.length - 1]; if (ewo('u1') >= 3 && s && s.sojusznik) { s.hp *= 1.5; s.hpMax = s.hp; } } DZ.czar(); return true; } },
+    ewo: [
+      { id: 'u1', ik: '☠️', n: 'Armia ciemności', r: ['+3 szkielety', 'co trzeci to kusznik', 'żyją 20 s i mają +50% zdrowia'] },
+      { id: 'u2', ik: '💥', n: 'Detonacja', r: ['promień +40', 'leczy 4% za sojusznika', 'połowa wysadzonych wstaje ponownie'] },
+      { id: 'pas', ik: '💀', n: 'Mroczny pakt', r: ['12% szans na wskrzeszenie', 'sojusznicy +50% obrażeń', 'sojusznicy jeszcze +50% obrażeń i dłuższe życie'] },
+    ],
     kolory: { plaszcz: ['#1a3a2a', '#0a1a10'], tunika: ['#4a4a5a', '#24242e'], wlosy: '#d8e8d0' },
   },
+  // ------------------------------------------------------------------ DRUID
   druidka: {
     wyglad: { czapka: 'wieniec', broda: true },
-    n: 'Druid', ik: '🌿', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturNatury', rodziny: ['magiczna', 'alchemia'],
-    staty: { regen: 3, leczenie: 30 },
-    opis: 'Natura: <b>regeneracja ×2</b>, leczenie +30%, owoce i stworzenia +50%, zmęczenie słabsze o połowę. Druga umiejętność to <b>trujące zarodniki</b> zostawiane za sobą, które kosztują zdrowie. Kostur słabszy (obrażenia broni ×0,7). Zaczyna z <b>Krzakiem Jagód</b>.',
-    statyMnoz(st, s) { s.regen *= 2; }, mnStworow: 0.5, polZmeczenia: true, mnBroni: () => 0.7, dar() { gracz.przedmioty.push(nowyPrzedmiot('krzakJagod')); },
+    n: 'Druid', ik: '🌿', rola: 'dystans/wręcz · natura i trucizny', slotyOreza: 4, slotyPrzedm: 4, start: 'kosturNatury', rodziny: ['magiczna', 'alchemia'],
+    staty: { hpMax: -5, regen: 3, leczenie: 30 },
+    opis: 'Natura: <b>regeneracja ×2</b>, leczenie +30%, owoce i stworzenia +50%, zmęczenie słabsze o połowę. Druga umiejętność to <b>trujące zarodniki</b> zostawiane za sobą, które kosztują zdrowie. Kostur słabszy (×0,7). Zaczyna z <b>Krzakiem Jagód</b>.',
+    statyMnoz(st, s) { s.regen *= ewo('pas') >= 1 ? 2.5 : 2; if (st.niedzwiedz > czasGry) { s.pancerz += 50; s.odpMag += 50; s.obrBonus += 30; } },
+    mnStworow: () => ewo('pas') >= 2 ? 1 : 0.5, polZmeczenia: true, mnBroni: () => 0.7, dar() { gracz.przedmioty.push(nowyPrzedmiot('krzakJagod')); },
+    naStartFali(st) { st.niedzwUzyty = false; },
     tik(st, dt) {
+      if (ewo('pas') >= 3 && !st.niedzwUzyty && fala.aktywna && gracz.hp < D.hpMax * 0.3) { st.niedzwUzyty = true; st.niedzwiedz = czasGry + 6; leczGracza(D.hpMax * 0.4, 'Niedźwiedź'); oznaczStaty(); tekstSwiat(gracz.x, gracz.y - 34, '🐻 Niedźwiedź!', '#c8a070', 1.2, 15); DZ.boss(); }
+      if (st.niedzwiedz > czasGry) { st.tN = (st.tN || 0) - dt; if (st.tN <= 0) { st.tN = 0.5; aura(80, '#8a6a4a', w => zadaj(w, (20 + 0.5 * D.ap + 0.02 * D.hpMax) * mnUmi(), 'fiz', { obszar: true, zr: 'Niedźwiedź' })); } }
       if (!st.zarodniki) return;
       if (!fala.aktywna || gracz.powalony) { st.zarodniki = false; return; }
       // koszt: 1% maks. zdrowia na sekundę (nie schodzi poniżej 10%)
       if (gracz.hp > D.hpMax * 0.1) gracz.hp = Math.max(D.hpMax * 0.1, gracz.hp - D.hpMax * 0.01 * dt);
       st.tZ = (st.tZ || 0) - dt; if (st.tZ > 0) return; st.tZ = 0.35;
       polaEfektow.push({ wl: gracz, x: gracz.x + losowo(-6, 6), y: gracz.y + losowo(-6, 6), r: 48 * mnObszaru(), czas: 4, max: 4, tyk: 0.2, rodzaj: 'trucizna', spow: 0.2,
-        obr: (12 + 0.25 * D.ap + 0.01 * D.hpMax) * mnUmi() * 0.5, zr: 'Zarodniki' });
+        obr: (12 + 0.25 * D.ap + 0.01 * D.hpMax) * mnUmi() * 0.5 * (ewo('u2') >= 1 ? 1.4 : 1), zr: 'Zarodniki', lecz: ewo('u2') >= 2 ? 0.01 : 0, krusz: ewo('u2') >= 3 ? 0.2 : 0 });
     },
     umi2: { n: 'Zarodniki', ik: '🍄', cd: 0, przelacz: true, aktywna: st => !!st.zarodniki,
-      opis: m => 'Przełącznik. <b>Włączone:</b> zostawiasz za sobą trujące chmury (4 s, r 48): <span class="mag">' + f0((12 + 0.25 * D.ap + 0.01 * D.hpMax) * m) + '</span>/s (12 + 25% ✨ + 1% maks. zdrowia) i spowolnienie 20%. Chmury się nakładają. Kosztuje <b>1% maks. zdrowia na sekundę</b> (nie zejdziesz poniżej 10%).',
+      opis: m => 'Przełącznik. <b>Włączone:</b> zostawiasz za sobą trujące chmury (4 s, r 48): <span class="mag">' + f0((12 + 0.25 * D.ap + 0.01 * D.hpMax) * m * (ewo('u2') >= 1 ? 1.4 : 1)) + '</span>/s (12 + 25% ✨ + 1% maks. zdrowia) i spowolnienie 20%. Chmury się nakładają.' + (ewo('u2') >= 2 ? ' Leczą kolegów w środku (1%/s).' : '') + (ewo('u2') >= 3 ? ' Kruszą pancerz i odporność o 20%.' : '') + ' Kosztuje <b>1% maks. zdrowia na sekundę</b> (nie zejdziesz poniżej 10%).',
       uzyj() { const st = gracz.stanKlasy; st.zarodniki = !st.zarodniki; st.tZ = 0; tekstSwiat(gracz.x, gracz.y - 34, st.zarodniki ? '🍄 Zarodniki: wł.' : '🍄 Zarodniki: wył.', '#9ae07a', 0.9, 12); return true; } },
-    umi: { n: 'Zarośla', ik: '🌱', cd: 13, opis: m => 'Korzenie unieruchamiają wrogów w promieniu 180 na ' + fmt(1.6 * m) + ' s i zadają <span class="mag">' + f0((60 + 0.9 * D.ap) * m) + '</span> (60 + 90% ✨). Drużyna w promieniu 240 leczy się o ' + f0(20 * m) + '% maks. zdrowia.',
-      uzyj(m) { aura(180, '#5ac46a', w => { zadaj(w, (60 + 0.9 * D.ap) * m, 'mag', { obszar: true, zr: 'Zarośla' }); oglusz(w, 1.6 * m, { zrodlo: 'Zarośla' }); }, true); leczDruzyne(gracz.x, gracz.y, 240, 0, true, 0.2 * m); return true; } },
+    umi: { n: 'Zarośla', ik: '🌱', cd: 13,
+      opis: m => 'Korzenie unieruchamiają wrogów w promieniu ' + (180 + (ewo('u1') >= 1 ? 60 : 0)) + ' na ' + fmt(1.6 * m) + ' s i zadają <span class="mag">' + f0((60 + 0.9 * D.ap) * m) + '</span> (60 + 90% ✨)' + (ewo('u1') >= 2 ? ', a przez 3 s dostają +25% obrażeń' : '') + '. Drużyna w promieniu 240 leczy się o ' + f0(20 * m) + '% maks. zdrowia.' + (ewo('u1') >= 3 ? ' Wyrastają 2 lecznicze drzewa.' : ''),
+      uzyj(m) { aura(180 + (ewo('u1') >= 1 ? 60 : 0), '#5ac46a', w => { zadaj(w, (60 + 0.9 * D.ap) * m, 'mag', { obszar: true, zr: 'Zarośla' }); oglusz(w, 1.6 * m, { zrodlo: 'Zarośla' }); if (ewo('u1') >= 2) { w.naznaczony = Math.max(w.naznaczony || 0, 3); w.mnNazn = Math.max(w.mnNazn || 0, 0.25); } }, true);
+        leczDruzyne(gracz.x, gracz.y, 240, 0, true, 0.2 * m);
+        if (ewo('u1') >= 3) for (let n = 0; n < 2; n++) dodajStwora('krzak', gracz.x + (n ? 50 : -50), gracz.y, 10, { co: 3, lecz: 0.04, ikOwocu: '🍎', ik: '🌳', owoce: 1, regen: 0.01, aura: 110 });
+        return true; } },
+    ewo: [
+      { id: 'u1', ik: '🌱', n: 'Zarośla', r: ['promień +60', 'unieruchomieni dostają +25% obrażeń przez 3 s', 'wyrastają 2 lecznicze drzewa (10 s)'] },
+      { id: 'u2', ik: '🍄', n: 'Zarodniki', r: ['chmury +40% obrażeń', 'chmury leczą kolegów w środku', 'chmury kruszą pancerz i odporność o 20%'] },
+      { id: 'pas', ik: '🐻', n: 'Dzika natura', r: ['regeneracja ×2,5', 'owoce i stworzenia ×2', 'raz na falę przy <30% zdrowia: Niedźwiedź (leczenie 40%, 6 s: +50 pancerza i odporności, +30% obrażeń, cios wokół)'] },
+    ],
     kolory: { plaszcz: ['#3a7a2a', '#1a4a10'], tunika: ['#8a6a3a', '#5a4020'], wlosy: '#c87a2a' },
   },
+  // ------------------------------------------------------------------ HAZARDZISTA
   hazardzistka: {
     wyglad: { czapka: 'fedora' },
-    n: 'Hazardzista', ik: '🎲', slotyOreza: 4, slotyPrzedm: 4, start: 'kosci', rodziny: null,
-    staty: { kryt: 10, ms: 10 },
-    opis: 'Rzuca <b>słabymi kośćmi</b> (losowe obrażenia), ale jego <b>Koło fortuny</b> potrafi wszystko — nawet użyć umiejętności innej postaci. Co falę losuje dużą premię. +3 przerzuty augmentów, darmowy przerzut sklepu.',
-    dar() { gracz.przerzutyAug += 3; gracz.darmowePrzerzuty += 1; },
+    n: 'Hazardzista', ik: '🎲', rola: 'ryzyko na każdym kroku', slotyOreza: 4, slotyPrzedm: 4, start: 'kosci', rodziny: null,
+    staty: { hpMax: -5, kryt: 10, ms: 10 },
+    opis: 'Rzuca kośćmi (losowe obrażenia). <b>Ryzyko:</b> przy każdym wyborze (augment, statystyki, skrzynia, oferta w sklepie) może raz za darmo <b>zaryzykować 🎲</b>: 1/3 — przepada, 1/3 — zostaje, 1/3 — <b>ulepsza się</b> (wyższy tier). Co falę losuje dużą premię. +3 przerzuty augmentów.',
+    hazard: true,
+    dar() { gracz.przerzutyAug += 3; },
     naStartFali(st) {
       const opcje = [['as', 60, '⚡ +60% prędkości ataku'], ['ad', 50, '⚔️ +50 obrażeń od ataku'], ['ap', 90, '✨ +90 mocy umiejętności'], ['kryt', 40, '🎯 +40% szansy na kryt'],
         ['ms', 60, '👟 +60 prędkości ruchu'], ['pancerz', 80, '🛡️ +80 pancerza'], ['obrBonus', 30, '💥 +30% obrażeń'], ['chciwosc', 100, '💰 +100% złota'], ['haste', 50, '⏱️ +50 przyspieszenia']];
-      const o = losZ(opcje); st.premia = { k: o[0], v: o[1] }; oznaczStaty(); dziennik('🎲 Premia fali: ' + o[2]);
+      const o = losZ(opcje); st.premia = { k: o[0], v: o[1] }; st.kary = []; st.bonusy = []; oznaczStaty(); dziennik('🎲 Premia fali: ' + o[2]);
     },
+    naKoniecFali(st) { st.kary = []; st.bonusy = []; },
     statyFlat(st, s) { if (st.premia && fala && fala.aktywna) s[st.premia.k] += st.premia.v; },
-    statyDyn(st, s) { if (st.jackpot > czasGry) { s.obrBonus += 200; s.kryt += 100; } },
-    umi: { n: 'Koło fortuny', ik: '🎡', cd: 9, opis: () => 'Kręci kołem: <b>jackpot</b> (6 s: +200% obrażeń i każdy atak krytyczny), <b>joker</b> (używa umiejętności losowej innej postaci), salwa wybuchów, wir, niewrażliwość, szał, leczenie, złoto… albo <b>pech</b> (tracisz 15% zdrowia, ale następny rzut to pewny jackpot).',
-      uzyj(m) {
-        const st = gracz.stanKlasy;
-        const r = st.pewnyJackpot ? 0 : losWazony([[0, 7], [1, 14], [2, 13], [3, 11], [4, 9], [5, 10], [6, 9], [7, 8], [8, 9], [9, 10]]);
-        st.pewnyJackpot = false;
-        const T = (t) => { toast('🎡 ' + t); tekstSwiat(gracz.x, gracz.y - 40, '🎡 ' + t, '#ffe08a', 1.2, 15); };
-        if (r === 0) { st.jackpot = czasGry + 6; oznaczStaty(); DZ.pryzmat(); T('JACKPOT!'); fale.push({ x: gracz.x, y: gracz.y, czas: 0.7, max: 0.7, r: 200, kolor: '#ffd24a' }); }
-        else if (r === 1) { const inne = KLUCZE_KLAS.filter(k => k !== 'hazardzistka' && KLASY[k].umi); let ok = false;
-          for (let p = 0; p < 4 && !ok; p++) { const k = losZ(inne); try { ok = KLASY[k].umi.uzyj(m) !== false; } catch (e) { ok = false; } if (ok) T('Joker: ' + KLASY[k].umi.ik + ' ' + KLASY[k].umi.n); }
-          if (!ok) { gracz.niewr = Math.max(gracz.niewr, 2); T('Joker: unik losu'); } }
-        else if (r === 2) { for (let n = 0; n < 10; n++) opoznione(0.06 * n, () => { const x = gracz.x + losowo(-220, 220), y = gracz.y + losowo(-220, 220); obszarowe(x, y, 70, '#ffb070', w => zadaj(w, (80 + 0.8 * D.ad + 0.8 * D.ap) * m, 'mag', { obszar: true, zr: 'Koło fortuny' })); rozbryzg(x, y, '#ffb070', 8); }); DZ.wybuch(); T('Salwa wybuchów!'); }
-        else if (r === 3) { wrogowie.forEach(w => { if (w.martwy || w.boss || w.zauroczony > 0) return; const d = Math.hypot(w.x - gracz.x, w.y - gracz.y); if (d < 260 && d > 1) { w.x += (gracz.x - w.x) / d * Math.min(d - 30, 140); w.y += (gracz.y - w.y) / d * Math.min(d - 30, 140); oglusz(w, 1.5, { zrodlo: 'Koło fortuny' }); } }); fale.push({ x: gracz.x, y: gracz.y, czas: 0.6, max: 0.6, r: 260, kolor: '#9a6ae0', odwrot: true }); T('Wir!'); }
-        else if (r === 4) { gracz.niewr = Math.max(gracz.niewr, 4); T('4 s niewrażliwości!'); }
-        else if (r === 5) { dodajBuff('kolo', { as: 100 * m, ms: 40 }, 6); T('Szał!'); }
-        else if (r === 6) { leczGracza(D.hpMax * 0.5, 'Koło fortuny'); T('Leczenie!'); }
-        else if (r === 7) { dodajZloto(Math.round((10 + 4 * fala.nr) * m), true, '🎡 Koło fortuny'); T('Złoto!'); }
-        else if (r === 8) { gracz.umi.cd = 0; st.natychmiast = true; T('Kręć jeszcze raz!'); return true; }
-        else { gracz.hp = Math.max(1, gracz.hp - D.hpMax * 0.15); st.pewnyJackpot = true; T('Pech… następny rzut to JACKPOT'); }
-        return true; } },
+    statyDyn(st, s) { if (st.jackpot > czasGry) { s.obrBonus += 150; s.kryt += 100; }
+      const ak = (st.kary || []).filter(k => !k.do || k.do > czasGry); ak.forEach(k => { if (k.id === 'ciezki') s.ms -= 0.3 * s.ms; if (k.id === 'oslabiony') s.as -= 30; });
+      if ((st.kary || []).some(k => k.id === 'kruchy' && (!k.do || k.do > czasGry))) { s.hpMax *= 0.7; } },
+    modZadanych(st) { return (st.kary || []).some(k => k.id === 'slaby' && (!k.do || k.do > czasGry)) ? 0.75 : 1; },
+    modOtrzymanych(st) { return (st.kary || []).some(k => k.id === 'odsloniety' && (!k.do || k.do > czasGry)) ? 1.25 : 1; },
+    mnXp(st) { return 1 + 0.5 * (st.bonusy || []).filter(b => b === 'xp').length * (ewo('u1') >= 2 ? 1.5 : 1); },
+    mnZlota(st) { return 1 + 0.5 * (st.bonusy || []).filter(b => b === 'zloto').length * (ewo('u1') >= 2 ? 1.5 : 1); },
+    umi: { n: 'Ruletka', ik: '🎰', cd: 20,
+      opis: m => 'Zakręć: <b>' + (ewo('u1') >= 1 ? 55 : 50) + '%</b> szans na nagrodę: ×1,5 złota albo +50% doświadczenia do końca fali, skrzynia, stała statystyka albo jackpot (6 s: +150% obrażeń, każdy atak krytyczny). W przeciwnym razie <b>kara do końca fali</b>' + (ewo('u1') >= 3 ? ' (tylko 15 s)' : '') + ': −25% obrażeń, −30% maks. zdrowia, −30% prędkości ruchu, −30% prędkości ataku albo +25% otrzymywanych obrażeń. Nagrody się kumulują, różne kary też (ta sama kara drugi raz się nie dokłada).',
+      uzyj(m) { ruletka(); return true; } },
+    umi2: { n: 'Koło fortuny', ik: '🎡', cd: () => ewo('u2') >= 3 ? 6 : 9,
+      opis: () => 'Kręci kołem: <b>jackpot</b> (6 s: +150% obrażeń i każdy atak krytyczny), <b>joker</b> (umiejętność losowej innej postaci), salwa wybuchów, wir, niewrażliwość, szał, leczenie, złoto…' + (ewo('u2') >= 2 ? '' : ' albo <b>pech</b> (tracisz 15% zdrowia, ale następny rzut to pewny jackpot)') + '.',
+      uzyj(m) { koloFortuny(m); return true; } },
+    ewo: [
+      { id: 'u1', ik: '🎰', n: 'Ruletka', r: ['55% szans na nagrodę', 'nagrody ×1,5', 'kary trwają tylko 15 s'] },
+      { id: 'u2', ik: '🎡', n: 'Koło fortuny', r: ['jackpot 2× częściej', 'bez pecha', 'odnowienie 6 s (zamiast 9)'] },
+      { id: 'pas', ik: '🎲', n: 'Ryzyko', r: ['przepada tylko 1/4, ulepsza ~42%', 'możesz ryzykować 2 razy przy każdym wyborze', 'gdy przepadnie — dostajesz 30% jego wartości w złocie'] },
+    ],
     kolory: { plaszcz: ['#6a1a6a', '#3a0a3a'], tunika: ['#e0e0e0', '#9a9a9a'], wlosy: '#1a1a1a' },
   },
+  // ------------------------------------------------------------------ KAPŁAN PRYZMATU
   kaplanka: {
     wyglad: { czapka: 'aureola' },
-    n: 'Kapłan Pryzmatu', ik: '🔮', slotyOreza: 4, slotyPrzedm: 3, slotyPryzm: 3, start: 'kosturPustki', rodziny: ['magiczna'],
-    staty: { hpMax: -10 },
-    opis: 'Mistrz pryzmatów: <b>3 miejsca na pryzmaty</b> i Pryzmatyczne Kowadło na start (za to 3 zwykłe przedmioty). Tarcze i leczenie dla drużyny +50%.',
-    dar() { gracz.kowadla = (gracz.kowadla || 0) + 1; }, mnTarcz: 0.5,
-    umi: { n: 'Pryzmatyczna tarcza', ik: '💠', cd: 13, opis: m => 'Ty i koledzy w promieniu 260 dostajecie tarczę <b>' + f0(35 * m) + '% maks. zdrowia</b> na 4 s, leczenie ' + f0(15 * m) + '% i +30% obrażeń na 5 s.',
-      uzyj(m) { leczDruzyne(gracz.x, gracz.y, 260, 0, true, 0.15 * m, 0.35 * m); const z0 = gracz; gracze.forEach(p => { if (p.powalony || Math.hypot(p.x - z0.x, p.y - z0.y) > 260) return; kontekst(p); dodajBuff('pryzmat', { obrBonus: 30 }, 5); }); kontekst(z0);
+    n: 'Kapłan Pryzmatu', ik: '🔮', rola: 'wsparcie · pryzmaty', slotyOreza: 4, slotyPrzedm: 3, slotyPryzm: 4, start: 'kosturPustki', rodziny: ['magiczna'], hpZaPoziom: 4,
+    staty: { hpMax: -15 },
+    opis: 'Mistrz pryzmatów: <b>4 miejsca na pryzmaty</b> (za to 3 zwykłe przedmioty). Darmowe Pryzmatyczne Kowadło na start i drugie po 3. fali. <b>Tylko on ulepsza pryzmaty gwiazdkami ★</b> (+25% za każdą). Tarcze i leczenie dla drużyny +50%.',
+    dar() { gracz.kowadla = (gracz.kowadla || 0) + 1; }, mnTarcz: 0.5, ulepszaPryzmaty: true,
+    kowadloWybor: () => 3 + (ewo('pryzm') >= 1 ? 1 : 0) + (ewo('pryzm') >= 2 ? 1 : 0),
+    kowadloPo: 3,   // darmowe kowadło, które inni dostają po 1. fali, Kapłan dostaje dopiero po 3.
+    naKoniecFali(st) { if (ewo('pas') >= 3 && fala.nr % 5 === 0) { gracz.kowadla = (gracz.kowadla || 0) + 1; dziennik('🔨 Kapłan: darmowe Pryzmatyczne Kowadło'); } },
+    modZadanych() { return ewo('pas') >= 2 ? 1 + 0.05 * liczPrzedm(true) : 1; },
+    umi: { n: 'Pryzmatyczna tarcza', ik: '💠', cd: () => ewo('u1') >= 3 ? 10 : 13,
+      opis: m => 'Ty i koledzy w promieniu 260 dostajecie tarczę <b>' + f0((35 + (ewo('u1') >= 1 ? 10 : 0)) * m) + '% maks. zdrowia</b> na 4 s, leczenie ' + f0(15 * m) + '% i +30% obrażeń na 5 s.' + (ewo('u1') >= 2 ? ' Tarcza, która przetrwa, na koniec wybucha (obrażenia = jej reszta).' : ''),
+      uzyj(m) { leczDruzyne(gracz.x, gracz.y, 260, 0, true, 0.15 * m, (0.35 + (ewo('u1') >= 1 ? 0.1 : 0)) * m); const z0 = gracz, wyb = ewo('u1') >= 2;
+        gracze.forEach(p => { if (p.powalony || Math.hypot(p.x - z0.x, p.y - z0.y) > 260) return; kontekst(p); dodajBuff('pryzmat', { obrBonus: 30 }, 5); if (wyb && p.tarcze.length) p.tarcze[p.tarcze.length - 1].wybuch = true; }); kontekst(z0);
         fale.push({ x: gracz.x, y: gracz.y, czas: 0.6, max: 0.6, r: 260, kolor: '#ff9ae0' }); DZ.pryzmat(); return true; } },
+    ewo: [
+      { id: 'u1', ik: '💠', n: 'Pryzmatyczna tarcza', r: ['tarcza +10% maks. zdrowia', 'tarcza, która przetrwa, wybucha', 'odnowienie 10 s (zamiast 13)'] },
+      { id: 'pryzm', ik: '🔨', n: 'Kowadło', r: ['Pryzmatyczne Kowadło: wybór z 4', 'wybór z 5', '+1 miejsce na pryzmat (5)'], naZakup: r => { if (r === 3) gracz.slotyPryzm++; } },
+      { id: 'pas', ik: '🔮', n: 'Objawienie', r: ['ulepszanie pryzmatów 25% taniej', 'każdy pryzmat: +5% wszystkich obrażeń', 'darmowe Pryzmatyczne Kowadło co 5 fal'] },
+    ],
     kolory: { plaszcz: ['#e07ac0', '#7a3a8a'], tunika: ['#7ae0ff', '#3a8aa0'], wlosy: '#ffffff' },
+  },
+  // ------------------------------------------------------------------ FARMER
+  farmer: {
+    wyglad: { czapka: 'slomkowy', broda: true },
+    n: 'Farmer', ik: '🧑‍🌾', rola: 'farmienie złota i doświadczenia · rośnie bez końca', slotyOreza: 4, slotyPrzedm: 4, start: 'widly', rodziny: ['biala'], hpZaPoziom: 5,
+    staty: { hpMax: -20, xpBonus: 20, chciwosc: 15 },
+    opis: 'Na początku słaby, ale <b>rośnie bez końca</b>. <b>Gospodarstwo:</b> co 100 zabitych potworów (cała gra) zbiera <b>Urodzaj</b>: +2% obrażeń, +1% maks. zdrowia, +1% doświadczenia i złota — bez limitu. Na koniec fali zbiera plony (złoto i doświadczenie, więcej z każdym Urodzajem). <b>Sam sadzi</b> plony, które co sekundę dają złoto i doświadczenie.',
+    urodzaj(st) { return Math.floor((st.zabite || 0) / (ewo('pas') >= 1 ? 75 : 100)); },
+    naZabicie(st, w) { if (w.sojusznik) return; const przed = KLASY.farmer.urodzaj(st); st.zabite = (st.zabite || 0) + 1; if (KLASY.farmer.urodzaj(st) > przed) { oznaczStaty(); tekstSwiat(gracz.x, gracz.y - 34, '🌾 Urodzaj ' + KLASY.farmer.urodzaj(st) + '!', '#ffe08a', 1.2, 14); DZ.awans(); } },
+    statyFlat(st, s) { const u = KLASY.farmer.urodzaj(st); s.xpBonus += u; s.chciwosc += u; },
+    statyMnoz(st, s) { s.hpMax *= 1 + 0.01 * KLASY.farmer.urodzaj(st); },
+    modZadanych(st) { return 1 + 0.02 * KLASY.farmer.urodzaj(st); },
+    naKoniecFali(st) { const u = KLASY.farmer.urodzaj(st), mn = (1 + 0.1 * u) * (ewo('pas') >= 2 ? 1.5 : 1);
+      dodajZloto((4 + 1.5 * fala.nr) * mn, false, '🌾 Zbiory'); dodajXp((5 + 2 * fala.nr) * mn);
+      if (ewo('pas') >= 3) { const z = Math.min(100, gracz.zloto * 0.05); if (z >= 1) dodajZloto(Math.floor(z), true, '🏦 Odsetki'); } },
+    plonuj(s) { const mn = (ewo('u1') >= 2 ? 1.5 : 1) * mnUmi(); dodajZloto(0.25 * (1 + fala.nr * 0.08) * mn); dodajXp(0.4 * (1 + fala.nr * 0.1) * mn);
+      if (ewo('u1') >= 3 && Math.hypot(gracz.x - s.x, gracz.y - s.y) < 100) leczGracza(D.hpMax * 0.005, 'Złote kłosy', true); },
+    umi: { n: 'Sadzenie', ik: '🌱', cd: 6, auto: true,
+      opis: m => '<b>Sadzi się samo</b> co ' + fmt(cdUmiTeraz(KLASY.farmer.umi)) + ' s (do ' + (5 + (ewo('u1') >= 1 ? 3 : 0)) + ' plonów naraz, do końca fali). Każdy plon co sekundę daje <b>' + fmt(0.25 * (1 + nrFali() * 0.08) * m * (ewo('u1') >= 2 ? 1.5 : 1)) + ' złota</b> i ' + fmt(0.4 * (1 + nrFali() * 0.1) * m * (ewo('u1') >= 2 ? 1.5 : 1)) + ' doświadczenia — nie trzeba zbierać.' + (ewo('u1') >= 3 ? ' Stojąc przy plonach leczysz się o 0,5% maks. zdrowia/s.' : ''),
+      uzyj(m) { const moje = stwory.filter(s => s.typ === 'plon' && s.wl === gracz); if (moje.length >= 5 + (ewo('u1') >= 1 ? 3 : 0)) { moje[0].czas = 0; }
+        dodajStwora('plon', gracz.x + losowo(-12, 12), gracz.y + losowo(-12, 12), 9999, { ik: '🌱' }); return true; } },
+    ewo: [
+      { id: 'u1', ik: '🌱', n: 'Sadzenie', r: ['+3 plony naraz', 'plony dają +50%', 'Złote kłosy: przy plonach leczysz się 0,5%/s'] },
+      { id: 'widly', ik: '🔱', n: 'Widły', bron: 0, r: EWO_BRONI },
+      { id: 'pas', ik: '🌾', n: 'Gospodarstwo', r: ['Urodzaj co 75 zabitych (zamiast 100)', 'zbiory na koniec fali ×1,5', 'odsetki: 5% złota na koniec fali (maks. 100)'] },
+    ],
+    kolory: { plaszcz: ['#8a6a2a', '#4a3a14'], tunika: ['#3a6ac4', '#1a3a7a'], wlosy: '#c8a060' },
   },
 };
 const KLUCZE_KLAS = Object.keys(KLASY);
 function opisRodzinKlasy(K) { return K.rodziny ? K.rodziny.map(r => RODZINY[r].ik + ' ' + RODZINY[r].n).join(', ') : 'wszystkie po równo'; }
-function opisBroniStartowej(K) { return K.start === 'losowa' ? '🎲 losowa' : K.start === 'wybor' ? '✋ do wyboru (II tier)' : BRONIE[K.start].ikona + ' ' + BRONIE[K.start].nazwa; }
+function opisBroniStartowej(K) { return K.start === 'losowa' ? '🎲 losowa' : K.start === 'wybor' ? '✋ do wyboru (II tier)' : K.start === 'wybor2' ? '✋✋ dwie do wyboru' : BRONIE[K.start].ikona + ' ' + BRONIE[K.start].nazwa; }
+function zasiegAtakuGl() { return gracz && gracz.bronie[0] && D ? zasiegAtaku(gracz.bronie[0]) : 70; }
+
+// ---------------------------------------------------------------------
+//  Cechy broni z Mistrzostwa (One-handed): po V tierze każdy poziom Mistrzostwa = wybór 1 z 3
+// ---------------------------------------------------------------------
+const PERKI_MISTRZA = {
+  szybkosc: { ik: '⚡', n: 'Błyskawiczne ręce', o: '+20% prędkości ataku', s: { as: 20 } },
+  kryt: { ik: '🎯', n: 'Precyzja', o: '+12% szansy na kryt', s: { kryt: 12 } },
+  krytObr: { ik: '💥', n: 'Zabójczy cios', o: '+30% obrażeń krytycznych', s: { krytObr: 30 } },
+  zasieg: { ik: '🏹', n: 'Długie ramię', o: '+20% zasięgu', s: { zasieg: 20 } },
+  pociski: { ik: '➶', n: 'Wielokrotność', o: '+1 pocisk (bronie strzelające)', s: { pociski: 1 } },
+  obszar: { ik: '⭕', n: 'Szeroki zamach', o: '+25% wielkości obszarów', s: { obszar: 25 } },
+  wampir: { ik: '🩸', n: 'Krwawe ostrze', o: '+6% kradzieży życia', s: { kradziez: 6 } },
+  onhit: { ik: '🟠', n: 'Ciężka ręka', o: '+25 obrażeń fizycznych przy trafieniu', s: { onHitFiz: 25 } },
+  onhitMag: { ik: '🔵', n: 'Runy', o: '+25 obrażeń magicznych przy trafieniu', s: { onHitMag: 25 } },
+  przebicie: { ik: '🗡️', n: 'Przeszywanie', o: '+12 przebicia pancerza', s: { lethality: 12 } },
+};
+const CENY_MISTRZOSTWA = [500, 700, 900, 1150, 1400];
+const MAKS_MISTRZOSTWA = 5;
+
+// ---------------------------------------------------------------------
+//  Mechaniki postaci
+// ---------------------------------------------------------------------
+// Więzień: Wir kajdan — smagnięcia co (0,32 s / prędkość ataku)
+function odstepWiru() { return Math.max(0.07, 0.32 / (1 + Math.max(0, D ? D.as : 0) / 100)); }
+function tikWiruKajdan(st, dt) {
+  const wr = st.wir; if (!wr) return;
+  wr.t -= dt; wr.tL -= dt;
+  if (wr.tL <= 0 && fala.aktywna) {
+    wr.tL = odstepWiru();
+    const b = gracz.bronie[0], cele = najblizsi(gracz.x, gracz.y, 170, ewo('u1') >= 2 ? 2 : 1);
+    cele.forEach((w, n) => {
+      const kr = Math.random() * 100 < D.kryt, v = (15 + 0.45 * D.ad + 0.15 * D.ap) * wr.m * (kr ? 1.75 + D.krytObr / 100 : 1) * (n ? 0.5 : 1);
+      const z = zadaj(w, v, 'fiz', { zr: 'Wir kajdan', kryt: kr, atak: true }); wr.suma += z;
+      dodajBlyskawice(gracz.x, gracz.y - 4, w.x, w.y, '#c8c8d8');
+      if (b && !w.martwy && n === 0) zastosujOnHit(w, b, { k: { bron: b, kryt: kr, glowny: true, zadane: z, zadaneSurowe: v, bazowe: v, licznikCiosu: 1, zOgluszenia: false } });
+      if (z > 0) leczWampirem(z * 0.15, 'Wir kajdan');
+    });
+  }
+  if (wr.t <= 0) {
+    st.wir = null; gracz.korzen = 0;
+    if (ewo('u1') >= 3) { fale.push({ x: gracz.x, y: gracz.y, czas: 0.45, max: 0.45, r: 160 * mnObszaru(), kolor: '#c8c8d8' }); aura(160, '#c8c8d8', w => zadaj(w, (40 + 1.5 * D.ad) * wr.m, 'fiz', { obszar: true, zr: 'Wir kajdan' }), true); dodajBuff('wirKoniec', { ms: 0.4 * D.ms }, 2); DZ.wybuch(); }
+  }
+}
+// Assassin: shurikeny co 1,6 s (przyspieszenie skraca), odbijają się bez utraty siły
+function tikShurikenow(st, dt) {
+  if (!fala.aktywna) return;
+  st.tS = (st.tS || 0) - dt * (ewo('u2') >= 2 && gracz.niewidzialny > 0 ? 2 : 1);
+  if (st.tS > 0) return;
+  const ile = 2 + (ewo('sh') >= 1 ? 1 : 0) + (ewo('sh') >= 3 ? 1 : 0), cele = najblizsi(gracz.x, gracz.y, 320, ile);
+  if (!cele.length) { st.tS = 0.2; return; }
+  st.tS = 1.6 * 100 / (100 + Math.max(0, D.haste));
+  const v = (10 + 0.45 * D.ad + 0.5 * Math.max(0, D.kryt)) * mnUmi();
+  for (let n = 0; n < ile; n++) { const c = cele[n % cele.length];
+    wystrzel({ x: gracz.x, y: gracz.y, kat: kat(gracz, c) + (n - (ile - 1) / 2) * 0.25, cel: c, predkosc: 600, obr: v, typ: 'fiz', kolor: '#d8d8e8', ksztalt: 'shuriken', zr: 'Shurikeny', zycie: 1.1, naprowadza: 7,
+      odbicia: 2 + (ewo('sh') >= 2 ? 2 : 0), mozeKryt: true, bezSpadku: true, zasiegOdbicia: 190, onHit: ewo('sh') >= 3 }); }
+  if (mozna('shuriken', 120)) ton(900, 0.04, 'triangle', 0.04);
+}
+// skok w miejsce (Berserker): jak mignięcie, ale do punktu
+function skokDo(tx, ty, maks) {
+  const dx = tx - gracz.x, dy = ty - gracz.y, d = Math.hypot(dx, dy) || 1, dl = Math.min(maks, d);
+  gracz.kierRX = dx / d; gracz.kierRY = dy / d; if (gracz.zdalny) gracz.umiKier = [dx / d, dy / d];
+  mrugnij(dl);
+}
+// Hazardzista: Ruletka 50/50
+const KARY_RULETKI = { slaby: '−25% obrażeń', kruchy: '−30% maks. zdrowia', ciezki: '−30% prędkości ruchu', oslabiony: '−30% prędkości ataku', odsloniety: '+25% otrzymywanych obrażeń' };
+function ruletka() {
+  const st = gracz.stanKlasy; st.kary = st.kary || []; st.bonusy = st.bonusy || [];
+  const wygrana = Math.random() < (ewo('u1') >= 1 ? 0.55 : 0.5), mn = ewo('u1') >= 2 ? 1.5 : 1;
+  const T = (t, k) => { tekstSwiat(gracz.x, gracz.y - 40, t, k, 1.3, 15); if (!gracz.zdalny) toast(t); };
+  if (wygrana) {
+    const r = losWazony([['zloto', 22], ['xp', 22], ['skrzynia', 20], ['stat', 22], ['jackpot', 14]]);
+    if (r === 'zloto') { st.bonusy.push('zloto'); T('🎰 Złoto ×' + fmt(1 + 0.5 * mn) + ' do końca fali!', '#ffd24a'); }
+    else if (r === 'xp') { st.bonusy.push('xp'); T('🎰 Doświadczenie +' + Math.round(50 * mn) + '% do końca fali!', '#9fd8ff'); }
+    else if (r === 'skrzynia') { const t = Math.min(3, tierSkrzyni(null) + (Math.random() * 100 < D.szczescie * mn ? 1 : 0)); gracz.skrzynie.push({ tier: t }); T('🎰 Skrzynia (' + TIERY[t].nazwaZ.toLowerCase() + ')!', TIERY[t].kolor); }
+    else if (r === 'stat') { const u = losZ(ULEPSZENIA_STATOW); const v = u.w[1] * mn; gracz.stale[u.k] = (gracz.stale[u.k] || 0) + v; oznaczStaty(); T('🎰 Na stałe: ' + STAT[u.k].i + ' +' + fmt(v) + (STAT[u.k].j === '%' ? '%' : ''), '#7ee87a'); }
+    else { st.jackpot = czasGry + 6 * mn; oznaczStaty(); T('🎰 JACKPOT!', '#ffd24a'); fale.push({ x: gracz.x, y: gracz.y, czas: 0.7, max: 0.7, r: 200, kolor: '#ffd24a' }); }
+    DZ.pryzmat();
+  } else {
+    // każda kara działa najwyżej raz naraz (ta sama wylosowana drugi raz tylko się odnawia)
+    const id = losZ(Object.keys(KARY_RULETKI)), ist = st.kary.find(k => k.id === id && (!k.do || k.do > czasGry));
+    if (ist) ist.do = ewo('u1') >= 3 ? czasGry + 15 : 0; else st.kary.push({ id: id, do: ewo('u1') >= 3 ? czasGry + 15 : 0 }); oznaczStaty();
+    if (id === 'kruchy') zastosujStaty();
+    T('🎰 Pech: ' + KARY_RULETKI[id] + (ewo('u1') >= 3 ? ' (15 s)' : ' do końca fali'), '#ff6a5a'); DZ.obrazenia();
+  }
+}
+// Hazardzista: Koło fortuny (druga umiejętność)
+function koloFortuny(m) {
+  const st = gracz.stanKlasy;
+  const r = st.pewnyJackpot ? 0 : losWazony([[0, ewo('u2') >= 1 ? 14 : 7], [1, 14], [2, 13], [3, 11], [4, 9], [5, 10], [6, 9], [7, 8], [8, 9], [ewo('u2') >= 2 ? 7 : 9, 10]]);
+  st.pewnyJackpot = false;
+  const T = (t) => { if (!gracz.zdalny) toast('🎡 ' + t); tekstSwiat(gracz.x, gracz.y - 40, '🎡 ' + t, '#ffe08a', 1.2, 15); };
+  if (r === 0) { st.jackpot = czasGry + 6; oznaczStaty(); DZ.pryzmat(); T('JACKPOT!'); fale.push({ x: gracz.x, y: gracz.y, czas: 0.7, max: 0.7, r: 200, kolor: '#ffd24a' }); }
+  else if (r === 1) { const inne = KLUCZE_KLAS.filter(k => k !== 'hazardzistka' && KLASY[k].umi && !KLASY[k].umi.pasywna && !KLASY[k].umi.auto); let ok = false;
+    for (let p = 0; p < 4 && !ok; p++) { const k = losZ(inne); try { ok = KLASY[k].umi.uzyj(m) !== false; } catch (e) { ok = false; } if (ok) T('Joker: ' + KLASY[k].umi.ik + ' ' + KLASY[k].umi.n); }
+    if (!ok) { gracz.niewr = Math.max(gracz.niewr, 2); T('Joker: unik losu'); } }
+  else if (r === 2) { for (let n = 0; n < 10; n++) opoznione(0.06 * n, () => { const x = gracz.x + losowo(-220, 220), y = gracz.y + losowo(-220, 220); obszarowe(x, y, 70, '#ffb070', w => zadaj(w, (80 + 0.8 * D.ad + 0.8 * D.ap) * m, 'mag', { obszar: true, zr: 'Koło fortuny' })); rozbryzg(x, y, '#ffb070', 8); }); DZ.wybuch(); T('Salwa wybuchów!'); }
+  else if (r === 3) { wrogowie.forEach(w => { if (w.martwy || w.boss || w.zauroczony > 0) return; const d = Math.hypot(w.x - gracz.x, w.y - gracz.y); if (d < 260 && d > 1) { w.x += (gracz.x - w.x) / d * Math.min(d - 30, 140); w.y += (gracz.y - w.y) / d * Math.min(d - 30, 140); oglusz(w, 1.5, { zrodlo: 'Koło fortuny' }); } }); fale.push({ x: gracz.x, y: gracz.y, czas: 0.6, max: 0.6, r: 260, kolor: '#9a6ae0', odwrot: true }); T('Wir!'); }
+  else if (r === 4) { gracz.niewr = Math.max(gracz.niewr, 4); T('4 s niewrażliwości!'); }
+  else if (r === 5) { dodajBuff('kolo', { as: 100 * m, ms: 40 }, 6); T('Szał!'); }
+  else if (r === 6) { leczGracza(D.hpMax * 0.5, 'Koło fortuny'); T('Leczenie!'); }
+  else if (r === 7) { dodajZloto(Math.round((10 + 4 * fala.nr) * m), true, '🎡 Koło fortuny'); T('Złoto!'); }
+  else if (r === 8) { st.natychmiast = 2; T('Kręć jeszcze raz!'); }
+  else { gracz.hp = Math.max(1, gracz.hp - D.hpMax * 0.15); st.pewnyJackpot = true; T('Pech… następny rzut to JACKPOT'); }
+}
 
 // =====================================================================
 //  WROGOWIE, ELITY, BOSSOWIE i ich zachowanie
@@ -2469,7 +3289,7 @@ function skalaFali(nr) {
     hp: 2.0 * (1 + 0.32 * x + 0.04 * x * x) * Math.pow(1.09, p8) * Math.pow(1.09, p18) * Math.pow(1.08, p28) * T.hp,
     atak: 1.35 * (1 + 0.14 * x + 0.011 * x * x) * Math.pow(1.06, p8) * Math.pow(1.06, p18) * Math.pow(1.05, p28) * T.atak,
     panc: 1 + 0.05 * x,
-    ms: Math.min(1.3, 1 + 0.01 * x) * T.ms,
+    ms: Math.min(1.22, 1 + 0.007 * Math.max(0, nr - 1)) * T.ms,   // prędkość rośnie tak samo na każdej trudności (tylko mnożnik T.ms)
     zl: 1 + 0.04 * x,
     xp: 1 + 0.07 * x,
   };
@@ -2536,7 +3356,7 @@ function aktualizujWrogow(dt) {
     if (w.martwy) continue;
     // cel: najbliższa żywa postać (co pół sekundy, żeby nie skakali między graczami)
     w.tCelu = (w.tCelu || 0) - dt;
-    if (!w.cel || w.cel.powalony || w.tCelu <= 0 || gracze.indexOf(w.cel) < 0) { w.cel = najblizszyGracz(w.x, w.y); w.tCelu = 0.5; }
+    if (!w.cel || w.cel.powalony || w.cel.niewidzialny > 0 || w.tCelu <= 0 || gracze.indexOf(w.cel) < 0) { w.cel = najblizszyGracz(w.x, w.y); w.tCelu = 0.5; }
     w.wiek += dt;
     if (w.trafiony > 0) w.trafiony -= dt;
     if (w.naznaczony > 0) w.naznaczony -= dt;
@@ -2545,6 +3365,8 @@ function aktualizujWrogow(dt) {
     if (w._zaT > 0) { w._zaT -= dt; if (w._zaT <= 0) w.zamarzniecieAtaku = 0; }
     // efekty rozłożone w czasie
     tikEfektowWroga(w, dt); if (w.martwy) continue;
+    // nikogo nie widać (np. wszyscy niewidzialni): wróg się rozgląda i nie atakuje
+    if (!w.cel) { w.zamach = 0; if (w.ogl > 0) w.ogl -= dt; if (w.spowCzas > 0) { w.spowCzas -= dt; if (w.spowCzas <= 0) w.spow = 0; } ogranicz(w); continue; }
     // afiksy pasywne
     kontekst(w.cel);
     if (w.afiksy.length) aktualizujAfiksy(w, dt);
@@ -2592,7 +3414,7 @@ function strzalWroga(w, k, predkosc, obr, opcje) {
 // ZAMACH: wróg wręcz najpierw się zamachuje (czerwony łuk rośnie), a cios pada dopiero po chwili.
 // Kto w tym czasie odskoczy albo przebiegnie obok, nie oberwie; ogłuszenie przerywa zamach.
 const ZASIEG_ZAMACHU = 10;                       // o tyle dalej sięga cios niż odległość, z której zaczyna zamach
-function czasZamachu(w) { return w.boss ? 0.5 : w.elita ? 0.34 : 0.4; }
+function czasZamachu(w) { return (w.boss ? 0.46 : w.elita ? 0.31 : 0.36) * (TRUDNOSCI[run.trudnosc].zamach || 1); }
 function zacznijZamach(w, kat) { w.zamach = w.zamachMax = czasZamachu(w); w.zamKat = kat; }
 function wyprowadzCios(w, dAtak, mn) {
   const T = TYPY_WROGOW[w.typ] || {};
@@ -2817,7 +3639,7 @@ function limitWrogow() { return Math.min(120 + 20 * (liczbaGraczy() - 1), (42 + 
 let gracz = null, D = null, run = null;
 let fala = { nr: 0, aktywna: false };
 let stan = 'menu';                 // menu | walka | przerwa | smierc
-let wrogowie = [], pociski = [], pociskiWrogow = [], kulki = [], monety = [], skrzynieNaZiemi = [], miksturyNaZiemi = [];
+let wrogowie = [], pociski = [], pociskiWrogow = [], kulki = [], monety = [], skrzynieNaZiemi = [];
 let czastki = [], teksty = [], fale = [], blyskawice = [], ciecia = [], kaluze = [], polaEfektow = [], wiry = [], scianyMagiczne = [];
 let bomby = [], uderzeniaBossa = [], zapowiedzi = [], opoznioneLista = [], efektyCzasowe = [], stozki = [], orbyRys = [];
 let czasGry = 0, glebokoscOnHit = 0;
@@ -2834,7 +3656,7 @@ function liczbaGraczy() { return Math.max(1, gracze.length); }
 // Drużyna: więcej wrogów (×mnDruzyny), a łupy z nich są dzielone tak, by każdy dostawał mniej więcej tyle, co w pojedynkę
 function mnDruzyny() { return 1 + 0.5 * (liczbaGraczy() - 1); }
 function mnLupuDruzyny() { return 1 / mnDruzyny(); }
-function najblizszyGracz(x, y) { let naj = null, nd = Infinity; for (const p of gracze) { if (p.powalony || p.martwy) continue; const d = Math.hypot(p.x - x, p.y - y); if (d < nd) { nd = d; naj = p; } } return naj; }
+function najblizszyGracz(x, y) { let naj = null, nd = Infinity; for (const p of gracze) { if (p.powalony || p.martwy || p.niewidzialny > 0) continue; const d = Math.hypot(p.x - x, p.y - y); if (d < nd) { nd = d; naj = p; } } return naj; }
 function dlaKazdego(fn) { const z = gracz; for (const p of gracze.slice()) { kontekst(p); fn(p); } kontekst(z); }
 
 // ---------------------------------------------------------------------
@@ -2845,9 +3667,9 @@ function nowyGracz(klasa) {
   const K = KLASY[klasa];
   return {
     klasa: klasa, x: SRODEK, y: SRODEK, r: 13, hp: 100, poziom: 1, xp: 0, xpNast: xpDoPoziomu(1),
-    zloto: 0, mikstury: 1, maksMikstur: 3, mocMikstur: 1, cdMikstury: 0,
+    zloto: 0,
     bronie: [], oreze: [], pancerz: { helm: null, zbroja: null, buty: null, amulet: null }, przedmioty: [], augmenty: [],
-    ulepszenia: {}, stale: {}, slotyOreza: K.slotyOreza || 4, slotyPrzedm: K.slotyPrzedm, slotyPryzm: K.slotyPryzm || 2, umi: { cd: 0, cdMax: 0 }, umi2: { cd: 0, cdMax: 0 },
+    ulepszenia: {}, stale: {}, slotyOreza: K.slotyOreza !== undefined ? K.slotyOreza : 4, slotyPrzedm: K.slotyPrzedm, slotyPryzm: K.slotyPryzm || 2, umi: { cd: 0, cdMax: 0 }, umi2: { cd: 0, cdMax: 0 },
     rabat: 0, darmowePrzerzuty: 0, przerzutyAug: 2, darmoweWybory: 0, kowadla: 0, doWyboru: 0, skrzynie: [],
     tarcze: [], buffy: {}, niewr: 0, zastoj: 0, spowG: 0, spowGCzas: 0, migotanie: 0, stanKlasy: {}, kierX: 1, kierY: 0,
     ostTrafienie: -99, wRuchu: false, faza: 0, augmentyDoWyboru: [], blysk: 0, _brudne: true, _ostDyn: 0, id: 0, nick: '',
@@ -2859,10 +3681,10 @@ function nowyGracz(klasa) {
 // ---------------------------------------------------------------------
 const HAKI_NAZWY = ['statyFlat', 'statyDyn', 'statyMnoz', 'statyPost', 'naTrafienie', 'naAtak', 'naObrazenia', 'naZabicie', 'naOtrzymanie',
   'modOtrzymanych', 'modZadanych', 'naKryt', 'naOgluszenie', 'naSpowolnieniu', 'tik', 'naStartFali', 'naKoniecFali', 'naSmierc',
-  'naNadleczenie', 'naAktywacji', 'naSklep', 'naMiksturze', 'mnozMonety', 'rozmiar', 'naAwans', 'naUniku', 'mnSkrzyn', 'odbijPocisk', 'mocMikstur', 'naUmiejetnosci'];
+  'naNadleczenie', 'naAktywacji', 'naSklep', 'mnozMonety', 'rozmiar', 'naAwans', 'naUniku', 'mnSkrzyn', 'odbijPocisk', 'naUmiejetnosci', 'statyKonw1', 'statyKonw2', 'statyKonw3', 'statyKonc', 'naNaladowanym', 'mnXp', 'mnZlota'];
 // flagi sumowane ze wszystkich źródeł (liczba albo funkcja od instancji, np. poziomu augmentu)
-const FLAGI_SUMA = ['przelew', 'mnPrzedmiotow', 'zasiegWrecz', 'onHitKryt', 'oszczedny', 'mnStworow', 'mnOreza', 'cdOreza', 'cdUmi', 'mnUmi', 'mnGlownejAug', 'echoOreza', 'mnTarcz', 'mnSojusznikow'];
-const FLAGI_LOG = ['kielich', 'bezKryt', 'superkryt', 'podwojnyOnHit', 'lepszeAugmenty', 'wszystkoMag', 'krysztalCzasu', 'odpornyNaSpow', 'fabryka'];
+const FLAGI_SUMA = ['energiaTempo', 'naladowanyOnHit', 'naladowanyObr', 'przelew', 'mnPrzedmiotow', 'zasiegWrecz', 'onHitKryt', 'oszczedny', 'mnStworow', 'mnOreza', 'cdOreza', 'cdUmi', 'mnUmi', 'mnGlownejAug', 'echoOreza', 'mnTarcz', 'mnSojusznikow'];
+const FLAGI_LOG = ['energia', 'naladowanyKryt', 'wszyscyGlowni', 'coTrzeciNaladowany', 'kielich', 'bezKryt', 'superkryt', 'podwojnyOnHit', 'lepszeAugmenty', 'wszystkoMag', 'krysztalCzasu', 'odpornyNaSpow', 'fabryka'];
 let HAKI = {}, FLAGI = {};
 function zrodlaEfektow() {
   const z = [[KLASY[gracz.klasa], gracz.stanKlasy]];
@@ -2873,6 +3695,7 @@ function zrodlaEfektow() {
 }
 function przebudujHaki() {
   HAKI = {}; HAKI_NAZWY.forEach(n => HAKI[n] = []);
+  { const K = KLASY[gracz.klasa]; (K.ewo || []).forEach(e => { if (e.bron !== undefined && gracz.bronie[e.bron]) gracz.bronie[e.bron].ewo = ewo(e.id); }); }
   FLAGI = { unikMax: 80, redukcjaMax: 75, mnGlownej: 1 };
   FLAGI_SUMA.forEach(f => FLAGI[f] = 0); FLAGI_LOG.forEach(f => FLAGI[f] = false);
   zrodlaEfektow().forEach(([d, i]) => {
@@ -2884,7 +3707,41 @@ function przebudujHaki() {
     if (d.redukcjaMax) FLAGI.redukcjaMax = Math.max(FLAGI.redukcjaMax, d.redukcjaMax);
     if (d.mnGlownej && typeof d.mnGlownej === 'number') FLAGI.mnGlownej *= d.mnGlownej;
   });
+  gracz.bronie.forEach(b => { const B = BRONIE[b.rodzaj]; if (B && B.energia) FLAGI.energia = true; });
+  gracz.maEnergie = !!FLAGI.energia;
   gracz._HAKI = HAKI; gracz._FLAGI = FLAGI;
+}
+
+// ---------------------------------------------------------------------
+//  NAŁADOWANIE (jak „energized” w LoL-u): energia 0–100 ładuje się z ruchu (1 na 5 px) i z ataków (+7).
+//  Przy 100 następny atak bronią główną jest NAŁADOWANY i odpala efekty przedmiotów/augmentów/broni „naładowany atak”.
+// ---------------------------------------------------------------------
+const ENERGIA_ZA_ATAK = 7, PX_NA_ENERGIE = 5;
+function dodajEnergie(v) {
+  if (!FLAGI.energia || !(v > 0)) return;
+  const K = KLASY[gracz.klasa];
+  if (K && K.blokujEnergie && K.blokujEnergie(gracz.stanKlasy)) return;
+  const przed = gracz.energia || 0;
+  gracz.energia = Math.min(100, przed + v * (1 + (FLAGI.energiaTempo || 0)) * (K && K.mnEnergii ? K.mnEnergii : 1));
+  if (przed < 100 && gracz.energia >= 100) { if (K && K.naPelnaEnergie) { try { K.naPelnaEnergie(gracz.stanKlasy); } catch (e) { zglosBlad(e, 'naPelnaEnergie'); } } if (gracz === lokalny || !druzyna()) DZ.naladowanie(); }
+}
+function energiaZRuchu() {
+  if (!FLAGI.energia) { gracz._ex = gracz.x; gracz._ey = gracz.y; return; }
+  if (gracz._ex !== undefined) { const d = Math.hypot(gracz.x - gracz._ex, gracz.y - gracz._ey); if (d > 0.2 && d < 60) dodajEnergie(d / PX_NA_ENERGIE); }
+  gracz._ex = gracz.x; gracz._ey = gracz.y;
+}
+// wywoływane przy każdym prawdziwym ataku bronią główną; zwraca true, gdy ten atak jest naładowany
+function zuzyjEnergie(b, cel, o) {
+  if (!FLAGI.energia || o.echo || cel.wirtualny) return false;
+  const wymuszony = (FLAGI.coTrzeciNaladowany && ((gracz._licznikNal = (gracz._licznikNal || 0) + 1) % 3 === 0));
+  if ((gracz.energia || 0) >= 100 || wymuszony) {
+    if (!wymuszony) gracz.energia = 0;
+    gracz.naladowanyBlysk = 0.35;
+    efektBlysk(cel.x, cel.y, '#7ae0ff'); dodajBlyskawice(gracz.x, gracz.y - 6, cel.x, cel.y, '#9fe8ff');
+    return true;
+  }
+  dodajEnergie(ENERGIA_ZA_ATAK);
+  return false;
 }
 function sumaHakow(n, a) {
   const l = HAKI[n]; if (!l || !l.length) return 0;
@@ -2927,13 +3784,13 @@ function obliczStaty() {
   const s = Object.assign({}, BAZA_STATOW);
   const K = KLASY[gracz.klasa];
   dodajStaty(s, K.staty);
-  s.hpMax += 5 * (gracz.poziom - 1);
+  s.hpMax += (K.hpZaPoziom || 5) * (gracz.poziom - 1);
   dodajStaty(s, gracz.ulepszenia);
   dodajStaty(s, gracz.stale);
   const mnP = 1 + FLAGI.mnPrzedmiotow;
   SLOTY_PANCERZA.forEach(sl => { const p = gracz.pancerz[sl]; if (p) dodajStaty(s, statyPancerza(p), mnP); });
   gracz.oreze.forEach(o => { if (o) dodajStaty(s, statyOreza(o), mnP); });
-  gracz.przedmioty.forEach(p => { if (p && DEF_PRZ[p.id].s) dodajStaty(s, DEF_PRZ[p.id].s); });   // tylko pryzmaty mają staty
+  gracz.przedmioty.forEach(p => { if (p && DEF_PRZ[p.id].s) dodajStaty(s, DEF_PRZ[p.id].s, M(p)); });   // tylko pryzmaty mają staty (gwiazdki: Kapłan Pryzmatu)
   gracz.augmenty.forEach(a => { const st = statyAugmentu(a); if (st) dodajStaty(s, st); });
   const z = policzZestawy();
   for (const t in z) { const n = poziomZestawu(z[t]); if (n >= 0 && RODZINY[t]) dodajStaty(s, RODZINY[t].staty(n)); }
@@ -2943,6 +3800,9 @@ function obliczStaty() {
   if (gracz.stale.hpProc) s.hpMax *= 1 + gracz.stale.hpProc / 100;
   hak('statyMnoz', s);
   hak('statyPost', s);
+  // zamiany ⚔️/✨ zawsze w tej kolejności: Harmonia (dodaje) → Waga Sprawiedliwości (wyrównuje w górę) → Kostur Arcymaga (⚔️ → ✨)
+  hak('statyKonw1', s); hak('statyKonw2', s); hak('statyKonw3', s);
+  hak('statyKonc', s);   // to, co liczy się od gotowych ⚔️/✨
   if (FLAGI.przelew) przelejNadmiar(s, FLAGI.przelew);
   if (TRUDNOSCI[run.trudnosc].regenGracza !== undefined) s.regen *= TRUDNOSCI[run.trudnosc].regenGracza;
   s.hpMax = Math.max(1, Math.round(s.hpMax));
@@ -3039,8 +3899,6 @@ function zabij(w, o) {
     let pSk = w.boss ? 1 : (w.elita ? 0.12 : 0.005) * mnS * mL;
     if (!w.boss && (fala.skrzynie || 0) >= zakresSkrzyn(fala.nr)[1]) pSk = 0;
     if (Math.random() < pSk) { skrzynieNaZiemi.push({ x: w.x, y: w.y, tier: tierSkrzyni(w), faza: Math.random() * 6, boss: !!w.boss }); if (!w.boss) fala.skrzynie = (fala.skrzynie || 0) + 1; }
-    const naZiemi = miksturyNaZiemi.length;
-    if (gracz.mikstury + naZiemi < gracz.maksMikstur && Math.random() < (w.elita ? 0.25 : 0.006) * mL) miksturyNaZiemi.push({ x: w.x + 10, y: w.y, faza: 0 });
   }
   const T = TYPY_WROGOW[w.typ];
   if (T && T.dzieli && !w.sojusznik) {
@@ -3076,7 +3934,8 @@ function trafienieAtakiem(w, b, o) {
   if (!w || w.martwy) return;
   o = o || {};
   const B = BRONIE[b.rodzaj];
-  const baz = obrBroni(b) * (o.mn || 1) * (B.mnTrafienia ? B.mnTrafienia(b, w, o) : 1);
+  const glowny = o.glowny !== false, nal = (o.naladowany !== undefined ? o.naladowany : !!b._naladowany) && glowny;
+  const baz = obrBroni(b) * (o.mn || 1) * (B.mnTrafienia ? B.mnTrafienia(b, w, o) : 1) * (nal ? 1 + (FLAGI.naladowanyObr || 0) : 1);
   const sz = FLAGI.bezKryt ? 0 : D.kryt + (B.kryt || 0);
   let kryt = Math.random() * 100 < sz || (!!o.pewnyKryt && !FLAGI.bezKryt), mnK = 1;
   if (kryt) {
@@ -3085,11 +3944,12 @@ function trafienieAtakiem(w, b, o) {
   }
   const surowe = baz * mnK;
   const zad = zadaj(w, surowe, FLAGI.wszystkoMag ? 'mag' : B.obrTyp, { atak: true, kryt: kryt, bron: b, zr: B.nazwa, pocisk: o.pocisk, przebPanc: B.przebPanc, obszar: o.obszar });
-  const k = { bron: b, kryt: kryt, glowny: o.glowny !== false, zadane: zad, zadaneSurowe: surowe, bazowe: baz, licznikCiosu: o.licznikCiosu || 1, zOgluszenia: false };
+  const k = { bron: b, kryt: kryt, glowny: glowny || !!FLAGI.wszyscyGlowni, zadane: zad, zadaneSurowe: surowe, bazowe: baz, licznikCiosu: o.licznikCiosu || 1, zOgluszenia: false, naladowany: nal };
   if (B.naTrafienie) { try { B.naTrafienie(w, b, k); } catch (e) { zglosBlad(e, 'bron ' + b.rodzaj); } }
   if (kryt) { hak('naKryt', w, k); DZ.kryt(); }
   let razy = 1; if (b._podwojnyOnHit) razy++; if (FLAGI.podwojnyOnHit) razy *= 2;
   if (kryt && FLAGI.onHitKryt) razy += Math.round(FLAGI.onHitKryt);
+  if (nal && FLAGI.naladowanyOnHit) razy += Math.round(FLAGI.naladowanyOnHit);
   zastosujOnHit(w, b, { k: k, razy: Math.min(8, razy) });
 }
 function zastosujOnHit(w, b, o) {
@@ -3110,17 +3970,21 @@ function zastosujOnHit(w, b, o) {
 }
 
 function celBroni(b, zas) {
-  // celowanie (prawa gałka pada): wróg najbliżej wskazanego kierunku; gdy nikogo w zasięgu — zwykłe namierzanie
+  // celowanie (trzymana prawa gałka pada): atak ZAWSZE leci w tę stronę — w wroga w tym kierunku (±~22°),
+  // a gdy nikogo tam nie ma, w pusty punkt na końcu zasięgu. Puszczona gałka = zwykłe namierzanie.
   const ck = gracz.celKat;
   if (ck !== null && ck !== undefined) {
     let naj = null, najW = Infinity;
     for (let i = 0; i < wrogowie.length; i++) {
       const w = wrogowie[i]; if (w.martwy || w.zauroczony > 0) continue;
       const d = Math.hypot(w.x - gracz.x, w.y - gracz.y) - w.r; if (d >= zas) continue;
-      const wyn = roznicaKata(Math.atan2(w.y - gracz.y, w.x - gracz.x), ck) * 230 + d * 0.3;
+      const dk = roznicaKata(Math.atan2(w.y - gracz.y, w.x - gracz.x), ck);
+      if (dk > 0.38 + Math.atan2(w.r, Math.max(1, d + w.r))) continue;
+      const wyn = dk * 230 + d * 0.3;
       if (wyn < najW) { najW = wyn; naj = w; }
     }
     if (naj) return naj;
+    return { x: gracz.x + Math.cos(ck) * zas, y: gracz.y + Math.sin(ck) * zas, r: 0, martwy: true, wirtualny: true, hp: 0, hpMax: 1, afiksy: [] };
   }
   const daleki = BRONIE[b.rodzaj].celDaleki;
   let naj = null, najD = daleki ? -1 : Infinity;
@@ -3140,6 +4004,7 @@ function aktualizujBronie(dt) {
     if (b.anim > 0) b.anim -= dt;
     if (B.przyAtaku && b.odCiosu !== undefined) { b.odCiosu += dt; if (b.odCiosu > 2) b.rozped = 0; }
     if (fala.rozbrojenie && idx > 0) continue;
+    if (B.atak === 'orbita') { orbitaBroni(b, dt); continue; }
     let tempo = (1 + D.as / 100) * (B.tempo ? B.tempo(b) : 1);
     tempo = ogr(tempo, 0.2, B.cd / 0.1);
     if (b.cd > 0) b.cd -= dt * tempo;
@@ -3157,9 +4022,11 @@ function atakujBronia(b, cel, o) {
   b.kat = kat(gracz, cel); b.anim = 0.16;
   gracz.kierX = Math.cos(b.kat); gracz.kierY = Math.sin(b.kat);
   if (B.przyAtaku) B.przyAtaku(b);
-  b._podwojnyOnHit = false;
-  hak('naAtak', b, cel, o);
-  b._pewnyKryt = !!gracz.stanKlasy.pewnyKryt; gracz.stanKlasy.pewnyKryt = false;
+  b._podwojnyOnHit = (b.ewo || 0) >= 3;
+  b._naladowany = zuzyjEnergie(b, cel, o);
+  if (!cel.wirtualny) hak('naAtak', b, cel, o);   // atak w pustkę (celowanie gałką) nie liczy się do efektów „co N-ty atak”
+  if (b._naladowany) { if (B.naNaladowanym) { try { B.naNaladowanym(b, cel); } catch (e) { zglosBlad(e, 'naładowany ' + b.rodzaj); } } hak('naNaladowanym', b, cel); }
+  b._pewnyKryt = !!gracz.stanKlasy.pewnyKryt || (b._naladowany && FLAGI.naladowanyKryt); gracz.stanKlasy.pewnyKryt = false;
   run.ataki++;
   switch (B.atak) {
     case 'wrecz': cios(b, cel); DZ.ciecie(); break;
@@ -3169,8 +4036,39 @@ function atakujBronia(b, cel, o) {
     case 'bumerang': rzutBumerangiem(b, cel); DZ.strzal(); break;
     case 'granat': rzutGranatu(b, cel); DZ.strzal(); break;
     case 'stozek': strumien(b, cel); break;
+    case 'orbita': trafienieAtakiem(cel, b, { glowny: true }); break;
+    case 'grom': uderzGromem(b, cel.x, cel.y, cel.wirtualny ? null : cel, 1); DZ.piorun(); break;
   }
-  b._pewnyKryt = false;
+  b._pewnyKryt = false; b._naladowany = false;
+}
+// Kostur Gromu: piorun z nieba w miejsce celu, rani wszystkich w promieniu
+function uderzGromem(b, x, y, cel, mn) {
+  const B = BRONIE[b.rodzaj], r = (B.promien + 5 * b.tier) * mnObszaru();
+  dodajBlyskawice(x + losowo(-24, 24), y - 170, x, y, '#ffe066'); fale.push({ x: x, y: y, czas: 0.3, max: 0.3, r: r, kolor: '#ffe066' });
+  let pierwszy = true;
+  wrogowie.slice().forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - x, w.y - y) > r + w.r * 0.5) return;
+    const gl = cel ? w === cel : pierwszy; pierwszy = false; trafienieAtakiem(w, b, { mn: mn, glowny: gl, obszar: !gl, pewnyKryt: gl && b._pewnyKryt }); });
+}
+// Krążące Kule: ciągła orbita, każdy dotknięty wróg dostaje trafienie (ten sam co B.cd s / prędkość ataku)
+function orbitaBroni(b, dt) {
+  const B = BRONIE[b.rodzaj];
+  let tempo = ogr((1 + D.as / 100) * (B.tempo ? B.tempo(b) : 1), 0.2, 6);
+  b.faza = (b.faza || 0) + dt * 2.6 * Math.sqrt(tempo);
+  const n = 2 + b.tier, rr = zasiegAtaku(b), odstep = B.cd / tempo, klucz = '_orbB' + gracz.id;
+  if (b.cdAtk > 0) b.cdAtk -= dt;
+  for (let j = 0; j < n; j++) {
+    const k = b.faza + j * Math.PI * 2 / n, x = gracz.x + Math.cos(k) * rr, y = gracz.y + Math.sin(k) * rr;
+    orbyRys.push({ x: x, y: y, kolor: '#b48aff', kat: k });
+    for (let i = 0; i < wrogowie.length; i++) {
+      const w = wrogowie[i]; if (w.martwy || w.zauroczony > 0) continue;
+      if (Math.abs(w.x - x) > 16 + w.r || Math.abs(w.y - y) > 16 + w.r || Math.hypot(w.x - x, w.y - y) > 16 + w.r) continue;
+      if (w[klucz] && czasGry - w[klucz] < odstep) continue;
+      w[klucz] = czasGry;
+      // co odstęp liczy się jak „atak” (efekty co N-ty atak, naładowanie)
+      if (!(b.cdAtk > 0)) { b.cdAtk = odstep; b.kat = k; b.anim = 0.12; atakujBronia(b, w, { orbita: true }); }
+      else trafienieAtakiem(w, b, { glowny: true });
+    }
+  }
 }
 // granatnik: pocisk leci łukiem w miejsce celu i wybucha
 function rzutGranatu(b, cel) {
@@ -3179,14 +4077,14 @@ function rzutGranatu(b, cel) {
     const tx = cel.x + (n ? losowo(-60, 60) : 0), ty = cel.y + (n ? losowo(-60, 60) : 0);
     const d = Math.hypot(tx - gracz.x, ty - gracz.y), v = 340, k = Math.atan2(ty - gracz.y, tx - gracz.x);
     pociski.push({ wl: gracz, x: gracz.x, y: gracz.y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, zycie: Math.max(0.12, d / v), maxZycie: Math.max(0.12, d / v), r: 7, bron: b, mn: n ? 0.6 : 1,
-      granat: { r: (B.promien + 6 * b.tier) * mnObszaru() }, trafieni: [], kolor: B.kolor, ksztalt: 'granat', przebija: 0, pewnyKryt: !n && b._pewnyKryt });
+      granat: { r: (B.promien + 6 * b.tier) * mnObszaru() }, trafieni: [], kolor: B.kolor, ksztalt: 'granat', przebija: 0, pewnyKryt: !n && b._pewnyKryt, naladowany: !n && !!b._naladowany });
   }
 }
 function wybuchGranatu(p) {
   const r = p.granat.r;
   fale.push({ x: p.x, y: p.y, czas: 0.35, max: 0.35, r: r, kolor: '#ffb070' }); rozbryzg(p.x, p.y, '#ffb070', 14); DZ.wybuch();
   let glowny = true;
-  wrogowie.slice().forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - p.x, w.y - p.y) > r + w.r * 0.5) return; trafienieAtakiem(w, p.bron, { mn: p.mn, glowny: glowny, obszar: true, pewnyKryt: p.pewnyKryt && glowny }); glowny = false; });
+  wrogowie.slice().forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - p.x, w.y - p.y) > r + w.r * 0.5) return; trafienieAtakiem(w, p.bron, { mn: p.mn, glowny: glowny, obszar: true, pewnyKryt: p.pewnyKryt && glowny, naladowany: !!p.naladowany && glowny }); glowny = false; });
 }
 // miotacz: stożek ognia
 function strumien(b, cel) {
@@ -3227,11 +4125,12 @@ function pchniecie(b, cel) {
   for (const w of lista) {
     if (w.martwy || w.zauroczony > 0) continue;
     const rx = w.x - gracz.x, ry = w.y - gracz.y, wzd = rx * cx + ry * cy, pop = Math.abs(rx * cy - ry * cx);
-    if (wzd < -w.r || wzd > zas + w.r || pop > 18 + w.r) continue;
+    if (wzd < -w.r || wzd > zas + w.r || pop > (BRONIE[b.rodzaj].szer || 18) + w.r) continue;
     if (w === cel) trafionyCel = true;
     trafienieAtakiem(w, b, { glowny: w === cel, pewnyKryt: b._pewnyKryt && w === cel });
   }
   if (!trafionyCel && !cel.martwy) trafienieAtakiem(cel, b, { glowny: true, pewnyKryt: b._pewnyKryt });
+  if (!BRONIE[b.rodzaj].rzut) return;
   b.licznik = (b.licznik || 0) + 1;
   if (b.licznik % (b.tier >= 2 ? 3 : 4) === 0) {
     pociski.push({ wl: gracz, x: gracz.x, y: gracz.y, vx: cx * 470, vy: cy * 470, zycie: 0.9, r: 7, bron: b, mn: 1.5, przebija: 99, trafieni: [], kolor: '#d8d0b0', ksztalt: 'wlocznia' });
@@ -3240,7 +4139,7 @@ function pchniecie(b, cel) {
 }
 function strzal(b, cel) {
   const B = BRONIE[b.rodzaj];
-  let ile = 1 + Math.max(0, Math.round(D.pociski)) + (b.rodzaj === 'luk' && b.tier >= 3 ? 1 : 0) + (B.dodPociskiT ? B.dodPociskiT(b.tier) : 0);
+  let ile = 1 + Math.max(0, Math.round(D.pociski)) + (b.rodzaj === 'luk' && b.tier >= 3 ? 1 : 0) + (B.dodPociskiT ? B.dodPociskiT(b.tier) : 0) + ((b.ewo || 0) >= 2 ? 1 : 0);
   let rozrzut = B.rozrzut || 0.16;
   if (b.rodzaj === 'pistolet' && b.licznikP % 6 === 0) { ile += 2 + Math.floor(b.tier / 2); rozrzut = 0.1; }
   const zas = zasiegAtaku(b);
@@ -3249,9 +4148,9 @@ function strzal(b, cel) {
     const off = ile === 1 ? 0 : (n - (ile - 1) / 2) * rozrzut;
     const k = b.kat + off;
     pociski.push({
-      wl: gracz, x: gracz.x, y: gracz.y, vx: Math.cos(k) * B.predkosc, vy: Math.sin(k) * B.predkosc, zycie: zas * 1.25 / B.predkosc, r: 6,
+      wl: gracz, x: gracz.x, y: gracz.y, vx: Math.cos(k) * B.predkosc, vy: Math.sin(k) * B.predkosc, zycie: zas * 1.05 / B.predkosc, r: gracz.stanKlasy.salwa > czasGry ? 10 : 6, duza: gracz.stanKlasy.salwa > czasGry,
       bron: b, mn: n === 0 || B.pelnePociski ? 1 : (b.rodzaj === 'pistolet' ? 0.7 : 0.6), glowny: n === 0, przebija: przebija, trafieni: [], kolor: B.kolor, ksztalt: B.ksztalt,
-      naprowadza: B.naprowadza || 0, cel: cel, odbicia: B.odbicia ? B.odbicia(b.tier) : 0, pewnyKryt: n === 0 && b._pewnyKryt,
+      naprowadza: B.naprowadza || 0, cel: cel, odbicia: B.odbicia ? B.odbicia(b.tier) : 0, pewnyKryt: n === 0 && b._pewnyKryt, naladowany: n === 0 && !!b._naladowany, bezSpadku: !!B.bezSpadku, zasiegOdbicia: B.zasiegOdbicia || 0,
     });
   }
 }
@@ -3261,6 +4160,7 @@ function strzalPomocniczy(b, w, mn) {
     kolor: B.kolor || '#e8d8b0', ksztalt: B.ksztalt || 'strzala', naprowadza: 6, cel: w });
 }
 function piorunBroni(b, cel) {
+  if (cel.wirtualny) { const w = najblizsi(cel.x, cel.y, 140, 1)[0]; if (!w) { dodajBlyskawice(gracz.x, gracz.y - 8, cel.x, cel.y, '#ffe066'); return; } cel = w; }
   const ile = 3 + b.tier + Math.max(0, Math.round(D.pociski));
   dodajBlyskawice(gracz.x, gracz.y - 8, cel.x, cel.y, '#ffe066'); DZ.piorun();
   trafienieAtakiem(cel, b, { glowny: true });
@@ -3422,7 +4322,7 @@ function wystrzel(o) {
   const k = o.kat !== undefined ? o.kat : kat({ x: o.x, y: o.y }, o.cel);
   pociski.push({ wl: gracz, x: o.x, y: o.y, vx: Math.cos(k) * o.predkosc, vy: Math.sin(k) * o.predkosc, zycie: o.zycie || 1.2, r: o.r || 6, obr: o.obr, typ: o.typ,
     kolor: o.kolor, ksztalt: o.ksztalt || 'kula', zr: o.zr, przebija: o.przebija || 0, trafieni: [], naprowadza: o.naprowadza || 0, cel: o.cel, przedmiot: true,
-    wybuch: o.wybuch || null, ogluszy: o.ogluszy || 0 });
+    wybuch: o.wybuch || null, ogluszy: o.ogluszy || 0, odbicia: o.odbicia || 0, onHit: !!o.onHit, mozeKryt: !!o.mozeKryt, bezSpadku: !!o.bezSpadku, zasiegOdbicia: o.zasiegOdbicia || 0 });
   if (pociski.length > 260) pociski.splice(0, pociski.length - 260);
 }
 // ---- dodatkowe pomocnicze: cele i obszary ----
@@ -3467,7 +4367,7 @@ function leczDruzyne(x, y, r, ile, zSoba, procHp, procTarczy) {
 // ---------------------------------------------------------------------
 function druzyna() { return gracze.length > 1 || (typeof SIEC !== 'undefined' && !!SIEC.rola); }
 // Limit wampiryzmu (kradzież życia + wszechwampiryzm): ułamek maks. zdrowia na sekundę
-function limitWampiryzmu() { const k = (KLASY[gracz.klasa].limitWamp || 0) + (FLAGI.kielich ? 0.02 : 0); return Math.min(0.08 + k, 0.02 + k + 0.0015 * (Math.max(0, D.kradziez) + Math.max(0, D.omni))); }
+function limitWampiryzmu() { const K = KLASY[gracz.klasa], k = (K.limitWampF ? K.limitWampF(gracz.stanKlasy || {}) : (K.limitWamp || 0)) + (FLAGI.kielich ? 0.02 : 0); return Math.min(0.08 + k, 0.02 + k + 0.0015 * (Math.max(0, D.kradziez) + Math.max(0, D.omni))); }
 // Każde leczenie zależne od zadanych obrażeń / zabójstw idzie przez ten sam limit
 // (zapas = 1 sekunda limitu, odnawia się na bieżąco) — inaczej przy ogromnych obrażeniach nie dało się umrzeć.
 function leczWampirem(v, zr) {
@@ -3485,13 +4385,20 @@ function nadmiarKielicha(v) {
   if (ob < max) { const t = Math.min(v, max - ob); dajTarcze(t, 5, true); v -= t; }
   if (v > 0) i.pula = Math.min(D.hpMax * 0.5, (i.pula || 0) + v);
 }
-// Zmęczenie: od 11. fali każde leczenie (poza miksturami) słabnie o 2,5% na falę, maks. o połowę
+// Zmęczenie: od 11. fali każde leczenie słabnie o 2,5% na falę, maks. o połowę (regeneracji nie dotyczy)
 function zmeczenie(nr) { return Math.min(0.5, Math.max(0, ((nr || 0) - 10) * 0.025)); }
+const BEZ_ZMECZENIA = { 'Regeneracja': 1, 'Kirys Warmoga': 1 };
+// Regeneracja rośnie razem z grą: każdy punkt = 1 zdrowia/s (+10% za każdą falę po pierwszej) + 0,1% maks. zdrowia/s
+function mnRegenFali(nr) { return 1 + 0.1 * Math.max(0, (nr || 1) - 1); }
+function regenNaSekunde(regen, hpMax, nr) {
+  regen = regen === undefined ? D.regen : regen; hpMax = hpMax === undefined ? D.hpMax : hpMax; nr = nr === undefined ? fala.nr : nr;
+  return Math.max(0, regen) * (mnRegenFali(nr) + 0.001 * hpMax);
+}
 function leczGracza(v, zr, cichy) {
   if (!gracz || gracz.martwy || gracz.powalony || !(v > 0) || stan !== 'walka') return 0;
   if (fala.bezLeczenia) return 0;
   v *= 1 + D.leczenie / 100;
-  if (zr !== 'Mikstura') v *= 1 - zmeczenie(fala.nr) * (KLASY[gracz.klasa].polZmeczenia ? 0.5 : 1);
+  if (!BEZ_ZMECZENIA[zr]) v *= 1 - zmeczenie(fala.nr) * (KLASY[gracz.klasa].polZmeczenia ? 0.5 : 1);
   const brak = D.hpMax - gracz.hp, real = Math.min(brak, v);
   if (real > 0) { gracz.hp += real; run.leczenie += real; gracz._lecz = (gracz._lecz || 0) + real; const lz = run.leczenieZr || (run.leczenieZr = {}); lz[zr || '?'] = (lz[zr || '?'] || 0) + real; }
   if (v > real + 0.01 && HAKI.naNadleczenie.length) hak('naNadleczenie', v - real);
@@ -3576,7 +4483,7 @@ function aktualizujPodnoszenie(dt) {
 }
 
 // ---------------------------------------------------------------------
-//  ŁUPY: doświadczenie, złoto, skrzynie, mikstury
+//  ŁUPY: doświadczenie, złoto, skrzynie
 // ---------------------------------------------------------------------
 let NR_LUPU = 0;     // każda kulka i moneta ma swój numer (gra online: klient zgłasza, co zebrał)
 function rozsypKulki(x, y, xp) {
@@ -3607,12 +4514,12 @@ function rozsypMonety(x, y, v, pozaPula) {
   while (monety.length > 140) { const a = monety.shift(), b = monety[0]; b.v += a.v; }
 }
 function dodajXp(v) {
-  v *= (1 + D.xpBonus / 100) * (fala.mnXp || 1);
+  v *= (1 + D.xpBonus / 100) * (fala.mnXp || 1) * (HAKI.mnXp.length ? mnoznikHakow('mnXp') : 1);
   gracz.xp += v; run.xp += v;
   while (gracz.xp >= gracz.xpNast) {
     gracz.xp -= gracz.xpNast; gracz.poziom++; gracz.doWyboru++;
     gracz.xpNast = xpDoPoziomu(gracz.poziom);
-    if (gracz.klasa === 'wiezniarka' && gracz.poziom % 5 === 0) gracz.darmoweWybory++;
+    { const K = KLASY[gracz.klasa]; if (K.wyborCo && gracz.poziom % K.wyborCo() === 0) gracz.darmoweWybory++; }
     gracz.blysk = 1.2; DZ.awans(); oznaczStaty();
     dziennik('⭐ Poziom ' + gracz.poziom + '! Wybierzesz ulepszenie po fali.');
     if (HAKI.naAwans.length) { zastosujStaty(); hak('naAwans'); }
@@ -3620,7 +4527,7 @@ function dodajXp(v) {
 }
 function dodajZloto(v, bezMn, opis) {
   if (!(v > 0)) return;
-  if (!bezMn) v *= (1 + D.chciwosc / 100) * (fala.mnZlota || 1);
+  if (!bezMn) v *= (1 + D.chciwosc / 100) * (fala.mnZlota || 1) * (HAKI.mnZlota.length ? mnoznikHakow('mnZlota') : 1);
   gracz.zloto += v; run.zloto += v; run.zlotoFali = (run.zlotoFali || 0) + v;
   if (opis) dziennik('💰 ' + opis + ': +' + Math.floor(v));
 }
@@ -3683,27 +4590,7 @@ function aktualizujLupy(dt) {
       DZ.skrzynia(); skrzynieNaZiemi.splice(i, 1);
     }
   }
-  for (let i = miksturyNaZiemi.length - 1; i >= 0; i--) {
-    const m = miksturyNaZiemi[i]; m.faza += dt;
-    const [p, d] = zbieracz(m.x, m.y);
-    if (p && d < 26 + p.r) {
-      const kto = p.mikstury < p.maksMikstur ? p : gracze.find(q => q.mikstury < q.maksMikstur);
-      if (kto) { kontekst(kto); kto.mikstury++; dziennik('🧪 Mikstura!'); DZ.mikstura(); miksturyNaZiemi.splice(i, 1); }
-    }
-  }
   kontekst(z0);
-}
-function wypijMiksture() {
-  if (stan !== 'walka' || !gracz || gracz.martwy || gracz.powalony) return;
-  if (gracz.mikstury <= 0) { toast('🧪 Nie masz mikstur'); return; }
-  if (gracz.cdMikstury > 0) return;
-  if (fala.bezLeczenia) { toast('🚫 W tej fali nie możesz się leczyć'); return; }
-  if (gracz.hp >= D.hpMax) { toast('❤️ Masz pełne zdrowie'); return; }
-  if (SIEC.rola === 'klient') { siecWyslijHost({ t: 'mik' }); gracz.cdMikstury = 0.6; return; }   // pije gospodarz za mnie
-  gracz.mikstury--; gracz.cdMikstury = 2;
-  const v = leczGracza(D.hpMax * 0.4 * (gracz.mocMikstur + sumaHakow('mocMikstur')), 'Mikstura');
-  tekstSwiat(gracz.x, gracz.y - 26, '+' + Math.round(v) + ' 🧪', '#7ec98a', 1, 14);
-  DZ.mikstura(); hak('naMiksturze');
 }
 
 // ---------------------------------------------------------------------
@@ -3741,7 +4628,7 @@ function ruszGracza(dt, ms, roz) {
   }
   const [mx, my] = wejscieRuchu();
   gracz.wRuchu = false;
-  if (gracz.zastoj <= 0 && (mx || my)) {
+  if (gracz.zastoj <= 0 && !(gracz.korzen > 0) && (mx || my)) {
     const v = ms * (1 - Math.min(0.8, gracz.spowG)) * dt;
     const nx = ogr(gracz.x + mx * v, POD_MIN, POD_MAX), ny = ogr(gracz.y + my * v, POD_MIN, POD_MAX);
     const r = gracz.r * roz;
@@ -3763,12 +4650,15 @@ function aktualizujGracza(dt) {
   { const lim = limitWampiryzmu() * D.hpMax; gracz._wampB = Math.min(lim, (gracz._wampB === undefined ? lim : gracz._wampB) + lim * dt); }
   if (gracz.zastoj > 0) gracz.zastoj -= dt;
   if (gracz.migotanie > 0) gracz.migotanie -= dt;
-  if (gracz.cdMikstury > 0) gracz.cdMikstury -= dt;
   if (gracz.blysk > 0) gracz.blysk -= dt;
+  if (gracz.naladowanyBlysk > 0) gracz.naladowanyBlysk -= dt;
+  if (gracz.korzen > 0) gracz.korzen -= dt;
+  if (gracz.niewidzialny > 0) gracz.niewidzialny -= dt;
+  if (gracz.forma && gracz.formaDo <= czasGry) gracz.forma = null;
   for (const id in gracz.buffy) { const b = gracz.buffy[id]; b.czas -= dt; if (b.czas <= 0) { delete gracz.buffy[id]; oznaczStaty(); } }
-  for (let i = gracz.tarcze.length - 1; i >= 0; i--) { gracz.tarcze[i].czas -= dt; if (gracz.tarcze[i].czas <= 0) gracz.tarcze.splice(i, 1); }
+  for (let i = gracz.tarcze.length - 1; i >= 0; i--) { const t = gracz.tarcze[i]; t.czas -= dt; if (t.czas <= 0) { gracz.tarcze.splice(i, 1); if (t.wybuch && t.v > 1) { const v = t.v; aura(150, '#ff9ae0', w => zadaj(w, v, 'mag', { obszar: true, zr: 'Pryzmatyczna tarcza' }), true); } } }
   if (gracz.spowGCzas > 0) { gracz.spowGCzas -= dt; if (gracz.spowGCzas <= 0) gracz.spowG = 0; }
-  if (D.regen > 0 && gracz.hp < D.hpMax) leczGracza(D.regen * dt, 'Regeneracja', true);
+  if (D.regen > 0 && gracz.hp < D.hpMax) leczGracza(regenNaSekunde() * dt, 'Regeneracja', true);
   else if (D.regen < 0) gracz.hp = Math.max(1, gracz.hp + D.regen * dt);
   // ruch: lokalny gracz steruje sam, zdalnego ustawia sieć
   if (gracz.zdalny) {
@@ -3782,6 +4672,7 @@ function aktualizujGracza(dt) {
       if (gracz.netKX) gracz.kierX = gracz.netKX;
     }
   } else ruszGracza(dt, D.ms, rozmiarGracza());
+  energiaZRuchu();
   // wiry ranią
   for (const wr of wiry) {
     if (wr.rozruch > 0) continue;
@@ -3822,7 +4713,14 @@ function aktualizujOreze(dt, dtCd) {
   }
 }
 // ---- UMIEJĘTNOŚĆ AKTYWNA postaci ----
-function mnUmi() { return 1 + (FLAGI.mnUmi || 0); }
+// moc umiejętności: premia klasy/przedmiotów + co 3 poziomy postaci +4% (bez limitu)
+function premiaPoziomuUmi(p) { return 0.04 * Math.floor(((p || gracz).poziom || 1) / 3); }
+function mnUmi() { return 1 + (FLAGI.mnUmi || 0) + premiaPoziomuUmi(); }
+// odnowienie umiejętności: bazowe (może zależeć od ewolucji) i po przyspieszeniu
+function cdBazoweUmi(U) { return typeof U.cd === 'function' ? U.cd() : (U.cd || 0); }
+function cdUmiTeraz(U) { return cdBazoweUmi(U) * Math.max(0.25, 1 - (FLAGI.cdUmi || 0)) * 100 / (100 + Math.max(0, D ? D.haste : 0)); }
+// ranga ewolucji (0–3) gałęzi bieżącej postaci
+function ewo(id) { return (gracz && gracz.ewo && gracz.ewo[id]) || 0; }
 // Umiejętności postaci: nr 1 (każda postać) i nr 2 (tylko niektóre). Przełącznik (przelacz) włącza/wyłącza efekt.
 function umiPostaci(nr) { const K = KLASY[gracz.klasa]; return nr === 2 ? K.umi2 : K.umi; }
 function czyUmiAktywna(nr) {
@@ -3830,18 +4728,30 @@ function czyUmiAktywna(nr) {
   const U = umiPostaci(nr); return !!(U && U.aktywna && U.aktywna(gracz.stanKlasy || {}));
 }
 function stanUmi(nr) { if (nr === 2) return gracz.umi2 || (gracz.umi2 = { cd: 0, cdMax: 0 }); return gracz.umi; }
-function uzyjUmiejetnosci(nr) {
+// Auto-użycie: umiejętności z „auto” (Farmer) zawsze, a pozostałe, gdy gracz włączył 🤖 (tylko na swoim urządzeniu)
+function autoUmiejetnosci(p, lokalnie) {
+  if (!p || p.powalony || p.martwy || stan !== 'walka' || !fala.aktywna) return;
+  for (const nr of [1, 2]) {
+    const U = umiPostaci(nr); if (!U || U.pasywna || U.przelacz) continue;
+    const st = stanUmi(nr); if (st.cd > 0) continue;
+    const chce = U.auto ? SIEC.rola !== 'klient' : !!(lokalnie && p.autoUmi && p.autoUmi[nr]);   // „auto” u klienta robi gospodarz
+    if (!chce || (p._autoT && czasGry - p._autoT < 0.25)) continue;                                // przy braku celu nie co klatkę
+    if (!uzyjUmiejetnosci(nr, true)) p._autoT = czasGry;
+  }
+}
+function uzyjUmiejetnosci(nr, cicho) {
   nr = nr === 2 ? 2 : 1;
   if (stan !== 'walka' || !gracz || gracz.martwy || gracz.powalony || gracz.zastoj > 0) return false;
   const U = umiPostaci(nr), st = stanUmi(nr); if (!U) return false;
+  if (U.pasywna) { if (!gracz.zdalny && U.podpowiedz && !cicho) toast(U.ik + ' ' + U.podpowiedz); return false; }
   if (SIEC.rola === 'klient') { if (st.cd > 0) return false; siecWyslijHost({ t: 'umi', n: nr, k: [Math.round((gracz.kierRX || gracz.kierX || 1) * 100) / 100, Math.round((gracz.kierRY || 0) * 100) / 100] }); st.cd = 0.5; return true; }
   if (st.cd > 0) return false;
   let ok = false;
   try { ok = U.uzyj(mnUmi()) !== false; } catch (e) { zglosBlad(e, 'umiejetnosc ' + gracz.klasa + ' ' + nr); }
-  if (!ok) { if (!gracz.zdalny && !U.przelacz) toast(U.ik + ' ' + (U.brak || 'Brak celu w pobliżu')); return false; }
-  st.cdMax = U.przelacz ? 0.6 : U.cd * Math.max(0.25, 1 - (FLAGI.cdUmi || 0)) * 100 / (100 + Math.max(0, D.haste));
+  if (!ok) { if (!gracz.zdalny && !U.przelacz && !cicho) toast(U.ik + ' ' + (U.brak || 'Brak celu w pobliżu')); return false; }
+  st.cdMax = U.przelacz ? 0.6 : cdUmiTeraz(U);
   st.cd = st.cdMax;
-  if (nr === 1 && gracz.stanKlasy.natychmiast) { gracz.stanKlasy.natychmiast = false; gracz.umi.cd = 0.4; }
+  if (gracz.stanKlasy.natychmiast === nr) { gracz.stanKlasy.natychmiast = 0; st.cd = 0.4; }
   if (!U.przelacz) tekstSwiat(gracz.x, gracz.y - 34, U.ik + ' ' + U.n, '#ffe08a', 1, 13);
   hak('naUmiejetnosci');
   return true;
@@ -3895,14 +4805,15 @@ function aktualizujPociski(dt) {
       if (Math.abs(w.x - p.x) > w.r + p.r + 4 || Math.abs(w.y - p.y) > w.r + p.r + 4) continue;
       if (Math.hypot(w.x - p.x, w.y - p.y) > w.r + p.r) continue;
       p.trafieni.push(w);
-      if (p.przedmiot) { zadaj(w, p.obr, p.typ, { zr: p.zr, pocisk: true }); if (p.ogluszy) oglusz(w, p.ogluszy, { zrodlo: p.zr }); }
-      else trafienieAtakiem(w, p.bron, { mn: p.mn, glowny: p.glowny !== false, pocisk: true, pewnyKryt: p.pewnyKryt });
+      if (p.przedmiot) { const kr = p.mozeKryt && Math.random() * 100 < D.kryt; const z = zadaj(w, p.obr * (kr ? kryt2() : 1), p.typ, { zr: p.zr, pocisk: true, kryt: kr }); if (p.ogluszy) oglusz(w, p.ogluszy, { zrodlo: p.zr });
+        if (p.onHit && gracz.bronie[0] && !w.martwy) zastosujOnHit(w, gracz.bronie[0], { k: { bron: gracz.bronie[0], kryt: kr, glowny: false, zadane: z, zadaneSurowe: p.obr, bazowe: p.obr, licznikCiosu: 1 } }); }
+      else trafienieAtakiem(w, p.bron, { mn: p.mn, glowny: p.glowny !== false, pocisk: true, pewnyKryt: p.pewnyKryt, naladowany: !!p.naladowany && p.trafieni.length === 1 });
       if (p.wl) kontekst(p.wl);
       if (p.wybuch) { const wb = p.wybuch, zr = p.zr; fale.push({ x: p.x, y: p.y, czas: 0.3, max: 0.3, r: wb.r * mnObszaru(), kolor: p.kolor }); obszarowe(p.x, p.y, wb.r, p.kolor, o => { if (o !== w) zadaj(o, wb.obr, p.typ, { obszar: true, zr: zr }); if (wb.podpal) podpal(o, wb.podpal, 3, 'mag', zr); }, true); if (wb.podpal) podpal(w, wb.podpal, 3, 'mag', zr); pociski.splice(i, 1); usun = false; break; }
       if (p.bumerang) continue;
       if (p.odbicia > 0) {
-        p.odbicia--; const nast = najblizszyWrog(p.x, p.y, 220, p.trafieni);
-        if (nast) { const k = Math.atan2(nast.y - p.y, nast.x - p.x), v = Math.hypot(p.vx, p.vy); p.vx = Math.cos(k) * v; p.vy = Math.sin(k) * v; p.cel = nast; p.zycie = Math.max(p.zycie, 0.8); p.mn = (p.mn || 1) * 0.8; continue; }
+        p.odbicia--; const nast = najblizszyWrog(p.x, p.y, p.zasiegOdbicia || 220, p.trafieni);
+        if (nast) { const k = Math.atan2(nast.y - p.y, nast.x - p.x), v = Math.hypot(p.vx, p.vy); p.vx = Math.cos(k) * v; p.vy = Math.sin(k) * v; p.cel = nast; p.naprowadza = Math.max(p.naprowadza || 0, 8); p.zycie = Math.max(p.zycie, 0.8); if (!p.bezSpadku) p.mn = (p.mn || 1) * 0.8; continue; }
       }
       if (p.przebija > 0) { p.przebija--; continue; }
       usun = true; break;
@@ -3952,8 +4863,9 @@ function aktualizujPlansze(dt) {
     if (p.wl) kontekst(p.wl);
     const rani = p.tyk <= 0; if (rani) p.tyk = 0.5;
     const n = wrogowie.length;
-    for (let j = 0; j < n; j++) { const w = wrogowie[j]; if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - p.x, w.y - p.y) > p.r + w.r * 0.5) continue; if (p.rodzaj === 'mroz') spowolnij(w, 0.3, 0.4); if (p.spow) spowolnij(w, p.spow, 0.4);
+    for (let j = 0; j < n; j++) { const w = wrogowie[j]; if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - p.x, w.y - p.y) > p.r + w.r * 0.5) continue; if (p.rodzaj === 'mroz') spowolnij(w, 0.3, 0.4); if (p.spow) spowolnij(w, p.spow, 0.4); if (p.krusz) w.krusz = Math.max(w.krusz || 0, p.krusz);
       if (rani) { zadaj(w, p.obr, 'mag', { dot: true, obszar: true, zr: p.zr }); if (p.rodzaj === 'kwas') w.krusz = Math.max(w.krusz || 0, 0.15); else if (p.rodzaj === 'ogien') podpal(w, p.obr * 0.3, 1.5, 'mag', p.zr); } }
+    if (rani && p.lecz) leczDruzyne(p.x, p.y, p.r, 0, true, p.lecz * 0.5);
     if (p.czas <= 0) polaEfektow.splice(i, 1);
   }
   for (let i = wiry.length - 1; i >= 0; i--) { const wr = wiry[i]; wr.czas -= dt; wr.faza += dt * 5; if (wr.rozruch > 0) wr.rozruch -= dt; if (wr.czas <= 0) wiry.splice(i, 1); }
@@ -3988,7 +4900,7 @@ function aktualizujWizualne(dt) {
 //  EFEKTY WIZUALNE (dane)
 // ---------------------------------------------------------------------
 function tekstSwiat(x, y, t, kolor, czas, rozm, o) { if (teksty.length > 55) teksty.shift(); teksty.push({ x: x, y: y, t: t, kolor: kolor, czas: czas || 0.9, max: czas || 0.9, rozm: rozm || 13, o: o || 0 }); }
-function rozbryzg(x, y, kolor, n) { if (SIEC.rola === 'host') siecZdarzenie(['r', x | 0, y | 0, kolor, n]); if (USTAW.efekty === 'oszczedne') n = Math.min(4, Math.ceil(n * 0.3)); for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), v = losowo(40, 140); czastki.push({ x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, czas: 0.45, max: 0.45, kolor: kolor }); } if (czastki.length > 400) czastki.splice(0, czastki.length - 400); }
+function rozbryzg(x, y, kolor, n) { if (SIEC.rola === 'host') siecZdarzenie(['r', x | 0, y | 0, kolor, n]); const q = poziomEfektow(); if (q === 2) n = Math.min(4, Math.ceil(n * 0.3)); else if (q === 1) n = Math.ceil(n * 0.6); for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), v = losowo(40, 140); czastki.push({ x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, czas: 0.45, max: 0.45, kolor: kolor }); } if (czastki.length > 400) czastki.splice(0, czastki.length - 400); }
 function czastkiLeczenia(x, y) { if (SIEC.rola === 'host') siecZdarzenie(['l', x | 0, y | 0]); for (let i = 0; i < 4; i++) czastki.push({ x: x + losowo(-8, 8), y: y, vx: 0, vy: -50, czas: 0.5, max: 0.5, kolor: '#5ae0a0' }); }
 function efektBlysk(x, y, kolor) { fale.push({ x: x, y: y, czas: 0.25, max: 0.25, r: 26, kolor: kolor }); }
 function dodajBlyskawice(x1, y1, x2, y2, kolor) {
@@ -4136,8 +5048,11 @@ const TYPY_STWOROW = {
   totem: { ik: '🗿', r: 13,
     tik(s, dt) { s.t -= dt; if (s.t > 0) return; s.t = 0.5; const r = s.aura;
       wrogowie.forEach(w => { if (!w.martwy && !(w.zauroczony > 0) && Math.hypot(w.x - s.x, w.y - s.y) < r + w.r * 0.5) { zadaj(w, s.obr * mnStw(), 'mag', { dot: true, obszar: true, zr: s.zr }); podpal(w, s.obr * mnStw() * 0.2, 1.5, 'mag', s.zr); } }); } },
+  plon: { ik: '🌱', r: 10,
+    tik(s, dt) { s.t += dt; if (s.t > 8 && s.ik === '🌱') s.ik = '🌾'; s.tz = (s.tz || 0) - dt; if (s.tz > 0 || !fala.aktywna) return; s.tz = 1; if (KLASY[gracz.klasa] && KLASY[gracz.klasa].plonuj) KLASY[gracz.klasa].plonuj(s); } },
   mina: { ik: '⚙️', r: 8,
-    tik(s) { const c = najblizszyWrog(s.x, s.y, 24); if (!c) return; s.usun = true; DZ.wybuch(); rozbryzg(s.x, s.y, '#ffb070', 16); fale.push({ x: s.x, y: s.y, czas: 0.35, max: 0.35, r: s.r, kolor: '#ffb070' });
+    tik(s, dt) { if (s.wabi) wrogowie.forEach(w => { if (w.martwy || w.boss || w.zauroczony > 0) return; const d = Math.hypot(w.x - s.x, w.y - s.y); if (d < 140 && d > 10) { w.x += (s.x - w.x) / d * 40 * dt; w.y += (s.y - w.y) / d * 40 * dt; } });
+      const c = najblizszyWrog(s.x, s.y, 24); if (!c) return; if (s.spow) obszarowe(s.x, s.y, s.r, '#ffb070', w => spowolnij(w, s.spow, 2), true); s.usun = true; DZ.wybuch(); rozbryzg(s.x, s.y, '#ffb070', 16); fale.push({ x: s.x, y: s.y, czas: 0.35, max: 0.35, r: s.r, kolor: '#ffb070' });
       wrogowie.slice().forEach(w => { if (!w.martwy && Math.hypot(w.x - s.x, w.y - s.y) < s.r + w.r * 0.5) zadaj(w, s.obr * mnStw(), 'fiz', { obszar: true, zr: s.zr }); }); } },
   wnyki: { ik: '🪤', r: 9,
     tik(s) { const c = najblizszyWrog(s.x, s.y, 22); if (!c) return; s.usun = true; oglusz(c, 1.5, { zrodlo: s.zr }); zadaj(c, s.obr * mnStw(), 'fiz', { zr: s.zr }); ton(240, 0.08, 'square', 0.07); } },
@@ -4156,18 +5071,19 @@ const KODY_STWOROW = Object.keys(TYPY_STWOROW);
 //  FALE, TRUDNOŚĆ, PRÓBY, FALE SPECJALNE
 // =====================================================================
 const TRUDNOSCI = [
-  { n: 'Spacerek', ik: '🌱', hp: 0.4, atak: 0.33, tempo: 0.72, spawn: 0.9, ms: 0.95, elity: 0.5, zloto: 1.0, skrzynie: 1.1, hpBoss: 0.8,
+  { n: 'Spacerek', ik: '🌱', hp: 0.4, atak: 0.33, tempo: 0.72, spawn: 0.9, ms: 0.95, elity: 0.5, zloto: 1.0, skrzynie: 1.1, hpBoss: 0.8, zamach: 1.1,
     opis: ['Wrogowie mają o 60% mniej zdrowia i biją o 67% słabiej', 'Elity rzadziej', 'Na spokojne poznanie przedmiotów'] },
-  { n: 'Normalny', ik: '⚔️', hp: 1, atak: 1, tempo: 1, spawn: 1, ms: 1, elity: 1, zloto: 1.05,
+  { n: 'Normalny', ik: '⚔️', hp: 1.15, atak: 1.15, tempo: 1.04, spawn: 1, ms: 1, elity: 1.15, zloto: 1.05,
     opis: ['Tak, jak gra ma wyglądać', 'Boss co 5 fal'] },
-  { n: 'Trudny', ik: '🔥', hp: 1.3, atak: 1.25, tempo: 1.08, spawn: 1.05, ms: 1.03, elity: 1.5, zloto: 1.1, specjalneOd: 2,
-    opis: ['+30% zdrowia, +25% obrażeń wrogów', 'Szybciej rosną w siłę', 'Elity o 50% częściej', 'Fale specjalne już od 2. fali'] },
-  { n: 'Koszmar', ik: '💀', hp: 1.65, atak: 1.5, tempo: 1.16, spawn: 1.1, ms: 1.06, elity: 2, zloto: 1.15, specjalneOd: 1, falaStart: 'elitarna', hpBoss: 1.1,
-    opis: ['+65% zdrowia, +50% obrażeń wrogów', 'Dwa razy więcej elit', 'Pierwsza fala to fala elit', 'Bossowie +10% zdrowia'] },
-  { n: 'Piekło', ik: '👹', hp: 2.1, atak: 1.85, tempo: 1.25, spawn: 1.12, ms: 1.1, elity: 2.6, zloto: 1.2, specjalneOd: 1, falaStart: 'horda', afiksy: 1, hpBoss: 1.25, msWrogow: 1.04,
-    opis: ['+110% zdrowia, +85% obrażeń wrogów', 'Elity mają dodatkowy afiks', 'Start od hordy', 'Wrogowie szybsi'] },
-  { n: 'Otchłań', ik: '🕳️', hp: 2.75, atak: 2.3, tempo: 1.35, spawn: 1.15, ms: 1.14, elity: 3.2, zloto: 1.25, specjalneOd: 1, falaStart: 'horda', afiksy: 1, hpBoss: 1.45, msWrogow: 1.07, regenGracza: 0.5,
-    opis: ['+175% zdrowia, +130% obrażeń wrogów', 'Bardzo szybkie skalowanie', 'Twoja regeneracja o połowę słabsza', 'Dla szaleńców'] },
+  // kolejne poziomy liczone względem Normalnego (×1,15 zdrowia i obrażeń)
+  { n: 'Trudny', ik: '🔥', hp: 1.15 * 1.3, atak: 1.15 * 1.25, tempo: 1.1, spawn: 1.04, ms: 1.02, elity: 1.15, zloto: 1.1, zamach: 0.96,
+    opis: ['+30% zdrowia, +25% obrażeń wrogów (względem Normalnego)', 'Szybciej rosną w siłę'] },
+  { n: 'Koszmar', ik: '💀', hp: 1.15 * 1.65, atak: 1.15 * 1.5, tempo: 1.17, spawn: 1.08, ms: 1.04, elity: 2.3, zloto: 1.15, specjalneOd: 1, falaStart: 'elitarna', hpBoss: 1.1, zamach: 0.93,
+    opis: ['+65% zdrowia, +50% obrażeń wrogów (względem Normalnego)', 'Dwa razy więcej elit', 'Pierwsza fala to fala elit', 'Bossowie +10% zdrowia', 'Wrogowie nieco szybsi'] },
+  { n: 'Piekło', ik: '👹', hp: 1.15 * 2, atak: 1.15 * 1.75, tempo: 1.22, spawn: 1.1, ms: 1.06, elity: 2.3, zloto: 1.2, specjalneOd: 1, falaStart: 'horda', afiksy: 1, hpBoss: 1.1, zamach: 0.9,
+    opis: ['+100% zdrowia, +75% obrażeń wrogów (względem Normalnego)', 'Jak Koszmar: dwa razy więcej elit, bossowie +10% zdrowia', 'Elity mają dodatkowy afiks', 'Start od hordy'] },
+  { n: 'Otchłań', ik: '🕳️', hp: 1.15 * 2.5, atak: 1.15 * 2, tempo: 1.27, spawn: 1.12, ms: 1.08, elity: 2.6, zloto: 1.25, specjalneOd: 1, falaStart: 'horda', afiksy: 1, hpBoss: 1.2, zamach: 0.88,
+    opis: [] },
 ];
 
 const SPECJALNE = {
@@ -4231,7 +5147,7 @@ function startFali(nr) {
   const T = TRUDNOSCI[run.trudnosc];
   fala = { nr: nr, aktywna: true, czas: 0, dlugosc: dlugoscFali(nr), tSpawn: 0.4, mnSpawn: mnDruzyny(), boss: czyFalaBossa(nr), specjalna: null,
     proba: null, trafienia: 0, bossZabity: false, koniecZa: -1 };
-  wrogowie = []; pociski = []; pociskiWrogow = []; kulki = []; monety = []; skrzynieNaZiemi = []; miksturyNaZiemi = [];
+  wrogowie = []; pociski = []; pociskiWrogow = []; kulki = []; monety = []; skrzynieNaZiemi = [];
   kaluze = []; polaEfektow = []; wiry = []; scianyMagiczne = []; bomby = []; uderzeniaBossa = []; zapowiedzi = []; opoznioneLista = []; efektyCzasowe = [];
   czastki = []; teksty = []; fale = []; blyskawice = []; ciecia = []; stozki = []; stwory = [];
   // fala specjalna
@@ -4248,7 +5164,7 @@ function startFali(nr) {
     run.zlotoFali = 0; run.trafFali = 0; run.falaMaks = Math.max(run.falaMaks || 0, nr);
     const k = n > 1 ? i / n * Math.PI * 2 : 0;
     p.x = SRODEK + (n > 1 ? Math.cos(k) * 55 : 0); p.y = SRODEK + (n > 1 ? Math.sin(k) * 55 : 0); p.netX = undefined;
-    p.tarcze = []; p.zastoj = 0; p.niewr = 1; p.celKat = null; p.spowG = 0; p.powalony = false; p.reanim = 0; p.cdMikstury = 0; p.dash = null;
+    p.tarcze = []; p.zastoj = 0; p.niewr = 1; p.celKat = null; p.spowG = 0; p.powalony = false; p.reanim = 0; p.dash = null;
     if (p.umi) p.umi.cd = 0; if (p.umi2) p.umi2.cd = 0; p.stanKlasy && (p.stanKlasy.zarodniki = false); p.oreze.forEach(o => { o.cd = Math.random() * 0.8; });
     zastosujStaty();
     p.hp = D.hpMax;
@@ -4271,7 +5187,7 @@ function startFali(nr) {
   } else if (fala.specjalna) pod = SPECJALNE[fala.specjalna].ik + ' ' + SPECJALNE[fala.specjalna].n + ' — ' + SPECJALNE[fala.specjalna].opis;
   if (fala.proba) pod = (pod ? pod + '<br>' : '') + fala.proba.ik + ' ' + fala.proba.n;
   baner('🌊 Fala ' + nr, pod || czas(fala.dlugosc) + ' — przetrwaj!');
-  if (nr === 11) dziennik('🥀 Zmęczenie: od teraz leczenie słabnie o 2,5% z każdą falą (mikstury działają w pełni).');
+  if (nr === 11) dziennik('🥀 Zmęczenie: od teraz leczenie słabnie o 2,5% z każdą falą.');
   DZ.fala();
   for (let i = 0; i < (fala.boss ? 1 : 2); i++) spawnGrupy(true);
   odswiezHud(true);
@@ -4368,26 +5284,26 @@ function koniecFali() {
   if (!fala.aktywna) return;
   fala.aktywna = false; stan = 'przerwa';
   const z0 = lokalny || gracz;
-  // wszystko zostaje zebrane
+  // to, co zostało na ziemi: połowa liczy się jak zebrana (potem działają mnożniki), połowa przepada
   wrogowie.forEach(w => { if (!w.martwy) { rozbryzg(w.x, w.y, '#5a4a6a', 6); } });
   wrogowie = []; pociskiWrogow = []; zapowiedzi = []; bomby = []; kaluze = []; uderzeniaBossa = []; stwory = [];
   let xp = 0, zl = 0; kulki.forEach(k => xp += k.xp); monety.forEach(m => zl += m.v);
-  const sk = skrzynieNaZiemi.slice(), mik = miksturyNaZiemi.length;
+  xp *= 0.5; zl *= 0.5;
+  const sk = skrzynieNaZiemi.filter(s => s.boss || Math.random() < 0.5), skPrzepadlo = skrzynieNaZiemi.length - sk.length;
   // minimum skrzyń na falę
   const brakSk = Math.max(0, zakresSkrzyn(fala.nr)[0] - (fala.skrzynie || 0));
   for (let i = 0; i < brakSk; i++) { sk.push({ tier: tierSkrzyni(null), boss: false }); fala.skrzynie = (fala.skrzynie || 0) + 1; }
-  kulki = []; monety = []; skrzynieNaZiemi = []; miksturyNaZiemi = [];
+  kulki = []; monety = []; skrzynieNaZiemi = [];
   dlaKazdego(p => {
     const bylPowalony = p.powalony;
     if (p.powalony) p.hp = Math.max(1, D.hpMax * 0.35);
     p.powalony = false; p.reanim = 0;
-    // wszystko, co zostało na ziemi, zbiera się samo (100%)
+    // połowa tego, co zostało na ziemi, zbiera się sama
     const zl0 = gracz.zloto, xp0 = run.xp;
     if (xp > 0) dodajXp(xp);
     if (zl > 0) dodajZloto(zl);
-    if (xp > 0.5 || zl > 0.5) dziennik('🧲 Zebrane z ziemi po fali: +' + Math.floor(gracz.zloto - zl0) + ' 💰 · +' + Math.round(run.xp - xp0) + ' ✨ doświadczenia');
+    if (xp > 0.5 || zl > 0.5 || skPrzepadlo) dziennik('🧲 Połowa łupów z ziemi: +' + Math.floor(gracz.zloto - zl0) + ' 💰 · +' + Math.round(run.xp - xp0) + ' ✨' + (skPrzepadlo ? ' · przepadło skrzyń: ' + skPrzepadlo : '') + ' (resztę zbieraj w trakcie fali)');
     sk.forEach(s => p.skrzynie.push({ tier: s.tier, boss: s.boss }));
-    for (let m = 0; m < mik; m++) if (p.mikstury < p.maksMikstur) p.mikstury++;
     dodajZloto(0.3 * zlotoNaFale(fala.nr), false, 'Nagroda za falę');
     // próba
     run.wynikProby = null;
@@ -4399,7 +5315,7 @@ function koniecFali() {
     }
     hak('naKoniecFali');
     oznaczStaty(); zastosujStaty();
-    run.przerwa = { nr: fala.nr, augment: czyAugmentPo(fala.nr) ? tierAugmentu(fala.nr) : null, sklep: false, proba: false, kowadloPo1: fala.nr === 1 };
+    run.przerwa = { nr: fala.nr, augment: czyAugmentPo(fala.nr) ? tierAugmentu(fala.nr) : null, sklep: false, proba: false, kowadloPo1: fala.nr === (KLASY[gracz.klasa].kowadloPo || 1) };
     if (run.przerwa.kowadloPo1) gracz.kowadla++;
   });
   kontekst(z0);
@@ -4452,8 +5368,18 @@ function sprite(r, fn) { const c = document.createElement('canvas'); c.width = c
 const SPR_SWIATLO = sprite(64, (c, r) => { const g = c.createRadialGradient(r, r, 0, r, r, r); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(0.55, 'rgba(0,0,0,0.75)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2); });
 const SPR_POCHODNIA = sprite(64, (c, r) => { const g = c.createRadialGradient(r, r, 2, r, r, r); g.addColorStop(0, 'rgba(255,150,60,0.16)'); g.addColorStop(1, 'rgba(255,120,40,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2); });
 const SPR_GRACZ = sprite(64, (c, r) => { const g = c.createRadialGradient(r, r, 2, r, r, r); g.addColorStop(0, 'rgba(255,200,130,0.07)'); g.addColorStop(1, 'rgba(255,200,130,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2); });
-const SPR_KULKA = sprite(12, (c, r) => { c.globalAlpha = 0.4; c.fillStyle = '#7ee87a'; c.beginPath(); c.arc(r, r, r, 0, Math.PI * 2); c.fill(); c.globalAlpha = 1; c.fillStyle = '#b8ffb0'; c.beginPath(); c.arc(r, r, r * 0.42, 0, Math.PI * 2); c.fill(); });
-const SPR_MONETA = sprite(8, (c, r) => { c.fillStyle = '#b8860b'; c.beginPath(); c.arc(r, r + 0.6, r - 0.5, 0, Math.PI * 2); c.fill(); c.fillStyle = '#ffd24a'; c.beginPath(); c.arc(r, r, r * 0.78, 0, Math.PI * 2); c.fill(); c.fillStyle = '#fff3b0'; c.fillRect(r - 2, r - 3, 2, 2); });
+// kryształ doświadczenia (szlifowany, z miękką poświatą)
+const SPR_KULKA = sprite(32, (c, r) => {
+  const g = c.createRadialGradient(r, r, 0, r, r, r); g.addColorStop(0, 'rgba(120,240,140,0.45)'); g.addColorStop(1, 'rgba(120,240,140,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2);
+  const w = r * 0.42, h = r * 0.62;
+  c.fillStyle = '#1e7a3a'; c.beginPath(); c.moveTo(r, r - h); c.lineTo(r + w, r); c.lineTo(r, r + h); c.lineTo(r - w, r); c.closePath(); c.fill();
+  c.fillStyle = '#5ae07a'; c.beginPath(); c.moveTo(r, r - h); c.lineTo(r + w, r); c.lineTo(r, r + h * 0.15); c.closePath(); c.fill();
+  c.fillStyle = '#b8ffb8'; c.beginPath(); c.moveTo(r, r - h); c.lineTo(r - w, r); c.lineTo(r, r + h * 0.15); c.closePath(); c.fill();
+  c.strokeStyle = 'rgba(10,40,20,0.8)'; c.lineWidth = 1.6; c.beginPath(); c.moveTo(r, r - h); c.lineTo(r + w, r); c.lineTo(r, r + h); c.lineTo(r - w, r); c.closePath(); c.stroke();
+  c.fillStyle = 'rgba(255,255,255,0.9)'; c.fillRect(r - w * 0.35, r - h * 0.45, 2.2, 2.2);
+});
+const SPR_MONETA = sprite(16, (c, r) => { c.fillStyle = '#8a5a08'; c.beginPath(); c.arc(r, r + 1, r - 1, 0, Math.PI * 2); c.fill(); c.fillStyle = '#ffd24a'; c.beginPath(); c.arc(r, r, r * 0.8, 0, Math.PI * 2); c.fill();
+  c.strokeStyle = '#c8961c'; c.lineWidth = 1.6; c.beginPath(); c.arc(r, r, r * 0.55, 0, Math.PI * 2); c.stroke(); c.fillStyle = '#fff6c0'; c.fillRect(r - 4, r - 6, 3, 3); });
 const OBRAZY_TWARZY = {};   // (dawniej zdjęcia — gra nie jest już spersonalizowana)
 
 function ustawKamere(dt) {
@@ -4482,6 +5408,7 @@ function rysuj() {
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.fillStyle = '#0a0810'; ctx.fillRect(0, 0, WID, WYS);
   if (!gracz) return;
+  SKALA_RYS = ZOOM * DPR;
   ctx.setTransform(ZOOM * DPR, 0, 0, ZOOM * DPR, -kamX * ZOOM * DPR, -kamY * ZOOM * DPR);
   rysujPodloge();
   rysujPlansze();
@@ -4517,7 +5444,7 @@ function rysujPodloge() {
       if (war === 1) { ctx.strokeStyle = 'rgba(0,0,0,0.34)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(ex + 9, ey + 7); ctx.lineTo(ex + 22, ey + 24); ctx.lineTo(ex + 15, ey + 40); ctx.stroke(); }
       else if (war === 2) { ctx.fillStyle = 'rgba(40,60,70,0.22)'; ctx.beginPath(); ctx.ellipse(ex + 24, ey + 26, 11, 7.5, 0.5, 0, Math.PI * 2); ctx.fill(); }
       else if (war === 3) { ctx.fillStyle = 'rgba(90,80,66,0.3)'; ctx.fillRect(ex + 10, ey + 31, 3, 3); ctx.fillRect(ex + 27, ey + 13, 2, 2); ctx.fillRect(ex + 33, ey + 32, 2, 2); }
-      else if (war === 4 && z % 23 === 0) { ctx.font = '13px sans-serif'; ctx.globalAlpha = 0.35; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(z % 2 ? '🦴' : '💀', ex + 22, ey + 22); ctx.globalAlpha = 1; }
+      else if (war === 4 && z % 23 === 0) { ctx.globalAlpha = 0.3; rysujIk(ctx, z % 2 ? '🦴' : '💀', ex + 22, ey + 22, 13, 's'); ctx.globalAlpha = 1; }
       ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1; ctx.strokeRect(ex + 0.5, ey + 0.5, KAFEL - 1, KAFEL - 1);
     } else {
       const z2 = (tx * 83492791 ^ ty * 29996224) >>> 0;
@@ -4583,11 +5510,11 @@ function rysujPlansze() {
     if (e.rodzaj === 'meteor') {
       ctx.fillStyle = 'rgba(255,120,40,' + (0.12 + 0.25 * p) + ')'; ctx.beginPath(); ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = 'rgba(255,170,90,0.85)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(e.x, e.y, e.r * p, 0, Math.PI * 2); ctx.stroke();
-      const my = e.y - 220 * (1 - p); ctx.font = '22px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('☄️', e.x + 60 * (1 - p), my);
+      const my = e.y - 220 * (1 - p); rysujIk(ctx, '☄️', e.x + 60 * (1 - p), my, 22);
     } else if (e.rodzaj === 'granat') {
       ctx.strokeStyle = 'rgba(255,160,90,' + (0.4 + 0.4 * p) + ')'; ctx.lineWidth = 2; ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
       const bx = e.sx + (e.x - e.sx) * p, by = e.sy + (e.y - e.sy) * p - Math.sin(p * Math.PI) * 60;
-      ctx.font = (e.r > 150 ? 26 : 18) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('💣', bx, by);
+      rysujIk(ctx, '💣', bx, by, e.r > 150 ? 26 : 18);
     } else if (e.rodzaj === 'runy') {
       for (let n = 0; n < 3; n++) {
         const k = p * 7 + n * 2.09, r = 34 - p * 10, x = e.x + Math.cos(k) * r, y = e.y + Math.sin(k) * r;
@@ -4615,7 +5542,7 @@ function rysujPlansze() {
     ctx.save(); ctx.globalAlpha = 0.14 + post * 0.18; ctx.fillStyle = '#e63c2c'; ctx.beginPath(); ctx.arc(bm.x, bm.y, bm.r, 0, Math.PI * 2); ctx.fill();
     ctx.globalAlpha = 0.85; ctx.strokeStyle = '#ff6a4a'; ctx.lineWidth = 2; ctx.setLineDash([8, 6]); ctx.lineDashOffset = -t / 30; ctx.beginPath(); ctx.arc(bm.x, bm.y, bm.r, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
     ctx.globalAlpha = 1; ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(bm.x, bm.y, bm.r * post, 0, Math.PI * 2); ctx.stroke();
-    ctx.font = '22px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('💣', bm.x + (Math.random() - 0.5) * 3 * (1 + post * 2), bm.y);
+    rysujIk(ctx, '💣', bm.x + (Math.random() - 0.5) * 3 * (1 + post * 2), bm.y, 22);
     ctx.restore();
   });
 }
@@ -4624,13 +5551,20 @@ function rysujLupy() {
   const t = Date.now();
   skrzynieNaZiemi.forEach(sk => {
     if (!naEkranie(sk.x, sk.y)) return;
-    const kol = TIERY[sk.tier].kolor, ex = sk.x, ey = sk.y + Math.sin(sk.faza * 3) * 1.5;
-    ctx.save(); ctx.shadowColor = kol; ctx.shadowBlur = 12 + Math.sin(t / 380 + sk.faza) * 7;
-    ctx.fillStyle = '#6b4a2a'; ctx.fillRect(ex - 14, ey - 10, 28, 20);
-    ctx.fillStyle = kol; ctx.fillRect(ex - 14, ey - 14, 28, 7); ctx.fillRect(ex - 3, ey - 4, 6, 8);
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 1.5; ctx.strokeRect(ex - 14, ey - 14, 28, 24); ctx.restore();
+    const kol = TIERY[sk.tier].kolor, ex = sk.x, ey = sk.y + Math.sin((sk.faza || 0) * 3) * 1.5, s = sk.boss ? 1.3 : 1;
+    rysujPoswiate(ex, ey, (30 + Math.sin(t / 380 + (sk.faza || 0)) * 4) * s, kol, 0.95);
+    ctx.save(); ctx.translate(ex, ey); ctx.scale(s, s);
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(0, 11, 15, 4, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.lineJoin = 'round'; ctx.strokeStyle = 'rgba(14,8,18,0.95)'; ctx.lineWidth = 2;
+    // skrzynia: korpus, wieko z łukiem, okucia w kolorze tieru, zamek z kamieniem
+    ctx.fillStyle = '#6b4424'; ctx.beginPath(); ctx.rect(-14, -6, 28, 16); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#86562c'; ctx.beginPath(); ctx.moveTo(-14, -6); ctx.lineTo(-14, -11); ctx.quadraticCurveTo(0, -20, 14, -11); ctx.lineTo(14, -6); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = 'rgba(40,22,10,0.6)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(-14, 2); ctx.lineTo(14, 2); ctx.stroke();
+    ctx.fillStyle = kol; [-10.5, 7.5].forEach(x => { ctx.fillRect(x, -15.5 + Math.abs(x) * 0.12, 3, 25.5 - Math.abs(x) * 0.12); });
+    ctx.fillRect(-14, -7.2, 28, 2.2);
+    ctx.drawImage(odznaka(sk.tier === 'p' ? 'p' : 't' + sk.tier, 48), -6.5, -9, 13, 13);
+    ctx.restore();
   });
-  miksturyNaZiemi.forEach(m => { ctx.save(); ctx.shadowColor = '#e6543c'; ctx.shadowBlur = 10; ctx.font = '18px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🧪', m.x, m.y + Math.sin(m.faza * 3) * 3); ctx.restore(); });
   monety.forEach(m => {
     if (!naEkranie(m.x, m.y, 20)) return;
     const s2 = 0.55 + 0.45 * Math.abs(Math.cos(m.faza)), r = 4.5 + Math.min(3, m.v * 0.25);
@@ -4638,17 +5572,77 @@ function rysujLupy() {
   });
   kulki.forEach(k => {
     if (!naEkranie(k.x, k.y, 20)) return;
-    const r = (8.5 + Math.min(6, k.xp * 0.3)) * (0.85 + Math.sin(k.faza) * 0.15);
+    const r = (11 + Math.min(7, k.xp * 0.3)) * (0.9 + Math.sin(k.faza) * 0.1);
     ctx.drawImage(SPR_KULKA, k.x - r, k.y - r, r * 2, r * 2);
   });
 }
 
+// ---------- jakość efektów: gdy gra zaczyna zwalniać, sama ścisza efekty ----------
+const JAKOSC = { poziom: 0, sr: 16.7, wolno: 0, szybko: 0, spadki: 0 };
+function mierzKlatke(ms) {
+  if (stan !== 'walka' || !(ms > 0) || ms > 200) return;
+  JAKOSC.sr += (ms - JAKOSC.sr) * 0.04;
+  // średnio wolniej niż ~48 klatek/s przez półtorej sekundy - lżejsze efekty
+  if (JAKOSC.sr > 20.5) { if (++JAKOSC.wolno > 90 && JAKOSC.poziom < 2) { JAKOSC.poziom++; JAKOSC.spadki++; JAKOSC.wolno = 0; JAKOSC.szybko = 0; JAKOSC.sr = 17; } }
+  else JAKOSC.wolno = Math.max(0, JAKOSC.wolno - 1);
+  // długo płynnie - wracamy do pełnych (najwyżej raz, żeby nie przełączać w kółko)
+  if (JAKOSC.sr < 17.5) { if (++JAKOSC.szybko > 1500 && JAKOSC.poziom > 0 && JAKOSC.spadki < 2) { JAKOSC.poziom--; JAKOSC.szybko = 0; } } else JAKOSC.szybko = 0;
+}
+// 0 - pełne, 1 - lżejsze (bez poświat pocisków), 2 - oszczędne
+function poziomEfektow() { return USTAW.efekty === 'oszczedne' ? 2 : JAKOSC.poziom; }
+
+// gotowe poświaty (miękkie kółka w kolorze) - zamiast kosztownego shadowBlur
+const SPR_POSWIATY = new Map();
+function rgbKoloru(k) {
+  if (k && k[0] === '#') { const h = k.length === 4 ? k.slice(1).split('').map(c => c + c).join('') : k.slice(1, 7); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; }
+  const m = /(\d+)\D+(\d+)\D+(\d+)/.exec(k || ''); return m ? [+m[1], +m[2], +m[3]] : [255, 255, 255];
+}
+function poswiata(kolor, sila) {
+  const k = kolor + '|' + (sila || 1);
+  let c = SPR_POSWIATY.get(k);
+  if (!c) {
+    const [r, g, b] = rgbKoloru(kolor), a = 0.55 * (sila || 1);
+    c = sprite(48, (x, R) => { const gr = x.createRadialGradient(R, R, 0, R, R, R); gr.addColorStop(0, 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'); gr.addColorStop(0.45, 'rgba(' + r + ',' + g + ',' + b + ',' + (a * 0.45) + ')'); gr.addColorStop(1, 'rgba(' + r + ',' + g + ',' + b + ',0)'); x.fillStyle = gr; x.fillRect(0, 0, R * 2, R * 2); });
+    SPR_POSWIATY.set(k, c);
+  }
+  return c;
+}
+function rysujPoswiate(x, y, R, kolor, sila) { ctx.drawImage(poswiata(kolor, sila), x - R, y - R, R * 2, R * 2); }
+
+// Wrogowie: emoji z ciemnym obrysem, kołysanie w marszu, pojawianie się i znikanie,
+// biały błysk przy trafieniu, kolorowy krąg pod stopami.
+const smierciWrogow = [], iskry = [];
+let poprzedniWrogowie = new Map();
+function wysokie(p) { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); }
+function dodajIskry(x, y, kolor, n, sila) {
+  if (iskry.length > 90) return;
+  for (let i = 0; i < n; i++) { const k = Math.random() * 6.283, v = (90 + Math.random() * 170) * (sila || 1); iskry.push({ x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, t: 0, max: 0.16 + Math.random() * 0.1, kolor: kolor }); }
+}
+const SPR_PODSTAW = new Map();
+function podstawaWroga(kolor, r, ranga) {
+  const rr = Math.round(r), k = kolor + '|' + rr + '|' + ranga;
+  let c = SPR_PODSTAW.get(k);
+  if (!c) {
+    const S = 3, sz = rr * 2.1, x0 = document.createElement('canvas'); x0.width = Math.ceil(sz * S); x0.height = Math.ceil(sz * 0.4 * S);
+    const x = x0.getContext('2d'); x.scale(S, S); const cx = sz / 2, cy = sz * 0.2;
+    x.fillStyle = 'rgba(0,0,0,0.38)'; x.beginPath(); x.ellipse(cx, cy, rr * 0.9, rr * 0.35, 0, 0, Math.PI * 2); x.fill();
+    if (kolor) { x.globalAlpha = ranga ? 0.9 : 0.5; x.strokeStyle = kolor; x.lineWidth = ranga === 2 ? 2.6 : (ranga ? 2 : 1.4); x.beginPath(); x.ellipse(cx, cy, rr * 0.95, rr * 0.38, 0, 0, Math.PI * 2); x.stroke(); }
+    x0.sz = sz; c = x0; SPR_PODSTAW.set(k, c);
+  }
+  return c;
+}
 function rysujWrogow() {
-  const t = Date.now();
+  const t = Date.now(), teraz = performance.now(), q = poziomEfektow();
+  const obecni = new Map();
   for (let i = 0; i < wrogowie.length; i++) {
     const w = wrogowie[i];
-    if (w.martwy || !naEkranie(w.x, w.y, w.r + 40)) continue;
-    const ey = w.y - (w.wysokosc || 0);
+    if (w.martwy) continue;
+    obecni.set(w.id, w);
+    if (w._ur === undefined) { w._ur = teraz; w._px = w.x; w._py = w.y; w._faza = Math.random() * 6.28; w._lean = 0; w._hpP = w.hpMax ? w.hp / w.hpMax : 1; }
+    const dx = w.x - w._px, dy = w.y - w._py, dl = Math.hypot(dx, dy); w._px = w.x; w._py = w.y;
+    if (dl < 40) { w._faza += Math.min(dl, 6) * 0.17; w._lean += ((dl > 0.2 ? Math.sign(dx) * 0.12 : 0) - w._lean) * 0.12; w._ruch = (w._ruch || 0) * 0.85 + Math.min(1, dl / 1.2) * 0.15; }
+    if (!naEkranie(w.x, w.y, w.r + 40)) continue;
+    const wys = w.wysokosc || 0, ey = w.y - wys;
     // zamach przed ciosem: czerwony klin w stronę celu, wypełnia się do momentu uderzenia
     const zp = w.zamach > 0 && w.zamachMax ? 1 - w.zamach / w.zamachMax : (w.zamP || 0);
     if (zp > 0) {
@@ -4661,51 +5655,104 @@ function rysujWrogow() {
       ctx.strokeStyle = 'rgba(255,120,90,0.85)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(w.x, w.y, R, k - pol, k + pol); ctx.stroke();
       ctx.restore();
     }
+    const wiek = (teraz - w._ur) / 260, poj = wiek >= 1 ? 1 : Math.max(0.05, wysokie(Math.max(0, wiek)));
+    const ruch = w.boss ? 0.45 : (w._ruch || 0), kol = Math.sin(w._faza);
+    const bob = w.duch ? Math.sin(t / 380 + w.id) * 3 : -Math.abs(kol) * w.r * 0.13 * ruch;
+    const kat = w._lean * ruch + kol * 0.085 * ruch;
     ctx.save();
-    ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(w.x, w.y + w.r * 0.8, w.r * 0.9, w.r * 0.35, 0, 0, Math.PI * 2); ctx.fill();
-    if (w.trafiony > 0) ctx.globalAlpha = 0.6;
-    if (w.duch) ctx.globalAlpha *= 0.65;
-    if (w.elita) { ctx.shadowColor = '#ffd24a'; ctx.shadowBlur = 16 + Math.sin(t / 260) * 6; }
-    if (w.boss) { ctx.shadowColor = w.poswiata || w.kolor; ctx.shadowBlur = 22 + Math.sin(t / 220) * 8; }
-    if (w.zauroczony > 0) { ctx.shadowColor = '#ff7ae0'; ctx.shadowBlur = 18; }
-    if (w.przygotowanie > 0) { ctx.shadowColor = '#ffd24a'; ctx.shadowBlur = 28; }
+    // cień i krąg pod stopami (kolor wroga; elity złote, boss mocniejszy) - gotowy obrazek
+    const pod = podstawaWroga(w.sojusznik || (q > 0 && !w.elita && !w.boss) ? '' : (w.elita ? '#ffd24a' : (w.zauroczony > 0 ? '#ff7ae0' : w.kolor)), w.r, w.boss ? 2 : (w.elita ? 1 : 0));
+    ctx.drawImage(pod, w.x - pod.sz * poj / 2, w.y + w.r * 0.8 - pod.sz * 0.4 * poj / 2, pod.sz * poj, pod.sz * 0.4 * poj);
+    // poświata: elita, boss, zauroczony, szykujący atak
+    if (q < 2) {
+      if (w.przygotowanie > 0) rysujPoswiate(w.x, ey, w.r * 2.6, '#ffd24a', 1.3);
+      else if (w.boss) rysujPoswiate(w.x, ey, w.r * (2.3 + Math.sin(t / 220) * 0.15), w.poswiata || w.kolor, 1);
+      else if (w.zauroczony > 0) rysujPoswiate(w.x, ey, w.r * 2.2, '#ff7ae0', 1);
+      else if (w.elita) rysujPoswiate(w.x, ey, w.r * (2.1 + Math.sin(t / 260) * 0.12), '#ffd24a', 0.85);
+    }
+    ctx.translate(w.x, ey + bob); if (q < 2 && kat) ctx.rotate(kat);
+    const sx = poj * (1 + 0.05 * kol * ruch), sy = poj * (1 - 0.05 * kol * ruch);
+    if (sx !== 1 || sy !== 1) ctx.scale(sx, sy);
+    if (w.duch) ctx.globalAlpha = 0.65;
     const tw = w.obraz && OBRAZY_TWARZY[w.obraz];
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     if (tw && tw.complete && tw.naturalWidth) {
       const rr = w.r * 1.12;
-      ctx.beginPath(); ctx.arc(w.x, ey, rr + 2.2, 0, Math.PI * 2); ctx.fillStyle = w.elita ? '#ffd24a' : w.kolor; ctx.fill();
-      ctx.save(); ctx.beginPath(); ctx.arc(w.x, ey, rr, 0, Math.PI * 2); ctx.clip(); ctx.drawImage(tw, w.x - rr, ey - rr, rr * 2, rr * 2); ctx.restore();
-      ctx.font = (w.r * 0.85) + 'px sans-serif'; ctx.fillText(w.ik, w.x + rr * 0.78, ey + rr * 0.72);
+      ctx.beginPath(); ctx.arc(0, 0, rr + 2.2, 0, Math.PI * 2); ctx.fillStyle = w.elita ? '#ffd24a' : w.kolor; ctx.fill();
+      ctx.save(); ctx.beginPath(); ctx.arc(0, 0, rr, 0, Math.PI * 2); ctx.clip(); ctx.drawImage(tw, -rr, -rr, rr * 2, rr * 2); ctx.restore();
+      rysujIk(ctx, w.ik, rr * 0.78, rr * 0.72, w.r * 0.85, 'o');
     } else {
-      ctx.font = (w.r * 1.7) + 'px sans-serif';
-      if (w.kolor === '#9a9aaa') { ctx.filter = 'grayscale(1)'; }
-      ctx.fillText(w.ik, w.x, ey);
-      ctx.filter = 'none';
+      const blysk = w.trafiony > 0 ? Math.min(1, w.trafiony / 0.1) * 0.5 : 0;
+      if (!rysujWygladWroga(w, blysk, kat)) {
+        rysujIk(ctx, w.ik, 0, 0, w.r * 1.7, w.kolor === '#9a9aaa' ? 'so' : 'o', SKALA_RYS);
+        if (blysk > 0) { ctx.globalAlpha = blysk * (w.duch ? 0.65 : 1); rysujIk(ctx, w.ik, 0, 0, w.r * 1.7, 'b', SKALA_RYS); }
+      }
     }
-    ctx.shadowBlur = 0;
-    if (w.zauroczony > 0) { ctx.font = '12px sans-serif'; ctx.fillText(w.sojusznik ? '💀' : '💗', w.x, ey - w.r - 14); }
+    ctx.restore();
+    if (w.trafiony > 0 && !w._tr && q === 0 && teraz - (w._tIskry || 0) > 140) { w._tIskry = teraz; dodajIskry(w.x, ey, w.elita ? '#ffe08a' : '#fff4d8', 3); }
+    w._tr = w.trafiony > 0;
+    ctx.save();
+    if (w.zauroczony > 0) rysujIk(ctx, w.sojusznik ? '💀' : '💗', w.x, ey - w.r - 14, 12, 'o');
     if (w.spow > 0 && w.spowCzas > 0) { ctx.globalAlpha = 0.85; ctx.strokeStyle = '#8fd0ff'; ctx.lineWidth = 1.6; ctx.setLineDash([3, 3]); ctx.lineDashOffset = -t / 60; ctx.beginPath(); ctx.arc(w.x, ey, w.r + 4, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1; }
-    if (w.ogl > 0) { ctx.font = '10px sans-serif'; for (let s = 0; s < 3; s++) { const k = t / 200 + s * 2.1; ctx.fillText('⭐', w.x + Math.cos(k) * w.r * 0.8, ey - w.r - 2 + Math.sin(k) * 3); } }
-    if (w.ogien) { ctx.font = '11px sans-serif'; ctx.fillText('🔥', w.x + w.r * 0.7, ey - w.r * 0.7); }
-    if (w.krew) { ctx.font = '9px sans-serif'; ctx.fillText('🩸', w.x - w.r * 0.7, ey - w.r * 0.7); }
+    if (w.ogl > 0) for (let s = 0; s < 3; s++) { const k = t / 200 + s * 2.1; rysujIk(ctx, '⭐', w.x + Math.cos(k) * w.r * 0.8, ey - w.r - 2 + Math.sin(k) * 3, 10); }
+    if (w.ogien) rysujIk(ctx, '🔥', w.x + w.r * 0.7, ey - w.r * 0.7 + Math.sin(t / 120) * 1.2, 11);
+    if (w.krew) rysujIk(ctx, '🩸', w.x - w.r * 0.7, ey - w.r * 0.7, 9);
     if (w.naznaczony > 0) { ctx.strokeStyle = 'rgba(230,60,60,0.8)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(w.x, ey, w.r + 7, 0, Math.PI * 2); ctx.stroke(); }
     if (w.tarcza > 0) { ctx.strokeStyle = 'rgba(230,240,255,0.85)'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(w.x, ey, w.r + 3, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * w.tarcza / w.tarczaMax); ctx.stroke(); }
     if (w.pole) { ctx.globalAlpha = 0.12; ctx.fillStyle = '#5aa8ff'; ctx.beginPath(); ctx.arc(w.x, w.y, 190, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 0.5; ctx.strokeStyle = '#8fd0ff'; ctx.lineWidth = 2; ctx.setLineDash([9, 7]); ctx.lineDashOffset = t / 40; ctx.beginPath(); ctx.arc(w.x, w.y, 190, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1; }
-    if (w.elita && (w.afIk || w.afiksy.length)) { ctx.font = '9px sans-serif'; ctx.fillText(w.afIk || w.afiksy.map(a => AFIKSY[a] ? AFIKSY[a].ik : '').join(''), w.x, ey - w.r - 15); }
+    if (w.elita && (w.afIk || w.afiksy.length)) rysujIki(ctx, w.afIk || w.afiksy.map(a => AFIKSY[a] ? AFIKSY[a].ik : '').join(''), w.x, ey - w.r - 16, 9, 'o');
     ctx.restore();
-    if (!w.boss && (w.hp < w.hpMax || w.elita)) {
-      const sz = w.r * 2;
-      ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(w.x - sz / 2, ey - w.r - 9, sz, 4);
-      ctx.fillStyle = w.zauroczony > 0 ? '#ff7ae0' : (w.elita ? '#ffb03c' : '#c0392b'); ctx.fillRect(w.x - sz / 2, ey - w.r - 9, sz * Math.max(0, w.hp / w.hpMax), 4);
+    // pasek zdrowia: biała część pokazuje świeżo zadane obrażenia
+    const proc = Math.max(0, Math.min(1, w.hp / w.hpMax));
+    w._hpP = w._hpP === undefined || w._hpP < proc ? proc : w._hpP + (proc - w._hpP) * 0.08;
+    if (!w.boss && (proc < 1 || w.elita)) {
+      const sz = Math.max(18, w.r * 2), y = ey - w.r - 10, x = w.x - sz / 2;
+      ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(x - 1, y - 1, sz + 2, 6);
+      if (w._hpP > proc) { ctx.fillStyle = 'rgba(255,240,220,0.85)'; ctx.fillRect(x, y, sz * w._hpP, 4); }
+      ctx.fillStyle = w.zauroczony > 0 ? '#ff7ae0' : (w.elita ? '#ffb03c' : '#e0453a'); ctx.fillRect(x, y, sz * proc, 4);
+      ctx.fillStyle = 'rgba(255,255,255,0.22)'; ctx.fillRect(x, y, sz * proc, 1.3);
     }
+  }
+  // wrogowie, którzy zniknęli od ostatniej klatki - krótka animacja „puf”
+  if (stan === 'walka' || stan === 'pauza') {
+    let n = 0;
+    poprzedniWrogowie.forEach((w, id) => {
+      if (obecni.has(id) || n >= 24 || !naEkranie(w.x, w.y, 40)) return;
+      n++; smierciWrogow.push({ x: w.x, y: w.y - (w.wysokosc || 0), ik: w.ik, r: w.r, kolor: w.kolor, t0: teraz, boss: w.boss, kat: w._lean || 0 });
+      if (q < 2) dodajIskry(w.x, w.y - (w.wysokosc || 0), w.kolor || '#ffffff', w.boss ? 14 : 5, w.boss ? 1.8 : 1);
+    });
+  }
+  poprzedniWrogowie = obecni;
+  for (let i = smierciWrogow.length - 1; i >= 0; i--) {
+    const s = smierciWrogow[i], p = (teraz - s.t0) / (s.boss ? 700 : 300);
+    if (p >= 1 || p < 0) { smierciWrogow.splice(i, 1); continue; }
+    ctx.save();
+    ctx.globalAlpha = (1 - p) * 0.8; ctx.strokeStyle = s.kolor || '#fff'; ctx.lineWidth = 3 * (1 - p) + 0.5;
+    ctx.beginPath(); ctx.arc(s.x, s.y, s.r * (0.6 + p * 1.5), 0, Math.PI * 2); ctx.stroke();
+    ctx.translate(s.x, s.y - p * 6); ctx.rotate(s.kat + p * 0.6); const sk = 1 + p * 0.35; ctx.scale(sk, sk * (1 - p * 0.5));
+    ctx.globalAlpha = (1 - p) * (1 - p);
+    const pw = { ik: s.ik, r: s.r, kolor: s.kolor, id: 0, _faza: 0, _ruch: 0 };
+    if (!rysujWygladWroga(pw, p < 0.45 ? (1 - p / 0.45) * 0.8 : 0, 0)) {
+      rysujIk(ctx, s.ik, 0, 0, s.r * 1.7, 'o', SKALA_RYS);
+      if (p < 0.45) { ctx.globalAlpha = (1 - p / 0.45) * 0.8; rysujIk(ctx, s.ik, 0, 0, s.r * 1.7, 'b', SKALA_RYS); }
+    }
+    ctx.restore();
   }
 }
 
 // Nakrycia głowy postaci (głowa: środek (0,-13), promień ~7,6) — każda klasa wygląda inaczej
-function rysujNakrycieGlowy(typ, k, kol) {
-  const c = ctx, sciezka = (f) => { c.beginPath(); f(); c.fill(); };
+function rysujNakrycieGlowy(c, typ, k, kol) {
+  const sciezka = (f) => { c.beginPath(); f(); c.fill(); };
   const obrys = () => { c.strokeStyle = 'rgba(0,0,0,0.45)'; c.lineWidth = 0.8; c.stroke(); };
   switch (typ) {
+    case 'maska':   // Assassin: ciemny kaptur i chusta na twarz
+      c.fillStyle = '#20202c'; sciezka(() => { c.arc(0, -14, 9.4, Math.PI * 0.9, Math.PI * 2.1); c.lineTo(9, -6); c.lineTo(-9, -6); c.closePath(); }); obrys();
+      c.fillStyle = '#3a2a5a'; sciezka(() => { c.moveTo(-7.4, -10.6); c.lineTo(7.4, -10.6); c.lineTo(6.6, -6.2); c.quadraticCurveTo(0, -4.4, -6.6, -6.2); c.closePath(); }); obrys();
+      c.fillStyle = '#c8b8ff'; c.fillRect(-5, -12.6, 2.6, 0.9); c.fillRect(2.6, -12.6, 2.6, 0.9); break;
+    case 'slomkowy':   // Farmer: słomkowy kapelusz z szerokim rondem
+      c.fillStyle = '#e6c56a'; sciezka(() => c.ellipse(0, -17.8, 14.5, 3.4, 0, 0, Math.PI * 2)); obrys();
+      sciezka(() => { c.moveTo(-7, -18); c.quadraticCurveTo(-6.4, -26, 0, -26.4); c.quadraticCurveTo(6.4, -26, 7, -18); c.closePath(); }); obrys();
+      c.fillStyle = '#c0392b'; c.fillRect(-7, -20.4, 14, 2); c.strokeStyle = 'rgba(120,80,20,0.6)'; c.lineWidth = 0.6;
+      for (let i = -12; i <= 12; i += 4) { c.beginPath(); c.moveTo(i, -19.5); c.lineTo(i * 1.05, -16.4); c.stroke(); } break;
     case 'kajdany': c.fillStyle = '#8a8a96'; sciezka(() => c.ellipse(0, -5.2, 7.2, 2.1, 0, 0, Math.PI * 2)); c.strokeStyle = '#5a5a66'; c.lineWidth = 1.2; c.beginPath(); c.arc(4, -2.5, 1.6, 0, Math.PI * 2); c.arc(6.5, -0.5, 1.6, 0, Math.PI * 2); c.stroke(); break;
     case 'helm': c.fillStyle = '#c8ccd8'; sciezka(() => { c.arc(0, -13.5, 8.6, Math.PI, Math.PI * 2); c.lineTo(8.6, -9); c.lineTo(5.5, -9); c.lineTo(5.5, -12); c.lineTo(-5.5, -12); c.lineTo(-5.5, -9); c.lineTo(-8.6, -9); c.closePath(); }); obrys();
       c.fillStyle = '#2a2a34'; c.fillRect(-5, -12.3, 10, 1.1); c.fillStyle = '#c0392b'; sciezka(() => { c.moveTo(-1, -22); c.quadraticCurveTo(-7, -27, -9, -21); c.quadraticCurveTo(-5, -22, -1, -20); }); break;
@@ -4735,48 +5782,78 @@ function rysujNakrycieGlowy(typ, k, kol) {
     case 'macki': c.fillStyle = '#6a4ac4'; for (let i = 0; i < 3; i++) sciezka(() => { const x = -6 + i * 6; c.moveTo(x - 1.5, -18); c.quadraticCurveTo(x - 3, -24, x + 1, -26); c.quadraticCurveTo(x - 0.5, -22, x + 1.5, -18); c.closePath(); }); break;
   }
 }
+// Ciało postaci (bez pasków i broni) w układzie postaci: środek (0,0), głowa ~(0,-13).
+// Używane na planszy i w portretach (wybór postaci, karta postaci).
+function rysujCialo(c, K, krok, odd, fal, mrug) {
+  const kol = K.kolory;
+  // ciemny kontur sylwetki - postać lepiej odcina się od podłogi
+  c.fillStyle = 'rgba(12,8,18,0.7)'; c.beginPath(); c.arc(0, -13 + odd * 0.2, 9.1, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.moveTo(-8.4, -6.4); c.lineTo(8.4, -6.4); c.lineTo(10.6 - fal, 14.2); c.quadraticCurveTo(0, 17, -11.6 - fal, 13.4); c.closePath(); c.fill();
+  c.beginPath(); c.moveTo(-11, -5.4); c.lineTo(11, -5.4); c.lineTo(11, 6.5); c.lineTo(-11, 6.5); c.closePath(); c.fill();
+  c.beginPath(); c.moveTo(-7.4, 9.5); c.lineTo(7.4, 9.5); c.lineTo(7.6, 15.8); c.lineTo(-7.6, 15.8); c.closePath(); c.fill();
+  function zao(x, y, w, h, r, k) { c.fillStyle = k; c.beginPath(); if (c.roundRect) c.roundRect(x, y, w, h, r); else c.rect(x, y, w, h); c.fill(); }
+  const gPl = c.createLinearGradient(0, -6, 0, 14); gPl.addColorStop(0, kol.plaszcz[0]); gPl.addColorStop(1, kol.plaszcz[1]);
+  c.fillStyle = gPl; c.beginPath(); c.moveTo(-7, -5); c.lineTo(7, -5); c.lineTo(9 - fal, 13); c.quadraticCurveTo(0, 15.5, -10 - fal, 12); c.closePath(); c.fill();
+  c.strokeStyle = 'rgba(0,0,0,0.4)'; c.lineWidth = 1; c.stroke();
+  const WY = K.wyglad || {};
+  if (WY.czapka === 'wampir') { c.fillStyle = '#7a0a1a'; c.beginPath(); c.moveTo(-9.5, -5); c.lineTo(-11, -19); c.lineTo(-4, -8); c.closePath(); c.moveTo(9.5, -5); c.lineTo(11, -19); c.lineTo(4, -8); c.closePath(); c.fill(); }
+  zao(-5, 5 + Math.max(0, krok) * 1.5, 4, 8 - Math.max(0, krok) * 1.5, 1.5, '#2f3a4f'); zao(1, 5 + Math.max(0, -krok) * 1.5, 4, 8 - Math.max(0, -krok) * 1.5, 1.5, '#2f3a4f');
+  zao(-6 + krok * 1.3, 11, 5.6, 3.6, 1.6, '#4a2c1a'); zao(0.4 - krok * 1.3, 11, 5.6, 3.6, 1.6, '#4a2c1a');
+  const gTu = c.createLinearGradient(-7, -6, 7, 8); gTu.addColorStop(0, kol.tunika[0]); gTu.addColorStop(1, kol.tunika[1]);
+  c.fillStyle = gTu; c.beginPath(); c.moveTo(-6.5, -5 + odd * 0.3); c.lineTo(6.5, -5 + odd * 0.3); c.lineTo(8.2, 7.5); c.lineTo(-8.2, 7.5); c.closePath(); c.fill();
+  c.strokeStyle = 'rgba(0,0,0,0.45)'; c.stroke();
+  zao(-7.6, 1.4, 15.2, 2.7, 1, '#5a3a1e'); zao(-1.6, 1.1, 3.2, 3.3, 0.8, '#ffd24a');
+  zao(-9.6, -4 - krok * 1.2, 3.4, 8, 1.6, kol.tunika[1]); zao(6.2, -4 + krok * 1.2, 3.4, 8, 1.6, kol.tunika[1]);
+  c.fillStyle = kol.skora ? kol.skora[0] : '#efc39a'; c.beginPath(); c.arc(-7.9, 4.6 - krok * 1.2, 1.9, 0, Math.PI * 2); c.arc(7.9, 4.6 + krok * 1.2, 1.9, 0, Math.PI * 2); c.fill();
+  const gGl = c.createRadialGradient(-2, -15, 1, 0, -13, 9); gGl.addColorStop(0, kol.skora ? kol.skora[0] : '#f6d2ae'); gGl.addColorStop(1, kol.skora ? kol.skora[1] : '#dca57c');
+  c.fillStyle = gGl; c.beginPath(); c.arc(0, -13 + odd * 0.2, 7.6, 0, Math.PI * 2); c.fill(); c.strokeStyle = 'rgba(0,0,0,0.35)'; c.lineWidth = 0.9; c.stroke();
+  if (!WY.lysy) {   // krótkie włosy
+    c.fillStyle = kol.wlosy; c.beginPath(); c.arc(0, -14.5, 8, Math.PI * 1.02, Math.PI * 1.98); c.fill();
+    c.beginPath(); c.moveTo(-7.8, -14); c.lineTo(-6, -15.2); c.lineTo(-3.5, -14.2); c.lineTo(-1, -15.4); c.lineTo(1.8, -14.2); c.lineTo(4.5, -15.3); c.lineTo(7.8, -14); c.lineTo(7.5, -17.5); c.lineTo(-7.5, -17.5); c.closePath(); c.fill();
+  } else { c.fillStyle = 'rgba(0,0,0,0.25)'; c.fillRect(-5.5, -15.6, 11, 1.4); }
+  c.fillStyle = '#1e1a16';
+  if (WY.oczy) {   // wrogowie: świecące oczy
+    c.fillStyle = WY.oczy; c.beginPath(); c.ellipse(-2.6, -11.4, 1.5, 1.1, 0.25, 0, Math.PI * 2); c.ellipse(3.2, -11.4, 1.5, 1.1, -0.25, 0, Math.PI * 2); c.fill();
+    c.fillStyle = 'rgba(0,0,0,0.6)'; c.fillRect(-4.6, -13.4, 3.4, 0.9); c.fillRect(1.6, -13.4, 3.4, 0.9);
+  } else if (mrug) { c.fillRect(-4, -11.6, 2.8, 0.9); c.fillRect(1.7, -11.6, 2.8, 0.9); }
+  else { c.beginPath(); c.ellipse(-2.5, -11.3, 1.25, 1.65, 0, 0, Math.PI * 2); c.ellipse(3.1, -11.3, 1.25, 1.65, 0, 0, Math.PI * 2); c.fill(); c.fillStyle = '#fff'; c.fillRect(-2.3, -12.3, 0.7, 0.7); c.fillRect(3.3, -12.3, 0.7, 0.7); }
+  if (!WY.oczy) {
+    c.fillStyle = 'rgba(0,0,0,0.55)'; c.fillRect(-4.2, -13.6, 3, 0.8); c.fillRect(1.6, -13.6, 3, 0.8);   // brwi
+    c.strokeStyle = '#7a3a2a'; c.lineWidth = 0.9; c.beginPath(); c.moveTo(-1.2, -8.4); c.lineTo(2.2, -8.4); c.stroke();
+  }
+  if (WY.chusta) { c.fillStyle = WY.chusta; c.beginPath(); c.moveTo(-7.4, -9.8); c.lineTo(7.4, -9.8); c.quadraticCurveTo(7, -5.6, 0.3, -5); c.quadraticCurveTo(-6.6, -5.6, -7.4, -9.8); c.fill(); }
+  if (WY.uszy) { c.fillStyle = '#e8b890'; c.beginPath(); c.moveTo(-7.2, -13.5); c.lineTo(-12.5, -18.5); c.lineTo(-6.6, -10.6); c.closePath(); c.moveTo(7.2, -13.5); c.lineTo(12.5, -18.5); c.lineTo(6.6, -10.6); c.closePath(); c.fill(); c.strokeStyle = 'rgba(0,0,0,0.35)'; c.lineWidth = 0.6; c.stroke(); }
+  if (WY.broda) { c.fillStyle = WY.broda === true ? kol.wlosy : WY.broda; c.beginPath(); c.moveTo(-7, -11); c.quadraticCurveTo(-6.5, -3.5, 0.3, -2.6); c.quadraticCurveTo(7, -3.5, 7.4, -11); c.quadraticCurveTo(4, -7.6, 0.3, -9.4); c.quadraticCurveTo(-3.5, -7.6, -7, -11); c.fill(); }
+  rysujNakrycieGlowy(c, WY.czapka, WY.kol || kol.plaszcz[0], kol);
+}
 function rysujGracza(g) {
   const K = KLASY[g.klasa], kol = K.kolory, rozm = g.roz || 1, hpMaxR = g.hpMaxR || 100;
   const gx = g.x, gy = g.y;
   ctx.save();
+  const stK = g.stanKlasy || {}, niewid = g.niewidzialny > 0, nietop = g.forma === 'nietoperz' || g.batAkt, wirAkt = !!stK.wir || g.wirAkt, salwaAkt = stK.salwa > czasGry || g.salwaAkt;
   if (g.powalony) ctx.globalAlpha = 0.45;
+  else if (niewid) ctx.globalAlpha = g === lokalnyWidok() || g === lokalny ? 0.32 : 0.1;
+  else if (nietop) ctx.globalAlpha = 0.18;
   else if (g.migotanie > 0 || (g.niewr > 0 && Math.floor(Date.now() / 90) % 2)) ctx.globalAlpha = 0.55;
+  if (salwaAkt && !g.powalony) { const p = 0.5 + 0.5 * Math.sin(Date.now() / 90); ctx.save(); ctx.globalAlpha = 0.35 + 0.25 * p; ctx.strokeStyle = '#bff4a0'; ctx.lineWidth = 3; ctx.shadowColor = '#9fe8ff'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(gx, gy - 2, 19 * rozm + 2 * p, 0, Math.PI * 2); ctx.stroke(); ctx.restore(); }
   ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(gx, gy + 11 * rozm, 12 * rozm, 4.5 * rozm, 0, 0, Math.PI * 2); ctx.fill();
+  if (!g.powalony && !niewid) {   // krąg pod stopami: Twoja postać jasnoniebieski, koledzy złoci
+    const ja = g === lokalnyWidok() || (g === lokalny && !(typeof SIEC !== 'undefined' && SIEC.rola === 'klient'));
+    ctx.save(); ctx.globalAlpha = 0.55 + 0.15 * Math.sin(Date.now() / 300); ctx.strokeStyle = ja ? '#7ee8ff' : '#ffd27a'; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.ellipse(gx, gy + 11 * rozm, 14 * rozm, 5.4 * rozm, 0, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+  }
   const kier = (g.kierX || 0) < -0.15 ? -1 : 1;
   const ruch = g.wRuchu ? 1 : 0;
   g.faza = (g.faza || 0) + (ruch ? 0.22 : 0);
   const krok = ruch ? Math.sin(g.faza) : 0, odd = Math.sin(Date.now() / 420) * 0.6, fal = Math.sin(Date.now() / 180) * (ruch ? 1.6 : 0.6);
-  function zao(x, y, w, h, r, k) { ctx.fillStyle = k; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); ctx.fill(); }
   ctx.translate(gx, gy + 2); ctx.scale(kier * g.r / 16 * rozm, g.r / 16 * rozm);
-  const gPl = ctx.createLinearGradient(0, -6, 0, 14); gPl.addColorStop(0, kol.plaszcz[0]); gPl.addColorStop(1, kol.plaszcz[1]);
-  ctx.fillStyle = gPl; ctx.beginPath(); ctx.moveTo(-7, -5); ctx.lineTo(7, -5); ctx.lineTo(9 - fal, 13); ctx.quadraticCurveTo(0, 15.5, -10 - fal, 12); ctx.closePath(); ctx.fill();
-  ctx.strokeStyle = 'rgba(0,0,0,0.4)'; ctx.lineWidth = 1; ctx.stroke();
-  const WY = K.wyglad || {};
-  if (WY.czapka === 'wampir') { ctx.fillStyle = '#7a0a1a'; ctx.beginPath(); ctx.moveTo(-9.5, -5); ctx.lineTo(-11, -19); ctx.lineTo(-4, -8); ctx.closePath(); ctx.moveTo(9.5, -5); ctx.lineTo(11, -19); ctx.lineTo(4, -8); ctx.closePath(); ctx.fill(); }
-  zao(-5, 5 + Math.max(0, krok) * 1.5, 4, 8 - Math.max(0, krok) * 1.5, 1.5, '#2f3a4f'); zao(1, 5 + Math.max(0, -krok) * 1.5, 4, 8 - Math.max(0, -krok) * 1.5, 1.5, '#2f3a4f');
-  zao(-6 + krok * 1.3, 11, 5.6, 3.6, 1.6, '#4a2c1a'); zao(0.4 - krok * 1.3, 11, 5.6, 3.6, 1.6, '#4a2c1a');
-  const gTu = ctx.createLinearGradient(-7, -6, 7, 8); gTu.addColorStop(0, kol.tunika[0]); gTu.addColorStop(1, kol.tunika[1]);
-  ctx.fillStyle = gTu; ctx.beginPath(); ctx.moveTo(-6.5, -5 + odd * 0.3); ctx.lineTo(6.5, -5 + odd * 0.3); ctx.lineTo(8.2, 7.5); ctx.lineTo(-8.2, 7.5); ctx.closePath(); ctx.fill();
-  ctx.strokeStyle = 'rgba(0,0,0,0.45)'; ctx.stroke();
-  zao(-7.6, 1.4, 15.2, 2.7, 1, '#5a3a1e'); zao(-1.6, 1.1, 3.2, 3.3, 0.8, '#ffd24a');
-  zao(-9.6, -4 - krok * 1.2, 3.4, 8, 1.6, kol.tunika[1]); zao(6.2, -4 + krok * 1.2, 3.4, 8, 1.6, kol.tunika[1]);
-  ctx.fillStyle = '#efc39a'; ctx.beginPath(); ctx.arc(-7.9, 4.6 - krok * 1.2, 1.9, 0, Math.PI * 2); ctx.arc(7.9, 4.6 + krok * 1.2, 1.9, 0, Math.PI * 2); ctx.fill();
-  const gGl = ctx.createRadialGradient(-2, -15, 1, 0, -13, 9); gGl.addColorStop(0, '#f6d2ae'); gGl.addColorStop(1, '#dca57c');
-  ctx.fillStyle = gGl; ctx.beginPath(); ctx.arc(0, -13 + odd * 0.2, 7.6, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = 0.9; ctx.stroke();
-  if (!WY.lysy) {   // krótkie włosy
-    ctx.fillStyle = kol.wlosy; ctx.beginPath(); ctx.arc(0, -14.5, 8, Math.PI * 1.02, Math.PI * 1.98); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(-7.8, -14); ctx.lineTo(-6, -15.2); ctx.lineTo(-3.5, -14.2); ctx.lineTo(-1, -15.4); ctx.lineTo(1.8, -14.2); ctx.lineTo(4.5, -15.3); ctx.lineTo(7.8, -14); ctx.lineTo(7.5, -17.5); ctx.lineTo(-7.5, -17.5); ctx.closePath(); ctx.fill();
-  } else { ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(-5.5, -15.6, 11, 1.4); }
-  const mrug = (Date.now() % 3800) < 120;
-  ctx.fillStyle = '#1e1a16';
-  if (mrug) { ctx.fillRect(-4, -11.6, 2.8, 0.9); ctx.fillRect(1.7, -11.6, 2.8, 0.9); }
-  else { ctx.beginPath(); ctx.ellipse(-2.5, -11.3, 1.25, 1.65, 0, 0, Math.PI * 2); ctx.ellipse(3.1, -11.3, 1.25, 1.65, 0, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(-2.3, -12.3, 0.7, 0.7); ctx.fillRect(3.3, -12.3, 0.7, 0.7); }
-  ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(-4.2, -13.6, 3, 0.8); ctx.fillRect(1.6, -13.6, 3, 0.8);   // brwi
-  ctx.strokeStyle = '#7a3a2a'; ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(-1.2, -8.4); ctx.lineTo(2.2, -8.4); ctx.stroke();
-  if (WY.broda) { ctx.fillStyle = WY.broda === true ? kol.wlosy : WY.broda; ctx.beginPath(); ctx.moveTo(-7, -11); ctx.quadraticCurveTo(-6.5, -3.5, 0.3, -2.6); ctx.quadraticCurveTo(7, -3.5, 7.4, -11); ctx.quadraticCurveTo(4, -7.6, 0.3, -9.4); ctx.quadraticCurveTo(-3.5, -7.6, -7, -11); ctx.fill(); }
-  rysujNakrycieGlowy(WY.czapka, WY.kol || kol.plaszcz[0], kol);
+  rysujCialo(ctx, K, krok, odd, fal, (Date.now() % 3800) < 120);
   ctx.restore();
   if (g.powalony) { rysujPowalonego(g); return; }
+  if (nietop) { const t = Date.now() / 160;
+    for (let i = 0; i < 6; i++) { const a = t + i * 1.05, r = 12 + 6 * Math.sin(t * 1.7 + i); rysujIk(ctx, '🦇', gx + Math.cos(a) * r, gy - 4 + Math.sin(a) * r * 0.7, 15, 'o'); } }
+  if (wirAkt) { const t = Date.now() / 70; ctx.save(); ctx.strokeStyle = '#c8c8d8'; ctx.lineWidth = 2.2; ctx.shadowColor = '#ffffff'; ctx.shadowBlur = 6;
+    for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.arc(gx, gy - 2, 26 + i * 9, t + i * 2.1, t + i * 2.1 + 1.6); ctx.stroke(); } ctx.restore(); }
   // zastój Zhonyi - złota bańka
   if (g.zastoj > 0) { ctx.save(); ctx.globalAlpha = 0.5; ctx.fillStyle = '#ffd24a'; ctx.beginPath(); ctx.arc(gx, gy - 2, 22 * rozm, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
   // tarcza
@@ -4788,6 +5865,19 @@ function rysujGracza(g) {
   ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(gx - sz / 2 - 1, gy - 30 * rozm, sz + 2, 6);
   ctx.fillStyle = proc > 0.5 ? '#5fc46a' : (proc > 0.25 ? '#e6c15c' : '#e6543c'); ctx.fillRect(gx - sz / 2, gy - 30 * rozm + 1, sz * proc, 4);
   if (ts > 0) { ctx.fillStyle = 'rgba(240,245,255,0.9)'; ctx.fillRect(gx - sz / 2, gy - 30 * rozm + 1, sz * Math.min(1, ts / hpMaxR), 2); }
+  // naładowanie (energia): cienki niebieski pasek; pełny = iskrzy wokół postaci
+  const en = g === lokalnyWidok() ? (((lokalny || gracz) || {}).maEnergie ? ((lokalny || gracz).energia || 0) : -1) : (g.en !== undefined ? g.en : -1);
+  if (en >= 0) {
+    ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(gx - sz / 2 - 1, gy - 30 * rozm + 6, sz + 2, 3);
+    ctx.fillStyle = en >= 100 ? '#bff4ff' : '#4ac4ff'; ctx.fillRect(gx - sz / 2, gy - 30 * rozm + 6.5, sz * Math.min(1, en / 100), 2);
+    if (en >= 100) {
+      const t = Date.now() / 120;
+      ctx.save(); ctx.strokeStyle = '#9fe8ff'; ctx.lineWidth = 1.6; ctx.shadowColor = '#7ae0ff'; ctx.shadowBlur = 8; ctx.globalAlpha = 0.85;
+      for (let i = 0; i < 3; i++) { const a = t + i * 2.1, r1 = 15 * rozm, r2 = 21 * rozm; ctx.beginPath(); ctx.moveTo(gx + Math.cos(a) * r1, gy - 2 + Math.sin(a) * r1);
+        ctx.lineTo(gx + Math.cos(a + 0.25) * r2, gy - 2 + Math.sin(a + 0.25) * r2); ctx.lineTo(gx + Math.cos(a + 0.45) * (r1 + 2), gy - 2 + Math.sin(a + 0.45) * (r1 + 2)); ctx.stroke(); }
+      ctx.restore();
+    }
+  }
   if (g.nick && (gracze.length > 1 || (typeof SIEC !== 'undefined' && SIEC.rola))) {
     ctx.font = '800 9px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.lineWidth = 3; ctx.strokeText(g.nick, gx, gy - 33 * rozm); ctx.fillStyle = g === lokalnyWidok() ? '#ffe08a' : '#bfe0ff'; ctx.fillText(g.nick, gx, gy - 33 * rozm);
@@ -4807,18 +5897,49 @@ function rysujGracza(g) {
     if (n === 1) { const w = b.anim > 0 ? 20 : 13; bx = gx + Math.cos(ka) * w; by = gy + Math.sin(ka) * w; }
     else { const ks = -Math.PI / 2 + (i + 0.5) * Math.PI * 2 / n; const r = 22 * rozm; bx = gx + Math.cos(ks) * r; by = gy - 2 + Math.sin(ks) * r * 0.8;
       if (b.anim > 0) { bx += Math.cos(ka) * 7; by += Math.sin(ka) * 7; } }
-    ctx.save(); ctx.translate(bx, by); ctx.rotate(ka); rysujKsztaltBroni(ctx, b); ctx.restore();
+    if ((b.tier || 0) >= 2 && poziomEfektow() < 2) rysujPoswiate(bx + Math.cos(ka) * 8, by + Math.sin(ka) * 8, 12 + b.tier * 2.5, TIERY[b.tier].kolor, b.tier >= 4 ? 0.75 + 0.25 * Math.sin(Date.now() / 200) : 0.6);
+    ctx.save(); ctx.translate(bx, by); ctx.rotate(ka); ctx.shadowColor = 'rgba(8,4,12,0.75)'; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 1.4 * DPR; ctx.shadowBlur = 0;
+    rysujKsztaltBroni(ctx, b); ctx.restore();
   });
+  if (g.blysk > 0 && !g._blyskByl) { dodajIskry(gx, gy - 4, '#ffe08a', 10, 1.5); dodajIskry(gx, gy - 4, '#ffffff', 5, 1.1); }
+  g._blyskByl = g.blysk > 0;
   if (g.blysk > 0) {
     const p = 1 - g.blysk / 1.2;
+    if (p < 0.6 && poziomEfektow() < 2) {   // słup światła przy awansie
+      const a = (1 - p / 0.6); ctx.save(); ctx.globalAlpha = a * 0.5; const gr = ctx.createLinearGradient(0, gy - 90, 0, gy + 10); gr.addColorStop(0, 'rgba(255,224,138,0)'); gr.addColorStop(1, 'rgba(255,224,138,0.9)');
+      ctx.fillStyle = gr; ctx.fillRect(gx - 14 * a, gy - 90, 28 * a, 100); ctx.restore();
+    }
     ctx.save(); ctx.globalAlpha = Math.max(0, g.blysk / 1.2) * 0.85; ctx.strokeStyle = '#ffe08a'; ctx.lineWidth = 4 - p * 2.6;
     ctx.beginPath(); ctx.arc(gx, gy, 16 + p * 92, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
   }
 }
+// Portret postaci (taki jak na planszy, z bronią startową) jako obrazek - do wyboru postaci i karty postaci
+const PORTRETY = {};
+function portretPostaci(klasa, px) {
+  px = px || 112;
+  const k = klasa + '|' + px;
+  if (PORTRETY[k]) return PORTRETY[k];
+  const K = KLASY[klasa]; if (!K) return '';
+  try {
+    const c = document.createElement('canvas'); c.width = c.height = px;
+    const x = c.getContext('2d'), S = px / 50;
+    x.translate(px * 0.47, px * 0.62); x.scale(S, S);
+    x.fillStyle = 'rgba(0,0,0,0.35)'; x.beginPath(); x.ellipse(0, 12.5, 12, 3.6, 0, 0, Math.PI * 2); x.fill();
+    const br = BRONIE[K.start] ? K.start : null;
+    x.save(); x.scale(0.95, 0.95); rysujCialo(x, K, 0, 0, 0.6, false); x.restore();
+    if (br) { x.save(); x.translate(9, 3); x.rotate(-1.0); x.shadowColor = 'rgba(0,0,0,0.6)'; x.shadowOffsetY = S * 0.8; rysujKsztaltBroni(x, { rodzaj: br, tier: 1, kat: -1.0, anim: 0 }); x.restore(); }
+    PORTRETY[k] = c.toDataURL('image/png');
+  } catch (e) { PORTRETY[k] = ''; }
+  return PORTRETY[k];
+}
+function htmlPortretu(klasa, px) {
+  const K = KLASY[klasa], src = portretPostaci(klasa, (px || 64) * 2);
+  return '<div class="port" style="--kp:' + K.kolory.plaszcz[0] + ';width:' + (px || 64) + 'px;height:' + (px || 64) + 'px">' + (src ? '<img class="p" alt="" src="' + src + '">' : '<span style="font-size:30px">' + K.ik + '</span>') + '<span class="ikk">' + K.ik + '</span></div>';
+}
 function lokalnyWidok() { return (typeof SIEC !== 'undefined' && SIEC.rola === 'klient') ? SIEC.mojWidok : lokalny; }
 function rysujPowalonego(g) {
   const t = Date.now();
-  ctx.save(); ctx.font = '18px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('💀', g.x, g.y - 26);
+  ctx.save(); rysujIk(ctx, '💀', g.x, g.y - 26, 18, 'o');
   ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(g.x, g.y, 26, 0, Math.PI * 2); ctx.stroke();
   if (g.reanim > 0) { ctx.strokeStyle = '#7ee87a'; ctx.beginPath(); ctx.arc(g.x, g.y, 26, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, g.reanim / CZAS_PODNOSZENIA)); ctx.stroke(); }
   ctx.globalAlpha = 0.5 + 0.3 * Math.sin(t / 200); ctx.strokeStyle = '#ff6a5a'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.arc(g.x, g.y, 52, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
@@ -4852,9 +5973,8 @@ function rysujStwory() {
       const bob = (s.typ === 'pszczola' || s.typ === 'smok' || s.typ === 'owoc') ? Math.sin(t / 150 + s.x) * 2.5 : 0;
       const roz = s.typ === 'krzak' ? (s.ik === '🌲' ? 30 : 24) : s.typ === 'owoc' ? 15 : s.typ === 'pszczola' ? 13 : s.typ === 'smok' || s.typ === 'wilk' ? 22 : 20;
       if (s.typ === 'mina' || s.typ === 'wnyki') { ctx.save(); ctx.globalAlpha = 0.85; }
-      ctx.font = roz + 'px sans-serif';
-      if (s.typ === 'wilk' && Math.cos(s.kat || 0) > 0) { ctx.save(); ctx.translate(s.x, s.y + bob); ctx.scale(-1, 1); ctx.fillText(s.ik, 0, 0); ctx.restore(); }
-      else ctx.fillText(s.ik, s.x, s.y + bob);
+      if (s.typ === 'wilk' && Math.cos(s.kat || 0) > 0) { ctx.save(); ctx.translate(s.x, s.y + bob); ctx.scale(-1, 1); rysujIk(ctx, s.ik, 0, 0, roz); ctx.restore(); }
+      else rysujIk(ctx, s.ik, s.x, s.y + bob, roz);
       if (s.typ === 'mina') { ctx.fillStyle = Math.floor(t / 300) % 2 ? '#ff3a2a' : '#5a1a10'; ctx.beginPath(); ctx.arc(s.x, s.y - 2, 2.2, 0, Math.PI * 2); ctx.fill(); }
       if (s.typ === 'mina' || s.typ === 'wnyki') ctx.restore();
     }
@@ -4872,9 +5992,9 @@ function rysujPociski() {
   pociski.forEach(p => {
     ctx.save(); ctx.translate(p.x, p.y); const k = Math.atan2(p.vy, p.vx);
     ctx.fillStyle = p.kolor;
-    if (p.ksztalt === 'kula' || p.ksztalt === 'pustka' || !p.ksztalt) { ctx.globalAlpha = 0.3; ctx.beginPath(); ctx.arc(0, 0, p.ksztalt === 'pustka' ? 13 : 9, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
+    if (p.ksztalt === 'pustka' || p.ksztalt === 'czakram') { ctx.globalAlpha = 0.3; ctx.beginPath(); ctx.arc(0, 0, p.ksztalt === 'pustka' ? 13 : 9, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
     if (p.ksztalt === 'belt' || p.ksztalt === 'strzala') {
-      ctx.rotate(k); ctx.fillStyle = '#8a6a3c'; ctx.fillRect(-11, -1.2, 18, 2.4);
+      ctx.rotate(k); if (p.duza) { ctx.scale(1.6, 1.6); ctx.shadowColor = '#9fe8ff'; ctx.shadowBlur = 10; } ctx.fillStyle = '#8a6a3c'; ctx.fillRect(-11, -1.2, 18, 2.4);
       ctx.fillStyle = '#d8d8e0'; ctx.beginPath(); ctx.moveTo(11, 0); ctx.lineTo(5, -3.6); ctx.lineTo(5, 3.6); ctx.closePath(); ctx.fill();
       ctx.fillStyle = p.ksztalt === 'belt' ? '#c0392b' : '#f0f0f0'; ctx.beginPath(); ctx.moveTo(-11, 0); ctx.lineTo(-15, -3.6); ctx.lineTo(-8, 0); ctx.lineTo(-15, 3.6); ctx.closePath(); ctx.fill();
     } else if (p.ksztalt === 'wlocznia') {
@@ -4891,19 +6011,91 @@ function rysujPociski() {
       ctx.rotate(k); ctx.fillStyle = '#5ac46a'; ctx.beginPath(); ctx.moveTo(9, 0); ctx.lineTo(-6, -3.5); ctx.lineTo(-3, 0); ctx.lineTo(-6, 3.5); ctx.closePath(); ctx.fill();
     } else if (p.ksztalt === 'kosc') {
       ctx.rotate(Date.now() / 90); ctx.fillStyle = '#e8f4ff'; ctx.fillRect(-6, -1.6, 12, 3.2); ctx.beginPath(); ctx.arc(-6, 0, 2.6, 0, Math.PI * 2); ctx.arc(6, 0, 2.6, 0, Math.PI * 2); ctx.fill();
+    } else if (p.ksztalt === 'czakram') {
+      ctx.rotate(Date.now() / 60); ctx.strokeStyle = p.kolor || '#e0e8f0'; ctx.lineWidth = 2.6; ctx.beginPath(); ctx.arc(0, 0, 7, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = '#ffffff'; for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; ctx.beginPath(); ctx.moveTo(Math.cos(a) * 6.5, Math.sin(a) * 6.5); ctx.lineTo(Math.cos(a + 0.4) * 11, Math.sin(a + 0.4) * 11); ctx.lineTo(Math.cos(a + 0.55) * 6.5, Math.sin(a + 0.55) * 6.5); ctx.closePath(); ctx.fill(); }
+    } else if (p.ksztalt === 'shuriken') {
+      ctx.rotate(Date.now() / 45); ctx.fillStyle = '#d8d8e8'; ctx.beginPath();
+      for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; ctx.lineTo(Math.cos(a) * 9, Math.sin(a) * 9); ctx.lineTo(Math.cos(a + Math.PI / 4) * 3, Math.sin(a + Math.PI / 4) * 3); }
+      ctx.closePath(); ctx.fill(); ctx.fillStyle = '#3a3a4a'; ctx.beginPath(); ctx.arc(0, 0, 1.6, 0, Math.PI * 2); ctx.fill();
+    } else if (p.ksztalt === 'noz') {
+      ctx.rotate(k); ctx.fillStyle = '#3a2a2a'; ctx.fillRect(-9, -1.4, 6, 2.8); ctx.fillStyle = '#e8e8f0'; ctx.beginPath(); ctx.moveTo(-3, -2.2); ctx.lineTo(9, 0); ctx.lineTo(-3, 2.2); ctx.closePath(); ctx.fill();
     } else if (p.ksztalt === 'pustka') {
       ctx.beginPath(); ctx.arc(0, 0, 8, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#1a0a30'; ctx.beginPath(); ctx.arc(0, 0, 4, 0, Math.PI * 2); ctx.fill();
-    } else { ctx.beginPath(); ctx.arc(0, 0, 5, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.beginPath(); ctx.arc(-1, -1, 2, 0, Math.PI * 2); ctx.fill(); }
+    } else { const im = spritePociskuGracza(p.kolor || '#ffe08a'); ctx.drawImage(im, -im.R, -im.R, im.R * 2, im.R * 2); }
     ctx.restore();
   });
-  pociskiWrogow.forEach(p => {
-    ctx.save(); ctx.translate(p.x, p.y); ctx.fillStyle = p.kolor;
-    if (p.ksztalt !== 'belt' && p.ksztalt !== 'kosc') { ctx.globalAlpha = 0.28; ctx.beginPath(); ctx.arc(0, 0, (p.r || 5) + 4, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
-    if (p.ksztalt === 'belt') { ctx.rotate(Math.atan2(p.vy, p.vx)); ctx.fillStyle = '#8a6a3c'; ctx.fillRect(-11, -1.2, 18, 2.4); ctx.fillStyle = '#d8d8e0'; ctx.beginPath(); ctx.moveTo(11, 0); ctx.lineTo(5, -3.6); ctx.lineTo(5, 3.6); ctx.closePath(); ctx.fill(); }
-    else if (p.ksztalt === 'kosc') { ctx.rotate(Date.now() / 90); ctx.fillStyle = '#e8f4ff'; ctx.fillRect(-6, -1.6, 12, 3.2); ctx.beginPath(); ctx.arc(-6, 0, 2.6, 0, Math.PI * 2); ctx.arc(6, 0, 2.6, 0, Math.PI * 2); ctx.fill(); }
-    else { ctx.beginPath(); ctx.arc(0, 0, p.r || 5, 0, Math.PI * 2); ctx.fill(); if (p.siec) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(-6, 0); ctx.lineTo(6, 0); ctx.moveTo(0, -6); ctx.lineTo(0, 6); ctx.stroke(); } }
-    ctx.restore();
-  });
+  rysujPociskiWrogow();
+}
+// Pociski gracza (kule): miękki blask w kolorze i biały środek - bez ciemnego obrysu (ten mają tylko wrogie)
+const SPR_POC_GRACZA = new Map();
+function spritePociskuGracza(kolor) {
+  let c = SPR_POC_GRACZA.get(kolor);
+  if (!c) {
+    const S = 3, R = 10, [r, g, b] = rgbKoloru(kolor);
+    c = document.createElement('canvas'); c.width = c.height = R * 2 * S;
+    const x = c.getContext('2d'); x.scale(S, S); x.translate(R, R);
+    const gr = x.createRadialGradient(0, 0, 0, 0, 0, R); gr.addColorStop(0, 'rgba(' + r + ',' + g + ',' + b + ',0.55)'); gr.addColorStop(0.5, 'rgba(' + r + ',' + g + ',' + b + ',0.22)'); gr.addColorStop(1, 'rgba(' + r + ',' + g + ',' + b + ',0)');
+    x.fillStyle = gr; x.beginPath(); x.arc(0, 0, R, 0, Math.PI * 2); x.fill();
+    x.fillStyle = kolor; x.beginPath(); x.arc(0, 0, 5, 0, Math.PI * 2); x.fill();
+    x.fillStyle = 'rgba(255,255,255,0.85)'; x.beginPath(); x.arc(-0.8, -0.8, 2.4, 0, Math.PI * 2); x.fill();
+    c.R = R; SPR_POC_GRACZA.set(kolor, c);
+  }
+  return c;
+}
+// Pociski wrogów: ciemny obrys + jasny środek - dobrze widoczne, ale małe i bez wielkich poświat.
+// Przy dużej liczbie pocisków (lub słabszym sprzęcie) bez poświat i smug.
+const SPR_POC_WROGA = new Map();
+function spritePociskuWroga(kolor, r, poswiata) {
+  const k = kolor + '|' + r + '|' + (poswiata ? 1 : 0);
+  let c = SPR_POC_WROGA.get(k);
+  if (!c) {
+    const S = 3, R = (r + (poswiata ? 7 : 2.5));
+    c = document.createElement('canvas'); c.width = c.height = Math.ceil(R * 2 * S);
+    const x = c.getContext('2d'); x.scale(S, S); x.translate(R, R);
+    const [cr, cg, cb] = rgbKoloru(kolor);
+    if (poswiata) { const g = x.createRadialGradient(0, 0, r * 0.6, 0, 0, R); g.addColorStop(0, 'rgba(' + cr + ',' + cg + ',' + cb + ',0.32)'); g.addColorStop(1, 'rgba(' + cr + ',' + cg + ',' + cb + ',0)'); x.fillStyle = g; x.beginPath(); x.arc(0, 0, R, 0, Math.PI * 2); x.fill(); }
+    x.fillStyle = 'rgba(16,6,18,0.92)'; x.beginPath(); x.arc(0, 0, r + 1.5, 0, Math.PI * 2); x.fill();
+    x.fillStyle = kolor; x.beginPath(); x.arc(0, 0, r, 0, Math.PI * 2); x.fill();
+    const g2 = x.createRadialGradient(-r * 0.25, -r * 0.25, 0, 0, 0, r * 0.75); g2.addColorStop(0, 'rgba(255,255,255,0.95)'); g2.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g2; x.beginPath(); x.arc(0, 0, r * 0.75, 0, Math.PI * 2); x.fill();
+    c.R = R; SPR_POC_WROGA.set(k, c);
+  }
+  return c;
+}
+function rysujPociskiWrogow() {
+  const n = pociskiWrogow.length, q = poziomEfektow(), bogato = q === 0 && n < 45;
+  const t = Date.now();
+  for (let i = 0; i < n; i++) {
+    const p = pociskiWrogow[i];
+    if (!naEkranie(p.x, p.y, 30)) continue;
+    const v = Math.hypot(p.vx, p.vy) || 1;
+    if (p.ksztalt === 'belt') {
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(Math.atan2(p.vy, p.vx));
+      ctx.lineJoin = 'round'; ctx.strokeStyle = 'rgba(16,6,18,0.9)'; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo(-14, 0); ctx.lineTo(11, 0); ctx.stroke();
+      ctx.fillStyle = '#5a2a1a'; ctx.fillRect(-11, -1.1, 17, 2.2);
+      ctx.beginPath(); ctx.moveTo(12, 0); ctx.lineTo(4.5, -4.2); ctx.lineTo(4.5, 4.2); ctx.closePath(); ctx.stroke(); ctx.fillStyle = '#ff6a4a'; ctx.fill();
+      ctx.fillStyle = '#e0453a'; ctx.beginPath(); ctx.moveTo(-10, 0); ctx.lineTo(-15, -3.8); ctx.lineTo(-7.5, 0); ctx.lineTo(-15, 3.8); ctx.closePath(); ctx.fill();
+      ctx.restore(); continue;
+    }
+    if (p.ksztalt === 'kosc') {
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(t / 90);
+      ctx.strokeStyle = 'rgba(16,6,18,0.85)'; ctx.lineWidth = 2; ctx.fillStyle = '#e8f4ff';
+      ctx.beginPath(); ctx.rect(-6, -1.6, 12, 3.2); ctx.arc(-6, 0, 2.6, 0, Math.PI * 2); ctx.moveTo(8.6, 0); ctx.arc(6, 0, 2.6, 0, Math.PI * 2); ctx.stroke(); ctx.fill();
+      ctx.restore(); continue;
+    }
+    const r = p.r || 5, kol = p.kolor || '#c46ce8';
+    if (bogato) {   // krótka smuga za pociskiem
+      const dl = Math.min(18, v * 0.045), ux = p.vx / v, uy = p.vy / v;
+      ctx.globalAlpha = 0.35; ctx.strokeStyle = kol; ctx.lineCap = 'round'; ctx.lineWidth = r * 1.3;
+      ctx.beginPath(); ctx.moveTo(p.x - ux * 2, p.y - uy * 2); ctx.lineTo(p.x - ux * dl, p.y - uy * dl); ctx.stroke(); ctx.globalAlpha = 1;
+    }
+    const im = spritePociskuWroga(kol, r, bogato);
+    ctx.drawImage(im, p.x - im.R, p.y - im.R, im.R * 2, im.R * 2);
+    if (p.siec) { ctx.strokeStyle = 'rgba(40,40,60,0.9)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p.x - r, p.y); ctx.lineTo(p.x + r, p.y); ctx.moveTo(p.x, p.y - r); ctx.lineTo(p.x, p.y + r); ctx.stroke(); }
+  }
+  ctx.lineCap = 'butt';
 }
 
 function rysujEfekty() {
@@ -4913,9 +6105,16 @@ function rysujEfekty() {
     ctx.save(); ctx.globalAlpha = (1 - p) * 0.75;
     if (c.linia) { ctx.strokeStyle = '#f0e8d0'; ctx.lineWidth = 6 * (1 - p) + 1; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(c.x + Math.cos(c.kat) * 14, c.y + Math.sin(c.kat) * 14); ctx.lineTo(c.x + Math.cos(c.kat) * c.r, c.y + Math.sin(c.kat) * c.r); ctx.stroke(); }
     else {
-      const l = Math.min(c.luk, Math.PI * 2), a0 = c.kat - l / 2, a1 = a0 + l * Math.min(1, p * 1.6 + 0.2);
-      ctx.fillStyle = 'rgba(255,245,220,0.22)'; ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.arc(c.x, c.y, c.r, a0, a1); ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = c.kolor; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(c.x, c.y, c.r * 0.92, a0, a1); ctx.stroke();
+      // sierp cięcia: gruby przy końcu ostrza, cienki na początku zamachu
+      const l = Math.min(c.luk, Math.PI * 2), a0 = c.kat - l / 2, a1 = a0 + l * Math.min(1, p * 1.6 + 0.2), sr = (a0 + a1) / 2;
+      ctx.fillStyle = 'rgba(255,245,220,0.16)'; ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.arc(c.x, c.y, c.r, a0, a1); ctx.closePath(); ctx.fill();
+      const ri = c.r * 0.62, ro = c.r * 0.98;
+      ctx.fillStyle = c.kolor; ctx.globalAlpha = (1 - p) * 0.55;
+      ctx.beginPath(); ctx.arc(c.x, c.y, ro, a0, a1); ctx.quadraticCurveTo(c.x + Math.cos(a1) * ri * 1.1, c.y + Math.sin(a1) * ri * 1.1, c.x + Math.cos(a1) * ri, c.y + Math.sin(a1) * ri);
+      ctx.arc(c.x, c.y, ri + (ro - ri) * 0.75, a1, a0, true); ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = (1 - p) * 0.95; ctx.strokeStyle = '#fffaf0'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.arc(c.x, c.y, ro, Math.max(a0, a1 - l * 0.55), a1); ctx.stroke();
+      if (p < 0.5) { ctx.globalAlpha = 0.6 * (1 - p * 2); ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(c.x + Math.cos(a1) * ro, c.y + Math.sin(a1) * ro, 3.2, 0, Math.PI * 2); ctx.fill(); }
     }
     ctx.restore();
   });
@@ -4939,7 +6138,20 @@ function rysujEfekty() {
     bl.pkt.forEach((q, i) => { if (i) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); });
     ctx.strokeStyle = bl.kolor; ctx.globalAlpha = a * 0.35; ctx.lineWidth = 9; ctx.stroke(); ctx.globalAlpha = a; ctx.lineWidth = 4; ctx.stroke(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.6; ctx.stroke(); ctx.restore();
   });
-  czastki.forEach(c => { ctx.globalAlpha = Math.max(0, c.czas / c.max); ctx.fillStyle = c.kolor; ctx.fillRect(c.x - 2, c.y - 2, 4, 4); });
+  // odpryski: kurczą się z czasem
+  czastki.forEach(c => { const z = Math.max(0, c.czas / c.max), s = 1.4 + 3 * z; ctx.globalAlpha = Math.min(1, z * 1.4); ctx.fillStyle = c.kolor; ctx.fillRect(c.x - s / 2, c.y - s / 2, s, s); });
+  // iskry trafień: krótkie jasne kreski
+  const teraz = performance.now(), dt = Math.min(0.05, Math.max(0, (teraz - (rysujEfekty.t || teraz)) / 1000)); rysujEfekty.t = teraz;
+  if (iskry.length) {
+    ctx.lineCap = 'round'; ctx.lineWidth = 1.8;
+    for (let i = iskry.length - 1; i >= 0; i--) {
+      const k = iskry[i]; k.t += dt; if (k.t >= k.max) { iskry.splice(i, 1); continue; }
+      k.x += k.vx * dt; k.y += k.vy * dt; k.vx *= 0.86; k.vy *= 0.86;
+      ctx.globalAlpha = 1 - k.t / k.max; ctx.strokeStyle = k.kolor;
+      ctx.beginPath(); ctx.moveTo(k.x, k.y); ctx.lineTo(k.x - k.vx * 0.035, k.y - k.vy * 0.035); ctx.stroke();
+    }
+    ctx.lineCap = 'butt';
+  }
   ctx.globalAlpha = 1;
 }
 
@@ -4950,7 +6162,7 @@ function rysujTeksty() {
     if (t.o && (L === 'brak' || (L === 'wazne' && t.o === 1))) return;
     ctx.globalAlpha = Math.max(0, Math.min(1, t.czas / t.max * 1.6));
     ctx.font = '900 ' + Math.round(t.rozm * SKALA_TEKSTU) + 'px system-ui, sans-serif';
-    ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.lineWidth = 3; ctx.strokeText(t.t, t.x, t.y); ctx.fillStyle = t.kolor; ctx.fillText(t.t, t.x, t.y);
+    ctx.strokeStyle = 'rgba(0,0,0,0.85)'; ctx.lineWidth = 3; ctx.fillStyle = t.kolor; tekstZObrysem(ctx, t.t, t.x, t.y);
   });
   ctx.globalAlpha = 1;
 }
@@ -4976,6 +6188,7 @@ function rysujOswietlenie() {
   efektyCzasowe.forEach(e => { if (e.rodzaj === 'meteor') sw(e.x - kamX, e.y - kamY, e.r * 1.5, 0.8); });
   c.globalAlpha = 1;
   ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = true; ctx.drawImage(ciemnosc, 0, 0, widok.width, widok.height); ctx.restore();
+  if (poziomEfektow() > 0) return;   // lżejsze efekty: bez blasku pochodni i pyłków
   ctx.save(); ctx.globalCompositeOperation = 'lighter';
   swiatlaPochodni.forEach(p => { const a = p[2]; ctx.globalAlpha = a; ctx.drawImage(SPR_POCHODNIA, p[0] - kamX - 92, p[1] - kamY - 92, 184, 184); });
   ctx.globalAlpha = 1; ctx.drawImage(SPR_GRACZ, gx - 170, gy - 170, 340, 340);
@@ -5001,7 +6214,7 @@ function rysujInterfejsPlotna() {
     const g = ctx.createLinearGradient(x, 0, x + sz, 0); g.addColorStop(0, '#e6b53c'); g.addColorStop(1, '#c0392b');
     ctx.fillStyle = g; ctx.fillRect(x, y, sz * Math.max(0, b.hp / b.hpMax), 10);
     ctx.font = '800 10px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.strokeStyle = '#000'; ctx.lineWidth = 3;
-    const napis = b.ik + ' ' + b.n + ' — ' + fmtK(Math.max(0, b.hpBossa !== undefined ? b.hpBossa : b.hp)); ctx.strokeText(napis, WID / 2, y + 22); ctx.fillText(napis, WID / 2, y + 22);
+    const napis = b.ik + ' ' + b.n + ' — ' + fmtK(Math.max(0, b.hpBossa !== undefined ? b.hpBossa : b.hp)); tekstZObrysem(ctx, napis, WID / 2, y + 22);
   });
   // drużyna: leżę powalony
   if (gracz && gracz.powalony && druzyna()) {
@@ -5023,6 +6236,96 @@ function rysujInterfejsPlotna() {
     ctx.save(); ctx.translate(px, py); ctx.rotate(k); ctx.fillStyle = c.kolega ? (c.powalony ? '#ff9a8a' : '#7ee8ff') : (c.sk ? TIERY[c.tier].kolor : '#ff5a3a'); ctx.globalAlpha = 0.85;
     ctx.beginPath(); ctx.moveTo(10, 0); ctx.lineTo(-6, -7); ctx.lineTo(-6, 7); ctx.closePath(); ctx.fill(); ctx.restore();
   });
+}
+
+// =====================================================================
+//  WYGLĄD WROGÓW: ludzie lochu (kusznicy, łucznicy, kultyści, magowie...)
+//  rysowani tak jak nasze postacie - z bronią celującą w gracza - oraz szlamy
+//  jako galaretki z oczami. Pozostałe potwory to emoji z obrysem.
+//  Rozpoznajemy po ikonie, więc działa tak samo u gospodarza i u klienta.
+// =====================================================================
+const WYGLAD_WROGOW = {
+  '🏹': { kolory: { plaszcz: ['#4a3c30', '#241c16'], tunika: ['#6a5640', '#3a2e22'], wlosy: '#2a1a10', skora: ['#c9a080', '#9a7458'] }, wyglad: { czapka: 'kaptur', kol: '#3a2e24', oczy: '#ff5a3a', chusta: '#2a2220' }, bron: 'kusza' },
+  '🎯': { kolory: { plaszcz: ['#2e4a2a', '#16241a'], tunika: ['#4a6a3a', '#26361e'], wlosy: '#3a2a1a', skora: ['#c9a080', '#9a7458'] }, wyglad: { czapka: 'kaptur', kol: '#24401f', oczy: '#ffd24a', chusta: '#1e2a1a' }, bron: 'luk' },
+  '🕯️': { kolory: { plaszcz: ['#4a1a5a', '#200a2a'], tunika: ['#5a2a6a', '#2a1036'], wlosy: '#000000', skora: ['#b8a8b0', '#8a7888'] }, wyglad: { czapka: 'kaptur', kol: '#3a1048', oczy: '#ff7ae0' }, bron: 'kosturPustki' },
+  '🛡️': { kolory: { plaszcz: ['#4a5468', '#262c38'], tunika: ['#8a94a8', '#4a5468'], wlosy: '#3a2a1a', skora: ['#d8b090', '#a88060'] }, wyglad: { czapka: 'helm', oczy: '#ffb03c' }, bron: 'mieczTarcza' },
+  '🧨': { kolory: { plaszcz: ['#5a4030', '#2a1e14'], tunika: ['#7a5a3a', '#4a3420'], wlosy: '#5a3a1a', skora: ['#d8b090', '#a88060'] }, wyglad: { czapka: 'gogle', oczy: '#ff8a3a', broda: '#4a2a14' }, bron: 'granatnik' },
+  '🔮': { kolory: { plaszcz: ['#1e3a7a', '#0e1a3a'], tunika: ['#2a5aa0', '#163060'], wlosy: '#e8e8f0', skora: ['#d8c0b0', '#a89080'] }, wyglad: { czapka: 'kapeluszMaga', kol: '#1e3a7a', oczy: '#7ae0ff', broda: '#e8e8f0' }, bron: 'rozdzkaZimy' },
+  '🧙': { kolory: { plaszcz: ['#3a1a5a', '#1a0a2a'], tunika: ['#4a2a6a', '#24123a'], wlosy: '#8a8a9a', skora: ['#b8a8a0', '#887870'] }, wyglad: { czapka: 'kapeluszMaga', kol: '#2a1040', oczy: '#c46ce8', broda: '#9a9aaa' }, bron: 'kosturPustki' },
+  '🤺': { kolory: { plaszcz: ['#2a3a6a', '#101830'], tunika: ['#5a6a9a', '#2a3456'], wlosy: '#000000', skora: ['#9ab8e8', '#5a78a8'] }, wyglad: { czapka: 'helm', oczy: '#7ae0ff' }, bron: 'halabarda' },
+};
+const SZLAMY = { '🟢': true };
+const CACHE_WYGLADU = new Map();
+const KROKI_WYGLADU = [0, 1, 0, -1];
+// gotowa klatka ciała (bez broni): ik, klatka chodu 0-3, kierunek, skala w pikselach na jednostkę
+function klatkaWygladu(ik, klatka, kier, sk, bialy) {
+  const k = ik + '|' + klatka + '|' + kier + '|' + sk + (bialy ? '|b' : '');
+  let c = CACHE_WYGLADU.get(k);
+  if (c) return c;
+  if (CACHE_WYGLADU.size > 400) CACHE_WYGLADU.clear();
+  if (bialy) {
+    const z = klatkaWygladu(ik, klatka, kier, sk, false);
+    c = document.createElement('canvas'); c.width = z.width; c.height = z.height;
+    const x = c.getContext('2d'); x.drawImage(z, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height);
+  } else {
+    c = document.createElement('canvas'); c.width = Math.ceil(36 * sk); c.height = Math.ceil(58 * sk);
+    const x = c.getContext('2d'); x.scale(sk, sk); x.translate(18, 39); x.scale(kier, 1);
+    rysujCialo(x, WYGLAD_WROGOW[ik], KROKI_WYGLADU[klatka], 0, 0.6, false);
+  }
+  CACHE_WYGLADU.set(k, c);
+  return c;
+}
+// kąt, w który patrzy/celuje wróg (cel u gospodarza, u klienta - najbliższy gracz)
+function katCeluWroga(w) {
+  if (w.zamach > 0 || w.zamP > 0) return w.zamKat || 0;
+  let c = w.cel && !w.cel.powalony ? w.cel : null;
+  if (!c) { let best = 1e9; ((typeof SIEC !== 'undefined' && SIEC.rola === 'klient') ? (SIEC.widokGraczy || []) : gracze).forEach(p => { const d = Math.hypot(p.x - w.x, p.y - w.y); if (d < best && !p.powalony) { best = d; c = p; } }); }
+  return c ? Math.atan2(c.y - w.y, c.x - w.x) : 0;
+}
+// Rysuje wroga w (0,0) bieżącego układu (już przesuniętego na pozycję wroga). Zwraca false, gdy to zwykłe emoji.
+function rysujWygladWroga(w, blysk, katSwiata) {
+  const r = w.r;
+  if (SZLAMY[w.ik]) { rysujSzlam(w, blysk, katSwiata); return true; }
+  const W = WYGLAD_WROGOW[w.ik];
+  if (!W) return false;
+  const ka = katCeluWroga(w) - (katSwiata || 0), kier = Math.cos(ka) < 0 ? -1 : 1;
+  const s = r / 13.5, sk = Math.max(0.5, Math.round(s * SKALA_RYS * 4) / 4);
+  const klatka = (w._ruch || 0) > 0.3 ? Math.floor(((w._faza || 0) / (Math.PI / 2)) % 4 + 4) % 4 : 0;
+  const im = klatkaWygladu(w.ik, klatka, kier, sk, false), szer = im.width / sk * s, wys = im.height / sk * s;
+  const bron = () => {
+    const bx = Math.cos(ka) * r * 0.8, by = 2 * s + Math.sin(ka) * r * 0.6;
+    ctx.save(); ctx.translate(bx, by); ctx.rotate(ka); ctx.scale(s * 0.95, s * 0.95);
+    rysujKsztaltBroni(ctx, { rodzaj: W.bron, tier: 0, kat: ka, anim: 0 }); ctx.restore();
+  };
+  const zaPlecami = Math.sin(ka) < -0.35;   // broń celuje w górę - chowa się za postacią
+  if (zaPlecami) bron();
+  ctx.drawImage(im, -18 * s, -39 * s + 2 * s, szer, wys);
+  if (blysk > 0) { const a = ctx.globalAlpha; ctx.globalAlpha = a * blysk; ctx.drawImage(klatkaWygladu(w.ik, klatka, kier, sk, true), -18 * s, -37 * s, szer, wys); ctx.globalAlpha = a; }
+  if (!zaPlecami) bron();
+  return true;
+}
+// Szlam: galaretka, która faluje i zerka na gracza
+function rysujSzlam(w, blysk, katSwiata) {
+  const r = w.r * 1.05, t = Date.now() / 1000, f = Math.sin(t * 5 + w.id) * 0.07 + Math.sin((w._faza || 0) * 1.3) * 0.05;
+  const sx = r * (1 + f), sy = r * 0.82 * (1 - f), [cr, cg, cb] = rgbKoloru(w.kolor || '#5ac46a');
+  ctx.save();
+  ctx.beginPath(); ctx.moveTo(-sx, r * 0.55);
+  ctx.bezierCurveTo(-sx * 1.05, -sy * 0.9, -sx * 0.4, -sy * 1.25, 0, -sy * 1.2);
+  ctx.bezierCurveTo(sx * 0.4, -sy * 1.25, sx * 1.05, -sy * 0.9, sx, r * 0.55);
+  ctx.quadraticCurveTo(0, r * 0.75, -sx, r * 0.55); ctx.closePath();
+  const g = ctx.createLinearGradient(0, -sy * 1.2, 0, r * 0.7);
+  g.addColorStop(0, 'rgb(' + Math.min(255, cr + 70) + ',' + Math.min(255, cg + 70) + ',' + Math.min(255, cb + 70) + ')'); g.addColorStop(1, 'rgb(' + (cr * 0.55 | 0) + ',' + (cg * 0.55 | 0) + ',' + (cb * 0.55 | 0) + ')');
+  ctx.fillStyle = g; ctx.globalAlpha *= 0.94; ctx.fill(); ctx.globalAlpha /= 0.94;
+  ctx.strokeStyle = 'rgba(14,8,20,0.9)'; ctx.lineWidth = Math.max(1.2, r * 0.1); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.beginPath(); ctx.ellipse(-sx * 0.4, -sy * 0.75, r * 0.2, r * 0.12, -0.5, 0, Math.PI * 2); ctx.fill();
+  // oczy patrzą na gracza
+  const ka = katCeluWroga(w) - (katSwiata || 0), ox = Math.cos(ka) * r * 0.07, oy = Math.sin(ka) * r * 0.05;
+  [-1, 1].forEach(st => {
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.ellipse(st * r * 0.3, -sy * 0.3, r * 0.16, r * 0.2, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#14101c'; ctx.beginPath(); ctx.arc(st * r * 0.3 + ox, -sy * 0.28 + oy, r * 0.09, 0, Math.PI * 2); ctx.fill();
+  });
+  if (blysk > 0) { ctx.globalAlpha *= blysk; ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.moveTo(-sx, r * 0.55); ctx.bezierCurveTo(-sx * 1.05, -sy * 0.9, -sx * 0.4, -sy * 1.25, 0, -sy * 1.2); ctx.bezierCurveTo(sx * 0.4, -sy * 1.25, sx * 1.05, -sy * 0.9, sx, r * 0.55); ctx.quadraticCurveTo(0, r * 0.75, -sx, r * 0.55); ctx.fill(); }
+  ctx.restore();
 }
 
 // =====================================================================
@@ -5134,9 +6437,11 @@ function kartaPrzedmiotu(inst, dol, op) {
 function kartaBroni(b, dol) {
   const B = BRONIE[b.rodzaj];
   return '<div class="karta glowna t' + b.tier + '"><div class="karta-gora"><div class="karta-ik">' + B.ikona + '</div><div><div class="karta-nazwa">' + B.nazwa + ' ' + TIERY[b.tier].rz + '</div>' +
-    '<div class="karta-tier"><span class="kol-t' + b.tier + '">⭐ Broń główna · ' + TIERY[b.tier].nazwaZ + '</span> · ' + (B.dystans ? 'dystansowa' : 'wręcz') + '</div></div></div>' +
-    '<div class="karta-opis">' + opisBroni(b) + '</div>' + htmlTagow(tagiDef(B, 'bron', b.rodzaj)) + (dol ? '<div class="karta-dol">' + dol + '</div>' : '') + '</div>';
+    '<div class="karta-tier"><span class="kol-t' + b.tier + '">' + TIERY[b.tier].nazwaZ + '</span> · ⭐ broń główna · ' + (B.dystans ? 'dystansowa' : 'wręcz') + '</div></div></div>' +
+    '<div class="karta-opis">' + opisBroni(b) + (b.mistrz ? '<br>🏆 <b>Mistrzostwo ' + rzymskaM(b.mistrz) + '</b> (+' + (15 * b.mistrz) + '% obrażeń)' + (b.perki && b.perki.length ? ': ' + b.perki.map(p => PERKI_MISTRZA[p] ? PERKI_MISTRZA[p].ik + ' ' + PERKI_MISTRZA[p].n : '').join(', ') : '') : '') +
+    (b.ewo ? '<br>🧬 Ewolucja broni: ' + EWO_BRONI.slice(0, b.ewo).join(' · ') : '') + '</div>' + htmlTagow(tagiDef(B, 'bron', b.rodzaj)) + (dol ? '<div class="karta-dol">' + dol + '</div>' : '') + '</div>';
 }
+function rzymskaM(n) { return ['', 'I', 'II', 'III', 'IV', 'V'][n] || String(n); }
 function kartaOreza(o, dol, op) {
   op = op || {};
   const d = DEF_ORE[o.id], R = RODZINY[d.rodz];
@@ -5158,13 +6463,13 @@ function kartaAugmentu(a, dol, inst) {
   const poz = inst.poz || 1;
   const st = statyAugmentu(inst);
   return '<div class="karta ' + T.klasa + '"><div class="karta-gora"><div class="karta-ik">' + a.ik + '</div><div><div class="karta-nazwa">' + a.n + (poz > 1 ? ' <span style="color:#ffe08a">' + rzymska(poz) + '</span>' : '') + '</div>' +
-    '<div class="karta-tier" style="color:' + T.kolor + '">' + (a.r === 'p' ? '<span class="kol-p">' + T.nazwa + '</span>' : T.nazwa) + ' · poziom ' + rzymska(poz) + '/III</div></div></div>' +
+    '<div class="karta-tier" style="color:' + T.kolor + '">' + (a.r === 'p' ? '<span class="kol-p gem-ap">' + T.nazwa + '</span>' : '<span class="gem-a' + a.r + '">' + T.nazwa + '</span>') + ' · poziom ' + rzymska(poz) + '/III</div></div></div>' +
     (st ? '<div class="karta-staty">' + opisStatow(st) + '</div>' : '') +
     (a.opis ? '<div class="karta-opis">' + a.opis(inst) + '</div>' : '') + htmlTagow(tagiDef(a, 'aug')) + (dol ? '<div class="karta-dol">' + dol + '</div>' : '') + '</div>';
 }
 function pasekGorny(tytul) {
   return '<div class="gornypasek"><div class="zloto-duze">💰 ' + Math.floor(gracz.zloto) + '</div><div style="display:flex;gap:6px">' +
-    '<button class="btn-maly" data-a="modalStaty">📊 Staty</button><button class="btn-maly" data-a="modalBuild">🎒 Build</button></div></div>' +
+    '<button class="btn-maly" data-a="modalPostac">' + KLASY[gracz.klasa].ik + ' Postać</button><button class="btn-maly" data-a="modalStaty">📊 Staty</button><button class="btn-maly" data-a="modalBuild">🎒 Build</button></div></div>' +
     (tytul ? '<div class="tytul">' + tytul + '</div>' : '');
 }
 function poZmianieBuildu() { przebudujHaki(); oznaczStaty(); zastosujStaty(); }
@@ -5199,7 +6504,9 @@ const OPCJE_USTAWIEN = [
   { k: 'interfejs', n: '🔠 Wielkość napisów', o: [[0.9, 'Mniejsze'], [1, 'Normalne'], [1.15, 'Większe']] },
   { k: 'liczby', n: '💥 Liczby obrażeń', o: [['wszystkie', 'Wszystkie'], ['wazne', 'Tylko ważne'], ['brak', 'Wyłączone']],
     op: '„Tylko ważne” — trafienia krytyczne oraz obrażenia zadane elitom i bossom.' },
-  { k: 'efekty', n: '✨ Efekty', o: [['pelne', 'Pełne'], ['oszczedne', 'Oszczędne']], op: 'Oszczędne: dużo mniej iskier i odprysków — czytelniej i lżej dla słabszego sprzętu.' },
+  { k: 'efekty', n: '✨ Efekty', o: [['pelne', 'Pełne'], ['oszczedne', 'Oszczędne']], op: 'Pełne: gdy gra zaczyna zwalniać, sama ścisza efekty. Oszczędne: dużo mniej iskier, poświat i odprysków — czytelniej i lżej dla słabszego sprzętu.' },
+  { k: 'ikony', n: '🖼️ Ikony', o: [['auto', 'Automatyczne'], ['zawsze', 'Wbudowane'], ['systemowe', 'Systemowe']],
+    op: 'Automatyczne: ikony, których brakuje na tym urządzeniu (puste kwadraciki), gra pokazuje jako obrazki. Wbudowane: nowsze ikony zawsze z gry. Systemowe: tylko ikony urządzenia. (Obrazki ikon: Noto Color Emoji, Google — licencja SIL OFL 1.1.)' },
   { k: 'mysz', n: '🖱️ Ruch myszą (komputer)', o: [[true, 'Włączony'], [false, 'Wyłączony']], op: 'Przytrzymaj lewy przycisk myszy na planszy, a postać pójdzie w stronę kursora.' },
 ];
 function pokazUstawienia(zachowaj) {
@@ -5220,6 +6527,7 @@ AKCJE.ustaw = d => {
   const opc = O.o.find(([v]) => String(v) === d.v); if (!opc) return;
   USTAW[d.k] = opc[0]; zapiszUstawienia();
   if (d.k === 'orientacja') zablokujOrientacje();
+  if (d.k === 'ikony') wykryjBrakiEmoji();
   dopasujRozmiar(); pokazUstawienia(true);
   if (stan === 'menu' && ekranEl.classList.contains('widoczny')) pokazMenu();
 };
@@ -5247,29 +6555,92 @@ function pokazTrudnosc() {
 AKCJE.wybierzTrudnosc = d => { wyborTrudnosci = +d.i; pokazTrudnosc(); };
 AKCJE.dalejDoPostaci = () => pokazPostacie();
 let wyborKlasy = 'wiezniarka';
+// ---------------------------------------------------------------------
+//  KARTA POSTACI (pauza, przerwa): poziom trudności, staty bazowe, pasywka, umiejętności (przeliczniki, odnowienie
+//  bazowe i po przyspieszeniu), auto-użycie i drzewko ewolucji
+// ---------------------------------------------------------------------
+const CENY_EWO = [90, 180, 320], POZIOM_EWO = [3, 10, 20];
+function rzymskaR(n) { return ['0', 'I', 'II', 'III'][n || 0]; }
+function cenaEwo(r) { return Math.round(CENY_EWO[r] * mnCeny()); }
+function blokUmiejetnosci(U, nr, zGraczem) {
+  const cdB = cdBazoweUmi(U), auto = zGraczem && gracz.autoUmi && gracz.autoUmi[nr];
+  const cdTxt = U.pasywna ? '<span class="cd-tag">⚡ sama, z energii</span>' : U.przelacz ? '<span class="cd-tag">🔁 przełącznik</span>' :
+    '<span class="cd-tag">⏱️ ' + fmt(cdB) + ' s' + (zGraczem && D && (D.haste > 0 || FLAGI.cdUmi) ? ' → <b>' + fmt(cdUmiTeraz(U)) + ' s</b>' : '') + '</span>' + (U.auto ? ' <span class="cd-tag">🤖 sama</span>' : '');
+  const przel = zGraczem && !U.pasywna && !U.przelacz && !U.auto ? ' <button class="btn-maly' + (auto ? ' ziel' : '') + '" data-a="autoUmi" data-n="' + nr + '" style="padding:2px 8px;font-size:11px">🤖 auto: ' + (auto ? 'wł.' : 'wył.') + '</button>' : '';
+  return '<div class="blok-umi"><b>' + U.ik + ' ' + U.n + '</b> ' + cdTxt + (nr === 2 ? ' <span class="cd-tag">2. · R / Q · pad RB</span>' : '') + przel + '<br>' + wKontekscie(() => U.opis(zGraczem ? mnUmi() : 1)) + '</div>';
+}
+function htmlPostaci(wModalu) {
+  const K = KLASY[gracz.klasa], T = TRUDNOSCI[run.trudnosc];
+  let h = '<div style="display:flex;justify-content:center;margin-top:2px">' + htmlPortretu(gracz.klasa, 84) + '</div><div class="tytul" style="font-size:20px;margin-top:2px">' + K.ik + ' ' + K.n + '</div><div class="podtytul">' + (K.rola ? K.rola + ' · ' : '') + 'poziom ' + gracz.poziom + '</div>';
+  h += '<div class="info-pole">' + T.ik + ' Poziom zagrożenia: <b>' + T.n + '</b>' + (T.opis.length ? '<br><span style="opacity:0.8;font-size:12px">' + T.opis.join(' · ') + '</span>' : '') + '</div>';
+  const st = [['❤️', 'zdrowie', BAZA_STATOW.hpMax + (K.staty.hpMax || 0)], ['👟', 'ruch', BAZA_STATOW.ms + (K.staty.ms || 0)], ['📈', 'zdrowia za poziom', K.hpZaPoziom || 5]];
+  h += '<div class="info-pole"><b>Na start:</b> ' + st.map(x => x[0] + ' ' + x[2] + ' ' + x[1]).join(' · ') + (Object.keys(K.staty).filter(k => k !== 'hpMax' && k !== 'ms').length ? '<br>' + opisStatow(Object.fromEntries(Object.entries(K.staty).filter(([k]) => k !== 'hpMax' && k !== 'ms'))).replace(/<br>/g, ' · ') : '') + '</div>';
+  h += '<div class="info-pole"><b>Pasywka:</b> ' + K.opis + '</div>';
+  if (K.umi || K.umi2) {
+    h += '<div class="sekcja">✨ Umiejętności <span class="licz">+' + Math.round(premiaPoziomuUmi() * 100) + '% z poziomu (co 3 poziomy +4%)</span></div>';
+    if (K.umi) h += blokUmiejetnosci(K.umi, 1, true);
+    if (K.umi2) h += blokUmiejetnosci(K.umi2, 2, true);
+    h += '<div class="podtytul" style="font-size:11px">🤖 Auto: umiejętność sama się użyje, gdy będzie gotowa. Na dotyku przytrzymaj jej przycisk, na padzie wciśnij gałkę (L3 / R3).</div>';
+  } else h += '<div class="info-pole">Bez umiejętności — cała siła w broni.</div>';
+  h += '<div class="sekcja">🧬 Ewolucja</div>' + htmlEwolucji(false);
+  return h;
+}
+function htmlEwolucji(zKupnem) {
+  const K = KLASY[gracz.klasa]; let h = '';
+  (K.ewo || []).forEach(e => {
+    const r = ewo(e.id);
+    h += '<div class="karta" style="margin-bottom:8px"><div class="karta-gora"><div class="karta-ik">' + e.ik + '</div><div><div class="karta-nazwa">' + e.n + '</div><div class="karta-tier">' +
+      [0, 1, 2].map(i => '<span style="color:' + (i < r ? '#ffe08a' : 'rgba(255,255,255,0.25)') + '">●</span>').join(' ') + ' <span style="opacity:0.8">ranga ' + rzymskaR(r) + '/III</span></div></div></div><div class="karta-opis">' +
+      e.r.map((t, i) => '<div style="' + (i < r ? 'color:#ffe08a' : i === r ? '' : 'opacity:0.55') + '">' + (i < r ? '✔' : rzymska(i + 1)) + ' · ' + t + (i >= r ? ' <span class="cd-tag">od poz. ' + POZIOM_EWO[i] + '</span>' : '') + '</div>').join('') + '</div>';
+    if (zKupnem && r < 3) {
+      const c = cenaEwo(r), pozOk = gracz.poziom >= POZIOM_EWO[r], stac = gracz.zloto >= c;
+      h += '<div class="karta-dol"><span class="cena"' + (stac ? '' : ' style="color:#a05a4a"') + '>' + c + ' 💰</span><button class="btn-maly zl" data-a="ewoKup" data-id="' + e.id + '"' + (pozOk && stac ? '' : ' disabled') + '>' + (pozOk ? 'Rozwiń do ' + rzymska(r + 1) : 'od poziomu ' + POZIOM_EWO[r]) + '</button></div>';
+    }
+    h += '</div>';
+  });
+  return h;
+}
+function moznaEwolucje() { const K = KLASY[gracz.klasa]; return (K.ewo || []).some(e => { const r = ewo(e.id); return r < 3 && gracz.poziom >= POZIOM_EWO[r] && gracz.zloto >= cenaEwo(r); }); }
+function pokazEwolucje() {
+  const K = KLASY[gracz.klasa];
+  let h = pasekGorny() + '<div class="tytul">🧬 Ewolucja — ' + K.ik + ' ' + K.n + '</div><div class="podtytul">Każda gałąź ma 3 rangi (od poziomu 3, 10 i 20). Umiejętności rosną też same: +4% co 3 poziomy (teraz +' + Math.round(premiaPoziomuUmi() * 100) + '%).</div>';
+  h += htmlEwolucji(true) + '<button class="btn drugi" data-a="ewoWroc">◀ Wróć do sklepu</button>';
+  pokazEkran(h);
+}
+AKCJE.ewolucja = () => pokazEwolucje();
+AKCJE.ewoWroc = () => pokazSklep(false);
+AKCJE.ewoKup = d => {
+  const K = KLASY[gracz.klasa], e = (K.ewo || []).find(x => x.id === d.id); if (!e) return;
+  const r = ewo(e.id); if (r >= 3 || gracz.poziom < POZIOM_EWO[r]) return;
+  const c = cenaEwo(r); if (gracz.zloto < c) { toast('💰 Za mało złota'); return; }
+  gracz.zloto -= c; gracz.ewo = gracz.ewo || {}; gracz.ewo[e.id] = r + 1; if (e.naZakup) e.naZakup(r + 1);
+  poZmianieBuildu(); DZ.pryzmat(); toast('🧬 ' + e.ik + ' ' + e.n + ' → ranga ' + rzymska(r + 1)); pokazEwolucje();
+};
+AKCJE.autoUmi = d => { const nr = +d.n; gracz.autoUmi = gracz.autoUmi || {}; gracz.autoUmi[nr] = !gracz.autoUmi[nr]; toast('🤖 Auto-użycie ' + (gracz.autoUmi[nr] ? 'włączone' : 'wyłączone'));
+  if (ekranEl.classList.contains('widoczny') && ekwZakladka === 'postac' && (stan === 'pauza' || stan === 'walka')) pokazEkwipunek('postac'); else if (modalEl.classList.contains('widoczny')) AKCJE.modalPostac(); };
 function opisKlasyHtml(K) {
   const U = K.umi, U2 = K.umi2;
-  const blokUmi = (X, kl) => '<div style="margin-top:6px;padding:7px 9px;border-radius:9px;background:rgba(255,224,138,0.08)"><b>' + X.ik + ' ' + X.n + '</b> ' +
-    (X.przelacz ? '<span class="cd-tag">🔁 przełącznik</span>' : '<span class="cd-tag">⏱️ ' + X.cd + ' s</span>') + (kl ? ' <span class="cd-tag">' + kl + '</span>' : '') + '<br>' + wKontekscie(() => X.opis(1)) + '</div>';
-  return '<div style="font-size:16px;font-weight:900;color:#ffe08a">' + K.ik + ' ' + K.n + (U2 ? ' <span class="cd-tag">2 umiejętności</span>' : '') + '</div>' + K.opis +
+  const blokUmi = (X, kl) => wKontekscie(() => blokUmiejetnosci(X, kl, false));
+  return '<div style="display:flex;align-items:center;gap:10px">' + htmlPortretu(KLUCZE_KLAS.find(k => KLASY[k] === K), 72) + '<div style="font-size:16px;font-weight:900;color:#ffe08a">' + K.ik + ' ' + K.n + (U2 ? ' <span class="cd-tag">2 umiejętności</span>' : (!U ? ' <span class="cd-tag">bez umiejętności</span>' : '')) + (K.rola ? '<div style="opacity:0.8;font-size:12px;font-weight:700;color:#e8dcc0">' + K.rola + '</div>' : '') + '</div></div>' + K.opis +
+    '<div style="margin-top:6px">❤️ <b>' + (BAZA_STATOW.hpMax + (K.staty.hpMax || 0)) + '</b> zdrowia · 👟 <b>' + (BAZA_STATOW.ms + (K.staty.ms || 0)) + '</b> ruchu</div>' +
     (Object.keys(K.staty).length ? '<div style="margin-top:6px">' + opisStatow(K.staty) + '</div>' : '') +
     '<div style="margin-top:6px">⭐ Broń główna: <b>' + opisBroniStartowej(K) + '</b> · 🗡️ broni dodatkowych: <b>' + K.slotyOreza + '</b> · 🎒 przedmiotów: <b>' + K.slotyPrzedm + '</b> + 🔨 pryzmatów: <b>' + (K.slotyPryzm || 2) + '</b></div>' +
     (K.rodziny ? '<div style="margin-top:4px">🧩 Dobrze łączy się z rodzinami: <b>' + opisRodzinKlasy(K) + '</b></div>' : '') +
-    (U ? blokUmi(U, U2 ? '1.' : '') : '') + (U2 ? blokUmi(U2, '2. · klawisz R · pad RB/B') : '');
+    (U ? blokUmi(U, 1) : '') + (U2 ? blokUmi(U2, 2) : '') + (K.ewo ? '<div style="margin-top:6px;opacity:0.85">🧬 Ewolucja: ' + K.ewo.map(e => e.ik + ' ' + e.n).join(' · ') + '</div>' : '');
 }
 function pokazPostacie() {
   const K0 = KLASY[wyborKlasy];
   let h = '<div class="tytul">Wybierz postać</div><div class="podtytul">' + TRUDNOSCI[wyborTrudnosci].ik + ' ' + TRUDNOSCI[wyborTrudnosci].n + ' · dotknij postaci, żeby zobaczyć szczegóły</div><div class="siatka3">';
   KLUCZE_KLAS.forEach(k => {
     const K = KLASY[k];
-    h += '<div class="kafel' + (k === wyborKlasy ? ' wybrany' : '') + '" data-a="wybierzKlase" data-k="' + k + '"><div class="ik">' + K.ik + '</div><div class="n">' + K.n + '</div>' +
+    h += '<div class="kafel' + (k === wyborKlasy ? ' wybrany' : '') + '" data-a="wybierzKlase" data-k="' + k + '">' + htmlPortretu(k, 58) + '<div class="n">' + K.n + '</div>' +
       '<div class="o">' + BRONIE_IK(K) + ' ' + (K.umi ? K.umi.ik : '') + (K.umi2 ? K.umi2.ik : '') + '</div></div>';
   });
   h += '</div>';
   h += '<button class="btn" data-a="startRunu" style="margin-top:12px">⚔️ Do lochu jako ' + K0.ik + ' ' + K0.n + '</button><button class="btn drugi" data-a="nowaGraWstecz">◀ Wstecz</button>';
   pokazEkran(h, { zachowaj: true });
 }
-function BRONIE_IK(K) { return K.start === 'losowa' ? '🎲' : K.start === 'wybor' ? '✋' : BRONIE[K.start].ikona; }
+function BRONIE_IK(K) { return K.start === 'losowa' ? '🎲' : K.start === 'wybor' ? '✋' : K.start === 'wybor2' ? '✋✋' : BRONIE[K.start].ikona; }
 AKCJE.wybierzKlase = d => {
   wyborKlasy = d.k; pokazPostacie();
   pokazModal('<div class="info-pole">' + opisKlasyHtml(KLASY[d.k]) + '</div><button class="btn" data-a="startRunuZModala">⚔️ Do lochu!</button><button class="btn drugi" data-a="zamknijModal">Inna postać</button>');
@@ -5278,7 +6649,8 @@ AKCJE.startRunuZModala = () => { zamknijModal(); rozpocznijRun(wyborTrudnosci, w
 AKCJE.nowaGraWstecz = () => pokazTrudnosc();
 AKCJE.startRunu = () => rozpocznijRun(wyborTrudnosci, wyborKlasy);
 
-function bronStartowa(K) { return K.start === 'losowa' ? losZ(KLUCZE_BRONI) : (BRONIE[K.start] ? K.start : 'miecz'); }
+function bronStartowa(K) { return (K.start === 'losowa' || K.start === 'wybor' || K.start === 'wybor2') ? losZ(KLUCZE_BRONI) : (BRONIE[K.start] ? K.start : 'miecz'); }
+function czyWyborBroni(K) { return K.start === 'wybor' || K.start === 'wybor2'; }
 function rozpocznijRun(trudnosc, klasa) {
   run = { trudnosc: trudnosc, zabici: 0, zadane: 0, przyjete: 0, leczenie: 0, zloto: 0, xp: 0, ataki: 0, trafienia: 0, zrodla: {}, zlotoFali: 0,
     start: Date.now(), falaMaks: 0, przerzutyStatow: 0 };
@@ -5286,7 +6658,7 @@ function rozpocznijRun(trudnosc, klasa) {
   gracz._run = run; gracz.nick = lStorGet('wiezien_nick', '') || KLASY[klasa].n; gracz.id = (typeof SIEC !== 'undefined' && SIEC.mojeId) || 0;
   gracze = [gracz]; lokalny = gracz;
   const K = KLASY[klasa];
-  if (K.start !== 'wybor') gracz.bronie.push(nowaBron(bronStartowa(K), 0));
+  if (!czyWyborBroni(K)) gracz.bronie.push(nowaBron(bronStartowa(K), 0));
   przebudujHaki(); zastosujStaty(); gracz.hp = D.hpMax;
   if (K.dar) K.dar(gracz.stanKlasy);
   gracz.darmoweWybory += 2;
@@ -5294,35 +6666,47 @@ function rozpocznijRun(trudnosc, klasa) {
   run.przerwa = { start: true, augment: 's', nr: 0 };
   stan = 'przerwa';
   ustawKamere();
-  if (K.start === 'wybor') pokazWyborBroniStart(); else kolejkaPrzerwy();
+  if (czyWyborBroni(K)) pokazWyborBroniStart(); else kolejkaPrzerwy();
   if (!lStorGet('wiezien_pomoc', false)) { lStorSet('wiezien_pomoc', true); AKCJE.jakGrac(); }
 }
 function pokazWyborBroniStart() {
-  if (!run.ofertaBroni) run.ofertaBroni = tasuj(KLUCZE_BRONI.slice()).slice(0, 3);
-  let h = '<div class="tytul">Twoja jedyna broń</div><div class="podtytul">Wybierz broń główną, z którą przejdziesz cały loch. Zaczyna na II tierze.</div>';
-  run.ofertaBroni.forEach(r => { h += wKontekscie(() => kartaBroni({ rodzaj: r, tier: 1 }, '<button class="btn-maly zl" data-a="bronStart" data-r="' + r + '">Wybieram</button>')); });
+  const K = KLASY[gracz.klasa], dwie = K.start === 'wybor2', tier = dwie ? 0 : 1;
+  if (!run.ofertaBroni) run.ofertaBroni = tasuj(KLUCZE_BRONI.slice()).slice(0, dwie ? 5 : 3);
+  const druga = dwie && gracz.bronie.length === 1;
+  let h = '<div class="tytul">' + (dwie ? (druga ? '🤜 Druga broń' : '🤛 Pierwsza broń') : 'Twoja jedyna broń') + '</div><div class="podtytul">' +
+    (dwie ? 'Akimbo walczy dwiema broniami głównymi naraz. ' + (druga ? 'Pierwsza: <b>' + BRONIE[gracz.bronie[0].rodzaj].ikona + ' ' + BRONIE[gracz.bronie[0].rodzaj].nazwa + '</b>. Wybierz drugą.' : 'Wybierz pierwszą z dwóch.') : 'Wybierz broń główną, z którą przejdziesz cały loch. Zaczyna na II tierze.') + '</div>';
+  run.ofertaBroni.forEach(r => { if (druga && gracz.bronie[0].rodzaj === r) return; h += wKontekscie(() => kartaBroni({ rodzaj: r, tier: tier }, '<button class="btn-maly zl" data-a="bronStart" data-r="' + r + '">Wybieram</button>')); });
   pokazEkran(h);
 }
-AKCJE.bronStart = d => { gracz.bronie = [nowaBron(d.r, 1)]; run.ofertaBroni = null; poZmianieBuildu(); DZ.wybor(); kolejkaPrzerwy(); };
+AKCJE.bronStart = d => {
+  const K = KLASY[gracz.klasa];
+  if (K.start === 'wybor2') { gracz.bronie.push(nowaBron(d.r, 0)); if (gracz.bronie.length < 2) { DZ.wybor(); pokazWyborBroniStart(); return; } }
+  else gracz.bronie = [nowaBron(d.r, 1)];
+  run.ofertaBroni = null; poZmianieBuildu(); DZ.wybor(); kolejkaPrzerwy();
+};
 
 AKCJE.jakGrac = () => pokazModal('<div class="tytul">❓ Jak grać</div><div class="info-pole">' +
   '<b>Ruch:</b> na telefonie trzymanym pionowo przeciągnij palcem po dolnym pasku (drążek pojawi się pod palcem). <b>Poziomo</b> dotknij planszy w dowolnym miejscu — drążek pojawi się pod kciukiem, a przyciski są w prawym dolnym rogu (⛶ pełny ekran w menu). Na komputerze <b>WASD</b> / strzałki albo przytrzymaj <b>lewy przycisk myszy</b> — postać idzie w stronę kursora. Atakujesz <b>automatycznie</b>.<br>' +
   '<b>⚠️ Zamach:</b> wrogowie walczący wręcz przed ciosem się zamachują (czerwony klin). Odskocz albo przebiegnij obok, zanim się wypełni — cios trafi w powietrze. Ogłuszenie przerywa zamach.<br>' +
-  '<b>✨ Umiejętność:</b> każda postać ma swoją — przycisk po prawej, na komputerze <b>E</b>, spacja albo <b>prawy przycisk myszy</b> (w stronę kursora). Mikstura: <b>Q</b>, pauza: <b>Esc</b>. Odnawia się szybciej z Przyspieszeniem.<br>' +
+  '<b>✨ Umiejętność:</b> każda postać ma swoją — przycisk po prawej, na komputerze <b>E</b>, spacja albo <b>prawy przycisk myszy</b> (w stronę kursora). Druga umiejętność: <b>R</b> lub <b>Q</b>, pauza: <b>Esc</b>. Odnawia się szybciej z Przyspieszeniem.<br>' +
+  '<b>🧬 Ewolucja:</b> w sklepie rozwijasz postać — 3 gałęzie (umiejętności, broń albo pasywka) po 3 rangi, odblokowywane na poziomach 3, 10 i 20. Umiejętności rosną też same: +4% co 3 poziomy. Szczegóły postaci: przycisk <b>Postać</b> w przerwie i w pauzie.<br>' +
+  '<b>🤖 Auto-użycie:</b> przytrzymaj przycisk umiejętności (komputer: prawy klik na nim albo Shift+E / Shift+R, pad: wciśnij gałkę), a umiejętność sama się użyje, gdy będzie gotowa.<br>' +
   '<b>🎮 Pad:</b> podłącz kontroler (kabel albo Bluetooth) i naciśnij dowolny przycisk — gra przełączy się na sterowanie padem. Prawą gałką celujesz (puszczona = automatyczne namierzanie). Szczegóły w menu „Sterowanie”.<br>' +
   '<b>⭐ Broń główna</b> to Twoja broń z klasy — to ona atakuje. Ulepszasz ją w sklepie (tiery I–V). Skaluje się od kilku statystyk naraz.<br>' +
   '<b>🗡️ Bronie dodatkowe</b> (jak przedmioty w LoL-u) dają <b>statystyki</b> broni głównej i co kilka sekund albo co N-ty atak same coś odpalają. Dwie takie same o tym samym tierze łączą się w wyższy. Ta sama rodzina co broń główna daje <b>premię zestawu</b>.<br>' +
   '<b>🎒 Przedmioty</b> nie dają statystyk — mają pasywki: działka, krzaki z leczącymi owocami, pszczoły, miny... Ulepszasz je gwiazdkami ★.<br>' +
+  '<b>💎 Tiery</b> poznasz po kamieniu w rogu ikony: <span class="kol-t0">I zwykły</span> · <span class="kol-t1">II rzadki</span> · <span class="kol-t2">III epicki</span> · <span class="kol-t3">IV legendarny</span> · <span class="kol-t4">V mityczny</span> · <span class="kol-p">pryzmatyczny</span>. Augmenty: <span class="gem-as">szare</span>, <span class="gem-az">złote</span>, <span class="gem-ap">pryzmatyczne</span>.<br>' +
   '<b>🛡️ Pancerz</b> (4 części) daje statystyki obronne. Pryzmaty — tylko z Pryzmatycznego Kowadła, bez ulepszania.<br>' +
   '<b>🧬 Augmenty</b> (szare, złote, pryzmatyczne) ulepszasz w sklepie do poziomu III.<br>' +
   '<b>Sprzedaż:</b> wszystko sprzedasz w sklepie albo w 🎒 Build między falami.<br>' +
-  '<b>🎯 Przy trafieniu (on-hit):</b> każde trafienie bronią główną nakłada Twoje efekty „przy trafieniu” (obrażenia przy trafieniu i przedmioty z tym znacznikiem). Znacznik 🔁 / ×2 oznacza, że coś nakłada je <b>dodatkowe razy</b>. 📈 pokazuje, od czego efekt rośnie.<br>' +
+  '<b>🎯 Przy trafieniu (on-hit):</b> każde trafienie bronią główną nakłada Twoje efekty „przy trafieniu” (obrażenia przy trafieniu i przedmioty z tym znacznikiem). Działają na <b>każdego</b> trafionego wroga (cały łuk ciosu, przebite pociskiem, w wybuchu), a efekty z odnowieniem albo „co N-ty atak” — tylko na cel główny. Znacznik 🔁 / ×2 oznacza, że coś nakłada je <b>dodatkowe razy</b>. 📈 pokazuje, od czego efekt rośnie.<br>' +
+  '<b>⚡ Naładowanie:</b> niektóre przedmioty, bronie i augmenty mają „naładowany atak”. Energia (niebieski pasek pod zdrowiem) ładuje się z <b>biegania</b> i ataków; przy 100 następny atak bronią główną jest naładowany i odpala te efekty.<br>' +
   '<b>Miejsca:</b> przedmioty zwykłe i pryzmatyczne mają osobne miejsca (np. 4 + 2).<br>' +
   '<b>⚒️ Kowadło statystyk</b> w sklepie: czyste statystyki za złoto (wybierasz 1 z 3). Każde kolejne w tym samym sklepie jest droższe.<br>' +
   '<b>🎲 Szanse są równe:</b> sklep, skrzynie, augmenty, kowadła i statystyki losują się tak samo dla każdej postaci. Zmienia je tylko 🍀 szczęście, które każdy może zdobyć z przedmiotów i ulepszeń.<br>' +
   '<b>Drużyna:</b> złoto i doświadczenie są wspólne — każdy dostaje pełną wartość tego, co ktokolwiek podniesie, a potem działają <b>jego własne</b> premie (zysk złota, doświadczenie, Midas…).<br>' +
-  '<b>🦇 Wampiryzm</b> (kradzież życia i wszechwampiryzm) leczy najwyżej 2–8% zdrowia na sekundę. Od 11. fali działa <b>🥀 zmęczenie</b>: leczenie słabnie o 2,5% z każdą falą (mikstury nie).<br>' +
-  '<b>Fale:</b> przetrwaj do końca czasu. Co 5. fala to <b>boss</b>. Złoto i doświadczenie, których nie zbierzesz, same zbierają się po fali.<br>' +
+  '<b>🦇 Wampiryzm</b> (kradzież życia i wszechwampiryzm) leczy najwyżej 2–8% zdrowia na sekundę. Od 11. fali działa <b>🥀 zmęczenie</b>: leczenie słabnie o 2,5% z każdą falą (regeneracja nie).<br>' +
+  '<b>Fale:</b> przetrwaj do końca czasu. Co 5. fala to <b>boss</b>. Z łupów, których nie zbierzesz (doświadczenie, złoto, skrzynie), po fali zostaje Ci <b>połowa</b> — reszta przepada.<br>' +
   '<b>Obrażenia:</b> <span class="fiz">fizyczne</span> (pancerz), <span class="mag">magiczne</span> (odporność), <span class="praw">prawdziwe</span> (ignorują obronę).</div><button class="btn" data-a="zamknijModal">Rozumiem</button>');
 
 AKCJE.rekordy = () => {
@@ -5333,6 +6717,44 @@ AKCJE.rekordy = () => {
   KLUCZE_KLAS.forEach(k => { const r = rk[k]; h += '<div class="wiersz-stat"><span class="ik">' + KLASY[k].ik + '</span><span class="n">' + KLASY[k].n + '</span><span class="v' + (r ? '' : ' zero') + '">' + (r ? r : '—') + '</span></div>'; });
   pokazModal(h + '<button class="btn" data-a="zamknijModal">Zamknij</button>');
 };
+
+// ---------------------------------------------------------------------
+//  RYZYKO (Hazardzista): przy każdym wyborze raz (ranga II: dwa razy) za darmo —
+//  1/3 przepada, 1/3 zostaje, 1/3 ulepsza się. Krótka animacja kostki (0,65 s).
+// ---------------------------------------------------------------------
+function limitHazardu() { return ewo('pas') >= 2 ? 2 : 1; }
+function moznaHazard(o) { return !!(gracz && KLASY[gracz.klasa].hazard && o && (o.hz || 0) < limitHazardu()); }
+function przyciskHazardu(akcja, o, ex) { return moznaHazard(o) ? '<button class="btn hazard" data-a="' + akcja + '"' + (ex || '') + '>🎲 Zaryzykuj za darmo <span style="opacity:0.8;font-weight:700">(przepadnie / zostanie / ulepszy się)</span></button>' : ''; }
+function rzutHazardu(o, wartoscZl, fn) {
+  if (!moznaHazard(o)) return;
+  o.hz = (o.hz || 0) + 1;
+  const pL = ewo('pas') >= 1 ? 0.25 : 1 / 3, r = Math.random(), wynik = r < pL ? 'przepada' : r < pL + 1 / 3 ? 'zostaje' : 'lepiej';
+  const tekst = { przepada: '💥 Przepadło!', zostaje: '➖ Bez zmian', lepiej: '⬆️ Ulepszone!' }[wynik], kol = { przepada: '#ff6a5a', zostaje: '#e8e0d0', lepiej: '#7ee87a' }[wynik];
+  pokazModal('<div class="hazard-anim"><div class="hazard-kostka">🎲</div><div class="hazard-wynik" style="color:' + kol + '">' + tekst + '</div></div>');
+  DZ.klik(); setTimeout(() => (wynik === 'lepiej' ? DZ.pryzmat : wynik === 'przepada' ? DZ.obrazenia : DZ.klik)(), 420);
+  setTimeout(() => {
+    zamknijModal();
+    if (wynik === 'przepada' && ewo('pas') >= 3 && wartoscZl > 0) { const z = Math.round(wartoscZl * 0.3); gracz.zloto += z; toast('🎲 Przepadło — rekompensata +' + z + ' 💰'); } else toast('🎲 ' + tekst);
+    fn(wynik);
+  }, 650);
+}
+const AUG_WYZEJ = { s: 'z', z: 'p' };
+AKCJE.hazardAug = () => { const o = run.augOferta; if (!o) return; rzutHazardu(o, 40 + 8 * fala.nr, w => {
+  if (w === 'przepada') { run.augOferta = null; kolejkaPrzerwy(); return; }
+  if (w === 'lepiej') { if (AUG_WYZEJ[o.tier]) { o.tier = AUG_WYZEJ[o.tier]; o.ids = losujAugmenty(o.tier, 3); } else { gracz.przerzutyAug++; toast('🎲 Już pryzmatyczny — +1 przerzut augmentów'); } }
+  pokazAugmenty(o.tier); }); };
+AKCJE.hazardStat = () => { const o = run.hzStat || (run.hzStat = {}); rzutHazardu(o, 25 + 5 * fala.nr, w => {
+  if (w === 'przepada') { if (run.opcjeDarmowe) gracz.darmoweWybory--; else gracz.doWyboru--; run.opcjeStatow = null; run.hzStat = null; kolejkaPrzerwy(); return; }
+  if (w === 'lepiej') run.opcjeStatow.forEach(op => { op.t = Math.min(3, op.t + 1); const u = ULEPSZENIA_STATOW.find(x => x.k === op.k); if (u) op.v = u.w[op.t]; });
+  pokazWyborStatow(run.opcjeDarmowe); }); };
+AKCJE.hazardSkrz = () => { const z = run.zawSkrzyni, s = gracz.skrzynie[0]; if (!z || !s) return; rzutHazardu(z, 30 + 10 * s.tier + 4 * fala.nr, w => {
+  if (w === 'przepada') { nastepnaSkrzynia(); return; }
+  if (w === 'lepiej') { if (s.tier < 3) { s.tier++; const hz = z.hz; run.zawSkrzyni = generujZawartosc(s); run.zawSkrzyni.hz = hz; } else { const zl = Math.round(40 + 12 * fala.nr); gracz.zloto += zl; toast('🎲 Skrzynia już legendarna — +' + zl + ' 💰'); } }
+  pokazSkrzynie(); }); };
+AKCJE.hazardOferta = d => { const o = run.sklep && run.sklep.oferty[+d.i]; if (!o || o.kupiona || o.rodzaj === 'kowadlo') return; rzutHazardu(o, cenaOferty(o), w => {
+  if (w === 'przepada') o.kupiona = o.przepadla = true;
+  if (w === 'lepiej') { if (o.rodzaj === 'oreze') o.o.tier = Math.min(3, o.o.tier + 1); else if (o.rodzaj === 'pancerz') o.p.tier = Math.min(3, o.p.tier + 1); else o.gw = Math.min(MAKS_GWIAZDEK, (o.gw || 0) + 1); }
+  pokazSklep(true); }); };
 
 // ---------------------------------------------------------------------
 //  AUGMENTY
@@ -5347,6 +6769,7 @@ function pokazAugmenty(tier) {
   let h = pasekGorny() + '<div class="tytul">🧬 Wybierz augment</div><div class="podtytul" style="color:' + T.kolor + '">' + (o.tier === 'p' ? '<span class="kol-p" style="font-weight:900">' + T.nazwa + '</span>' : T.nazwa) + '</div>';
   o.ids.forEach(id => { h += kartaPad(kartaAugmentu(DEF_AUG[id], '<button class="btn-maly zl" data-a="augWybierz" data-id="' + id + '" style="margin-left:auto">Wybieram</button>', { id: id, poz: 1 }), 'augWybierz', 'wybierz'); });
   if (!o.ids.length) h += '<div class="slot-pusty">Brak dostępnych augmentów tego rodzaju — dostajesz 50 złota.</div><button class="btn" data-a="augPomin">Dalej</button>';
+  h += przyciskHazardu('hazardAug', o);
   h += '<button class="btn drugi" data-a="augPrzerzuc"' + (gracz.przerzutyAug > 0 ? '' : ' disabled') + '>🎲 Przerzuć (zostało: ' + gracz.przerzutyAug + ')</button>';
   pokazEkran(h);
 }
@@ -5391,17 +6814,17 @@ function pokazWyborStatow(darmowy) {
       '<div style="font-size:20px;font-weight:900;color:' + TIERY[o.t].kolor + ';margin-top:4px">+' + fmt(o.v) + (S.j === '%' ? '%' : (S.j || '')) + '</div>' +
       '<div class="o">Teraz: ' + wartoscStatuTekst(o.k, D[o.k]) + '</div><div class="o" style="margin-top:2px;opacity:0.75">' + S.o + '</div></div>';
   });
-  h += '</div><button class="btn drugi" data-a="statPrzerzuc" style="margin-top:12px"' + (gracz.zloto >= kosztPrzerzutuStatow() ? '' : ' disabled') + '>🎲 Przerzuć (' + kosztPrzerzutuStatow() + ' 💰)</button>';
+  h += '</div>' + przyciskHazardu('hazardStat', run.hzStat || (run.hzStat = {}), ' style="margin-top:12px"') + '<button class="btn drugi" data-a="statPrzerzuc" style="margin-top:12px"' + (gracz.zloto >= kosztPrzerzutuStatow() ? '' : ' disabled') + '>🎲 Przerzuć (' + kosztPrzerzutuStatow() + ' 💰)</button>';
   pokazEkran(h);
 }
 AKCJE.statWybierz = d => {
   const o = run.opcjeStatow[+d.i]; if (!o) return;
   gracz.ulepszenia[o.k] = (gracz.ulepszenia[o.k] || 0) + o.v;
   if (run.opcjeDarmowe) gracz.darmoweWybory--; else gracz.doWyboru--;
-  run.opcjeStatow = null; poZmianieBuildu(); DZ.wybor();
+  run.opcjeStatow = null; run.hzStat = null; poZmianieBuildu(); DZ.wybor();
   kolejkaPrzerwy();
 };
-AKCJE.statPrzerzuc = () => { const k = kosztPrzerzutuStatow(); if (gracz.zloto < k) return; gracz.zloto -= k; run.przerzutyStatow++; run.opcjeStatow = losujOpcjeStatow(run.opcjeDarmowe ? 1 : 0); pokazWyborStatow(run.opcjeDarmowe); };
+AKCJE.statPrzerzuc = () => { const k = kosztPrzerzutuStatow(); if (gracz.zloto < k) return; gracz.zloto -= k; run.przerzutyStatow++; run.opcjeStatow = losujOpcjeStatow(run.opcjeDarmowe ? 1 : 0); run.hzStat = null; pokazWyborStatow(run.opcjeDarmowe); };
 
 // ---------------------------------------------------------------------
 //  SKRZYNIE
@@ -5416,8 +6839,7 @@ function generujZawartosc(s) {
     return r < 0.65 ? { r: 'oreze', o: nowyOrez(losujIdOreza(), t) } : { r: 'pancerz', p: nowyPancerz(losZ(PANCERZE).id, t) };
   }
   const r = Math.random();
-  if (r < 0.12) return { r: 'zloto', ile: Math.round((15 + 5 * nr) * (1 + t * 0.7)) };
-  if (r < 0.2 && gracz.mikstury < gracz.maksMikstur) return { r: 'mikstura' };
+  if (r < 0.2) return { r: 'zloto', ile: Math.round((15 + 5 * nr) * (1 + t * 0.7)) };
   if (r < 0.52) return { r: 'oreze', o: nowyOrez(losujIdOreza(), t) };
   if (t >= 2 && r < 0.58 && gracz.bronie.some(b => b.tier < MAKS_TIER_BRONI)) return { r: 'kamien' };
   return { r: 'pancerz', p: nowyPancerz(losZ(PANCERZE).id, t) };
@@ -5429,7 +6851,6 @@ function pokazSkrzynie() {
   const z = run.zawSkrzyni;
   let h = pasekGorny() + '<div class="tytul">📦 ' + (s.boss ? 'Skrzynia bossa' : 'Skrzynia') + ' <span class="kol-t' + s.tier + '">(' + TIERY[s.tier].nazwaZ.toLowerCase() + ')</span></div><div class="podtytul">Zostało skrzyń: <b>' + gracz.skrzynie.length + '</b></div>';
   if (z.r === 'zloto') h += '<div class="karta t' + s.tier + '" style="text-align:center"><div style="font-size:44px">💰</div><div class="karta-nazwa">' + z.ile + ' złota</div></div><button class="btn" data-a="skrzZloto">Weź</button>';
-  else if (z.r === 'mikstura') h += '<div class="karta t1" style="text-align:center"><div style="font-size:44px">🧪</div><div class="karta-nazwa">Mikstura zdrowia</div><div class="karta-opis">Leczy ' + Math.round(40 * gracz.mocMikstur) + '% maks. zdrowia.</div></div><button class="btn" data-a="skrzMikstura">Weź</button>';
   else if (z.r === 'kamien') {
     const b = gracz.bronie[0];
     h += '<div class="karta t3" style="text-align:center"><div style="font-size:44px">💎</div><div class="karta-nazwa">Kamień Kowalski</div><div class="karta-opis">Twoja broń główna <b>' + BRONIE[b.rodzaj].ikona + ' ' + nazwaBroni(b) + '</b> zyskuje <b>+1 tier</b> za darmo.</div></div><button class="btn ziel" data-a="skrzKamien">⬆️ Ulepsz broń główną</button>';
@@ -5448,11 +6869,11 @@ function pokazSkrzynie() {
     else if (gracz.oreze.length) h += '<button class="btn" data-a="skrzZamienOreze">Zamień z posiadaną…</button>';
     h += '<button class="btn drugi" data-a="skrzSprzedaj">Sprzedaj (+' + wartoscSprzedazyOreza(z.o) + ' 💰)</button>';
   }
+  h += przyciskHazardu('hazardSkrz', z);
   pokazEkran(h);
 }
 function nastepnaSkrzynia() { gracz.skrzynie.shift(); run.zawSkrzyni = null; poZmianieBuildu(); kolejkaPrzerwy(); }
 AKCJE.skrzZloto = () => { gracz.zloto += run.zawSkrzyni.ile; DZ.moneta(); nastepnaSkrzynia(); };
-AKCJE.skrzMikstura = () => { gracz.mikstury = Math.min(gracz.maksMikstur, gracz.mikstury + 1); nastepnaSkrzynia(); };
 AKCJE.skrzKamien = () => { const b = gracz.bronie.find(x => x.tier < MAKS_TIER_BRONI); if (b) { b.tier++; toast('💎 ' + nazwaBroni(b)); DZ.pryzmat(); } nastepnaSkrzynia(); };
 AKCJE.skrzZaloz = () => { const p = run.zawSkrzyni.p, slot = DEF_PANC[p.id].slot, ob = gracz.pancerz[slot]; if (ob) gracz.zloto += Math.round(cenaPancerza(ob) * 0.5); gracz.pancerz[slot] = p; DZ.zakup(); nastepnaSkrzynia(); };
 AKCJE.skrzSprzedaj = () => { const z = run.zawSkrzyni; gracz.zloto += z.r === 'pancerz' ? Math.round(cenaPancerza(z.p) * 0.5) : wartoscSprzedazyOreza(z.o); DZ.moneta(); nastepnaSkrzynia(); };
@@ -5488,8 +6909,9 @@ AKCJE.porzucPrz = () => { const o = run.oczekPrz; gracz.zloto += wartoscSprzedaz
 // ---------------------------------------------------------------------
 //  KOWADŁO PRYZMATYCZNE
 // ---------------------------------------------------------------------
+function ileWKowadle() { const K = KLASY[gracz.klasa]; return K.kowadloWybor ? K.kowadloWybor() : 3; }
 function pokazKowadlo() {
-  if (!run.ofertaKow) run.ofertaKow = tasuj(PRYZMATY.filter(p => !maPrzedmiot(p.id)).map(p => p.id)).slice(0, 3);
+  if (!run.ofertaKow) run.ofertaKow = tasuj(PRYZMATY.filter(p => !maPrzedmiot(p.id)).map(p => p.id)).slice(0, ileWKowadle());
   let h = pasekGorny() + '<div class="tytul">🔨 <span class="kol-p">Pryzmatyczne Kowadło</span></div><div class="podtytul">Wybierz jeden przedmiot pryzmatyczny. Miejsca na pryzmaty: <b>' + liczPrzedm(true) + '/' + slotyTypu(true) + '</b></div>';
   run.ofertaKow.forEach(id => { h += kartaPad(kartaPrzedmiotu(nowyPrzedmiot(id), '<button class="btn-maly zl" data-a="kowWybierz" data-id="' + id + '" style="margin-left:auto">Wybieram</button>'), 'kowWybierz', 'wybierz'); });
   if (!run.przerzutKow) h += '<button class="btn drugi" data-a="kowPrzerzuc">🎲 Przerzuć (raz, za darmo)</button>';
@@ -5497,7 +6919,7 @@ function pokazKowadlo() {
   pokazEkran(h);
 }
 AKCJE.kowWybierz = d => { gracz.kowadla--; run.ofertaKow = null; run.przerzutKow = false; DZ.pryzmat(); dodajPrzedmiotZWyborem(nowyPrzedmiot(d.id), () => { const def = DEF_PRZ[d.id]; if (def.natychmiast) { try { def.natychmiast(); } catch (e) { zglosBlad(e, 'pryzmat natychmiast'); } poZmianieBuildu(); } kolejkaPrzerwy(); }); };
-AKCJE.kowPrzerzuc = () => { run.przerzutKow = true; const st = run.ofertaKow; run.ofertaKow = tasuj(PRYZMATY.filter(p => !maPrzedmiot(p.id) && st.indexOf(p.id) < 0).map(p => p.id)).slice(0, 3); if (run.ofertaKow.length < 3) run.ofertaKow = st; pokazKowadlo(); };
+AKCJE.kowPrzerzuc = () => { run.przerzutKow = true; const st = run.ofertaKow; run.ofertaKow = tasuj(PRYZMATY.filter(p => !maPrzedmiot(p.id) && st.indexOf(p.id) < 0).map(p => p.id)).slice(0, ileWKowadle()); if (run.ofertaKow.length < 3) run.ofertaKow = st; pokazKowadlo(); };
 AKCJE.kowPomin = () => { gracz.kowadla--; run.ofertaKow = null; run.przerzutKow = false; gracz.zloto += 60; kolejkaPrzerwy(); };
 
 // ---------------------------------------------------------------------
@@ -5511,7 +6933,7 @@ function losujTierSklepu() {
 function losujOferte(oferty) {
   const nr = Math.max(1, fala.nr);
   if (nr >= 4 && !oferty.some(o => o.rodzaj === 'kowadlo') && Math.random() < 0.06 * (1 + D.szczescie / 200)) return { rodzaj: 'kowadlo' };
-  const r = Math.random(), szansaOreza = 0.4;
+  const r = Math.random(), szansaOreza = gracz.slotyOreza > 0 ? 0.4 : 0;
   if (r < szansaOreza) {
     let t = losujTierSklepu(); if (t > 0 && Math.random() < 0.35) t--;
     let id = losujIdOreza(), prob = 0;
@@ -5543,33 +6965,38 @@ function pokazSklep(zachowaj) {
   const sk = run.sklep, nr = fala.nr;
   let h = pasekGorny() + '<div class="tytul">🛒 Sklep</div><div class="podtytul">Przed falą <b>' + (nr + 1) + '</b>' + (czyFalaBossa(nr + 1) ? ' — <span class="czer">BOSS!</span>' : '') + '</div>';
   h += '<button class="btn" data-a="dalejZeSklepu">▶ Fala ' + (nr + 1) + '</button>';
-  const kp = sk.darmowe > 0 ? 0 : kosztPrzerzutuSklepu();
-  h += '<div class="rzad-btn" style="margin:6px 0 10px"><button class="btn-maly" data-a="przerzucSklep"' + (gracz.zloto >= kp ? '' : ' disabled') + '>🎲 Przerzuć ' + (kp ? '(' + kp + ' 💰)' : '(za darmo)') + '</button>' +
-    '<button class="btn-maly" data-a="kupMiksture"' + (gracz.mikstury < gracz.maksMikstur && gracz.zloto >= cenaMikstury() ? '' : ' disabled') + '>🧪 Mikstura (' + cenaMikstury() + ' 💰) ' + gracz.mikstury + '/' + gracz.maksMikstur + '</button></div>';
-  const ck = cenaKowadlaStatow();
-  h += '<button class="btn-maly zl kowadlo-statow" data-a="kowadloStatow"' + (gracz.zloto >= ck ? '' : ' disabled') + '>⚒️ Kowadło statystyk — ' + ck + ' 💰 <span style="font-weight:700;opacity:0.75">· czyste statystyki do wyboru</span></button>';
+  const kp = sk.darmowe > 0 ? 0 : kosztPrzerzutuSklepu(), ck = cenaKowadlaStatow();
+  h += '<div class="sklep-akcje">' +
+    '<button class="akcja-sklepu przerzut' + (sk._kreci ? ' kreci' : '') + '" data-a="przerzucSklep"' + (gracz.zloto >= kp ? '' : ' disabled') + '>' + IKONA_PRZERZUT +
+      '<span class="as-tekst"><b>Przerzuć</b><span>' + (kp ? kp + ' 💰' : 'za darmo' + (sk.darmowe > 1 ? ' (' + sk.darmowe + ')' : '')) + '</span></span></button>' +
+    '<button class="akcja-sklepu staty" data-a="kowadloStatow"' + (gracz.zloto >= ck ? '' : ' disabled') + '>' + IKONA_STATY +
+      '<span class="as-tekst"><b>Statystyki</b><span>' + ck + ' 💰 · 1 z 3</span></span></button></div>';
+  if (KLASY[gracz.klasa].ewo) h += '<button class="akcja-sklepu ewo" data-a="ewolucja">' + IKONA_EWO + '<span class="as-tekst"><b>Ewolucja postaci' + (moznaEwolucje() ? ' ⬆' : '') + '</b><span>' + KLASY[gracz.klasa].ewo.map(e => e.ik + ' ' + rzymskaR(ewo(e.id))).join(' · ') + '</span></span></button>';
+  sk._kreci = false;
   sk.oferty.forEach((o, i) => {
-    if (o.kupiona) { h += '<div class="slot-pusty">Kupione ✔</div>'; return; }
+    if (o.kupiona) { h += '<div class="slot-pusty">' + (o.przepadla ? '🎲 Przepadło' : 'Kupione ✔') + '</div>'; return; }
     const cena = cenaOferty(o), stac = gracz.zloto >= cena;
-    const dol = '<span class="cena"' + (stac ? '' : ' style="color:#a05a4a"') + '>' + cena + ' 💰</span><button class="btn-maly" data-a="zablokuj" data-i="' + i + '">' + (o.zabl ? '🔒' : '🔓') + '</button><button class="btn-maly zl" data-a="kup" data-i="' + i + '"' + (stac ? '' : ' disabled') + '>Kup</button>';
+    const dol = '<span class="cena"' + (stac ? '' : ' style="color:#a05a4a"') + '>' + cena + ' 💰</span>' + (o.rodzaj !== 'kowadlo' && moznaHazard(o) ? '<button class="btn-maly hazard" data-a="hazardOferta" data-i="' + i + '" title="Zaryzykuj za darmo">🎲</button>' : '') + '<button class="btn-maly" data-a="zablokuj" data-i="' + i + '">' + (o.zabl ? '🔒' : '🔓') + '</button><button class="btn-maly zl" data-a="kup" data-i="' + i + '"' + (stac ? '' : ' disabled') + '>Kup</button>';
     let karta = '';
     if (o.rodzaj === 'kowadlo') karta = '<div class="karta tp"><div class="karta-gora"><div class="karta-ik">🔨</div><div><div class="karta-nazwa">Pryzmatyczne Kowadło</div><div class="karta-tier"><span class="kol-p">Wybór przedmiotu pryzmatycznego</span></div></div></div><div class="karta-opis">Po zakupie wybierasz jeden z 3 przedmiotów pryzmatycznych.</div><div class="karta-dol">' + dol + '</div></div>';
     else if (o.rodzaj === 'oreze') karta = kartaOreza(o.o, (paraOreza(o.o) ? '<span class="tag" style="background:rgba(126,201,138,0.2);color:#7ec98a">⬆️ połączy się</span>' : '') + dol);
     else if (o.rodzaj === 'pancerz') { const ob = gracz.pancerz[DEF_PANC[o.p.id].slot]; karta = kartaPancerza(o.p, (ob ? '<span class="tag">zamieni: ' + DEF_PANC[ob.id].ik + ' ' + TIERY[ob.tier].rz + '</span>' : '') + dol); }
-    else { const ile = gracz.przedmioty.filter(p => p && p.id === o.id).length; karta = kartaPrzedmiotu(nowyPrzedmiot(o.id), (ile ? '<span class="tag" style="background:rgba(126,201,138,0.2);color:#7ec98a">masz: ' + ile + ' · kolejny działa osobno</span>' : '') + dol); }
+    else { const ile = gracz.przedmioty.filter(p => p && p.id === o.id).length; karta = kartaPrzedmiotu(Object.assign(nowyPrzedmiot(o.id), { gw: o.gw || 0 }), (ile ? '<span class="tag" style="background:rgba(126,201,138,0.2);color:#7ec98a">masz: ' + ile + ' · kolejny działa osobno</span>' : '') + dol); }
     h += kartaPad(karta, 'kup', 'kup', 'zablokuj', o.zabl ? 'odblokuj' : 'zablokuj');
   });
   h += sekcjeBuildu(true);
   h += '<button class="btn" data-a="dalejZeSklepu" style="margin-top:14px">▶ Fala ' + (nr + 1) + '</button>';
   pokazEkran(h, { zachowaj: zachowaj });
 }
-function cenaMikstury() { return Math.round(12 * mnCeny()); }
+const IKONA_PRZERZUT = '<svg class="as-ik" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg>';
+const IKONA_EWO = '<svg class="as-ik" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 3c0 6 10 6 10 12M17 3c0 6-10 6-10 12M7 21c0-2 1.5-3.4 5-4.5 3.5 1.1 5 2.5 5 4.5"/><path d="M8.5 6.5h7M8 11h8" stroke-width="1.6"/></svg>';
+const IKONA_STATY = '<svg class="as-ik" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18" fill="none" stroke-width="2.4" stroke-linecap="round"/><rect x="4.5" y="13" width="3.6" height="6" rx="1"/><rect x="10.2" y="9" width="3.6" height="10" rx="1"/><rect x="15.9" y="11" width="3.6" height="8" rx="1"/><path d="M17.7 2.5l3.3 3.6h-2.2v3h-2.2v-3h-2.2z"/></svg>';
 
 // ---------------------------------------------------------------------
 //  KOWADŁO STATYSTYK — czyste statystyki za złoto (jak kowadła w Arenie LoL-a).
-//  Kupujesz ile chcesz, ale w jednym sklepie każde kolejne jest droższe o 60%.
+//  Kupujesz ile chcesz; w jednym sklepie każde kolejne jest droższe o 20% ceny bazowej.
 // ---------------------------------------------------------------------
-function cenaKowadlaStatow() { const k = (run.sklep && run.sklep.kowStat) || 0; return Math.round(40 * mnCeny() * (1 + 0.6 * k)); }
+function cenaKowadlaStatow() { const k = (run.sklep && run.sklep.kowStat) || 0; return Math.round(70 * mnCeny() * (1 + 0.2 * k)); }
 function pokazKowadloStatow() {
   if (!run.kowStat) run.kowStat = losujOpcjeStatow(1).slice(0, 3);
   const c = cenaKowadlaStatow(), stac = gracz.zloto >= c;
@@ -5595,14 +7022,13 @@ AKCJE.kowStatWybierz = d => {
   pokazSklep(false);
 };
 AKCJE.kowStatWroc = () => pokazSklep(false);
-AKCJE.kupMiksture = () => { const c = cenaMikstury(); if (gracz.zloto < c || gracz.mikstury >= gracz.maksMikstur) return; gracz.zloto -= c; gracz.mikstury++; DZ.zakup(); pokazSklep(true); };
 AKCJE.przerzucSklep = () => {
   const sk = run.sklep; let k = 0;
   if (sk.darmowe > 0) sk.darmowe--; else { k = kosztPrzerzutuSklepu(); if (gracz.zloto < k) return; sk.przerzuty++; }
   gracz.zloto -= k;
   const nowe = sk.oferty.filter(o => o.zabl && !o.kupiona);
   while (nowe.length < 5) nowe.push(losujOferte(nowe));
-  sk.oferty = nowe; DZ.klik(); pokazSklep(true);
+  sk.oferty = nowe; sk._kreci = true; DZ.klik(); pokazSklep(true);
 };
 AKCJE.zablokuj = d => { const o = run.sklep.oferty[+d.i]; o.zabl = !o.zabl; pokazSklep(true); };
 AKCJE.kup = d => {
@@ -5622,18 +7048,32 @@ AKCJE.kup = d => {
     gracz.zloto -= cena; o.kupiona = true; if (ob) gracz.zloto += Math.round(cenaPancerza(ob) * 0.5);
     gracz.pancerz[slot] = o.p; poZmianieBuildu(); DZ.zakup(); pokazSklep(true); return;
   }
-  const inst = nowyPrzedmiot(o.id);
+  const inst = nowyPrzedmiot(o.id); if (o.gw) inst.gw = o.gw;
   gracz.zloto -= cena; o.kupiona = true;
   dodajPrzedmiotZWyborem(inst, () => { DZ.zakup(); pokazSklep(true); });
 };
 function pokazKowadloZeSklepu() { run.przerwa.wrocDoSklepu = true; pokazKowadlo(); }
 AKCJE.dalejZeSklepu = () => { run.przerwa.sklep = true; zapiszGre(); kolejkaPrzerwy(); };
 // ---- zarządzanie buildem: ulepszanie i sprzedaż (sklep i 🎒 Build między falami) ----
-AKCJE.ulepszPrz = d => { const p = gracz.przedmioty[+d.i]; if (!p || DEF_PRZ[p.id].t === 'p' || (p.gw || 0) >= MAKS_GWIAZDEK) return; const c = cenaUlepszenia(p); if (gracz.zloto < c) return; gracz.zloto -= c; p.gw = (p.gw || 0) + 1; poZmianieBuildu(); DZ.wybor(); odswiezEkranPrzerwy(); };
+AKCJE.ulepszPrz = d => { const p = gracz.przedmioty[+d.i]; if (!p || (DEF_PRZ[p.id].t === 'p' && !KLASY[gracz.klasa].ulepszaPryzmaty) || (p.gw || 0) >= MAKS_GWIAZDEK) return; const c = cenaUlepszenia(p); if (gracz.zloto < c) return; gracz.zloto -= c; p.gw = (p.gw || 0) + 1; poZmianieBuildu(); DZ.wybor(); odswiezEkranPrzerwy(); };
 AKCJE.sprzedajPrz = d => { const i = +d.i, p = gracz.przedmioty[i]; if (!p) return; if (d.pewne) { run._zBuildu = !!modalEl.dataset.zBuildu; AKCJE.sprzedajPrzTak(d); return; } run._zBuildu = !!modalEl.dataset.build; pokazModal('<div class="tytul">Sprzedać?</div>' + kartaPrzedmiotu(p, '', { bezOpisu: true }) + '<button class="btn czerw" data-a="sprzedajPrzTak" data-i="' + i + '">Sprzedaj za ' + wartoscSprzedazy(p) + ' 💰</button><button class="btn drugi" data-a="zamknijModal">Anuluj</button>'); };
 AKCJE.sprzedajPrzTak = d => { const i = +d.i, p = gracz.przedmioty[i]; if (!p) return; gracz.zloto += wartoscSprzedazy(p); cofnijPrzedmiot(p); gracz.przedmioty.splice(i, 1); zamknijModal(); poZmianieBuildu(); DZ.moneta(); toast('💰 Sprzedano'); if (run._zBuildu) { run._zBuildu = false; AKCJE.modalBuild(); } odswiezEkranPrzerwy(); };
 AKCJE.zamknijModal = () => { const zb = run && run._zBuildu; if (run) run._zBuildu = false; zamknijModal(); if (zb) AKCJE.modalBuild(); };
 function cofnijPrzedmiot(p) { const d = p && DEF_PRZ[p.id]; if (d && d.cofnij) { try { d.cofnij(); } catch (e) { zglosBlad(e, 'cofnij ' + p.id); } } }
+function cenaMistrzostwa(b) { return Math.round(CENY_MISTRZOSTWA[b.mistrz || 0] * mnCeny() * (1 - (KLASY[gracz.klasa].rabatBroni || 0))); }
+AKCJE.mistrzostwo = d => {
+  const b = gracz.bronie[+d.i]; if (!b || (b.mistrz || 0) >= MAKS_MISTRZOSTWA || gracz.zloto < cenaMistrzostwa(b)) return;
+  const wolne = Object.keys(PERKI_MISTRZA).filter(p => !(b.perki || []).includes(p) && !(p === 'pociski' && !BRONIE[b.rodzaj].dystans));
+  run.ofertaPerkow = tasuj(wolne).slice(0, 3); run.perkBron = +d.i;
+  let h = '<div class="tytul">🏆 Mistrzostwo ' + rzymskaM((b.mistrz || 0) + 1) + '</div><div class="podtytul">' + BRONIE[b.rodzaj].ikona + ' ' + BRONIE[b.rodzaj].nazwa + ' dostaje <b>+15% obrażeń</b> i wybraną cechę. Koszt: <b class="zl">' + cenaMistrzostwa(b) + ' 💰</b></div>';
+  run.ofertaPerkow.forEach(p => { const P = PERKI_MISTRZA[p]; h += '<div class="kafel karta wybieralna" data-a="perkWybierz" data-p="' + p + '" style="margin-bottom:8px;text-align:left"><div class="ik">' + P.ik + '</div><div class="n">' + P.n + '</div><div class="o">' + P.o + '</div></div>'; });
+  pokazModal(h + '<button class="btn drugi" data-a="zamknijModal">Anuluj</button>');
+};
+AKCJE.perkWybierz = d => {
+  const b = gracz.bronie[run.perkBron]; if (!b || !PERKI_MISTRZA[d.p]) return; const c = cenaMistrzostwa(b); if (gracz.zloto < c) return;
+  gracz.zloto -= c; b.mistrz = (b.mistrz || 0) + 1; b.perki = (b.perki || []).concat([d.p]); run.ofertaPerkow = null;
+  poZmianieBuildu(); DZ.pryzmat(); toast('🏆 ' + PERKI_MISTRZA[d.p].ik + ' ' + PERKI_MISTRZA[d.p].n); zamknijModal(); odswiezEkranPrzerwy();
+};
 AKCJE.ulepszGlowna = d => { const b = gracz.bronie[+d.i]; if (!b || b.tier >= MAKS_TIER_BRONI) return; const c = cenaUlepszeniaBroniGl(b); if (gracz.zloto < c) return; gracz.zloto -= c; b.tier++; poZmianieBuildu(); DZ.pryzmat(); toast('⬆️ ' + nazwaBroni(b)); odswiezEkranPrzerwy(); };
 AKCJE.polaczOreze = d => { const i = +d.i, o = gracz.oreze[i]; if (!o) return; const j = gracz.oreze.findIndex((x, k) => k !== i && x.id === o.id && x.tier === o.tier); if (j < 0 || o.tier >= 3) return; o.tier++; gracz.oreze.splice(j, 1); poZmianieBuildu(); DZ.wybor(); toast('⬆️ ' + nazwaOreza(o)); odswiezEkranPrzerwy(); };
 AKCJE.ulepszOreze = d => { const o = gracz.oreze[+d.i]; if (!o || o.tier >= 3) return; const c = cenaUlepszeniaOreza(o); if (gracz.zloto < c) return; gracz.zloto -= c; o.tier++; poZmianieBuildu(); DZ.wybor(); odswiezEkranPrzerwy(); };
@@ -5690,7 +7130,7 @@ function sekcjeBuildu(zarzadzanie) {
   h += '<div class="sekcja">🗡️ Bronie dodatkowe <span class="licz">' + gracz.oreze.length + '/' + gracz.slotyOreza + '</span></div><div class="kafelki">';
   gracz.oreze.forEach((o, i) => {
     const d = DEF_ORE[o.id], mozna = zarzadzanie && (paraOreza(o) || (o.tier < 3 && z >= cenaUlepszeniaOreza(o)));
-    h += kafelek('oreze', i, d.ik, d.n + ' ' + TIERY[o.tier].rz, TIERY[o.tier].kolor, '', d.cd ? fmt(d.cd) + 's' : (d.co ? '×' + d.co : ''), mozna ? '⬆' : '');
+    h += kafelek('oreze', i, d.ik, d.n + ' ' + TIERY[o.tier].rz, TIERY[o.tier].kolor, '', d.cd ? fmt(d.cd) + 's' : (d.co ? '×' + d.co : ''), mozna ? '⬆' : '', 'g-t' + o.tier);
   });
   for (let i = gracz.oreze.length; i < gracz.slotyOreza; i++) h += kafelekPusty('wolne');
   h += '</div>';
@@ -5700,8 +7140,8 @@ function sekcjeBuildu(zarzadzanie) {
     h += '<div class="sekcja">' + tyt + ' <span class="licz">' + liczPrzedm(pr) + '/' + slotyTypu(pr) + '</span></div><div class="kafelki">';
     gracz.przedmioty.forEach((p, i) => {
       if (!p || czyPryzmat(p) !== pr) return;
-      const d = DEF_PRZ[p.id], mozna = zarzadzanie && !pr && (p.gw || 0) < MAKS_GWIAZDEK && z >= cenaUlepszenia(p);
-      h += kafelek('przedm', i, d.ik, d.n, pr ? KOLOR_PRYZMAT : TIERY[d.t].kolor, p.gw ? '★'.repeat(p.gw) : '', d.cd ? fmt(d.cd) + 's' : '', mozna ? '⬆' : '', pr ? 'pryzm' : '');
+      const d = DEF_PRZ[p.id], mozna = zarzadzanie && (!pr || KLASY[gracz.klasa].ulepszaPryzmaty) && (p.gw || 0) < MAKS_GWIAZDEK && z >= cenaUlepszenia(p);
+      h += kafelek('przedm', i, d.ik, d.n, pr ? KOLOR_PRYZMAT : TIERY[d.t].kolor, p.gw ? '★'.repeat(p.gw) : '', d.cd ? fmt(d.cd) + 's' : '', mozna ? '⬆' : '', pr ? 'pryzm g-p' : 'g-t' + d.t);
     });
     for (let i = liczPrzedm(pr); i < slotyTypu(pr); i++) h += kafelekPusty(pr ? 'z kowadła' : 'wolne');
     h += '</div>';
@@ -5710,7 +7150,7 @@ function sekcjeBuildu(zarzadzanie) {
   h += '<div class="sekcja">🛡️ Pancerz</div><div class="kafelki">';
   SLOTY_PANCERZA.forEach(sl => {
     const p = gracz.pancerz[sl];
-    if (p) { const d = DEF_PANC[p.id]; h += kafelek('panc', sl, d.ik, d.n, TIERY[p.tier].kolor, TIERY[p.tier].rz, '', ''); }
+    if (p) { const d = DEF_PANC[p.id]; h += kafelek('panc', sl, d.ik, d.n, TIERY[p.tier].kolor, TIERY[p.tier].rz, '', '', 'g-t' + p.tier); }
     else h += kafelekPusty(IKONY_SLOTOW[sl] + ' ' + NAZWY_SLOTOW[sl]);
   });
   h += '</div>';
@@ -5719,7 +7159,7 @@ function sekcjeBuildu(zarzadzanie) {
   if (!gracz.augmenty.length) h += kafelekPusty('brak');
   gracz.augmenty.forEach((a, i) => {
     const d = DEF_AUG[a.id], T = TIERY_AUG[d.r], mozna = zarzadzanie && (a.poz || 1) < MAKS_POZ_AUG && z >= cenaUlepszeniaAug(a);
-    h += kafelek('aug', i, d.ik, d.n, d.r === 'p' ? KOLOR_PRYZMAT : T.kolor, rzymska(a.poz || 1), '', mozna ? '⬆' : '', d.r === 'p' ? 'pryzm' : '');
+    h += kafelek('aug', i, d.ik, d.n, d.r === 'p' ? KOLOR_PRYZMAT : T.kolor, rzymska(a.poz || 1), '', mozna ? '⬆' : '', d.r === 'p' ? 'pryzm g-ap' : 'g-a' + d.r);
   });
   h += '</div><div class="podtytul" style="margin-top:6px;font-size:11px">Dotknij kafelka, żeby zobaczyć opis' + (zarzadzanie ? ', ulepszyć albo sprzedać. ⬆ = stać Cię na ulepszenie.' : '.') + '</div>';
   return h;
@@ -5732,6 +7172,7 @@ function pokazSzczegol(r, i, zachowaj) {
   const bt = (a, t, kl, ok, ex) => '<button class="btn-maly ' + kl + '" data-a="' + a + '" data-i="' + i + '"' + (ex || '') + (ok === false ? ' disabled' : '') + '>' + t + '</button>';
   if (r === 'glowna') {
     if (zarz && el.tier < MAKS_TIER_BRONI) { const c = cenaUlepszeniaBroniGl(el); dol += bt('ulepszGlowna', '⬆️ Ulepsz do ' + TIERY[el.tier + 1].rz + ' (' + c + ' 💰)', 'zl', z >= c); }
+    else if (zarz && KLASY[gracz.klasa].mistrzostwo && (el.mistrz || 0) < MAKS_MISTRZOSTWA) { const c = cenaMistrzostwa(el); dol += bt('mistrzostwo', '🏆 Mistrzostwo ' + rzymskaM((el.mistrz || 0) + 1) + ' (' + c + ' 💰)', 'zl', z >= c); }
     karta = kartaBroni(el, dol);
   } else if (r === 'oreze') {
     if (zarz) {
@@ -5742,7 +7183,7 @@ function pokazSzczegol(r, i, zachowaj) {
     karta = kartaOreza(el, dol);
   } else if (r === 'przedm') {
     if (zarz) {
-      if (!czyPryzmat(el) && (el.gw || 0) < MAKS_GWIAZDEK) { const c = cenaUlepszenia(el); dol += bt('ulepszPrz', '★ Ulepsz (' + c + ' 💰)', 'zl', z >= c); }
+      if ((!czyPryzmat(el) || KLASY[gracz.klasa].ulepszaPryzmaty) && (el.gw || 0) < MAKS_GWIAZDEK) { const c = cenaUlepszenia(el); dol += bt('ulepszPrz', '★ Ulepsz (' + c + ' 💰)', 'zl', z >= c); }
       dol += bt('sprzedajPrz', 'Sprzedaj +' + wartoscSprzedazy(el) + ' 💰', 'czerw', true, ' data-pewne="1" style="margin-left:auto"');
     }
     karta = kartaPrzedmiotu(el, dol);
@@ -5801,9 +7242,9 @@ function htmlStatow() {
       h += '<div class="wiersz-stat" data-a="opisStatu" data-k="' + d.k + '"><span class="ik">' + d.i + '</span><span class="n">' + d.n + '</span><span class="v' + (zero ? ' zero' : '') + '">' + wartoscStatuTekst(d.k, v) + '</span></div>';
     });
   });
-  h += '<div class="info-pole">Zdrowie: <b>' + Math.round(gracz.hp) + ' / ' + D.hpMax + '</b> · Poziom <b>' + gracz.poziom + '</b> · Mikstury <b>' + gracz.mikstury + '/' + gracz.maksMikstur + '</b><br>Redukcja: fizyczne <b>−' + Math.round(100 - 100 * 100 / (100 + Math.max(0, D.pancerz))) + '%</b>, magiczne <b>−' + Math.round(100 - 100 * 100 / (100 + Math.max(0, D.odpMag))) + '%</b>' +
+  h += '<div class="info-pole">Zdrowie: <b>' + Math.round(gracz.hp) + ' / ' + D.hpMax + '</b> · Poziom <b>' + gracz.poziom + '</b><br>Redukcja: fizyczne <b>−' + Math.round(100 - 100 * 100 / (100 + Math.max(0, D.pancerz))) + '%</b>, magiczne <b>−' + Math.round(100 - 100 * 100 / (100 + Math.max(0, D.odpMag))) + '%</b>' +
     '<br>🦇 Limit wampiryzmu: <b>' + fmt(limitWampiryzmu() * 100) + '% zdrowia/s</b> (' + Math.round(limitWampiryzmu() * D.hpMax) + '/s)' +
-    (zmeczenie(fala.nr) > 0 ? '<br>🥀 Zmęczenie: leczenie <b>−' + Math.round(zmeczenie(fala.nr) * 100) + '%</b> (mikstury bez zmian)' : '') + '</div>';
+    (zmeczenie(fala.nr) > 0 ? '<br>🥀 Zmęczenie: leczenie <b>−' + Math.round(zmeczenie(fala.nr) * 100) + '%</b> (regeneracji nie dotyczy)' : '') + '</div>';
   return h;
 }
 AKCJE.opisStatu = d => toast(STAT[d.k].i + ' ' + STAT[d.k].n + ': ' + STAT[d.k].o);
@@ -5823,8 +7264,9 @@ function pokazEkwipunek(zak) {
   ekwZakladka = zak || 'staty';
   let h = '<div class="tytul">' + (druzyna() ? '🎒 Podgląd (gra trwa!)' : '⏸️ Pauza') + '</div><div class="podtytul">🌊 Fala ' + fala.nr + (fala.aktywna && !fala.boss ? ' · zostało ' + czas(fala.dlugosc - fala.czas) : '') + ' · 💰 ' + Math.floor(gracz.zloto) + '</div>';
   h += '<button class="btn ziel" data-a="wznow">▶ Wróć do walki</button>';
-  h += '<div class="zakladki">' + [['staty', '📊 Staty'], ['build', '🎒 Build'], ['obr', '💥 Obrażenia']].map(z => '<button class="' + (z[0] === ekwZakladka ? 'akt' : '') + '" data-a="ekwZak" data-z="' + z[0] + '">' + z[1] + '</button>').join('') + '</div>';
+  h += '<div class="zakladki">' + [['postac', KLASY[gracz.klasa].ik + ' Postać'], ['staty', '📊 Staty'], ['build', '🎒 Build'], ['obr', '💥 Obrażenia']].map(z => '<button class="' + (z[0] === ekwZakladka ? 'akt' : '') + '" data-a="ekwZak" data-z="' + z[0] + '">' + z[1] + '</button>').join('') + '</div>';
   if (ekwZakladka === 'staty') h += htmlStatow();
+  else if (ekwZakladka === 'postac') h += htmlPostaci(false);
   else if (ekwZakladka === 'build') h += sekcjeBuildu(false);
   else h += htmlObrazen();
   h += '<div class="rzad-btn" style="margin-top:16px"><button class="btn drugi" data-a="ustawienia">⚙️ Ustawienia</button><button class="btn drugi" data-a="sterowanie">🎮 Sterowanie</button></div>' + przyciskPelnego();
@@ -5836,6 +7278,7 @@ AKCJE.ekwZak = d => pokazEkwipunek(d.z);
 AKCJE.wznow = () => { zamknijEkran(); if (stan === 'pauza') stan = 'walka'; czasOstatni = null; };
 AKCJE.poddaj = () => pokazModal('<div class="tytul">Zakończyć grę?</div><div class="podtytul">Twój wynik zostanie zapisany, a zapis gry usunięty.</div><button class="btn czerw" data-a="poddajTak">Tak, kończę</button><button class="btn drugi" data-a="zamknijModal">Graj dalej</button>');
 AKCJE.poddajTak = () => { zamknijModal(); zamknijEkran(); stan = 'walka'; smiercGracza(true); };
+AKCJE.modalPostac = () => pokazModal(htmlPostaci(true) + '<button class="btn" data-a="zamknijModal">Zamknij</button>');
 AKCJE.modalStaty = () => pokazModal('<div class="tytul">📊 Statystyki</div>' + htmlStatow() + '<button class="btn" data-a="zamknijModal">Zamknij</button>');
 AKCJE.modalBuild = () => {
   const zarz = stan === 'przerwa' && !(run.przerwa && run.przerwa.sklepOtwarty && !run.przerwa.sklep);   // w sklepie zarządza się na dole sklepu
@@ -5849,9 +7292,28 @@ $('btnEkw').addEventListener('click', () => {
   if (stan === 'walka') { stan = 'pauza'; pokazEkwipunek('staty'); }
   else if (stan === 'pauza') AKCJE.wznow();
 });
-$('btnMikstura').addEventListener('click', () => wypijMiksture());
-$('btnUmi').addEventListener('click', () => uzyjUmiejetnosci(1));
-$('btnUmi2').addEventListener('click', () => uzyjUmiejetnosci(2));
+// Przyciski umiejętności: na dotyku działają od razu przy dotknięciu (pointerdown), także DRUGIM palcem
+// w trakcie ruchu drążkiem — przeglądarki nie wysyłają „click” dla drugiego palca.
+function przelaczAuto(nr) {
+  const ja = lokalny || gracz; if (!ja) return; const z0 = gracz; kontekst(ja);
+  const U = umiPostaci(nr); if (U && !U.pasywna && !U.przelacz && !U.auto) { ja.autoUmi = ja.autoUmi || {}; ja.autoUmi[nr] = !ja.autoUmi[nr]; toast('🤖 ' + U.ik + ' ' + U.n + ': auto ' + (ja.autoUmi[nr] ? 'wł.' : 'wył.')); }
+  kontekst(z0); odswiezHud(true);
+}
+function przyciskWalki(id, nr) {
+  const el = $(id); let ostDotyk = -1e9, tPrzytrz = null;
+  const pusc = () => { if (tPrzytrz) { clearTimeout(tPrzytrz); tPrzytrz = null; } };
+  el.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse') return;
+    e.preventDefault(); e.stopPropagation(); ostDotyk = performance.now(); inicjujDzwiek(); uzyjUmiejetnosci(nr);
+    el.classList.add('wcisniety'); setTimeout(() => el.classList.remove('wcisniety'), 140);
+    pusc(); tPrzytrz = setTimeout(() => { tPrzytrz = null; przelaczAuto(nr); if (navigator.vibrate) try { navigator.vibrate(30); } catch (x) {} }, 550);
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => el.addEventListener(ev, pusc));
+  el.addEventListener('click', () => { if (performance.now() - ostDotyk < 800) return; uzyjUmiejetnosci(nr); });
+  el.addEventListener('contextmenu', e => { e.preventDefault(); przelaczAuto(nr); });   // myszka: prawy przycisk na przycisku = auto
+}
+przyciskWalki('btnUmi', 1);
+przyciskWalki('btnUmi2', 2);
 
 // ---------------------------------------------------------------------
 //  ŚMIERĆ
@@ -5938,14 +7400,18 @@ function odswiezHud(wymus) {
   $('xpNapis').textContent = 'Poziom ' + gracz.poziom + (gracz.doWyboru ? '  ⭐×' + gracz.doWyboru : '');
   $('falaInfo').innerHTML = (fala.boss ? '👑' : '🌊') + ' Fala ' + fala.nr + '<small>' + (fala.boss ? 'BOSS' : czas(fala.dlugosc - fala.czas)) + (fala.specjalna && SPECJALNE[fala.specjalna] ? ' · ' + SPECJALNE[fala.specjalna].ik : '') + (fala.proba ? ' · ' + fala.proba.ik : '') + (zmeczenie(fala.nr) > 0 ? ' · 🥀−' + Math.round(zmeczenie(fala.nr) * 100) + '%' : '') + '</small>';
   $('zlotoInfo').textContent = '💰 ' + Math.floor(gracz.zloto) + (gracz.skrzynie.length ? '  📦' + gracz.skrzynie.length : '');
-  $('licznikMikstur').textContent = gracz.mikstury;
-  $('miksturaCd').style.setProperty('--p', (gracz.cdMikstury > 0 ? gracz.cdMikstury / 2 * 100 : 0) + '%');
   // umiejętności postaci (druga tylko u niektórych)
   [[1, 'btnUmi', 'umiIk', 'umiCd', 'umiCzas'], [2, 'btnUmi2', 'umi2Ik', 'umi2Cd', 'umi2Czas']].forEach(([nr, idB, idI, idC, idT]) => {
     const U = umiPostaci(nr), bu = $(idB); if (!bu) return;
-    if (nr === 2) bu.style.display = U ? '' : 'none';
+    bu.style.display = U ? '' : 'none';
     if (!U) return;
-    if (bu._k !== gracz.klasa) { bu._k = gracz.klasa; $(idI).textContent = U.ik; bu.title = U.n; }
+    if (bu._k !== gracz.klasa) { bu._k = gracz.klasa; $(idI).textContent = U.ik; bu.title = U.n + (U.pasywna ? '' : ' · przytrzymaj: auto-użycie'); }
+    bu.classList.toggle('auto', !!(U.auto || (gracz.autoUmi && gracz.autoUmi[nr])));
+    if (U.pasywna) {   // np. Salwa Elfa: przycisk pokazuje energię
+      const en = gracz.maEnergie ? (gracz.energia || 0) : 0, akt = SIEC.rola === 'klient' ? !!(SIEC.mojWidok && SIEC.mojWidok.salwaAkt) : !!(gracz.stanKlasy && gracz.stanKlasy.salwa > czasGry);
+      $(idC).style.setProperty('--p', (akt ? 0 : 100 - en) + '%'); $(idT).textContent = akt ? '' : (en < 100 ? Math.floor(en) + '%' : '');
+      bu.classList.toggle('gotowa', en >= 100 || !!akt); bu.classList.toggle('wlaczona', !!akt); return;
+    }
     const u = stanUmi(nr), gotowa = !(u.cd > 0), akt = czyUmiAktywna(nr);
     $(idC).style.setProperty('--p', (gotowa || U.przelacz ? 0 : Math.min(100, u.cd / Math.max(0.1, u.cdMax) * 100)) + '%');
     $(idT).textContent = gotowa || U.przelacz ? '' : Math.ceil(u.cd);
@@ -5954,21 +7420,100 @@ function odswiezHud(wymus) {
   });
   // pasek broni dodatkowych i przedmiotów z odnowieniem
   const pasek = $('pasekPrzedm');
-  const elem = gracz.oreze.map(o => ({ i: o, d: DEF_ORE[o.id], kol: TIERY[o.tier].kolor, st: '' }))
-    .concat(gracz.przedmioty.filter(p => p).map(p => { const d = DEF_PRZ[p.id]; return { i: p, d: d, kol: d.t === 'p' ? KOLOR_PRYZMAT : TIERY[d.t].kolor, st: p.gw ? p.gw + '★' : '' }; }));
+  const elem = gracz.oreze.map(o => ({ i: o, d: DEF_ORE[o.id], kol: TIERY[o.tier].kolor, st: '', tk: 't' + o.tier }))
+    .concat(gracz.przedmioty.filter(p => p).map(p => { const d = DEF_PRZ[p.id]; return { i: p, d: d, kol: d.t === 'p' ? KOLOR_PRYZMAT : TIERY[d.t].kolor, st: p.gw ? p.gw + '★' : '', tk: d.t === 'p' ? 'tp' : 't' + d.t }; }));
   const sygn = elem.map(e => e.d.id + (e.i.tier || 0) + (e.i.gw || 0)).join(',');
   if (pasek._sygn !== sygn) {
     pasek._sygn = sygn;
-    pasek.innerHTML = elem.map(e => '<div class="hud-slot" title="' + esc(e.d.n) + (e.d.cd ? ' · ⏱️ ' + fmt(e.d.cd) + ' s' : '') + '" style="border-color:' + e.kol + '">' + e.d.ik + '<div class="cd"></div><div class="cdn"></div>' + (e.st ? '<span class="st">' + e.st + '</span>' : '') + '</div>').join('');
+    pasek.innerHTML = elem.map(e => '<div class="hud-slot ' + e.tk + '" title="' + esc(e.d.n) + (e.d.cd ? ' · ⏱️ ' + fmt(e.d.cd) + ' s' : '') + '" style="border-color:' + e.kol + '"><span class="ik">' + e.d.ik + '</span><div class="cd"></div><div class="cdn"></div>' + (e.st ? '<span class="st">' + e.st + '</span>' : '') + '</div>').join('');
   }
   const sloty = pasek.children;
   elem.forEach((e, i) => {
     const el = sloty[i]; if (!el) return;
     const p = e.i, proc = p.cd > 0 && p.cdMax ? p.cd / p.cdMax * 100 : 0;
-    el.children[0].style.setProperty('--p', proc + '%');
-    el.children[1].textContent = p.cd > 0.95 ? Math.ceil(p.cd) : '';
+    el.children[1].style.setProperty('--p', proc + '%');
+    el.children[2].textContent = p.cd > 0.95 ? Math.ceil(p.cd) : '';
     el.classList.toggle('gotowy', !!e.d.cd && !(p.cd > 0));
   });
+}
+
+// =====================================================================
+//  ODZNAKI TIERÓW: szlifowane kamienie rysowane przez grę (jednakowe na
+//  każdym urządzeniu). Im wyższy tier, tym więcej szlifów i mocniejszy blask:
+//  I szary okrągły · II niebieski romb · III fioletowy sześciokąt ·
+//  IV złoty ośmiokąt · V czerwona gwiazda · pryzmat: tęczowy trójkąt.
+//  Augmenty: kryształy (szary, złoty, tęczowy).
+// =====================================================================
+const ODZNAKI = {};
+function wielokat(n, r, obrot, sx, sy) { const p = []; for (let i = 0; i < n; i++) { const a = obrot + i * Math.PI * 2 / n; p.push([Math.cos(a) * r * (sx || 1), Math.sin(a) * r * (sy || 1)]); } return p; }
+function mieszaj(rgb, cel, t) { return 'rgb(' + rgb.map((v, i) => Math.round(v + (cel[i] - v) * t)).join(',') + ')'; }
+function rysujKamien(x, R, ksztalt, kolor, opcje) {
+  opcje = opcje || {};
+  let P;
+  if (ksztalt === 'kolo') P = wielokat(10, R * 0.8, -Math.PI / 2);
+  else if (ksztalt === 'romb') P = [[0, -R * 0.95], [R * 0.7, 0], [0, R * 0.95], [-R * 0.7, 0]];
+  else if (ksztalt === 'szesc') P = wielokat(6, R * 0.88, -Math.PI / 2);
+  else if (ksztalt === 'osm') P = wielokat(8, R * 0.9, -Math.PI / 2 + Math.PI / 8);
+  else if (ksztalt === 'gwiazda') { P = []; for (let i = 0; i < 16; i++) { const a = -Math.PI / 2 + i * Math.PI / 8, r = i % 2 ? R * 0.62 : R * 0.98; P.push([Math.cos(a) * r, Math.sin(a) * r]); } }
+  else if (ksztalt === 'pryzmat') P = [[0, -R * 0.9], [R * 0.92, R * 0.72], [-R * 0.92, R * 0.72]];
+  else P = [[0, -R * 0.98], [R * 0.52, -R * 0.42], [R * 0.52, R * 0.42], [0, R * 0.98], [-R * 0.52, R * 0.42], [-R * 0.52, -R * 0.42]];   // kryształ
+  const rgb = rgbKoloru(kolor), BIEL = [255, 255, 255], CZERN = [10, 6, 16];
+  const tecza = opcje.tecza ? ['#ff7ae0', '#7ae0ff', '#ffe07a', '#9aff9a', '#b89aff', '#ff9a7a'] : null;
+  const Q = P.map(([a, b]) => [a * 0.5, b * 0.5 - R * 0.04]);
+  const L = [-0.6, -0.8];
+  if (opcje.blask) {
+    const g = x.createRadialGradient(0, 0, R * 0.3, 0, 0, R * 1.35); g.addColorStop(0, 'rgba(' + rgb.join(',') + ',0.55)'); g.addColorStop(1, 'rgba(' + rgb.join(',') + ',0)');
+    x.fillStyle = g; x.beginPath(); x.arc(0, 0, R * 1.35, 0, Math.PI * 2); x.fill();
+  }
+  // obrys
+  x.lineJoin = 'round';
+  x.beginPath(); P.forEach(([a, b], i) => i ? x.lineTo(a, b) : x.moveTo(a, b)); x.closePath();
+  x.fillStyle = 'rgb(' + CZERN.join(',') + ')'; x.strokeStyle = 'rgba(10,6,16,0.95)'; x.lineWidth = R * 0.22; x.stroke(); x.fill();
+  // ścianki: jaśniejsze od strony światła (lewa góra)
+  for (let i = 0; i < P.length; i++) {
+    const j = (i + 1) % P.length, mx = (P[i][0] + P[j][0]) / 2, my = (P[i][1] + P[j][1]) / 2, d = Math.hypot(mx, my) || 1;
+    const s = (mx / d) * L[0] + (my / d) * L[1];
+    x.fillStyle = tecza ? tecza[i % tecza.length] : (s > 0 ? mieszaj(rgb, BIEL, s * 0.5) : mieszaj(rgb, CZERN, -s * 0.55));
+    if (tecza && s < 0) x.globalAlpha = 0.75 + s * 0.2;
+    x.beginPath(); x.moveTo(P[i][0], P[i][1]); x.lineTo(P[j][0], P[j][1]); x.lineTo(Q[j][0], Q[j][1]); x.lineTo(Q[i][0], Q[i][1]); x.closePath(); x.fill();
+    x.globalAlpha = 1;
+  }
+  // tafla (środek)
+  const g = x.createLinearGradient(-R * 0.4, -R * 0.5, R * 0.4, R * 0.4);
+  g.addColorStop(0, tecza ? '#ffffff' : mieszaj(rgb, BIEL, 0.55)); g.addColorStop(1, tecza ? '#ffd0f4' : mieszaj(rgb, BIEL, 0.1));
+  x.fillStyle = g; x.beginPath(); Q.forEach(([a, b], i) => i ? x.lineTo(a, b) : x.moveTo(a, b)); x.closePath(); x.fill();
+  x.strokeStyle = 'rgba(255,255,255,0.35)'; x.lineWidth = R * 0.05; x.stroke();
+  // błysk
+  const bx = Q[0][0] * 0.2 - R * 0.18, by = -R * 0.2, bs = R * 0.2;
+  x.fillStyle = '#ffffff'; x.beginPath(); x.moveTo(bx, by - bs); x.quadraticCurveTo(bx, by, bx + bs, by); x.quadraticCurveTo(bx, by, bx, by + bs); x.quadraticCurveTo(bx, by, bx - bs, by); x.quadraticCurveTo(bx, by, bx, by - bs); x.fill();
+  if (opcje.promienie) {
+    x.strokeStyle = 'rgba(255,255,255,0.85)'; x.lineWidth = R * 0.06; x.lineCap = 'round';
+    [[R * 0.92, -R * 0.78], [-R * 0.95, R * 0.55], [R * 0.75, R * 0.9]].forEach(([a, b]) => { x.beginPath(); x.moveTo(a - R * 0.13, b); x.lineTo(a + R * 0.13, b); x.moveTo(a, b - R * 0.13); x.lineTo(a, b + R * 0.13); x.stroke(); });
+  }
+}
+const DEF_ODZNAK = {
+  t0: ['kolo', '#b8b8b8'], t1: ['romb', '#5aa8e6'], t2: ['szesc', '#b06ce8'], t3: ['osm', '#e6b53c', { blask: true }], t4: ['gwiazda', '#ff5a4a', { blask: true, promienie: true }],
+  p: ['pryzmat', '#ff7ae0', { tecza: true, blask: true }], as: ['krysztal', '#a8adb8'], az: ['krysztal', '#e6c15c', { blask: true }], ap: ['krysztal', '#ff7ae0', { tecza: true, blask: true }],
+};
+// obrazek odznaki (canvas) - do rysowania na planszy lub jako adres obrazka
+function odznaka(k, px) {
+  px = px || 48;
+  const klucz = k + '|' + px;
+  if (ODZNAKI[klucz]) return ODZNAKI[klucz];
+  const D = DEF_ODZNAK[k] || DEF_ODZNAK.t0, c = document.createElement('canvas'); c.width = c.height = px;
+  const x = c.getContext('2d'); x.translate(px / 2, px / 2);
+  rysujKamien(x, px * 0.36, D[0], D[1], D[2]);
+  ODZNAKI[klucz] = c; return c;
+}
+function kluczOdznaki(t) { return t === 'p' ? 'p' : (t === 's' || t === 'z') ? 'a' + t : 't' + t; }
+// <img> z odznaką (np. w opisach)
+function htmlOdznaki(t, rozm) { return '<img class="odznaka" alt="" src="' + odznaka(kluczOdznaki(t)).toDataURL() + '"' + (rozm ? ' style="width:' + rozm + 'px;height:' + rozm + 'px"' : '') + '>'; }
+// Kamienie jako zmienne CSS: --gem-t0 ... --gem-p, --gem-as, --gem-az, --gem-ap
+function przygotujOdznaki() {
+  try {
+    const st = document.documentElement.style;
+    Object.keys(DEF_ODZNAK).forEach(k => st.setProperty('--gem-' + k, 'url("' + odznaka(k).toDataURL('image/png') + '")'));
+  } catch (e) {}
 }
 
 // =====================================================================
@@ -5993,12 +7538,12 @@ function zapiszGre(wznowFale) {
   try {
     const g = czyste(gracz, 0); g.tarcze = []; g.buffy = {};
     const r = czyste(run, 0); delete r.oczekPrz; delete r.oczekBron;
-    lStorSet('wiezien_zapis', { wersja: 2, czas: Date.now(), gracz: g, run: r, falaNr: fala.nr || 0, wznowFale: wznowFale || 0 });
+    lStorSet('wiezien_zapis', { wersja: 3, czas: Date.now(), gracz: g, run: r, falaNr: fala.nr || 0, wznowFale: wznowFale || 0 });
   } catch (e) { zglosBlad(e, 'zapis'); }
 }
 function wczytajGre() {
   const z = lStorGet('wiezien_zapis', null);
-  if (!z || !z.gracz || !z.run || z.wersja !== 2 || !KLASY[z.gracz.klasa]) return false;
+  if (!z || !z.gracz || !z.run || z.wersja !== 3 || !KLASY[z.gracz.klasa]) return false;
   try {
     run = z.run; run.zrodla = run.zrodla || {};
     gracz = nowyGracz(z.gracz.klasa); Object.assign(gracz, z.gracz); gracz._run = run; gracze = [gracz]; lokalny = gracz;
@@ -6007,7 +7552,7 @@ function wczytajGre() {
     gracz.augmenty = (gracz.augmenty || []).filter(a => a && DEF_AUG[a.id]);
     gracz.oreze = (gracz.oreze || []).filter(o => o && DEF_ORE[o.id]).map(o => Object.assign(o, { ore: 1 }));
     gracz.bronie = (gracz.bronie || []).filter(b => b && BRONIE[b.rodzaj]); if (!gracz.bronie.length) gracz.bronie = [nowaBron(bronStartowa(KLASY[gracz.klasa]), 0)];
-    gracz.umi = { cd: 0, cdMax: 0 }; gracz.umi2 = { cd: 0, cdMax: 0 }; if (gracz.slotyOreza === undefined) gracz.slotyOreza = KLASY[gracz.klasa].slotyOreza || 4; if (gracz.slotyPryzm === undefined) gracz.slotyPryzm = KLASY[gracz.klasa].slotyPryzm || 2; gracz.slotyPryzm = Math.max(gracz.slotyPryzm, liczPrzedm(true)); gracz.slotyPrzedm = Math.max(gracz.slotyPrzedm, liczPrzedm(false));
+    gracz.umi = { cd: 0, cdMax: 0 }; gracz.umi2 = { cd: 0, cdMax: 0 }; if (gracz.slotyOreza === undefined) gracz.slotyOreza = KLASY[gracz.klasa].slotyOreza !== undefined ? KLASY[gracz.klasa].slotyOreza : 4; if (gracz.slotyPryzm === undefined) gracz.slotyPryzm = KLASY[gracz.klasa].slotyPryzm || 2; gracz.slotyPryzm = Math.max(gracz.slotyPryzm, liczPrzedm(true)); gracz.slotyPrzedm = Math.max(gracz.slotyPrzedm, liczPrzedm(false));
     fala = { nr: z.falaNr || 0, aktywna: false };
     D = null; przebudujHaki(); zastosujStaty(); gracz.hp = D.hpMax;
     stan = 'przerwa';
@@ -6023,7 +7568,7 @@ AKCJE.kontynuuj = () => { if (!wczytajGre()) { toast('Nie udało się wczytać z
 // =====================================================================
 //  PAD — gra na kontrolerze (Xbox, PlayStation, Switch Pro, 8BitDo…)
 //  przez Gamepad API przeglądarki: na komputerze i na telefonie.
-//  Walka: lewa gałka / krzyżak = ruch, A/RT = umiejętność, X/LT = mikstura,
+//  Walka: lewa gałka / krzyżak = ruch, A/RT = umiejętność, B/RB/X/LT = druga umiejętność,
 //  Y/Start = pauza i build. Menu: krzyżak/gałka przesuwa podświetlenie,
 //  A wybiera, B wraca, LB/RB zmienia zakładki, prawa gałka przewija.
 //  Z tego samego podświetlenia korzysta klawiatura (strzałki, Enter, Esc).
@@ -6199,8 +7744,9 @@ function aktualizujPada(dt) {
     if (ja) { if (dr > 0.35) { ja.celKat = Math.atan2(s.ry, s.rx); PAD.celuje = true; } else if (PAD.celuje) { ja.celKat = null; PAD.celuje = false; } }
     const maDruga = !!(gracz && KLASY[gracz.klasa] && KLASY[gracz.klasa].umi2);
     if (nowe(PB.A) || nowe(PB.RT) || (!maDruga && nowe(PB.RB))) { if (uzyjUmiejetnosci(1)) wibruj(0.3, 70); }
-    if (maDruga && (nowe(PB.RB) || nowe(PB.B))) { if (uzyjUmiejetnosci(2)) wibruj(0.25, 60); }
-    if (nowe(PB.X) || nowe(PB.LT) || nowe(PB.LB)) wypijMiksture();
+    if (maDruga && (nowe(PB.RB) || nowe(PB.B) || nowe(PB.X) || nowe(PB.LT) || nowe(PB.LB))) { if (uzyjUmiejetnosci(2)) wibruj(0.25, 60); }
+    if (nowe(PB.L3)) przelaczAuto(1);
+    if (nowe(PB.R3)) przelaczAuto(2);
     if (nowe(PB.Y) || nowe(PB.START)) $('btnEkw').click();
     if (cokolwiek) PAD.fokusWidoczny = true;
     $('padPodp').classList.remove('widoczny');
@@ -6264,7 +7810,7 @@ function zapamietaj(w, el) {
   const r = el.getBoundingClientRect();
   PAD.pamiec[w.k] = { syg: sygnatura(el), tytul: tytulWarstwy(w.el), x: (r.left + r.right) / 2, y: (r.top + r.bottom) / 2 };
 }
-const PREF_FOKUSU = ['kowStatWybierz', 'kup', 'augWybierz', 'kowWybierz', 'statWybierz', 'bronStart', 'probaWybierz', 'skrzWezOreze', 'skrzZaloz', 'skrzPolacz', 'skrzZloto', 'skrzMikstura', 'skrzKamien',
+const PREF_FOKUSU = ['kowStatWybierz', 'kup', 'augWybierz', 'kowWybierz', 'statWybierz', 'bronStart', 'probaWybierz', 'skrzWezOreze', 'skrzZaloz', 'skrzPolacz', 'skrzZloto', 'skrzKamien',
   'wznow', 'kontynuuj', 'znowu', 'startRunuZModala', 'lobbyGotowy', 'dalejPrzerwa', 'augPomin', 'zalozDruzyne'];
 function wWidoku(root, el) {
   const v = root.getBoundingClientRect(), r = el.getBoundingClientRect();
@@ -6488,13 +8034,13 @@ function htmlSterowania() {
   return '<div class="tytul">🎮 Sterowanie</div>' +
     '<div class="info-pole" id="padStatus">' + statusPadaHtml() + '</div>' +
     '<div class="sekcja">Walka — pad</div>' +
-    w('🕹️ Ruch', 'lewa gałka albo krzyżak') + w('🎯 Celowanie', 'prawa gałka (puszczona = postać sama namierza)') + w('✨ Umiejętność postaci', kl('A') + ' albo ' + kl('RT') + ' (' + kl('RB') + ', gdy postać ma jedną)') + w('✨ Druga umiejętność (niektóre postacie)', kl('RB') + ' albo ' + kl('B')) +
-    w('🧪 Mikstura', kl('X') + ' albo ' + kl('LT') + ' / ' + kl('LB')) + w('⏸️ Pauza i build', kl('Y') + ' albo ' + kl('START')) +
+    w('🕹️ Ruch', 'lewa gałka albo krzyżak') + w('🎯 Celowanie', 'prawa gałka (puszczona = postać sama namierza)') + w('✨ Umiejętność postaci', kl('A') + ' albo ' + kl('RT') + ' (' + kl('RB') + ', gdy postać ma jedną)') + w('✨ Druga umiejętność (niektóre postacie)', kl('RB') + ', ' + kl('B') + ', ' + kl('X') + ' albo ' + kl('LT')) +
+    w('🤖 Auto-użycie umiejętności', kl('L3') + ' / ' + kl('R3') + ' (wciśnij gałkę)') + w('⏸️ Pauza i build', kl('Y') + ' albo ' + kl('START')) +
     '<div class="sekcja">Menu i sklep — pad</div>' +
     w('Przesuwanie', 'krzyżak albo lewa gałka') + w('Wybierz / kup', kl('A')) + w('Zablokuj ofertę w sklepie', kl('X')) + w('Wstecz / zamknij', kl('B')) +
     w('Zakładki', kl('LB') + ' ' + kl('RB')) + w('Przewijanie', 'prawa gałka') +
     '<div class="sekcja">Klawiatura i myszka (komputer)</div>' +
-    w('Ruch', 'WASD / strzałki') + w('Umiejętność · druga · mikstura', 'E lub spacja · R · Q') + w('Pauza', 'Esc lub P') +
+    w('Ruch', 'WASD / strzałki') + w('Umiejętność · druga', 'E lub spacja · R lub Q') + w('🤖 Auto-użycie', 'Shift+E · Shift+R albo prawy klik na przycisku') + w('Pauza', 'Esc lub P') +
     w('Menu', 'strzałki, Enter, Esc, Q/E zakładki') +
     w('🖱️ Ruch myszą', 'przytrzymaj lewy przycisk') + w('🖱️ Umiejętność w stronę kursora', 'prawy przycisk') +
     '<div class="info-pole" style="font-size:11.5px">Działa w Chrome, Edge, Safari (także na iPhonie) i Firefoksie. Na telefonie sparuj pada w ustawieniach Bluetooth — tak jak słuchawki. ' +
@@ -6520,7 +8066,7 @@ Object.assign(SIEC, {
   widokGraczy: [], mojWidok: null, znaneWrogi: {}, ostStan: null, ostatnio: {}, ostOdHosta: 0, tCzekania: 0,
   nrWiad: 0, zal: {}, rtt: 0, rttG: {}, lupOst: new Set(), zebraneLok: {}, vx: 0, vy: 0, zbieranie: 60,
 });
-const PREFIKS_PEER = 'wiezien-labiryntu-v2-';
+const PREFIKS_PEER = 'wiezien-labiryntu-v3-';
 const MAKS_GRACZY = 4;
 const ZRODLA_PEERJS = ['https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js', 'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js'];
 
@@ -6718,7 +8264,7 @@ function pokazLobby() {
       '<span class="s" style="color:' + (l.host ? '#ffe08a' : (l.gotowy ? '#7ec98a' : '#a89878')) + '">' + (l.host ? '👑 gospodarz' : (l.gotowy ? '✔ gotowy' : '… wybiera')) + '</span></div>';
   });
   h += '<div class="sekcja">Twoja postać</div><div class="mini-klasy">';
-  KLUCZE_KLAS.forEach(k => { h += '<div class="kafel' + (k === ja.klasa ? ' wybrany' : '') + '" data-a="lobbyKlasa" data-k="' + k + '"><div class="ik">' + KLASY[k].ik + '</div></div>'; });
+  KLUCZE_KLAS.forEach(k => { h += '<div class="kafel' + (k === ja.klasa ? ' wybrany' : '') + '" data-a="lobbyKlasa" data-k="' + k + '" title="' + KLASY[k].n + '">' + htmlPortretu(k, 40) + '</div>'; });
   h += '</div>';
   if (ja.klasa && KLASY[ja.klasa]) h += '<div class="info-pole">' + opisKlasyHtml(KLASY[ja.klasa]) + '</div>';
   h += '<div class="info-pole" style="font-size:11.5px">💰✨ <b>Złoto i doświadczenie są wspólne</b>: każdy dostaje pełną wartość tego, co ktokolwiek z drużyny podniesie, a potem działają jego własne premie (zysk złota, doświadczenie, Midas…). Skrzynie też trafiają do każdego.</div>';
@@ -6806,7 +8352,6 @@ function odbierzOdKlienta(conn, d) {
     }
     case 'zb': if (stan === 'walka' && fala.aktywna && Array.isArray(d.k)) d.k.slice(0, 80).forEach(i => zbierzLupPoId(+i)); break;
     case 'po': { const r = performance.now() - (+d.c || 0); if (r >= 0 && r < 5000) { const st = SIEC.rttG[id]; SIEC.rttG[id] = st ? st * 0.75 + r * 0.25 : r; const p = gracze.find(q => q.id === id); if (p) p.opoz = Math.min(0.15, SIEC.rttG[id] / 2000); } break; }
-    case 'mik': { const p = gracze.find(q => q.id === id); if (p && stan === 'walka') { kontekst(p); wypijMiksture(); kontekst(z0); } break; }
     case 'umi': { const p = gracze.find(q => q.id === id); if (p && stan === 'walka') { kontekst(p); p.umiKier = Array.isArray(d.k) ? [+d.k[0] || 0, +d.k[1] || 0] : null; uzyjUmiejetnosci(d.n === 2 ? 2 : 1); kontekst(z0); } break; }
     case 'niegotowy':
       // klient chce wrócić do sklepu - tylko dopóki fala nie ruszyła
@@ -6906,7 +8451,7 @@ function dolaczWTrakcie(id, conn, d) {
   kontekst(p);
   const kotw = zywiGracze()[0] || lokalny;
   p.x = ogr(kotw.x + losowo(-50, 50), POD_MIN, POD_MAX); p.y = ogr(kotw.y + losowo(-50, 50), POD_MIN, POD_MAX); p.netX = undefined;
-  p.tarcze = []; p.zastoj = 0; p.niewr = 2; p.spowG = 0; p.powalony = false; p.reanim = 0; p.cdMikstury = 0;
+  p.tarcze = []; p.zastoj = 0; p.niewr = 2; p.spowG = 0; p.powalony = false; p.reanim = 0;
   run.zlotoFali = 0; run.trafFali = 0; run.spoznionyFala = fala.nr; run.falaMaks = Math.max(run.falaMaks || 0, fala.nr);
   zastosujStaty(); p.hp = D.hpMax; hak('naStartFali'); zastosujStaty();
   kontekst(z0);
@@ -7020,7 +8565,7 @@ function siecWyslijStan(dt) {
   SIEC.licznikStanu++;
   const z0 = gracz;
   const G = graczeDoRysowania().map(p => [p.id, r1(p.x), r1(p.y), r1(Math.max(0, p.hp)), r1(p.hpMaxR || 100), r1(p.ts || 0), p.kierX < 0 ? -1 : 1, p.wRuchu ? 1 : 0,
-    (p.zastoj > 0 ? 1 : 0) | (p.niewr > 0 ? 2 : 0) | (p.migotanie > 0 ? 4 : 0) | (p.powalony ? 8 : 0), r1((p.reanim || 0) * 10), r1((p.roz || 1) * 100), p.klasa, p.nick,
+    (p.zastoj > 0 ? 1 : 0) | (p.niewr > 0 ? 2 : 0) | (p.migotanie > 0 ? 4 : 0) | (p.powalony ? 8 : 0) | (p.niewidzialny > 0 ? 16 : 0) | (p.forma === 'nietoperz' ? 32 : 0) | (p.stanKlasy && p.stanKlasy.wir ? 64 : 0) | (p.stanKlasy && p.stanKlasy.salwa > czasGry ? 128 : 0), r1((p.reanim || 0) * 10), r1((p.roz || 1) * 100), p.klasa, p.nick,
     p.bronie.map(b => [b.rodzaj, b.tier, r1((b.kat || 0) * 100), b.anim > 0 ? 1 : 0]), r1((p.blysk || 0) * 10)]);
   kontekst(z0);
   const W = [], WN = [];
@@ -7056,9 +8601,9 @@ function siecWyslijStan(dt) {
     t: 's', n: SIEC.licznikStanu, tc: Math.round(czasGry * 1000),
     f: [fala.nr, r1(fala.czas * 10), r1(fala.dlugosc), fala.boss ? 1 : 0, fala.specjalna || '', fala.proba ? fala.proba.id : '', fala.ciemnosc ? 1 : 0],
     g: G, w: W,
-    p: pociski.map(p => [r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), p.kolor, p.ksztalt || 'kula', r1((p.obrot || 0) * 10)]),
+    p: pociski.map(p => [r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), p.kolor, (p.ksztalt || 'kula') + (p.duza ? '+' : ''), r1((p.obrot || 0) * 10)]),
     pw: pociskiWrogow.map(p => [r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), p.kolor, p.ksztalt || '', p.r || 5, p.siec ? 1 : 0]),
-    sk: skrzynieNaZiemi.map(s => [r1(s.x), r1(s.y), s.tier]), mk: miksturyNaZiemi.map(m => [r1(m.x), r1(m.y)]),
+    sk: skrzynieNaZiemi.map(s => [r1(s.x), r1(s.y), s.tier]),
     kal: kaluze.map(k => [r1(k.x), r1(k.y), r1(k.r), r1(k.czas / k.max * 100), k.rodzaj]),
     bm: bomby.map(b => [r1(b.x), r1(b.y), r1(b.r), r1(b.lont / b.max * 100)]),
     ub: uderzeniaBossa.map(u => [r1(u.x), r1(u.y), r1(u.r), r1(u.czas / u.zapowiedz * 100), u.mroz ? 1 : 0, u.zadane ? 1 : 0]),
@@ -7081,8 +8626,8 @@ function siecWyslijStan(dt) {
     for (const k in swieze) { const a = q[k] || (q[k] = []); for (const x of swieze[k]) a.push(x); if (LIMITY_ZAL[k] && a.length > LIMITY_ZAL[k]) a.splice(0, a.length - LIMITY_ZAL[k]); }
     if (zatkane(conn)) continue;
     kontekst(p);
-    stanW.ja = { hp: r1(p.hp), hpMax: D.hpMax, ts: r1(tarczaSuma()), xp: r1(p.xp), xpNast: p.xpNast, poziom: p.poziom, zloto: Math.floor(p.zloto), mik: p.mikstury, maksMik: p.maksMikstur,
-      cdMik: Math.round(p.cdMikstury * 10) / 10, sk: p.skrzynie.length, dw: p.doWyboru, prz: p.przedmioty.map(q => q ? [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10] : [0, 0]),
+    stanW.ja = { hp: r1(p.hp), hpMax: D.hpMax, ts: r1(tarczaSuma()), xp: r1(p.xp), xpNast: p.xpNast, poziom: p.poziom, zloto: Math.floor(p.zloto), en: p.maEnergie ? Math.round(p.energia || 0) : -1,
+      sk: p.skrzynie.length, dw: p.doWyboru, prz: p.przedmioty.map(q => q ? [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10] : [0, 0]),
       ms: r1(D.ms), roz: rozmiarGracza(), spowG: p.spowG, zastoj: p.zastoj > 0 ? 1 : 0, pow: p.powalony ? 1 : 0, niewr: p.niewr > 0 ? 1 : 0, zb: r1(D.zbieranie),
       rtt: r1(SIEC.rttG[id] || 0),
       umi: [Math.round((p.umi.cd || 0) * 10) / 10, Math.round((p.umi.cdMax || 0) * 10) / 10], umi2: p.umi2 ? [Math.round((p.umi2.cd || 0) * 10) / 10, Math.round((p.umi2.cdMax || 0) * 10) / 10] : null, ua: [czyUmiAktywna(1) ? 1 : 0, czyUmiAktywna(2) ? 1 : 0], ore: p.oreze.map(q => [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10]) };
@@ -7130,7 +8675,7 @@ function hostRozlaczony() {
 function klientStartFali(d) {
   SIEC.czekam = false; SIEC.cofam = false; SIEC.cofnijPrzerwe = null;
   fala = { nr: d.nr, aktywna: true, czas: 0, dlugosc: d.dlugosc, boss: !!d.boss, specjalna: d.specjalna || null, proba: d.proba ? DEF_PROB[d.proba] : null };
-  [wrogowie, pociski, pociskiWrogow, kulki, monety, skrzynieNaZiemi, miksturyNaZiemi, kaluze, polaEfektow, wiry, scianyMagiczne, bomby, uderzeniaBossa, zapowiedzi,
+  [wrogowie, pociski, pociskiWrogow, kulki, monety, skrzynieNaZiemi, kaluze, polaEfektow, wiry, scianyMagiczne, bomby, uderzeniaBossa, zapowiedzi,
     efektyCzasowe, czastki, teksty, fale, blyskawice, ciecia, stozki, orbyRys].forEach(l => l.length = 0);
   SIEC.znaneWrogi = {}; SIEC.widokGraczy = []; SIEC.stwory = []; SIEC.ostN = 0; SIEC.zebraneLok = {};
   const p = d.poz && d.poz[SIEC.mojeId];
@@ -7169,6 +8714,7 @@ function zastosujZdarzenie(e) {
     case 's': if (DZ[e[1]]) DZ[e[1]](); break;
     case 'ssij': kulki.forEach(k => k.ssij = true); monety.forEach(m => m.ssij = true); break;
     case 'dash': if (gracz && stan === 'walka') gracz.dash = { vx: e[1] / 100 * e[3] / 0.2, vy: e[2] / 100 * e[3] / 0.2, t: 0.2 }; break;
+    case 'korzen': if (gracz && stan === 'walka') gracz.korzen = e[1] / 10; break;
   }
 }
 // Klient pokazuje wrogów i innych graczy "na teraz": z dwóch ostatnich stanów liczy prędkość
@@ -7203,6 +8749,7 @@ function klientStan(d) {
     if (!ja) przyjmijPozycje(p, a[1], a[2], tH, teraz);
     p.hp = a[3]; p.hpMaxR = a[4]; p.ts = a[5]; p.kierX = a[6]; p.wRuchu = !!a[7];
     p.zastoj = a[8] & 1 ? 1 : 0; p.niewr = a[8] & 2 ? 1 : 0; p.migotanie = a[8] & 4 ? 0.1 : 0; p.powalony = !!(a[8] & 8);
+    p.niewidzialny = a[8] & 16 ? 1 : 0; p.batAkt = !!(a[8] & 32); p.wirAkt = !!(a[8] & 64); p.salwaAkt = !!(a[8] & 128);
     p.reanim = a[9] / 10; p.roz = a[10] / 100; p.klasa = a[11]; p.nick = a[12]; p.r = 13;
     p.bronie = a[13].map(b => ({ rodzaj: b[0], tier: b[1], kat: b[2] / 100, anim: b[3] ? 0.1 : 0 }));
     p.blysk = a[14] / 10; p.spowG = 0;
@@ -7227,11 +8774,10 @@ function klientStan(d) {
     return w;
   });
   // pociski od razu "na teraz" (przesunięte o połowę pingu)
-  pociski = d.p.map(a => ({ x: a[0] + a[2] * wyp, y: a[1] + a[3] * wyp, vx: a[2], vy: a[3], kolor: a[4], ksztalt: a[5], obrot: a[6] / 10 }));
+  pociski = d.p.map(a => { const dz = a[5] && a[5].endsWith('+'); return { x: a[0] + a[2] * wyp, y: a[1] + a[3] * wyp, vx: a[2], vy: a[3], kolor: a[4], ksztalt: dz ? a[5].slice(0, -1) : a[5], duza: dz, obrot: a[6] / 10 }; });
   pociskiWrogow = d.pw.map(a => ({ x: a[0] + a[2] * wyp, y: a[1] + a[3] * wyp, vx: a[2], vy: a[3], kolor: a[4], ksztalt: a[5] || null, r: a[6], siec: !!a[7] }));
   klientLupy(d);
   skrzynieNaZiemi = d.sk.map(a => ({ x: a[0], y: a[1], tier: a[2], faza: 0 }));
-  miksturyNaZiemi = d.mk.map(a => ({ x: a[0], y: a[1], faza: 0 }));
   kaluze = d.kal.map(a => ({ x: a[0], y: a[1], r: a[2], czas: a[3], max: 100, rodzaj: a[4] }));
   bomby = d.bm.map(a => ({ x: a[0], y: a[1], r: a[2], lont: a[3], max: 100 }));
   uderzeniaBossa = d.ub.map(a => ({ x: a[0], y: a[1], r: a[2], czas: a[3], zapowiedz: 100, mroz: !!a[4], zadane: !!a[5] }));
@@ -7254,8 +8800,8 @@ function klientStan(d) {
   const ja = d.ja;
   if (ja) {
     gracz.hp = ja.hp; if (D) { D.hpMax = ja.hpMax; D.ms = ja.ms; } gracz.tarcze = ja.ts > 0 ? [{ v: ja.ts, czas: 1, max: 1 }] : [];
-    gracz.xp = ja.xp; gracz.xpNast = ja.xpNast; gracz.poziom = ja.poziom; gracz.zloto = ja.zloto; gracz.mikstury = ja.mik; gracz.maksMikstur = ja.maksMik;
-    gracz.cdMikstury = ja.cdMik; gracz.doWyboru = ja.dw; gracz.skrzynie.length = 0; for (let i = 0; i < ja.sk; i++) gracz.skrzynie.push({ tier: 0 });
+    gracz.xp = ja.xp; gracz.xpNast = ja.xpNast; gracz.poziom = ja.poziom; gracz.zloto = ja.zloto; gracz.maEnergie = ja.en >= 0; gracz.energia = Math.max(0, ja.en || 0);
+    gracz.doWyboru = ja.dw; gracz.skrzynie.length = 0; for (let i = 0; i < ja.sk; i++) gracz.skrzynie.push({ tier: 0 });
     (ja.prz || []).forEach((c, i) => { const q = gracz.przedmioty[i]; if (q) { q.cd = c[0]; q.cdMax = c[1]; } });
     (ja.ore || []).forEach((c, i) => { const q = gracz.oreze[i]; if (q) { q.cd = c[0]; q.cdMax = c[1]; } });
     if (ja.umi) { gracz.umi.cd = ja.umi[0]; gracz.umi.cdMax = ja.umi[1]; } if (ja.umi2) { const u2 = stanUmi(2); u2.cd = ja.umi2[0]; u2.cdMax = ja.umi2[1]; } SIEC.umiAkt = ja.ua || [0, 0];
@@ -7311,7 +8857,9 @@ function aktualizujLupyKlienta(dt) {
 function krokKlienta(dt) {
   if (stan !== 'walka') { aktualizujWizualne(dt); return; }
   const x0 = gracz.x, y0 = gracz.y;
+  if (gracz.korzen > 0) gracz.korzen -= dt;
   if (!gracz.powalony) ruszGracza(dt, SIEC.ms || (D && D.ms) || 140, SIEC.roz || 1);
+  if (!gracz.powalony && gracz.autoUmi) autoUmiejetnosci(gracz, true);
   if (dt > 0) { SIEC.vx = (gracz.x - x0) / dt; SIEC.vy = (gracz.y - y0) / dt; }
   const teraz = performance.now(), k = Math.min(1, dt * 18);
   wrogowie.forEach(w => { przesunDoTeraz(w, teraz, k); if (w.zamP > 0) w.zamP = Math.min(1, w.zamP + dt / 0.4); });
@@ -7552,9 +9100,9 @@ document.addEventListener('keydown', e => {
   if (klawiszMenu(e, wPolu)) return;   // menu: strzałki / Enter / Esc (src/14_pad.js)
   if (wPolu) return;                    // pisanie pseudonimu albo kodu drużyny
   if (MAPA_KL[e.code]) { klawisze[MAPA_KL[e.code]] = true; e.preventDefault(); }
-  if (e.code === 'KeyQ') wypijMiksture();
+  if (e.shiftKey && (e.code === 'KeyE' || e.code === 'KeyR')) { if (stan === 'walka') przelaczAuto(e.code === 'KeyE' ? 1 : 2); e.preventDefault(); return; }
   if (e.code === 'KeyE' || e.code === 'Space') { uzyjUmiejetnosci(1); e.preventDefault(); }
-  if (e.code === 'KeyR' || e.code === 'KeyF') { uzyjUmiejetnosci(2); e.preventDefault(); }
+  if (e.code === 'KeyR' || e.code === 'KeyF' || e.code === 'KeyQ') { uzyjUmiejetnosci(2); e.preventDefault(); }
   if (e.code === 'Escape' || e.code === 'KeyP') $('btnEkw').click();
 });
 document.addEventListener('keyup', e => { if (MAPA_KL[e.code]) klawisze[MAPA_KL[e.code]] = false; });
@@ -7577,7 +9125,7 @@ function krok(dt) {
     for (const p of gracze.slice()) {
       kontekst(p);
       odswiezStatyJesliTrzeba();
-      if (!p.powalony) aktualizujGracza(dt);
+      if (!p.powalony) { aktualizujGracza(dt); autoUmiejetnosci(p, p === lokalny); }
       if (stan !== 'walka') { kontekst(lokalny); return; }
     }
     kontekst(lokalny);
@@ -7601,7 +9149,7 @@ function krok(dt) {
 function petla(t) {
   requestAnimationFrame(petla);
   if (czasOstatni === null) czasOstatni = t;
-  const dt = Math.min(0.05, Math.max(0, (t - czasOstatni) / 1000)); czasOstatni = t;
+  const dt = Math.min(0.05, Math.max(0, (t - czasOstatni) / 1000)); mierzKlatke(t - czasOstatni); czasOstatni = t;
   if (document.hidden || window.__bezPetli) return;
   tPetli = performance.now();
   try { aktualizujPada(dt); } catch (e) { zglosBlad(e, 'pad'); }
@@ -7640,7 +9188,7 @@ window.__test = {
     const r = { trudnosc: r0.trudnosc, zabici: 0, zadane: 0, przyjete: 0, leczenie: 0, zloto: 0, xp: 0, ataki: 0, trafienia: 0, zrodla: {}, zlotoFali: 0, start: Date.now(), falaMaks: 0, przerzutyStatow: 0 };
     const p = nowyGracz(kl); p._run = r; p.nick = nick || KLASY[kl].n; p.id = gracze.length + 1;
     const K = KLASY[kl];
-    p.bronie.push(nowaBron(K.start === 'wybor' ? losZ(KLUCZE_BRONI) : bronStartowa(K), K.start === 'wybor' ? 1 : 0));
+    p.bronie.push(nowaBron(bronStartowa(K), K.start === 'wybor' ? 1 : 0)); if (K.start === 'wybor2') p.bronie.push(nowaBron(bronStartowa(K), 0));
     gracze.push(p); gracz = p; run = r; D = null;
     przebudujHaki(); zastosujStaty(); if (K.dar) K.dar(p.stanKlasy); p.darmoweWybory += 2; poZmianieBuildu(); p.hp = D.hpMax;
     r.przerwa = { start: true, augment: 's', nr: 0 };
@@ -7652,6 +9200,8 @@ window.__test = {
 };
 
 // ---------- start ----------
+wykryjBrakiEmoji();
+przygotujOdznaki();
 dopasujRozmiar();
 pokazMenu();
 sprawdzZaproszenie();
