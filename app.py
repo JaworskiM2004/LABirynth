@@ -1412,8 +1412,17 @@ const BRONIE = {
     nazwa: 'Krążące Kule', ikona: '🪐', rodz: 'magiczna', atak: 'orbita', obrTyp: 'mag', cd: 0.5, zasieg: 72, obr: 15, skal: { ap: 0.56, hpMax: 0.011 },
     opisEf: t => '<b>' + (2 + t) + '</b> kule krążą wokół Ciebie i ranią każdego, kogo dotkną (ten sam wróg co 0,5 s — szybciej z prędkością ataku) · zasięg = promień orbity · dobre do walki wręcz.',
   },
+  // tylko Assassin: zamiast broni wręcz rzuca shurikenami
+  shurikeny: {
+    nazwa: 'Shurikeny', ikona: '✴️', rodz: 'strzelecka', atak: 'pocisk', obrTyp: 'fiz', cd: 0.75, zasieg: 260, obr: 15, skal: { ad: 0.66, kryt: 0.36 }, dystans: true, tylkoKlasa: 'assassin',
+    predkosc: 620, ksztalt: 'shuriken', kolor: '#d8d8e8', kryt: 12, naprowadza: 6, rozrzut: 0.28, pelnePociski: true, bezSpadku: true, zasiegOdbicia: 190,
+    dodPociskiT: t => 1 + (t >= 4 ? 1 : 0), odbicia: t => 2 + (ewo('sh') >= 1 ? 1 : 0),
+    opisEf: t => 'Rzuca <b>' + (2 + (t >= 4 ? 1 : 0)) + '</b> shurikeny naraz (na V tierze 3), każdy z pełnymi obrażeniami · każdy odbija się do <b>' + (2 + (ewo('sh') >= 1 ? 1 : 0)) + '</b> kolejnych wrogów <b>bez utraty siły</b> · +12% szansy na kryt · rośnie z ⚔️ i szansą na kryt.',
+  },
 };
 const KLUCZE_BRONI = Object.keys(BRONIE);
+// bronie do losowania (start losowy / wybór broni): bez broni przypisanych jednej postaci
+const KLUCZE_BRONI_LOS = KLUCZE_BRONI.filter(k => !BRONIE[k].tylkoKlasa);
 
 function nowaBron(rodzaj, tier) { return { rodzaj: rodzaj, tier: tier || 0, cd: Math.random() * 0.4, licznik: 0 }; }
 function nazwaBroni(b) { return BRONIE[b.rodzaj].nazwa + ' ' + TIERY[b.tier].rz; }
@@ -1578,6 +1587,10 @@ function rysujKsztaltBroni(c, b) {
     case 'czakram':
       c.save(); c.translate(8, 0); c.rotate(Date.now() / 160); c.strokeStyle = metal; c.lineWidth = 2.6; c.beginPath(); c.arc(0, 0, 7.5, 0, Math.PI * 2); c.stroke();
       c.fillStyle = kol; for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; c.beginPath(); c.moveTo(Math.cos(a) * 7, Math.sin(a) * 7); c.lineTo(Math.cos(a + 0.4) * 11, Math.sin(a + 0.4) * 11); c.lineTo(Math.cos(a + 0.5) * 7, Math.sin(a + 0.5) * 7); c.closePath(); c.fill(); } c.restore(); break;
+    case 'shurikeny':
+      c.save(); c.translate(9, 0); c.rotate((b.anim || 0) > 0 ? Date.now() / 50 : 0.3); c.fillStyle = metal; c.beginPath();
+      for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; c.lineTo(Math.cos(a) * 9, Math.sin(a) * 9); c.lineTo(Math.cos(a + Math.PI / 4) * 3, Math.sin(a + Math.PI / 4) * 3); }
+      c.closePath(); c.fill(); c.strokeStyle = 'rgba(20,14,30,0.85)'; c.lineWidth = 1; c.stroke(); c.fillStyle = kol; c.beginPath(); c.arc(0, 0, 2.2, 0, Math.PI * 2); c.fill(); c.restore(); break;
     case 'noze':
       [-0.45, 0, 0.45].forEach(a => { c.save(); c.rotate(a); c.fillStyle = '#3a2a2a'; c.fillRect(-2, -1, 5, 2); ostrze(13, 3, metal); c.restore(); }); c.fillStyle = kol; c.fillRect(-3, -1.5, 2, 3); break;
     case 'kosturGromu':
@@ -2961,16 +2974,22 @@ const KLASY = {
     wyglad: { czapka: 'kaptur', kol: '#2e7a3a', uszy: true },
     n: 'Elf', ik: '🧝', rola: 'dystans · naładowane salwy', slotyOreza: 4, slotyPrzedm: 4, start: 'luk', rodziny: ['strzelecka'], hpZaPoziom: 4,
     staty: { hpMax: -35, ms: 20, zasieg: 15, kryt: 10 },
-    opis: 'Szybki łucznik z małą ilością zdrowia. Bieganie i strzały ładują <b>⚡ energię</b> (szybciej niż innym). Pełna energia <b>sama odpala Salwę</b>: większe, przebijające strzały, kilka naraz, dużo prędkości ataku i obrażeń. Pierwsza strzała Salwy jest naładowana (działa z przedmiotami „naładowany atak”).',
-    energia: true, mnEnergii: 1.8,
+    opis: 'Szybki łucznik z małą ilością zdrowia. Bieganie i strzały ładują <b>⚡ energię</b> (szybciej niż innym). Pełna energia <b>sama odpala Salwę</b>: wachlarz większych, przebijających strzał (po ulepszeniu Salwy — 2, a potem 3 salwy z rzędu). Pierwsza strzała Salwy jest naładowana (działa z przedmiotami „naładowany atak”).',
+    energia: true, mnEnergii: 2,
     blokujEnergie: st => st.salwa > czasGry,
-    naPelnaEnergie(st) { st.salwa = czasGry + 3 + (ewo('u1') >= 1 ? 1 : 0); oznaczStaty(); if (gracz === lokalny || !druzyna()) DZ.pryzmat(); fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 90, kolor: '#9fe8ff' }); },
-    statyDyn(st, s) { if (!(st.salwa > czasGry)) return; s.as += 60 + (ewo('u1') >= 2 ? 20 : 0); s.obrBonus += 30; s.przebicie += 99; const b = gracz.bronie[0];
+    // Salwa: 1 wachlarz strzał (ewolucja: 2, potem 3 wachlarze jeden po drugim); czeka na cel do 8 s
+    naPelnaEnergie(st) { st.salwaIle = ileSalw(); st.salwa = czasGry + 8; st.salwaOd = czasGry; st.nrSalwy = (st.nrSalwy || 0) + 1; const b = gracz.bronie[0]; if (b) b.cd = Math.min(b.cd, 0.05);
+      oznaczStaty(); if (gracz === lokalny || !druzyna()) DZ.pryzmat(); fale.push({ x: gracz.x, y: gracz.y, czas: 0.5, max: 0.5, r: 90, kolor: '#9fe8ff' }); },
+    naAtak(st, b, cel, o) { if (!(st.salwa > czasGry) || czasGry <= (st.salwaOd || -1) || !(st.salwaIle > 0) || b !== gracz.bronie[0] || (o && o.echo)) return;
+      st.salwaIle--; st.nrSalwy++;
+      if (st.salwaIle > 0) b.cd = Math.min(b.cd, 0.22);              // kolejny wachlarz zaraz po poprzednim
+      else { st.salwa = czasGry + 0.05; opoznione(0.07, oznaczStaty); } },
+    statyDyn(st, s) { if (!(st.salwa > czasGry)) return; s.obrBonus += 50; s.przebicie += 99; const b = gracz.bronie[0];
       s.pociski += 2 + Math.floor(((b && b.tier) || 0) / 2) + (ewo('u1') >= 2 ? 1 : 0); },
     modZadanych(st, w, typ, o) { if (o && o.atak && st.mocna) { st.mocna = false; spowolnij(w, 0.5, 1.5); efektBlysk(w.x, w.y, '#9fe8ff'); return 2; } return 1; },
-    naTrafienie(st, w, k) { if (ewo('u1') >= 3 && st.salwa > czasGry && k.glowny && !w._wybSalwy) { w._wybSalwy = 1; obszarowe(w.x, w.y, 50, '#9fe8ff', o => { if (o !== w) zadaj(o, k.zadaneSurowe * 0.5, 'fiz', { obszar: true, zr: 'Salwa' }); }, true); } },
+    naTrafienie(st, w, k) { if (ewo('u1') >= 3 && st.salwa > czasGry && k.glowny && w._wybSalwy !== st.nrSalwy) { w._wybSalwy = st.nrSalwy; obszarowe(w.x, w.y, 50, '#9fe8ff', o => { if (o !== w) zadaj(o, k.zadaneSurowe * 0.5, 'fiz', { obszar: true, zr: 'Salwa' }); }, true); } },
     umi: { n: 'Salwa', ik: '🏹', pasywna: true, podpowiedz: 'Salwa odpala się sama przy pełnej ⚡ energii (bieganie i strzały)',
-      opis: m => '<b>Odpala się sama</b> przy pełnej ⚡ energii. Przez ' + fmt(3 + (ewo('u1') >= 1 ? 1 : 0)) + ' s: +' + (60 + (ewo('u1') >= 2 ? 20 : 0)) + '% prędkości ataku, +30% obrażeń, strzały są większe i <b>przebijają wszystkich</b>, a łuk wypuszcza <b>' + (3 + Math.floor(((gracz.bronie[0] && gracz.bronie[0].tier) || 0) / 2) + (ewo('u1') >= 2 ? 1 : 0)) + '</b> strzały naraz (więcej z tierem łuku).',
+      opis: m => '<b>Odpala się sama</b> przy pełnej ⚡ energii: łuk wypuszcza wachlarz <b>' + (3 + Math.floor(((gracz.bronie[0] && gracz.bronie[0].tier) || 0) / 2) + (ewo('u1') >= 2 ? 1 : 0)) + '</b> większych strzał (więcej z tierem łuku), każda z pełnymi obrażeniami +50% i <b>przebija wszystkich</b>. ' + (ileSalw() > 1 ? 'Salwa strzela <b>' + ileSalw() + ' razy</b> z rzędu.' : 'Ulepszenie Salwy dodaje kolejne wachlarze (do 3).'),
       uzyj() { return false; } },
     umi2: { n: 'Odskok', ik: '🍃', cd: () => ewo('u2') >= 1 ? 5 : 7,
       opis: m => 'Odskakujesz 150 px od najbliższego wroga. Następna strzała zadaje <b>2× obrażeń</b> i spowalnia o 50%, a Ty dostajesz +' + (ewo('u2') >= 2 ? 50 : 30) + ' ⚡ energii.' + (ewo('u2') >= 3 ? ' Zostawiasz wabik, który przyciąga wrogów na 2 s.' : ''),
@@ -2978,7 +2997,7 @@ const KLASY = {
         if (ewo('u2') >= 3) dodajStwora('wabik', gracz.x, gracz.y, 2, { aura: 160, obr: 0, zr: 'Odskok' });
         gracz.kierRX = kx; gracz.kierRY = ky; if (gracz.zdalny) gracz.umiKier = [kx, ky]; mrugnij(150); gracz.stanKlasy.mocna = true; dodajEnergie(ewo('u2') >= 2 ? 50 : 30); DZ.czar(); return true; } },
     ewo: [
-      { id: 'u1', ik: '🏹', n: 'Salwa', r: ['+1 s trwania', '+1 strzała i +20% prędkości ataku', 'pierwsze trafienie każdego wroga wybucha (r 50, 50%)'] },
+      { id: 'u1', ik: '🏹', n: 'Salwa', r: ['Salwa strzela 2 razy z rzędu', 'Salwa strzela 3 razy z rzędu i +1 strzała', 'pierwsze trafienie każdego wroga w wachlarzu wybucha (r 50, 50%)'] },
       { id: 'u2', ik: '🍃', n: 'Odskok', r: ['odnowienie 5 s (zamiast 7)', '+50 energii (zamiast 30)', 'zostawia wabik na 2 s'] },
       { id: 'luk', ik: '🎯', n: 'Łuk', bron: 0, r: EWO_BRONI },
     ],
@@ -2987,22 +3006,22 @@ const KLASY = {
   // ------------------------------------------------------------------ ASSASSIN
   assassin: {
     wyglad: { czapka: 'maska' },
-    n: 'Assassin', ik: '🥷', rola: 'wręcz · kryty, shurikeny', slotyOreza: 4, slotyPrzedm: 4, start: 'sztylety', rodziny: ['biala', 'strzelecka'], hpZaPoziom: 5,
+    n: 'Assassin', ik: '🥷', rola: 'shurikeny · kryty', slotyOreza: 4, slotyPrzedm: 4, start: 'shurikeny', rodziny: ['strzelecka', 'biala'], hpZaPoziom: 5,
     staty: { hpMax: -30, ms: 15, kryt: 15, lethality: 8 },
-    opis: 'Mało zdrowia, dużo krytów. <b>Shurikeny (pasywka):</b> co ' + '1,6 s (⏱️ przyspieszenie skraca) rzuca 2 shurikeny w najbliższych wrogów; każdy odbija się 2 razy bez utraty siły, może trafić krytycznie i rośnie z ⚔️ i szansą na kryt.',
-    tik(st, dt) { tikShurikenow(st, dt); },
+    opis: 'Mało zdrowia, dużo krytów. <b>Walczy shurikenami</b> zamiast broni do walki wręcz: rzuca 2 naraz, każdy odbija się 2 razy <b>bez utraty siły</b>, może trafić krytycznie i rośnie z ⚔️ i szansą na kryt. Shurikeny to jego broń główna — działają z nimi prędkość ataku i efekty <span class="onhit">on-hit</span>.',
+    statyDyn(st, s) { s.pociski += ewo('sh') >= 2 ? 1 : 0; if (ewo('sh') >= 3) s.kryt += 10; if (ewo('u2') >= 2 && gracz.niewidzialny > 0) s.as += 100; },
     naZabicie(st, w, o) { if (o && o.zr === 'Cięcie cienia' && ewo('u1') >= 2 && gracz.umi.cd > 0) gracz.umi.cd *= 0.5; },
     naAtak(st) { if (st.zCienia > 0) { st.zCienia--; st.pewnyKryt = true; } },
     umi: { n: 'Cięcie cienia', ik: '🗡️', cd: 8,
-      opis: m => 'Wirujące cięcie wszystkich wrogów wokół Ciebie (r ' + f0(Math.max(140, zasiegAtakuGl() * 2.2)) + '): <b>' + f0(320 * m) + '%</b> obrażeń broni (nakłada efekty <span class="onhit">on-hit</span>). Dobija zwykłych wrogów i elity poniżej <b>' + (ewo('u1') >= 1 ? 18 : 12) + '%</b> zdrowia.' + (ewo('u1') >= 3 ? ' Po 0,5 s cień powtarza cięcie (50%).' : ''),
+      opis: m => 'Wirujące cięcie wszystkich wrogów wokół Ciebie (r ' + f0(170 * mnObszaru()) + '): <b>' + f0(320 * m) + '%</b> obrażeń broni (nakłada efekty <span class="onhit">on-hit</span>). Dobija zwykłych wrogów i elity poniżej <b>' + (ewo('u1') >= 1 ? 18 : 12) + '%</b> zdrowia.' + (ewo('u1') >= 3 ? ' Po 0,5 s cień powtarza cięcie (50%).' : ''),
       uzyj(m) { const b = gracz.bronie[0]; if (!b) return false; const ja = gracz;
-        const tnij = (mn) => { if (gracz !== ja || stan !== 'walka') return; const zas = Math.max(140, zasiegAtaku(b) * 2.2), prog = ewo('u1') >= 1 ? 0.18 : 0.12;
+        const tnij = (mn) => { if (gracz !== ja || stan !== 'walka') return; const zas = 170 * mnObszaru(), prog = ewo('u1') >= 1 ? 0.18 : 0.12;
           ciecia.push({ x: gracz.x, y: gracz.y, kat: 0, luk: Math.PI * 2, r: zas, czas: 0.3, max: 0.3, kolor: '#9a6ae0' });
           wrogowie.slice().forEach(w => { if (w.martwy || w.zauroczony > 0 || Math.hypot(w.x - gracz.x, w.y - gracz.y) > zas + w.r) return; trafienieAtakiem(w, b, { mn: 3.2 * m * mn, glowny: true });
             if (!w.martwy && !w.boss && w.hp < w.hpMax * prog) { w.hp = 0; zabij(w, { zr: 'Cięcie cienia' }); tekstSwiat(w.x, w.y - w.r - 12, '✂️', '#e0c8ff', 0.6, 13); } }); DZ.kryt(); };
         tnij(1); if (ewo('u1') >= 3) opoznione(0.5, () => tnij(0.5)); return true; } },
     umi2: { n: 'Zasłona dymna', ik: '💨', cd: 13,
-      opis: m => 'Doskok o 220 w kierunku ruchu i chmura dymu: znikasz na ' + fmt(2.5 + (ewo('u2') >= 1 ? 1 : 0)) + ' s — wrogowie Cię nie widzą i nie atakują, +30% prędkości ruchu' + (ewo('u2') >= 2 ? ', shurikeny lecą 2× częściej' : '') + '. ' + (ewo('u2') >= 3 ? '3 pierwsze ataki' : 'Pierwszy atak') + ' po wyjściu z cienia to <b>pewny kryt</b>.',
+      opis: m => 'Doskok o 220 w kierunku ruchu i chmura dymu: znikasz na ' + fmt(2.5 + (ewo('u2') >= 1 ? 1 : 0)) + ' s — wrogowie Cię nie widzą i nie atakują, +30% prędkości ruchu' + (ewo('u2') >= 2 ? ', +100% prędkości ataku' : '') + '. ' + (ewo('u2') >= 3 ? '3 pierwsze ataki' : 'Pierwszy atak') + ' po wyjściu z cienia to <b>pewny kryt</b>.',
       uzyj(m) { const t = 2.5 + (ewo('u2') >= 1 ? 1 : 0), x0 = gracz.x, y0 = gracz.y;
         for (let n = 0; n < 18; n++) czastki.push({ x: x0 + losowo(-34, 34), y: y0 + losowo(-34, 34), vx: losowo(-40, 40), vy: losowo(-60, 0), czas: 0.9, max: 0.9, kolor: n % 3 ? '#8a8a9a' : '#5a5a6a' });
         fale.push({ x: x0, y: y0, czas: 0.45, max: 0.45, r: 70, kolor: '#9a9aaa' });
@@ -3010,9 +3029,9 @@ const KLASY = {
         wrogowie.forEach(w => { if (w.cel === gracz) { w.cel = null; w.tCelu = 0; w.zamach = 0; } });
         DZ.czar(); return true; } },
     ewo: [
-      { id: 'sh', ik: '✴️', n: 'Shurikeny', r: ['+1 shuriken', '+2 odbicia', '+1 shuriken i shurikeny nakładają efekty <span class="onhit">on-hit</span>'] },
+      { id: 'sh', ik: '✴️', n: 'Shurikeny', r: ['+1 odbicie', '+1 shuriken w każdym rzucie', '+10% szansy na kryt'] },
       { id: 'u1', ik: '🗡️', n: 'Cięcie cienia', r: ['dobija poniżej 18%', 'zabójstwo skraca odnowienie o połowę', 'cień powtarza cięcie po 0,5 s (50%)'] },
-      { id: 'u2', ik: '💨', n: 'Zasłona dymna', r: ['+1 s niewidzialności', 'w cieniu shurikeny lecą 2× częściej', '3 pewne kryty po wyjściu z cienia'] },
+      { id: 'u2', ik: '💨', n: 'Zasłona dymna', r: ['+1 s niewidzialności', 'w cieniu +100% prędkości ataku', '3 pewne kryty po wyjściu z cienia'] },
     ],
     kolory: { plaszcz: ['#2a2a3a', '#101018'], tunika: ['#4a3a6a', '#24183a'], wlosy: '#1a1a1a' },
   },
@@ -3265,20 +3284,8 @@ function tikWiruKajdan(st, dt) {
     if (ewo('u1') >= 3) { fale.push({ x: gracz.x, y: gracz.y, czas: 0.45, max: 0.45, r: 160 * mnObszaru(), kolor: '#c8c8d8' }); aura(160, '#c8c8d8', w => zadaj(w, (40 + 1.5 * D.ad) * wr.m, 'fiz', { obszar: true, zr: 'Wir kajdan' }), true); dodajBuff('wirKoniec', { ms: 0.4 * D.ms }, 2); DZ.wybuch(); }
   }
 }
-// Assassin: shurikeny co 1,6 s (przyspieszenie skraca), odbijają się bez utraty siły
-function tikShurikenow(st, dt) {
-  if (!fala.aktywna) return;
-  st.tS = (st.tS || 0) - dt * (ewo('u2') >= 2 && gracz.niewidzialny > 0 ? 2 : 1);
-  if (st.tS > 0) return;
-  const ile = 2 + (ewo('sh') >= 1 ? 1 : 0) + (ewo('sh') >= 3 ? 1 : 0), cele = najblizsi(gracz.x, gracz.y, 320, ile);
-  if (!cele.length) { st.tS = 0.2; return; }
-  st.tS = 1.6 * 100 / (100 + Math.max(0, D.haste));
-  const v = (10 + 0.45 * D.ad + 0.5 * Math.max(0, D.kryt)) * mnUmi();
-  for (let n = 0; n < ile; n++) { const c = cele[n % cele.length];
-    wystrzel({ x: gracz.x, y: gracz.y, kat: kat(gracz, c) + (n - (ile - 1) / 2) * 0.25, cel: c, predkosc: 600, obr: v, typ: 'fiz', kolor: '#d8d8e8', ksztalt: 'shuriken', zr: 'Shurikeny', zycie: 1.1, naprowadza: 7,
-      odbicia: 2 + (ewo('sh') >= 2 ? 2 : 0), mozeKryt: true, bezSpadku: true, zasiegOdbicia: 190, onHit: ewo('sh') >= 3 }); }
-  if (mozna('shuriken', 120)) ton(900, 0.04, 'triangle', 0.04);
-}
+// Elf: ile wachlarzy strzał wypuszcza jedna Salwa
+function ileSalw() { return 1 + (ewo('u1') >= 1 ? 1 : 0) + (ewo('u1') >= 2 ? 1 : 0); }
 // skok w miejsce (Berserker): jak mignięcie, ale do punktu
 function skokDo(tx, ty, maks) {
   const dx = tx - gracz.x, dy = ty - gracz.y, d = Math.hypot(dx, dy) || 1, dl = Math.min(maks, d);
@@ -3518,6 +3525,18 @@ function rozepchnij() {
   }
 }
 
+// Kałuże wrogów: nowa tuż obok takiej samej tylko ją odświeża, a wszystkich jest najwyżej 140
+// (setki kałuż gazu w późnych falach mocno spowalniały grę, zwłaszcza online i na telefonach)
+const MAKS_KALUZ = 140;
+function dodajKaluze(k) {
+  for (let i = kaluze.length - 1, n = 0; i >= 0 && n < 60; i--, n++) {
+    const o = kaluze[i];
+    if (o.rodzaj === k.rodzaj && Math.abs(o.x - k.x) < k.r * 0.8 && Math.abs(o.y - k.y) < k.r * 0.8) { o.czas = Math.max(o.czas, k.czas); o.max = Math.max(o.max, k.max); o.obr = Math.max(o.obr, k.obr); o._ws = false; return o; }
+  }
+  kaluze.push(k);
+  while (kaluze.length > MAKS_KALUZ) kaluze.shift();
+  return k;
+}
 function strzalWroga(w, k, predkosc, obr, opcje) {
   opcje = opcje || {};
   pociskiWrogow.push(Object.assign({ x: w.x, y: w.y, vx: Math.cos(k) * predkosc, vy: Math.sin(k) * predkosc, obr: obr, typ: w.typObr || 'fiz', zycie: 2.4, kolor: '#c46ce8', wrog: w, r: 5, kto: w.n }, opcje));
@@ -3582,7 +3601,7 @@ function aiWroga(w, dt, msMn) {
     } else { rx = -Math.sin(kg) * w.kierKraz; ry = Math.cos(kg) * w.kierKraz; }
     w.cdGazu -= dt;
     if (w.zloty) { w.znika -= dt; if (w.znika <= 0) { w.martwy = true; w.bezLupu = true; rozbryzg(w.x, w.y, '#ffd24a', 14); tekstSwiat(w.x, w.y - 20, 'uciekł!', '#ffd24a'); } }
-    else if (w.cdGazu <= 0) { w.cdGazu = 0.6; kaluze.push({ x: w.x, y: w.y, r: 28, czas: 5, max: 5, tyk: 0, obr: Math.max(2, w.atak * 0.45), typ: 'mag', rodzaj: 'gaz', wrog: w }); DZ.syk(); }
+    else if (w.cdGazu <= 0) { w.cdGazu = 0.6; dodajKaluze({ x: w.x, y: w.y, r: 28, czas: 5, max: 5, tyk: 0, obr: Math.max(2, w.atak * 0.45), typ: 'mag', rodzaj: 'gaz', wrog: w }); DZ.syk(); }
   } else if (w.zach === 'szarzaBoki') {
     if (d > zasieg * 0.9) { rx = Math.cos(kg); ry = Math.sin(kg); }
     w.cdBoczny -= dt;
@@ -3637,7 +3656,7 @@ function aktualizujAfiksy(w, dt) {
   const a = w.afiksy;
   if (a.indexOf('regenerujacy') >= 0 && w.hp < w.hpMax) w.hp = Math.min(w.hpMax, w.hp + w.hpMax * 0.025 * dt * (w.rany > 0 ? 0.4 : 1));
   if (a.indexOf('tarczownik') >= 0) { w.odTrafienia = (w.odTrafienia || 0) + dt; if (w.odTrafienia > 4 && w.tarcza < w.tarczaMax) w.tarcza = Math.min(w.tarczaMax, w.tarcza + w.tarczaMax * 0.25 * dt); }
-  if (a.indexOf('ognisty') >= 0) { w.cdOgnia = (w.cdOgnia || 0) - dt; if (w.cdOgnia <= 0) { w.cdOgnia = 0.7; kaluze.push({ x: w.x, y: w.y, r: 24, czas: 3, max: 3, tyk: 0, obr: w.atak * 0.35, typ: 'mag', rodzaj: 'ogien', wrog: w }); } }
+  if (a.indexOf('ognisty') >= 0) { w.cdOgnia = (w.cdOgnia || 0) - dt; if (w.cdOgnia <= 0) { w.cdOgnia = 0.7; dodajKaluze({ x: w.x, y: w.y, r: 24, czas: 3, max: 3, tyk: 0, obr: w.atak * 0.35, typ: 'mag', rodzaj: 'ogien', wrog: w }); } }
   if (a.indexOf('przywolywacz') >= 0) { w.cdPrzyw -= dt; if (w.cdPrzyw <= 0) { w.cdPrzyw = 7; if (wrogowie.length < limitWrogow()) for (let i = 0; i < 2; i++) { const s = stworzWroga('szczur', w.x + losowo(-30, 30), w.y + losowo(-30, 30)); s.bezLupu = true; s.xp *= 0.3; wrogowie.push(s); } } }
   if (a.indexOf('skoczek') >= 0 && w.ogl <= 0) { w.cdSkoku -= dt; if (w.cdSkoku <= 0) { w.cdSkoku = 5; const k = Math.random() * Math.PI * 2; rozbryzg(w.x, w.y, '#9fd8ff', 10); w.x = ogr(gracz.x + Math.cos(k) * 120, POD_MIN, POD_MAX); w.y = ogr(gracz.y + Math.sin(k) * 120, POD_MIN, POD_MAX); rozbryzg(w.x, w.y, '#9fd8ff', 10); tonSlizg(700, 1500, 0.18, 'sine', 0.05); } }
 }
@@ -3707,7 +3726,7 @@ function aiBossa(w, dt, msMn) {
       if (w.faza < 2 && proc <= 0.5) { w.faza = 2; w.poswiata = '#e6543c'; w.pole = true; baner('🔴 Pole spowolnienia!', 'Nie stój blisko Tytana'); }
       if (w.faza < 3 && proc <= 0.25) { w.faza = 3; w.poswiata = '#ffd24a'; w.ms *= 1.3; baner('💛 Ostatnia faza', 'Tytan zostawia ogień'); }
       if (w.pole && d < 190) spowolnijGracza(0.4, 0.2);
-      if (w.faza >= 3) { w.cdOgnia = (w.cdOgnia || 0) - dt; if (w.cdOgnia <= 0) { w.cdOgnia = 0.4; kaluze.push({ x: w.x, y: w.y, r: 34, czas: 4, max: 4, tyk: 0, obr: w.atak * 0.3, typ: 'mag', rodzaj: 'ogien', wrog: w }); } }
+      if (w.faza >= 3) { w.cdOgnia = (w.cdOgnia || 0) - dt; if (w.cdOgnia <= 0) { w.cdOgnia = 0.4; dodajKaluze({ x: w.x, y: w.y, r: 34, czas: 4, max: 4, tyk: 0, obr: w.atak * 0.3, typ: 'mag', rodzaj: 'ogien', wrog: w }); } }
       if (w.t1 <= 0) { w.t1 = 2.3 * mc / (1 + w.faza * 0.35); const ile = 9 + w.faza * 3; for (let s = 0; s < ile; s++) strzalWroga(w, kg + (s - (ile - 1) / 2) * 0.24, 235, w.atak * 0.7, { kolor: w.poswiata || '#e86ca0', zycie: 3 }); DZ.wrogStrzal('boss'); }
       if (w.t2 <= 0 && d > 90) { w.t2 = 7.5 * mc; w.przygotowanie = 1.0; w.dlSzarzy = 1.0; w.vSzarzy = 600; tekstSwiat(w.x, w.y - w.r - 14, '⚠️ Szarża!', '#ffd24a'); return; }
       break;
@@ -4003,8 +4022,8 @@ function zabij(w, o) {
   DZ.smiercWroga();
   if (!w.bezLupu && !w.sojusznik) {
     const mL = w.boss ? 1 : mnLupuDruzyny();
-    rozsypKulki(w.x, w.y, w.xp * mL);
-    rozsypMonety(w.x, w.y, w.zl * mL, !!w.zloty);
+    rozsypKulki(w.x, w.y, w.xp * mL, ileLupu(w));
+    rozsypMonety(w.x, w.y, w.zl * mL, !!w.zloty, ileLupu(w));
     const mnS = (1 + D.szczescie / 100) * mnoznikHakow('mnSkrzyn') * (TRUDNOSCI[run.trudnosc].skrzynie || 1);
     let pSk = w.boss ? 1 : (w.elita ? 0.12 : 0.005) * mnS * mL;
     if (!w.boss && (fala.skrzynie || 0) >= zakresSkrzyn(fala.nr)[1]) pSk = 0;
@@ -4254,12 +4273,13 @@ function strzal(b, cel) {
   if (b.rodzaj === 'pistolet' && b.licznikP % 6 === 0) { ile += 2 + Math.floor(b.tier / 2); rozrzut = 0.1; }
   const zas = zasiegAtaku(b);
   const przebija = (B.przebija || 0) + ((b.rodzaj === 'kusza' || b.rodzaj === 'muszkiet') ? b.tier : 0) + Math.max(0, Math.round(D.przebicie));
+  const salwa = gracz.stanKlasy.salwa > czasGry && czasGry > (gracz.stanKlasy.salwaOd || -1);   // Salwa Elfa: duże strzały, każda z pełnymi obrażeniami
   for (let n = 0; n < ile; n++) {
     const off = ile === 1 ? 0 : (n - (ile - 1) / 2) * rozrzut;
     const k = b.kat + off;
     pociski.push({
-      wl: gracz, x: gracz.x, y: gracz.y, vx: Math.cos(k) * B.predkosc, vy: Math.sin(k) * B.predkosc, zycie: zas * 1.05 / B.predkosc, r: gracz.stanKlasy.salwa > czasGry ? 10 : 6, duza: gracz.stanKlasy.salwa > czasGry,
-      bron: b, mn: n === 0 || B.pelnePociski ? 1 : (b.rodzaj === 'pistolet' ? 0.7 : 0.6), glowny: n === 0, przebija: przebija, trafieni: [], kolor: B.kolor, ksztalt: B.ksztalt,
+      wl: gracz, x: gracz.x, y: gracz.y, vx: Math.cos(k) * B.predkosc, vy: Math.sin(k) * B.predkosc, zycie: zas * 1.05 / B.predkosc, r: salwa ? 10 : 6, duza: salwa,
+      bron: b, mn: n === 0 || B.pelnePociski || salwa ? 1 : (b.rodzaj === 'pistolet' ? 0.7 : 0.6), glowny: n === 0, przebija: przebija, trafieni: [], kolor: B.kolor, ksztalt: B.ksztalt,
       naprowadza: B.naprowadza || 0, cel: cel, odbicia: B.odbicia ? B.odbicia(b.tier) : 0, pewnyKryt: n === 0 && b._pewnyKryt, naladowany: n === 0 && !!b._naladowany, bezSpadku: !!B.bezSpadku, zasiegOdbicia: B.zasiegOdbicia || 0,
     });
   }
@@ -4596,10 +4616,28 @@ function aktualizujPodnoszenie(dt) {
 //  ŁUPY: doświadczenie, złoto, skrzynie
 // ---------------------------------------------------------------------
 let NR_LUPU = 0;     // każda kulka i moneta ma swój numer (gra online: klient zgłasza, co zebrał)
-function rozsypKulki(x, y, xp) {
-  const n = ogr(Math.round(xp / 1.5), 1, 8), na = xp / n;
-  for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), v = losowo(40, 140); kulki.push({ id: ++NR_LUPU, x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, xp: na, faza: losowo(0, 6), opozn: 0.25 }); }
-  while (kulki.length > 160) { const a = kulki.shift(), b = kulki[0]; b.xp += a.xp; }
+// Mniej, ale cenniejszych łupów: zwykły wróg zostawia 1 kulkę i 1 monetę, a łup, który spada obok
+// leżącego już łupu, dokleja się do niego (wartość się sumuje). Mniej obiektów = płynniejsza gra, zwłaszcza online.
+const MAKS_KULEK = 70, MAKS_MONET = 60, ZLEP_R = 46;
+const LUP_SR = { xp: 3, v: 1 };     // średnia wartość nowego łupu - do wielkości kulek i monet na ekranie
+function zlepLup(lista, x, y, pole, v) {
+  for (let i = lista.length - 1, n = 0; i >= 0 && n < 40; i--, n++) {
+    const k = lista[i];
+    if (!k.ssij && Math.abs(k.x - x) < ZLEP_R && Math.abs(k.y - y) < ZLEP_R) { k[pole] += v; k._w = false; return true; }
+  }
+  return false;
+}
+function ileLupu(w) { return !w ? 1 : w.boss ? 6 : w.elita ? 2 : 1; }
+function rozsypKulki(x, y, xp, ile) {
+  if (!(xp > 0)) return;
+  const n = ile || 1, na = xp / n;
+  LUP_SR.xp = LUP_SR.xp * 0.95 + na * 0.05;
+  for (let i = 0; i < n; i++) {
+    if (n === 1 && zlepLup(kulki, x, y, 'xp', na)) continue;
+    const k = losowo(0, 6.28), v = losowo(40, 140) * (n > 1 ? 1.4 : 1);
+    kulki.push({ id: ++NR_LUPU, x: x, y: y, vx: Math.cos(k) * v, vy: Math.sin(k) * v, xp: na, faza: losowo(0, 6), opozn: 0.25 });
+  }
+  while (kulki.length > MAKS_KULEK) { const a = kulki.shift(), b = kulki[0]; b.xp += a.xp; b._w = false; }
 }
 // ---- ZŁOTO I SKRZYNIE NA FALĘ ----
 // Złoto nie zależy od liczby wrogów: na każdą falę jest PULA złota z wrogów (70%) i stała nagroda
@@ -4608,7 +4646,7 @@ function zlotoNaFale(nr) { return (25 + 20 * Math.max(1, nr || 1)) * (TRUDNOSCI[
 function pulaZlotaFali(nr) { return 0.7 * zlotoNaFale(nr); }
 // Skrzynie: na falę od–do (minimum dostajesz po fali, nawet jeśli nic nie wypadło; więcej niż maksimum nie wypadnie)
 function zakresSkrzyn(nr) { return [nr >= 3 && !czyFalaBossa(nr) ? 1 : 0, 2 + Math.floor(nr / 12)]; }
-function rozsypMonety(x, y, v, pozaPula) {
+function rozsypMonety(x, y, v, pozaPula, ile) {
   const T = TRUDNOSCI[run.trudnosc];
   v *= (T.zloto || 1) * 1.3;
   if (!pozaPula && fala && fala.aktywna) {
@@ -4618,10 +4656,14 @@ function rozsypMonety(x, y, v, pozaPula) {
     v = wPuli + (v - wPuli) * 0.1;
   }
   if (!(v > 0.05)) return;
-  let n = ogr(Math.round(v), 1, 6);
-  const na = v / n;
-  for (let i = 0; i < n; i++) { const k = losowo(0, 6.28), s = losowo(30, 120); monety.push({ id: ++NR_LUPU, x: x, y: y, vx: Math.cos(k) * s, vy: Math.sin(k) * s, v: na, faza: losowo(0, 6), opozn: 0.3 }); }
-  while (monety.length > 140) { const a = monety.shift(), b = monety[0]; b.v += a.v; }
+  const n = ile || 1, na = v / n;
+  LUP_SR.v = LUP_SR.v * 0.95 + na * 0.05;
+  for (let i = 0; i < n; i++) {
+    if (n === 1 && zlepLup(monety, x, y, 'v', na)) continue;
+    const k = losowo(0, 6.28), s = losowo(30, 120) * (n > 1 ? 1.4 : 1);
+    monety.push({ id: ++NR_LUPU, x: x, y: y, vx: Math.cos(k) * s, vy: Math.sin(k) * s, v: na, faza: losowo(0, 6), opozn: 0.3 });
+  }
+  while (monety.length > MAKS_MONET) { const a = monety.shift(), b = monety[0]; b.v += a.v; b._w = false; }
 }
 function dodajXp(v) {
   v *= (1 + D.xpBonus / 100) * (fala.mnXp || 1) * (HAKI.mnXp.length ? mnoznikHakow('mnXp') : 1);
@@ -5477,6 +5519,8 @@ function sprite(r, fn) { const c = document.createElement('canvas'); c.width = c
 const SPR_SWIATLO = sprite(64, (c, r) => { const g = c.createRadialGradient(r, r, 0, r, r, r); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(0.55, 'rgba(0,0,0,0.75)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2); });
 const SPR_POCHODNIA = sprite(64, (c, r) => { const g = c.createRadialGradient(r, r, 2, r, r, r); g.addColorStop(0, 'rgba(255,150,60,0.16)'); g.addColorStop(1, 'rgba(255,120,40,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2); });
 const SPR_GRACZ = sprite(64, (c, r) => { const g = c.createRadialGradient(r, r, 2, r, r, r); g.addColorStop(0, 'rgba(255,200,130,0.07)'); g.addColorStop(1, 'rgba(255,200,130,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2); });
+const SPR_KAL_GAZ = sprite(48, (c, r) => { const g = c.createRadialGradient(r, r, 2, r, r, r); g.addColorStop(0, 'rgba(154,224,90,0.42)'); g.addColorStop(1, 'rgba(90,150,50,0)'); c.fillStyle = g; c.beginPath(); c.arc(r, r, r, 0, Math.PI * 2); c.fill(); });
+const SPR_KAL_OGIEN = sprite(48, (c, r) => { const g = c.createRadialGradient(r, r, 2, r, r, r); g.addColorStop(0, 'rgba(255,140,40,0.5)'); g.addColorStop(1, 'rgba(200,60,20,0)'); c.fillStyle = g; c.beginPath(); c.arc(r, r, r, 0, Math.PI * 2); c.fill(); });
 // kryształ doświadczenia (szlifowany, z miękką poświatą)
 const SPR_KULKA = sprite(32, (c, r) => {
   const g = c.createRadialGradient(r, r, 0, r, r, r); g.addColorStop(0, 'rgba(120,240,140,0.45)'); g.addColorStop(1, 'rgba(120,240,140,0)'); c.fillStyle = g; c.fillRect(0, 0, r * 2, r * 2);
@@ -5581,14 +5625,14 @@ const KOLORY_POL = { mroz: '200,240,255', trucizna: '120,220,90', kwas: '210,240
 function rysujPlansze() {
   const t = Date.now();
   // kałuże: gaz, ogień, pajęczyna
+  // (gotowe obrazki zamiast gradientu w każdej klatce - przy setkach kałuż to duża różnica)
   kaluze.forEach(k => {
-    if (!naEkranie(k.x, k.y)) return;
-    const a = Math.min(1, k.czas / k.max * 1.5);
-    const g = ctx.createRadialGradient(k.x, k.y, 2, k.x, k.y, k.r);
-    if (k.rodzaj === 'gaz') { g.addColorStop(0, 'rgba(154,224,90,' + 0.42 * a + ')'); g.addColorStop(1, 'rgba(90,150,50,0)'); }
-    else { g.addColorStop(0, 'rgba(255,140,40,' + 0.5 * a + ')'); g.addColorStop(1, 'rgba(200,60,20,0)'); }
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(k.x, k.y, k.r, 0, Math.PI * 2); ctx.fill();
+    if (!naEkranie(k.x, k.y, k.r)) return;
+    const a = Math.max(0, Math.min(1, k.czas / k.max * 1.5));
+    if (!(a > 0.01)) return;
+    ctx.globalAlpha = a; ctx.drawImage(k.rodzaj === 'gaz' ? SPR_KAL_GAZ : SPR_KAL_OGIEN, k.x - k.r, k.y - k.r, k.r * 2, k.r * 2);
   });
+  ctx.globalAlpha = 1;
   polaEfektow.forEach(p => {
     if (!naEkranie(p.x, p.y, p.r + 20)) return;
     const a = Math.min(1, p.czas / 0.8), g = ctx.createRadialGradient(p.x, p.y, 2, p.x, p.y, p.r);
@@ -5700,14 +5744,17 @@ function rysujLupy() {
     ctx.drawImage(odznaka(sk.tier === 'p' ? 'p' : 't' + sk.tier, 48), -6.5, -9, 13, 13);
     ctx.restore();
   });
+  // wielkość rośnie z wartością (względem średniego łupu) - zlepione łupy są wyraźnie większe
+  const srM = Math.max(0.01, LUP_SR.v), srK = Math.max(0.01, LUP_SR.xp);
   monety.forEach(m => {
-    if (!naEkranie(m.x, m.y, 20)) return;
-    const s2 = 0.55 + 0.45 * Math.abs(Math.cos(m.faza)), r = 4.5 + Math.min(3, m.v * 0.25);
+    if (!naEkranie(m.x, m.y, 24)) return;
+    const s2 = 0.55 + 0.45 * Math.abs(Math.cos(m.faza)), q = Math.log2(1 + m.v / srM), r = 4.8 + Math.min(5, 1.7 * q);
+    if (q > 2.2) rysujPoswiate(m.x, m.y, r * 2.4, '#ffd24a', 0.5);
     ctx.drawImage(SPR_MONETA, m.x - r * s2, m.y - r, r * 2 * s2, r * 2);
   });
   kulki.forEach(k => {
-    if (!naEkranie(k.x, k.y, 20)) return;
-    const r = (11 + Math.min(7, k.xp * 0.3)) * (0.9 + Math.sin(k.faza) * 0.1);
+    if (!naEkranie(k.x, k.y, 24)) return;
+    const q = Math.log2(1 + k.xp / srK), r = (10 + Math.min(10, 3 * q)) * (0.9 + Math.sin(k.faza) * 0.1);
     ctx.drawImage(SPR_KULKA, k.x - r, k.y - r, r * 2, r * 2);
   });
 }
@@ -6784,7 +6831,7 @@ AKCJE.startRunuZModala = () => { zamknijModal(); rozpocznijRun(wyborTrudnosci, w
 AKCJE.nowaGraWstecz = () => pokazTrudnosc();
 AKCJE.startRunu = () => rozpocznijRun(wyborTrudnosci, wyborKlasy);
 
-function bronStartowa(K) { return (K.start === 'losowa' || K.start === 'wybor' || K.start === 'wybor2') ? losZ(KLUCZE_BRONI) : (BRONIE[K.start] ? K.start : 'miecz'); }
+function bronStartowa(K) { return (K.start === 'losowa' || K.start === 'wybor' || K.start === 'wybor2') ? losZ(KLUCZE_BRONI_LOS) : (BRONIE[K.start] ? K.start : 'miecz'); }
 function czyWyborBroni(K) { return K.start === 'wybor' || K.start === 'wybor2'; }
 function rozpocznijRun(trudnosc, klasa) {
   run = { trudnosc: trudnosc, zabici: 0, zadane: 0, przyjete: 0, leczenie: 0, zloto: 0, xp: 0, ataki: 0, trafienia: 0, zrodla: {}, zlotoFali: 0,
@@ -6806,7 +6853,7 @@ function rozpocznijRun(trudnosc, klasa) {
 }
 function pokazWyborBroniStart() {
   const K = KLASY[gracz.klasa], dwie = K.start === 'wybor2', tier = dwie ? 0 : 1;
-  if (!run.ofertaBroni) run.ofertaBroni = tasuj(KLUCZE_BRONI.slice()).slice(0, dwie ? 5 : 3);
+  if (!run.ofertaBroni) run.ofertaBroni = tasuj(KLUCZE_BRONI_LOS.slice()).slice(0, dwie ? 5 : 3);
   const druga = dwie && gracz.bronie.length === 1;
   let h = '<div class="tytul">' + (dwie ? (druga ? '🤜 Druga broń' : '🤛 Pierwsza broń') : 'Twoja jedyna broń') + '</div><div class="podtytul">' +
     (dwie ? 'Akimbo walczy dwiema broniami głównymi naraz. ' + (druga ? 'Pierwsza: <b>' + BRONIE[gracz.bronie[0].rodzaj].ikona + ' ' + BRONIE[gracz.bronie[0].rodzaj].nazwa + '</b>. Wybierz drugą.' : 'Wybierz pierwszą z dwóch.') : 'Wybierz broń główną, z którą przejdziesz cały loch. Zaczyna na II tierze.') + '</div>';
@@ -7777,6 +7824,7 @@ function wczytajGre() {
     gracz.przedmioty = (gracz.przedmioty || []).filter(p => p && DEF_PRZ[p.id]);
     gracz.augmenty = (gracz.augmenty || []).filter(a => a && DEF_AUG[a.id]);
     gracz.oreze = (gracz.oreze || []).filter(o => o && DEF_ORE[o.id]).map(o => Object.assign(o, { ore: 1 }));
+    if (gracz.klasa === 'assassin') (gracz.bronie || []).forEach(b => { if (b && b.rodzaj === 'sztylety') b.rodzaj = 'shurikeny'; });   // stary zapis: Assassin miał sztylety
     gracz.bronie = (gracz.bronie || []).filter(b => b && BRONIE[b.rodzaj]); if (!gracz.bronie.length) gracz.bronie = [nowaBron(bronStartowa(KLASY[gracz.klasa]), 0)];
     gracz.umi = { cd: 0, cdMax: 0 }; gracz.umi2 = { cd: 0, cdMax: 0 }; if (gracz.slotyOreza === undefined) gracz.slotyOreza = KLASY[gracz.klasa].slotyOreza !== undefined ? KLASY[gracz.klasa].slotyOreza : 4; if (gracz.slotyPryzm === undefined) gracz.slotyPryzm = KLASY[gracz.klasa].slotyPryzm || 2; gracz.slotyPryzm = Math.max(gracz.slotyPryzm, liczPrzedm(true)); gracz.slotyPrzedm = Math.max(gracz.slotyPrzedm, liczPrzedm(false));
     fala = { nr: z.falaNr || 0, aktywna: false };
@@ -8784,9 +8832,35 @@ function pokazKoniecDruzyny(d) {
 //  STAN GRY WYSYŁANY PRZEZ GOSPODARZA (ok. 15 razy na sekundę)
 // ---------------------------------------------------------------------
 function r1(v) { return Math.round(v); }
+// obcina z końca tablicy wartości domyślne (klient dopisze je sam) - krótsze wiadomości
+function przytnij(a, dom) { let n = a.length; while (n > 0 && dom[n - 1] !== undefined && a[n - 1] === dom[n - 1]) n--; a.length = n; return a; }
+const DOM_W = [undefined, undefined, undefined, undefined, undefined, 0, -1, 0, 0, 0];
+const DOM_PW = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, '', 5, 0];
+const DOM_KAL = [];
+// Listy "nowe raz + numery zniknietych": pociski wrogów lecą prosto, a kałuże stoją - klient sam je przesuwa
+// i odlicza im czas, więc gospodarz wysyła każdy tylko raz (i co 2 s pełną listę na wszelki wypadek).
+let NR_SIECI = 0;
+const LISTY_SIECI = {
+  pw: { lista: () => pociskiWrogow, zapis: p => przytnij([p._sid, r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), r1(Math.max(0, p.zycie) * 100), p.kolor, p.ksztalt || '', r1(p.r || 5), p.siec ? 1 : 0], DOM_PW) },
+  kal: { lista: () => kaluze, zapis: k => [k._sid, r1(k.x), r1(k.y), r1(k.r), r1(Math.max(0, k.czas) * 10), r1(k.max * 10), k.rodzaj] },
+  pe: { lista: () => polaEfektow, zapis: p => [p._sid, r1(p.x), r1(p.y), r1(p.r), r1(Math.max(0, p.czas) * 10), p.rodzaj || ''] },
+};
+function zmianyList(swieze) {
+  const ost = SIEC.ostListy || (SIEC.ostListy = {});
+  for (const kl in LISTY_SIECI) {
+    const L = LISTY_SIECI[kl], teraz = new Set(), nowe = [], usuniete = [];
+    for (const o of L.lista()) { if (!o._sid) o._sid = ++NR_SIECI; teraz.add(o._sid); if (!o._ws) { o._ws = true; nowe.push(L.zapis(o)); } }
+    (ost[kl] || new Set()).forEach(id => { if (!teraz.has(id)) usuniete.push(id); });
+    ost[kl] = teraz; swieze[kl + 'n'] = nowe; swieze[kl + 'u'] = usuniete;
+  }
+}
+function pelneListy(stanW) { for (const kl in LISTY_SIECI) stanW[kl + 'a'] = LISTY_SIECI[kl].lista().map(LISTY_SIECI[kl].zapis); }
+const DOM_P = [undefined, undefined, undefined, undefined, undefined, undefined, 0];
+// rzadko zmieniające się listy (kałuże, skrzynie, stwory, ściany, wiry) idą tylko, gdy się zmieniły (i co ~1 s na wszelki wypadek)
+const WOLNE_KLUCZE = ['sk', 'st', 'sc', 'wr'];
 // kulki doświadczenia (0) i monety (1): nowe wysyłamy raz, potem tylko informację, że zniknęły
 function lupDoWyslania(l, typ) { return [l.id, r1(l.x), r1(l.y), r1(l.vx || 0), r1(l.vy || 0), typ, Math.round((typ ? l.v : l.xp) * 10) / 10, Math.round(Math.max(0, l.opozn || 0) * 100)]; }
-const LIMITY_ZAL = { vf: 40, vt: 90, vb: 40, vc: 40, vs: 30, dz: 12, e: 200 };
+const LIMITY_ZAL = { vf: 40, vt: 90, vb: 40, vc: 40, vs: 30, dz: 12, e: 200, pwn: 250, pwu: 400, kaln: 150, kalu: 300, pen: 150, peu: 300 };
 function siecWyslijStan(dt) {
   SIEC.tWysylki -= dt;
   if (SIEC.tWysylki > 0) return;
@@ -8806,8 +8880,9 @@ function siecWyslijStan(dt) {
     const fl = (w.elita ? 1 : 0) | (w.boss ? 2 : 0) | (w.zauroczony > 0 ? 4 : 0) | (w.sojusznik ? 8 : 0) | (w.trafiony > 0 ? 16 : 0) | (w.duch ? 32 : 0) |
       (w.przygotowanie > 0 ? 64 : 0) | (w.spow > 0 && w.spowCzas > 0 ? 128 : 0) | (w.ogl > 0 ? 256 : 0) | (w.ogien ? 512 : 0) | (w.krew ? 1024 : 0) |
       (w.naznaczony > 0 ? 2048 : 0) | (w.pole ? 4096 : 0) | (w.czempion ? 8192 : 0);
-    W.push([w.id, r1(w.x), r1(w.y), r1(w.hp / w.hpMax * 1000), fl, r1(w.wysokosc || 0), w.tarczaMax ? r1(w.tarcza / w.tarczaMax * 100) : -1, w.boss ? r1(w.hp) : 0,
-      w.zamach > 0 && w.zamachMax ? Math.max(1, r1((1 - w.zamach / w.zamachMax) * 100)) : 0, r1((w.zamKat || 0) * 100)]);
+    const zam = w.zamach > 0 && w.zamachMax ? Math.max(1, r1((1 - w.zamach / w.zamachMax) * 100)) : 0;
+    W.push(przytnij([w.id, r1(w.x), r1(w.y), r1(w.hp / w.hpMax * 1000), fl, r1(w.wysokosc || 0), w.tarczaMax ? r1(w.tarcza / w.tarczaMax * 100) : -1, w.boss ? r1(w.hp) : 0,
+      zam, zam ? r1((w.zamKat || 0) * 100) : 0], DOM_W));
     if (!w._w) { w._w = true; WN.push([w.id, r1(w.r), w.ik, w.kolor, w.obraz || '', w.afiksy.map(a => AFIKSY[a].ik).join(''), w.boss ? w.n : '', w.poswiata || '']); }
     else if (w.boss && w._posw !== w.poswiata) { w._posw = w.poswiata; WN.push([w.id, r1(w.r), w.ik, w.kolor, '', '', w.n, w.poswiata || '']); }
   }
@@ -8828,26 +8903,28 @@ function siecWyslijStan(dt) {
   monety.forEach(m => { teraz.add(m.id); if (!m._w) { m._w = true; swieze.ln.push(lupDoWyslania(m, 1)); } });
   SIEC.lupOst.forEach(id => { if (!teraz.has(id)) swieze.lu.push(id); });
   SIEC.lupOst = teraz;
+  zmianyList(swieze);
   SIEC.zdarzenia = []; SIEC.dzwieki = [];
   const stanW = {
     t: 's', n: SIEC.licznikStanu, tc: Math.round(czasGry * 1000),
     f: [fala.nr, r1(fala.czas * 10), r1(fala.dlugosc), fala.boss ? 1 : 0, fala.specjalna || '', fala.proba ? fala.proba.id : '', fala.ciemnosc ? 1 : 0],
     g: G, w: W,
-    p: pociski.map(p => [r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), p.kolor, (p.ksztalt || 'kula') + (p.duza ? '+' : ''), r1((p.obrot || 0) * 10)]),
-    pw: pociskiWrogow.map(p => [r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), p.kolor, p.ksztalt || '', p.r || 5, p.siec ? 1 : 0]),
+    p: pociski.map(p => przytnij([r1(p.x), r1(p.y), r1(p.vx), r1(p.vy), p.kolor, (p.ksztalt || 'kula') + (p.duza ? '+' : ''), r1((p.obrot || 0) * 10)], DOM_P)),
     sk: skrzynieNaZiemi.map(s => [r1(s.x), r1(s.y), s.tier]),
-    kal: kaluze.map(k => [r1(k.x), r1(k.y), r1(k.r), r1(k.czas / k.max * 100), k.rodzaj]),
     bm: bomby.map(b => [r1(b.x), r1(b.y), r1(b.r), r1(b.lont / b.max * 100)]),
     ub: uderzeniaBossa.map(u => [r1(u.x), r1(u.y), r1(u.r), r1(u.czas / u.zapowiedz * 100), u.mroz ? 1 : 0, u.zadane ? 1 : 0]),
     wr: wiry.map(w => [r1(w.x), r1(w.y), r1(w.r), r1(w.czas * 10), r1(w.max * 10), r1(w.rozruch * 100), r1(w.faza * 10)]),
     sc: scianyMagiczne.map(s => [r1(s.x1), r1(s.y1), r1(s.x2), r1(s.y2), r1(s.czas * 10), r1(s.max * 10), s.grubosc]),
     zap: zapowiedzi.map(z => [r1(z.x), r1(z.y), r1(z.czas / z.max * 100), z.opcje && z.opcje.elita ? 1 : 0]),
     ec: efektyCzasowe.map(e => [e.rodzaj, r1(e.x), r1(e.y), r1(e.r || 0), r1(e.czas / e.max * 100), r1(e.sx || 0), r1(e.sy || 0)]),
-    pe: polaEfektow.map(p => [r1(p.x), r1(p.y), r1(p.r), r1(p.czas * 10), p.rodzaj || '']),
-    st: stwory.map(s => [s.typ, r1(s.x), r1(s.y), s.max > 9000 ? -1 : r1(s.czas / s.max * 100), r1((s.kat || 0) * 100), r1(s.r || 0), s.ik, r1(s.aura || 0)]),
+    st: stwory.map(s => [s.typ, r1(s.x), r1(s.y), s.max > 9000 ? -1 : Math.round(s.czas / s.max * 20) * 5, r1((s.kat || 0) * 10) * 10, r1(s.r || 0), s.ik, r1(s.aura || 0)]),
     ob: orbyRys.map(o => [r1(o.x), r1(o.y), o.kolor, r1(o.kat * 100)]),
   };
+  const wolneTxt = {}; WOLNE_KLUCZE.forEach(k => { wolneTxt[k] = JSON.stringify(stanW[k]); });
+  const wolne = {}; WOLNE_KLUCZE.forEach(k => { wolne[k] = stanW[k]; });
   // co 2 s pełna lista łupów - gdyby coś się rozjechało, klient sam to naprawi
+  const pelneCo2s = SIEC.licznikStanu % 30 === 0;
+  if (pelneCo2s) pelneListy(stanW);
   if (SIEC.licznikStanu % 30 === 0) { stanW.la = []; kulki.forEach(k => stanW.la.push(lupDoWyslania(k, 0))); monety.forEach(m => stanW.la.push(lupDoWyslania(m, 1))); }
   for (const id of ids) {
     const conn = SIEC.polaczenia[id];
@@ -8865,8 +8942,11 @@ function siecWyslijStan(dt) {
       umi: [Math.round((p.umi.cd || 0) * 10) / 10, Math.round((p.umi.cdMax || 0) * 10) / 10], umi2: p.umi2 ? [Math.round((p.umi2.cd || 0) * 10) / 10, Math.round((p.umi2.cdMax || 0) * 10) / 10] : null, ua: [czyUmiAktywna(1) ? 1 : 0, czyUmiAktywna(2) ? 1 : 0], ore: p.oreze.map(q => [Math.round((q.cd || 0) * 10) / 10, Math.round((q.cdMax || 0) * 10) / 10]) };
     for (const k in q) stanW[k] = q[k];
     stanW.eg = SIEC.zdarzeniaG[p.id] || [];
+    const ostW = conn._wolne || (conn._wolne = {}), odsw = SIEC.licznikStanu % 15 === 0;
+    if (!conn._bylStan && !pelneCo2s) pelneListy(stanW); else if (!pelneCo2s) for (const kl in LISTY_SIECI) delete stanW[kl + 'a'];   // nowy w grze: od razu pełne listy
+    WOLNE_KLUCZE.forEach(k => { if (odsw || ostW[k] !== wolneTxt[k]) stanW[k] = wolne[k]; else delete stanW[k]; });
     const txt = JSON.stringify(stanW);
-    if (wyslij(conn, txt)) { conn._ostStan = txt.length; SIEC.zal[id] = {}; SIEC.zdarzeniaG[p.id] = []; }
+    if (wyslij(conn, txt)) { conn._ostStan = txt.length; conn._bylStan = true; SIEC.zal[id] = {}; SIEC.zdarzeniaG[p.id] = []; WOLNE_KLUCZE.forEach(k => { if (stanW[k]) ostW[k] = wolneTxt[k]; }); }
   }
   kontekst(z0);
 }
@@ -8999,26 +9079,27 @@ function klientStan(d) {
     w.elita = !!(fl & 1); w.boss = !!(fl & 2); w.zauroczony = fl & 4 ? 1 : 0; w.sojusznik = !!(fl & 8); w.trafiony = fl & 16 ? 0.1 : 0; w.duch = !!(fl & 32);
     w.przygotowanie = fl & 64 ? 1 : 0; w.spow = fl & 128 ? 0.3 : 0; w.spowCzas = fl & 128 ? 1 : 0; w.ogl = fl & 256 ? 1 : 0; w.ogien = !!(fl & 512); w.krew = !!(fl & 1024);
     w.naznaczony = fl & 2048 ? 1 : 0; w.pole = !!(fl & 4096); w.czempion = !!(fl & 8192);
-    w.wysokosc = a[5]; w.tarczaMax = a[6] >= 0 ? 100 : 0; w.tarcza = a[6] >= 0 ? a[6] : 0; w.hpBossa = a[7];
+    w.wysokosc = a[5] || 0; w.tarczaMax = a[6] >= 0 ? 100 : 0; w.tarcza = a[6] >= 0 ? a[6] : 0; w.hpBossa = a[7] || 0;
     // zamach przed ciosem: postęp z gospodarza, a między stanami dolicza się sam
     const zp = (a[8] || 0) / 100; if (zp > 0) { if (!(w.zamP > 0) || zp > w.zamP) w.zamP = zp; w.zamKat = (a[9] || 0) / 100; } else w.zamP = 0;
     w.afiksy = []; w.afIk = st.afIk || '';
     return w;
   });
   // pociski od razu "na teraz" (przesunięte o połowę pingu)
-  pociski = d.p.map(a => { const dz = a[5] && a[5].endsWith('+'); return { x: a[0] + a[2] * wyp, y: a[1] + a[3] * wyp, vx: a[2], vy: a[3], kolor: a[4], ksztalt: dz ? a[5].slice(0, -1) : a[5], duza: dz, obrot: a[6] / 10 }; });
-  pociskiWrogow = d.pw.map(a => ({ x: a[0] + a[2] * wyp, y: a[1] + a[3] * wyp, vx: a[2], vy: a[3], kolor: a[4], ksztalt: a[5] || null, r: a[6], siec: !!a[7] }));
+  pociski = d.p.map(a => { const dz = a[5] && a[5].endsWith('+'); return { x: a[0] + a[2] * wyp, y: a[1] + a[3] * wyp, vx: a[2], vy: a[3], kolor: a[4], ksztalt: dz ? a[5].slice(0, -1) : a[5], duza: dz, obrot: (a[6] || 0) / 10 }; });
+  pociskiWrogow = synchListy(pociskiWrogow, d, 'pw', a => ({ sid: a[0], x: a[1] + a[3] * wyp, y: a[2] + a[4] * wyp, vx: a[3], vy: a[4], zycie: (a[5] || 0) / 100 - wyp, kolor: a[6], ksztalt: a[7] || null, r: a[8] || 5, siec: !!a[9] }));
+  kaluze = synchListy(kaluze, d, 'kal', a => ({ sid: a[0], x: a[1], y: a[2], r: a[3], czas: a[4] / 10, max: Math.max(0.1, a[5] / 10), rodzaj: a[6] }));
   klientLupy(d);
-  skrzynieNaZiemi = d.sk.map(a => ({ x: a[0], y: a[1], tier: a[2], faza: 0 }));
-  kaluze = d.kal.map(a => ({ x: a[0], y: a[1], r: a[2], czas: a[3], max: 100, rodzaj: a[4] }));
+  // listy, które przychodzą tylko po zmianie: brak klucza = bez zmian
+  if (d.sk) skrzynieNaZiemi = d.sk.map(a => ({ x: a[0], y: a[1], tier: a[2], faza: 0 }));
   bomby = d.bm.map(a => ({ x: a[0], y: a[1], r: a[2], lont: a[3], max: 100 }));
   uderzeniaBossa = d.ub.map(a => ({ x: a[0], y: a[1], r: a[2], czas: a[3], zapowiedz: 100, mroz: !!a[4], zadane: !!a[5] }));
-  wiry = d.wr.map(a => ({ x: a[0], y: a[1], r: a[2], czas: a[3] / 10, max: a[4] / 10, rozruch: a[5] / 100, faza: a[6] / 10 }));
-  scianyMagiczne = d.sc.map(a => ({ x1: a[0], y1: a[1], x2: a[2], y2: a[3], czas: a[4] / 10, max: a[5] / 10, grubosc: a[6] }));
+  if (d.wr) wiry = d.wr.map(a => ({ x: a[0], y: a[1], r: a[2], czas: a[3] / 10, max: a[4] / 10, rozruch: a[5] / 100, faza: a[6] / 10 }));
+  if (d.sc) scianyMagiczne = d.sc.map(a => ({ x1: a[0], y1: a[1], x2: a[2], y2: a[3], czas: a[4] / 10, max: a[5] / 10, grubosc: a[6] }));
   zapowiedzi = d.zap.map(a => ({ x: a[0], y: a[1], czas: a[2], max: 100, opcje: { elita: !!a[3] } }));
   efektyCzasowe = d.ec.map(a => ({ rodzaj: a[0], x: a[1], y: a[2], r: a[3], czas: a[4], max: 100, sx: a[5], sy: a[6] }));
-  polaEfektow = d.pe.map(a => ({ x: a[0], y: a[1], r: a[2], czas: a[3] / 10, rodzaj: a[4] }));
-  SIEC.stwory = (d.st || []).map(a => ({ typ: a[0], x: a[1], y: a[2], czas: a[3] < 0 ? 1 : a[3], max: a[3] < 0 ? 99999 : 100, kat: a[4] / 100, r: a[5], ik: a[6], aura: a[7] }));
+  polaEfektow = synchListy(polaEfektow, d, 'pe', a => ({ sid: a[0], x: a[1], y: a[2], r: a[3], czas: a[4] / 10, rodzaj: a[5] }));
+  if (d.st) SIEC.stwory = d.st.map(a => ({ typ: a[0], x: a[1], y: a[2], czas: a[3] < 0 ? 1 : a[3], max: a[3] < 0 ? 99999 : 100, kat: a[4] / 100, r: a[5], ik: a[6], aura: a[7] }));
   orbyRys = d.ob.map(a => ({ x: a[0], y: a[1], kolor: a[2], kat: a[3] / 100 }));
   d.vf.forEach(a => fale.push({ x: a[0], y: a[1], r: a[2], kolor: a[3], czas: a[4], max: a[5], odwrot: !!a[6], slaba: !!a[7] }));
   d.vt.forEach(a => { if (teksty.length > 55) teksty.shift(); teksty.push({ x: a[0], y: a[1], t: a[2], kolor: a[3], czas: a[4], max: a[5], rozm: a[6], o: a[7] || 0 }); });
@@ -9041,10 +9122,20 @@ function klientStan(d) {
     SIEC.ms = ja.ms; SIEC.roz = ja.roz; gracz.spowG = ja.spowG; gracz.zastoj = ja.zastoj ? 1 : 0; gracz.powalony = !!ja.pow; gracz.niewr = ja.niewr ? 0.1 : 0;
   }
 }
+// listy wysyłane "raz": najpierw nowe, potem zniknięte, a pełna lista (co 2 s) naprawia rozjazdy
+function synchListy(lista, d, kl, zrob) {
+  const n = d[kl + 'n'], u = d[kl + 'u'], a = d[kl + 'a'];
+  if (!(n && n.length) && !(u && u.length) && !a) return lista;
+  const zn = new Set(); lista.forEach(o => zn.add(o.sid));
+  if (n) n.forEach(x => { if (!zn.has(x[0])) { lista.push(zrob(x)); zn.add(x[0]); } else { const i = lista.findIndex(o => o.sid === x[0]); if (i >= 0) lista[i] = zrob(x); } });   // znany = odświeżony
+  if (u && u.length) { const us = new Set(u); lista = lista.filter(o => !us.has(o.sid)); }
+  if (a) { const jest = new Set(a.map(x => x[0])); lista = lista.filter(o => jest.has(o.sid)); const z2 = new Set(lista.map(o => o.sid)); a.forEach(x => { if (!z2.has(x[0])) lista.push(zrob(x)); }); }
+  return lista;
+}
 // ---- łupy u klienta: kulki i monety żyją u niego, zbiera je od razu i tylko zgłasza gospodarzowi ----
 function nowyLupKlienta(a) {
   const o = { id: a[0], x: a[1], y: a[2], vx: a[3], vy: a[4], faza: (a[0] % 7), opozn: (a[7] || 0) / 100 };
-  if (a[5]) { o.v = a[6]; monety.push(o); } else { o.xp = a[6]; kulki.push(o); }
+  if (a[5]) { o.v = a[6]; monety.push(o); LUP_SR.v = LUP_SR.v * 0.95 + o.v * 0.05; } else { o.xp = a[6]; kulki.push(o); LUP_SR.xp = LUP_SR.xp * 0.95 + o.xp * 0.05; }
 }
 function klientLupy(d) {
   const teraz = Date.now();
@@ -9053,8 +9144,9 @@ function klientLupy(d) {
     const us = new Set(d.lu);
     kulki = kulki.filter(k => !us.has(k.id)); monety = monety.filter(m => !us.has(m.id));
   }
-  const znane = new Set(); kulki.forEach(k => znane.add(k.id)); monety.forEach(m => znane.add(m.id));
-  (d.ln || []).forEach(a => { if (!znane.has(a[0]) && !SIEC.zebraneLok[a[0]]) { nowyLupKlienta(a); znane.add(a[0]); } });
+  const znane = new Map(); kulki.forEach(k => znane.set(k.id, k)); monety.forEach(m => znane.set(m.id, m));
+  // znany łup przysłany jeszcze raz = coś się do niego dokleiło: tylko nowa wartość
+  (d.ln || []).forEach(a => { const z = znane.get(a[0]); if (z) { if (a[5]) z.v = a[6]; else z.xp = a[6]; return; } if (!SIEC.zebraneLok[a[0]]) { znane.set(a[0], nowyLupKlienta(a) || 1); } });
   if (d.la) {
     // pełna lista: usuń, czego już nie ma, dodaj brakujące (bez ruszania tych, które już lecą)
     const jest = new Set(d.la.map(a => a[0]));
@@ -9097,7 +9189,11 @@ function krokKlienta(dt) {
   wrogowie.forEach(w => { przesunDoTeraz(w, teraz, k); if (w.zamP > 0) w.zamP = Math.min(1, w.zamP + dt / 0.4); });
   SIEC.widokGraczy.forEach(p => { if (p === SIEC.mojWidok) { p.x = gracz.x; p.y = gracz.y; p.kierX = gracz.kierX; p.wRuchu = gracz.wRuchu; p.faza = gracz.faza; } else przesunDoTeraz(p, teraz, k); });
   pociski.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; if (p.ksztalt === 'bumerang') p.obrot += dt * 18; });
-  pociskiWrogow.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; });
+  // pociski wrogów i kałuże żyją u klienta same (gospodarz przysyła je tylko raz)
+  for (let i = pociskiWrogow.length - 1; i >= 0; i--) { const p = pociskiWrogow[i]; p.x += p.vx * dt; p.y += p.vy * dt; p.zycie -= dt;
+    if (p.zycie <= -0.3 || (!gracz.powalony && Math.hypot(p.x - gracz.x, p.y - gracz.y) < 11 + (p.r || 5))) pociskiWrogow.splice(i, 1); }
+  for (let i = kaluze.length - 1; i >= 0; i--) { const k = kaluze[i]; k.czas -= dt; if (k.czas <= 0) kaluze.splice(i, 1); }
+  for (let i = polaEfektow.length - 1; i >= 0; i--) { const q = polaEfektow[i]; q.czas -= dt; if (q.czas <= 0) polaEfektow.splice(i, 1); }
   aktualizujLupyKlienta(dt);
   wiry.forEach(w => { w.faza += dt * 5; if (w.rozruch > 0) w.rozruch -= dt; });
   aktualizujWizualne(dt);
